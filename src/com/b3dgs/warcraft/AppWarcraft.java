@@ -32,7 +32,7 @@ import com.b3dgs.warcraft.menu.Menu;
 public final class AppWarcraft
 {
     /** Program title. */
-    public static final String PROGRAM = "Warcraft";
+    public static final String PROGRAM = "Warcraft Remake";
     /** Program version. */
     public static final Version VERSION = Version.create(0, 1, 0);
     /** Effects directory. */
