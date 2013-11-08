@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.warcraft.menu.Menu;
 
 /**
@@ -65,7 +65,7 @@ public final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get(AppWarcraft.MAPS_DIR, config.map));
+        world.loadFromFile(UtilityMedia.get(AppWarcraft.MAPS_DIR, config.map));
         music.play();
     }
 

@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Key;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
@@ -115,8 +115,8 @@ final class World
         map = new Map();
 
         camera = new Camera(map);
-        cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
-                Media.get("cursor_order.png"));
+        cursor = new Cursor(mouse, camera, source, map, UtilityMedia.get("cursor.png"),
+                UtilityMedia.get("cursor_over.png"), UtilityMedia.get("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
 
         handlerEffect = new HandlerEffect(camera);

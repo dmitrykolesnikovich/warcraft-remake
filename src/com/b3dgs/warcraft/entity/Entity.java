@@ -19,7 +19,7 @@ package com.b3dgs.warcraft.entity;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Alterable;
@@ -78,7 +78,8 @@ public abstract class Entity
         life = new Alterable(getDataInteger("life", "attributes"));
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(Media.get(AppWarcraft.ENTITIES_DIR, type.race.getPathName(), getDataString("icon")));
+        icon = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.ENTITIES_DIR, type.race.getPathName(),
+                getDataString("icon")));
         icon.load(false);
         dead = false;
         owner = null;

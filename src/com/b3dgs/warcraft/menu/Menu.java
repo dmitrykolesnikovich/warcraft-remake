@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -121,7 +121,7 @@ public final class Menu
      */
     private static SpriteTiled getButton(String filename, int width, int height)
     {
-        return Drawable.loadSpriteTiled(Media.get(AppWarcraft.MENU_DIR, filename), width, height);
+        return Drawable.loadSpriteTiled(UtilityMedia.get(AppWarcraft.MENU_DIR, filename), width, height);
     }
 
     /** Introduction logo. */
@@ -163,9 +163,9 @@ public final class Menu
     public Menu(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        logo = Drawable.loadSprite(Media.get(AppWarcraft.MENU_DIR, "blizzard.png"));
-        background = Drawable.loadSprite(Media.get(AppWarcraft.MENU_DIR, "menu.png"));
-        cursor = new Cursor(mouse, source, Media.get("cursor.png"));
+        logo = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "blizzard.png"));
+        background = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "menu.png"));
+        cursor = new Cursor(mouse, source, UtilityMedia.get("cursor.png"));
         music = Music.MENU;
     }
 

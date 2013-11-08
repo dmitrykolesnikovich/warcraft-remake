@@ -18,6 +18,7 @@
 package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -67,7 +68,7 @@ public final class FactorySkill
         this.handlerEntity = handlerEntity;
         this.factoryProduction = factoryProduction;
         this.message = message;
-        background = Drawable.loadSpriteTiled(Media.get("skill_background.png"), 31, 23);
+        background = Drawable.loadSpriteTiled(UtilityMedia.get("skill_background.png"), 31, 23);
         background.load(false);
         load();
     }

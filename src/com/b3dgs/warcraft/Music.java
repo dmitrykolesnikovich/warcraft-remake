@@ -20,6 +20,7 @@ package com.b3dgs.warcraft;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * Handle the music.
@@ -62,24 +63,24 @@ public enum Music
     {
         Music.volume = volume;
     }
-    
+
     /**
      * Load all music.
      */
     public static void loadAll()
     {
-        for (Music music : Music.values())
+        for (final Music music : Music.values())
         {
             music.load();
         }
     }
-    
+
     /**
      * Stop all music.
      */
     public static void stopAll()
     {
-        for (Music music : Music.values())
+        for (final Music music : Music.values())
         {
             music.stop();
         }
@@ -97,7 +98,7 @@ public enum Music
      */
     private Music(String music)
     {
-        media = Media.get(AppWarcraft.MUSICS_DIR, music + Music.AUDIO_FILE_EXTENSION);
+        media = UtilityMedia.get(AppWarcraft.MUSICS_DIR, music + Music.AUDIO_FILE_EXTENSION);
     }
 
     /**
@@ -119,7 +120,7 @@ public enum Music
             midi.play(true);
         }
     }
-    
+
     /**
      * Load the music.
      */

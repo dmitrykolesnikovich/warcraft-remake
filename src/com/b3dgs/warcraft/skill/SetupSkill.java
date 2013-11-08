@@ -18,6 +18,7 @@
 package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -82,9 +83,10 @@ public final class SetupSkill
         this.factoryProduction = factoryProduction;
         this.message = message;
         icon = Drawable.loadSpriteTiled(
-                Media.get(AppWarcraft.SKILLS_DIR, type.race.getPathName(), configurable.getDataString("icon")), 27, 19);
-        gold = Drawable.loadSprite(Media.get("gold.png"));
-        wood = Drawable.loadSprite(Media.get("wood.png"));
+                UtilityMedia.get(AppWarcraft.SKILLS_DIR, type.race.getPathName(), configurable.getDataString("icon")),
+                27, 19);
+        gold = Drawable.loadSprite(UtilityMedia.get("gold.png"));
+        wood = Drawable.loadSprite(UtilityMedia.get("wood.png"));
 
         icon.load(false);
         gold.load(false);
