@@ -491,7 +491,7 @@ public final class Menu
         }
         buttons = null;
         choices = null;
-        Music.stopAll();
+        music.stop();
         Sfx.stopAll();
         if (!hasNextSequence)
         {

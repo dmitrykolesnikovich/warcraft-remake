@@ -58,7 +58,7 @@ public final class AppWarcraft
     /** Menu directory. */
     public static final String MENU_DIR = "menu";
     /** Enable sound. */
-    private static final boolean ENABLE_SOUND = false;
+    private static final boolean ENABLE_SOUND = true;
     /** Program path. */
     public static final String PATH = "resources";
 
@@ -77,7 +77,6 @@ public final class AppWarcraft
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         loader.start(new Menu(loader));
-        Music.loadAll();
     }
 
     /**

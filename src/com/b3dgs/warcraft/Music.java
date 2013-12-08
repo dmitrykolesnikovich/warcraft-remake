@@ -29,11 +29,11 @@ import com.b3dgs.lionengine.core.UtilityMedia;
  */
 public enum Music
 {
-    /** Blank. */
+    /** Humans. */
     HUMANS("humans"),
-    /** Blizzard. */
+    /** Orcs. */
     ORCS("orcs"),
-    /** Click. */
+    /** Menu. */
     MENU("menu");
 
     /** Audio file extension. */
@@ -42,7 +42,7 @@ public enum Music
     /** Sound enabled. */
     private static boolean enabled;
     /** Volume. */
-    private static int volume = 80;
+    private static int volume = 60;
 
     /**
      * Set the enabled state.
@@ -62,28 +62,6 @@ public enum Music
     public static void setGlobalVolume(int volume)
     {
         Music.volume = volume;
-    }
-
-    /**
-     * Load all music.
-     */
-    public static void loadAll()
-    {
-        for (final Music music : Music.values())
-        {
-            music.load();
-        }
-    }
-
-    /**
-     * Stop all music.
-     */
-    public static void stopAll()
-    {
-        for (final Music music : Music.values())
-        {
-            music.stop();
-        }
     }
 
     /** Media. */
@@ -107,6 +85,7 @@ public enum Music
     public void stop()
     {
         midi.stop();
+        midi = null;
     }
 
     /**
@@ -116,6 +95,7 @@ public enum Music
     {
         if (Music.enabled)
         {
+            load();
             midi.setVolume(Music.volume);
             midi.play(true);
         }
