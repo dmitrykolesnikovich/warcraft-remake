@@ -97,7 +97,7 @@ public abstract class Skill
     }
 
     /*
-     * SkillRts
+     * SkillStrategy
      */
 
     @Override

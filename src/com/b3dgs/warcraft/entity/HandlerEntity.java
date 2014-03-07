@@ -95,7 +95,7 @@ public final class HandlerEntity
     }
 
     /*
-     * HandlerEntityRts
+     * HandlerEntityStrategy
      */
 
     @Override

@@ -128,7 +128,7 @@ public final class Cursor
     }
 
     /*
-     * CursorRts
+     * CursorStrategy
      */
 
     @Override

@@ -129,7 +129,7 @@ public final class Map
     }
 
     /*
-     * MapTileRts
+     * MapTileStrategy
      */
 
     @Override

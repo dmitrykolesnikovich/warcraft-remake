@@ -53,7 +53,7 @@ public class Camera
     }
 
     /*
-     * CameraRts
+     * CameraStrategy
      */
 
     @Override

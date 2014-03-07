@@ -153,7 +153,7 @@ final class World
     }
 
     /*
-     * WorldRts
+     * WorldStrategy
      */
 
     @Override
