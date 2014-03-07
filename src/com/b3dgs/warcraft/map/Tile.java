@@ -17,8 +17,8 @@
  */
 package com.b3dgs.warcraft.map;
 
-import com.b3dgs.lionengine.game.rts.map.Border20;
-import com.b3dgs.lionengine.game.rts.map.TileRts;
+import com.b3dgs.lionengine.game.strategy.map.Border20;
+import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 import com.b3dgs.warcraft.ResourceType;
 
 /**
@@ -27,7 +27,7 @@ import com.b3dgs.warcraft.ResourceType;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Tile
-        extends TileRts<TileCollision, ResourceType>
+        extends TileStrategy<TileCollision, ResourceType>
 {
     /** Border values. */
     private static final Border20[] VALUES = Border20.values();

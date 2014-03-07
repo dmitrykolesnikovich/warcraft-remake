@@ -23,9 +23,9 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
 import com.b3dgs.warcraft.ControlPanel;
 import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.CursorType;
@@ -41,7 +41,7 @@ import com.b3dgs.warcraft.map.Tile;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
-        extends HandlerEntityRts<ResourceType, Tile, Entity, ControlPanel>
+        extends HandlerEntityStrategy<ResourceType, Tile, Entity, ControlPanel>
 {
     /** Cursor reference. */
     private final Cursor cursor;
@@ -59,7 +59,7 @@ public final class HandlerEntity
      * @param map The map reference.
      * @param fogOfWar The fog of war reference.
      */
-    public HandlerEntity(CameraRts camera, Cursor cursor, ControlPanel controlPanel, Map map, FogOfWar fogOfWar)
+    public HandlerEntity(CameraStrategy camera, Cursor cursor, ControlPanel controlPanel, Map map, FogOfWar fogOfWar)
     {
         super(camera, cursor, controlPanel, map);
         this.cursor = cursor;
@@ -110,7 +110,7 @@ public final class HandlerEntity
     }
 
     @Override
-    protected void updatingEntity(Entity entity, CursorRts cursor, CameraRts camera)
+    protected void updatingEntity(Entity entity, CursorStrategy cursor, CameraStrategy camera)
     {
         // Adapt cursor
         entity.setSelectable(!fogOfWar.isFogged(entity));
@@ -122,7 +122,7 @@ public final class HandlerEntity
     }
 
     @Override
-    protected void renderingEntity(Graphic g, Entity entity, CameraRts camera, CursorRts cursor)
+    protected void renderingEntity(Graphic g, Entity entity, CameraStrategy camera, CursorStrategy cursor)
     {
         if (cursor.getClick() == 0 && entity.isOver() && this.cursor.getType() != CursorType.BOX
                 && !panel.canClick(cursor) || entity.isSelected())

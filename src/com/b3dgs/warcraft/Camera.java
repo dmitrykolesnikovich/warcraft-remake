@@ -19,7 +19,7 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.rts.CameraRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
 /**
  * Camera implementation.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Camera
-        extends CameraRts
+        extends CameraStrategy
 {
     /** The control panel reference. */
     private ControlPanel panel;

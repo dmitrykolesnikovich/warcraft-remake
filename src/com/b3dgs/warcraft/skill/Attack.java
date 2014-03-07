@@ -17,10 +17,10 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
-import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
+import com.b3dgs.lionengine.game.strategy.entity.EntityNotFoundException;
 import com.b3dgs.warcraft.entity.HandlerEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
 
@@ -52,7 +52,7 @@ public abstract class Attack
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorRts cursor)
+    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         try
         {

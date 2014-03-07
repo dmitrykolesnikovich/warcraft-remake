@@ -18,7 +18,7 @@
 package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
+import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerUsedServices;
 
 /**
  * Attacker interface.

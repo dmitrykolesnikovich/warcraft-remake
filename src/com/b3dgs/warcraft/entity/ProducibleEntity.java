@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.game.rts.ability.producer.Producible;
+import com.b3dgs.lionengine.game.strategy.ability.producer.Producible;
 
 /**
  * Producible entity implementation.

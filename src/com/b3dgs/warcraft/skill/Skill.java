@@ -24,10 +24,10 @@ import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.skill.SkillRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 import com.b3dgs.warcraft.entity.Entity;
 
 /**
@@ -36,7 +36,7 @@ import com.b3dgs.warcraft.entity.Entity;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Skill
-        extends SkillRts<SkillType>
+        extends SkillStrategy<SkillType>
 {
     /** Text. */
     protected final Text text;
@@ -101,13 +101,13 @@ public abstract class Skill
      */
 
     @Override
-    public void updateOnMap(double extrp, CameraRts camera, CursorRts cursor)
+    public void updateOnMap(double extrp, CameraStrategy camera, CursorStrategy cursor)
     {
         // Nothing to do
     }
 
     @Override
-    public void renderOnMap(Graphic g, CursorRts cursor, CameraRts camera)
+    public void renderOnMap(Graphic g, CursorStrategy cursor, CameraStrategy camera)
     {
         // Nothing to do
     }
@@ -137,7 +137,7 @@ public abstract class Skill
     }
 
     @Override
-    public boolean isOver(CursorRts cursor)
+    public boolean isOver(CursorStrategy cursor)
     {
         return cursor.getScreenX() >= x && cursor.getScreenX() <= x + icon.getTileWidth() && cursor.getScreenY() >= y
                 && cursor.getScreenY() <= y + icon.getTileHeight();

@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
-import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
-import com.b3dgs.lionengine.game.rts.entity.EntityRts;
+import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
+import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.map.Map;
@@ -39,7 +39,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Entity
-        extends EntityRts
+        extends EntityStrategy
         implements SkilledServices<SkillType, Skill>
 {
     /** Entity type. */

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
 /**
  * Build skill implementation.
@@ -43,7 +43,7 @@ public abstract class BuildingStandard
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorRts cursor)
+    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         owner.setSkillPanel(1);
     }

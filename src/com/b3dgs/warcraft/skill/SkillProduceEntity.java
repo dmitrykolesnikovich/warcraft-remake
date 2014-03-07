@@ -18,8 +18,8 @@
 package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.game.purview.Configurable;
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.EntityType;
 import com.b3dgs.warcraft.entity.FactoryProduction;
@@ -64,7 +64,7 @@ public abstract class SkillProduceEntity
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorRts cursor)
+    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof BuildingProducer)
         {

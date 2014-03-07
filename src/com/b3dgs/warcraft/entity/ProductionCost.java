@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.game.rts.ability.producer.ProductionCostRts;
+import com.b3dgs.lionengine.game.strategy.ability.producer.ProductionCostStrategy;
 
 /**
  * Production cost implementation.
@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProductionCostRts;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProductionCost
-        extends ProductionCostRts
+        extends ProductionCostStrategy
 {
     /** The needed amount of gold. */
     private final int gold;

@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.CursorRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.warcraft.ControlPanel;
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.HandlerEntity;
@@ -81,7 +81,7 @@ public final class Minimap
      * @param ox The cursor offset x.
      * @param oy The cursor offset y.
      */
-    public void update(CursorRts cursor, CameraRts camera, HandlerEntity handler, int ox, int oy)
+    public void update(CursorStrategy cursor, CameraStrategy camera, HandlerEntity handler, int ox, int oy)
     {
         final int mw = map.getWidthInTile();
         final int mh = map.getHeightInTile();
@@ -131,7 +131,7 @@ public final class Minimap
      * @param g The graphics output.
      * @param camera The camera reference.
      */
-    public void render(Graphic g, CameraRts camera)
+    public void render(Graphic g, CameraStrategy camera)
     {
         map.renderMiniMap(g, x, y);
         renderEntity(g);
@@ -145,7 +145,7 @@ public final class Minimap
      * @param cursor The cursor reference.
      * @return <code>true</code> if cursor is over minimap, <code>false</code> else.
      */
-    private boolean isOver(CursorRts cursor)
+    private boolean isOver(CursorStrategy cursor)
     {
         final int cx = cursor.getScreenX();
         final int cy = cursor.getScreenY();
@@ -160,7 +160,7 @@ public final class Minimap
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    private void renderCamera(Graphic g, CameraRts camera, int x, int y)
+    private void renderCamera(Graphic g, CameraStrategy camera, int x, int y)
     {
         g.setColor(ColorRgba.GREEN);
         final int cx = (int) camera.getLocationRealX() / map.getTileWidth() - 1 + x;

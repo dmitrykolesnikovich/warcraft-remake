@@ -18,7 +18,7 @@
 package com.b3dgs.warcraft.effect;
 
 import com.b3dgs.lionengine.game.effect.HandlerEffectGame;
-import com.b3dgs.lionengine.game.rts.CameraRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
 /**
  * Handle the effect.
@@ -33,7 +33,7 @@ public class HandlerEffect
      * 
      * @param camera The camera reference.
      */
-    public HandlerEffect(CameraRts camera)
+    public HandlerEffect(CameraStrategy camera)
     {
         super(camera);
     }

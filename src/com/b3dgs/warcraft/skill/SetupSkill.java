@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.rts.skill.SetupSkillRts;
+import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.entity.FactoryProduction;
@@ -36,7 +36,7 @@ import com.b3dgs.warcraft.map.Map;
  * @author Pierre-Alexandre
  */
 public final class SetupSkill
-        extends SetupSkillRts
+        extends SetupSkillStrategy
 {
     /** Skill icon. */
     public final SpriteTiled icon;

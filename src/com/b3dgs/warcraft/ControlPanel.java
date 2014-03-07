@@ -34,10 +34,10 @@ import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Bar;
-import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.EntityType;
@@ -102,7 +102,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param camera The camera reference.
      */
-    public void render(Graphic g, CursorRts cursor, CameraRts camera)
+    public void render(Graphic g, CursorStrategy cursor, CameraStrategy camera)
     {
         sprite.render(g, 0, 0);
 
@@ -151,7 +151,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param extrp The extrapolation value.
      */
-    private void updateSingleEntity(Entity entity, CursorRts cursor, double extrp)
+    private void updateSingleEntity(Entity entity, CursorStrategy cursor, double extrp)
     {
         if (entity.getPlayer() == player)
         {
@@ -173,7 +173,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param extrp The extrapolation value.
      */
-    private void updateMultipleEntity(Set<Entity> entities, CursorRts cursor, double extrp)
+    private void updateMultipleEntity(Set<Entity> entities, CursorStrategy cursor, double extrp)
     {
         final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
         for (final Entity entity : entities)
@@ -198,7 +198,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param camera The camera reference.
      */
-    private void renderSingleEntity(Graphic g, int x, int y, Entity entity, CursorRts cursor, CameraRts camera)
+    private void renderSingleEntity(Graphic g, int x, int y, Entity entity, CursorStrategy cursor, CameraStrategy camera)
     {
         // Entity stats
         entityStats.render(g, x, y);
@@ -287,7 +287,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param camera The camera reference.
      */
-    private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorRts cursor, CameraRts camera)
+    private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorStrategy cursor, CameraStrategy camera)
     {
         final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
         final Entity entity = entities.iterator().next();
@@ -353,7 +353,7 @@ public final class ControlPanel
      */
 
     @Override
-    public void update(double extrp, CameraRts camera, CursorRts cursor, Keyboard keyboard)
+    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor, Keyboard keyboard)
     {
         super.update(extrp, camera, cursor, keyboard);
 
@@ -386,7 +386,7 @@ public final class ControlPanel
     }
 
     @Override
-    protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
+    protected int computeSelectionWidth(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
         final Rectangle area = getArea();
         final int widthMin = camera.getLocationIntX() - sx + (int) area.getX();
@@ -395,7 +395,7 @@ public final class ControlPanel
     }
 
     @Override
-    protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
+    protected int computeSelectionHeight(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
         final Rectangle area = getArea();
         final int heightMin = camera.getLocationIntY() - sy + (int) -area.getY() + 1;

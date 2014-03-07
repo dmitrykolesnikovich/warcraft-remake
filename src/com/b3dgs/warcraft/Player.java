@@ -19,7 +19,7 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.rts.PlayerRts;
+import com.b3dgs.lionengine.game.strategy.PlayerStrategy;
 import com.b3dgs.warcraft.entity.ProductionCost;
 
 /**
@@ -28,7 +28,7 @@ import com.b3dgs.warcraft.entity.ProductionCost;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Player
-        extends PlayerRts
+        extends PlayerStrategy
 {
     /** Gold resource. */
     private final ResourceProgressive gold;

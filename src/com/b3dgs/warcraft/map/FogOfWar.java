@@ -20,7 +20,7 @@ package com.b3dgs.warcraft.map;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.rts.map.FogOfWarRts;
+import com.b3dgs.lionengine.game.strategy.map.FogOfWarStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.GameConfig;
 
@@ -30,7 +30,7 @@ import com.b3dgs.warcraft.GameConfig;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FogOfWar
-        extends FogOfWarRts<Tile>
+        extends FogOfWarStrategy<Tile>
 {
     /**
      * Constructor.

@@ -22,9 +22,9 @@ import java.io.IOException;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.rts.map.Border20;
-import com.b3dgs.lionengine.game.rts.map.Border20Map;
-import com.b3dgs.lionengine.game.rts.map.MapTileRts;
+import com.b3dgs.lionengine.game.strategy.map.Border20;
+import com.b3dgs.lionengine.game.strategy.map.Border20Map;
+import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 import com.b3dgs.warcraft.ResourceType;
 
 /**
@@ -33,7 +33,7 @@ import com.b3dgs.warcraft.ResourceType;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Map
-        extends MapTileRts<TileCollision, ResourceType, Tile>
+        extends MapTileStrategy<TileCollision, ResourceType, Tile>
 {
     /** Tree map layer. */
     public final Border20Map treeMap;

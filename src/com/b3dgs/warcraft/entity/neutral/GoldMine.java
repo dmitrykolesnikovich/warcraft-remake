@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.entity.neutral;
 
-import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
+import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.warcraft.ResourceProgressive;
 import com.b3dgs.warcraft.ResourceType;
 import com.b3dgs.warcraft.entity.Building;

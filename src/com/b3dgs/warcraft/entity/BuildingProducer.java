@@ -21,9 +21,9 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
-import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
-import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
+import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
+import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
+import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
 import com.b3dgs.warcraft.Player;
 
 /**

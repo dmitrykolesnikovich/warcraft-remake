@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.ability.mover.MoverModel;
-import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
-import com.b3dgs.lionengine.game.rts.ability.mover.MoverUsedServices;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
+import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
+import com.b3dgs.lionengine.game.strategy.ability.mover.MoverUsedServices;
 
 /**
  * Abstract mover entity implementation.
@@ -141,7 +141,7 @@ public abstract class Unit
     }
 
     @Override
-    public void render(Graphic g, CameraRts camera)
+    public void render(Graphic g, CameraStrategy camera)
     {
         if (isDead() && Die.DONE == die)
         {

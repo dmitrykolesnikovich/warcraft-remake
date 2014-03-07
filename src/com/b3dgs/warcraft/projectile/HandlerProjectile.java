@@ -18,7 +18,7 @@
 package com.b3dgs.warcraft.projectile;
 
 import com.b3dgs.lionengine.game.projectile.HandlerProjectileGame;
-import com.b3dgs.lionengine.game.rts.CameraRts;
+import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.HandlerEntity;
 
@@ -36,7 +36,7 @@ public final class HandlerProjectile
      * @param camera The camera reference.
      * @param handlerEntity The entity handler reference.
      */
-    public HandlerProjectile(CameraRts camera, HandlerEntity handlerEntity)
+    public HandlerProjectile(CameraStrategy camera, HandlerEntity handlerEntity)
     {
         super(camera, handlerEntity);
     }

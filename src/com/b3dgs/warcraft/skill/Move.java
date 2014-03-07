@@ -17,9 +17,9 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
+import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 
 /**
  * Move skill implementation.
@@ -45,7 +45,7 @@ public abstract class Move
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorRts cursor)
+    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof MoverServices)
         {
