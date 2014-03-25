@@ -287,7 +287,8 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param camera The camera reference.
      */
-    private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorStrategy cursor, CameraStrategy camera)
+    private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorStrategy cursor,
+            CameraStrategy camera)
     {
         final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
         final Entity entity = entities.iterator().next();
