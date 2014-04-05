@@ -24,8 +24,11 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
@@ -124,6 +127,10 @@ public final class Menu
         return Drawable.loadSpriteTiled(UtilityMedia.get(AppWarcraft.MENU_DIR, filename), width, height);
     }
 
+    /** Keyboard. */
+    private final Keyboard keyboard;
+    /** Mouse. */
+    private final Mouse mouse;
     /** Introduction logo. */
     private final Sprite logo;
     /** Menu background. */
@@ -163,9 +170,11 @@ public final class Menu
     public Menu(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
         logo = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "menu.png"));
-        cursor = new Cursor(mouse, source, UtilityMedia.get("cursor.png"));
+        cursor = new Cursor(mouse, getConfig().getSource(), UtilityMedia.get("cursor.png"));
         music = Music.MENU;
     }
 
@@ -178,7 +187,7 @@ public final class Menu
     private void applyAlpha(Graphic g, ColorRgba color)
     {
         g.setColor(color);
-        g.drawRect(0, 0, width, height, true);
+        g.drawRect(0, 0, getWidth(), getHeight(), true);
     }
 
     /**
@@ -233,7 +242,7 @@ public final class Menu
 
         logo.load(false);
         background.load(false);
-        cursor.setLocation(width / 2, height / 2);
+        cursor.setLocation(getWidth() / 2, getHeight() / 2);
         buttons = new Button[7];
 
         final SpriteTiled bigButton = Menu.getButton("case1.png", 112, 16);
@@ -278,13 +287,15 @@ public final class Menu
         {
             pressed = true;
         }
+        mouse.setConfig(getConfig());
         introTimer = UtilityMath.time();
-        setMouseVisible(false);
+        setSystemCursorVisible(false);
     }
 
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         cursor.update(1.0);
         if (cursor.getClick() == 0)
         {
@@ -399,7 +410,7 @@ public final class Menu
                 alpha = 0;
                 final GameConfig config = new GameConfig(Menu.RACES[playerRace], Menu.RACES[opponentRace],
                         Menu.MAPS[map], hide, ffog);
-                end(new Scene(loader, config));
+                end(Scene.class, config);
                 break;
             case EXIT:
                 end();

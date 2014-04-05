@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
@@ -57,7 +57,7 @@ public class Camera
      */
 
     @Override
-    public void update(Keyboard keyboard)
+    public void update(InputDeviceDirectional keyboard)
     {
         if (!panel.isSelecting())
         {

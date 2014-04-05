@@ -19,7 +19,9 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -36,6 +38,8 @@ public final class Scene
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
 
+    /** Keyboard. */
+    private final Keyboard keyboard;
     /** World reference. */
     private final World world;
     /** Game configuration. */
@@ -49,13 +53,14 @@ public final class Scene
      * @param loader The loader reference.
      * @param config The game configuration.
      */
-    public Scene(final Loader loader, GameConfig config)
+    public Scene(Loader loader, GameConfig config)
     {
         super(loader, Scene.NATIVE);
         this.config = config;
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         world = new World(this, config);
         music = Music.ORCS;
-        setMouseVisible(false);
+        setSystemCursorVisible(false);
     }
 
     /*
@@ -75,7 +80,7 @@ public final class Scene
         world.update(extrp);
         if (keyboard.isPressedOnce(Key.ESCAPE))
         {
-            end(new Menu(loader));
+            end(Menu.class);
         }
     }
 

@@ -24,7 +24,10 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -57,6 +60,10 @@ import com.b3dgs.warcraft.weapon.FactoryWeapon;
 final class World
         extends WorldGame
 {
+    /** Keyboard. */
+    private final Keyboard keyboard;
+    /** Mouse. */
+    private final Mouse mouse;
     /** Text reference. */
     private final TextGame text;
     /** Player 1. */
@@ -107,6 +114,8 @@ final class World
     World(Sequence sequence, GameConfig config)
     {
         super(sequence);
+        keyboard = sequence.getInputDevice(DeviceType.KEYBOARD);
+        mouse = sequence.getInputDevice(DeviceType.MOUSE);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
         fogOfWar = new FogOfWar(config);
@@ -162,7 +171,7 @@ final class World
         camera.update(keyboard);
         text.update(camera);
         cursor.update(extrp);
-        controlPanel.update(extrp, camera, cursor, keyboard);
+        controlPanel.update(extrp, camera, cursor);
         handlerEntity.update(extrp);
         handlerProjectile.update(extrp);
         minimap.update(cursor, camera, handlerEntity, 11, 12);
@@ -200,11 +209,15 @@ final class World
         map.load(file);
         map.createMiniMap();
 
+        keyboard.setHorizontalControlNegative(Key.LEFT);
+        keyboard.setHorizontalControlPositive(Key.RIGHT);
+        keyboard.setVerticalControlNegative(Key.DOWN);
+        keyboard.setVerticalControlPositive(Key.UP);
+
         camera.setView(72, 12, 240, 176);
         camera.setSensibility(30, 30);
         camera.setBorders(map);
         camera.setLocation(map, 33, 3);
-        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
 
         fogOfWar.create(map);
         fogOfWar.setPlayerId(player.id);
