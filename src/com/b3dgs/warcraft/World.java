@@ -23,9 +23,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
@@ -209,10 +207,10 @@ final class World
         map.load(file);
         map.createMiniMap();
 
-        keyboard.setHorizontalControlNegative(Key.LEFT);
-        keyboard.setHorizontalControlPositive(Key.RIGHT);
-        keyboard.setVerticalControlNegative(Key.DOWN);
-        keyboard.setVerticalControlPositive(Key.UP);
+        keyboard.setHorizontalControlNegative(Keyboard.LEFT);
+        keyboard.setHorizontalControlPositive(Keyboard.RIGHT);
+        keyboard.setVerticalControlNegative(Keyboard.DOWN);
+        keyboard.setVerticalControlPositive(Keyboard.UP);
 
         camera.setView(72, 12, 240, 176);
         camera.setSensibility(30, 30);
@@ -225,13 +223,13 @@ final class World
         controlPanel.setClickableArea(camera);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
         controlPanel.setPlayer(player);
-        controlPanel.setClickSelection(Click.LEFT);
+        controlPanel.setClickSelection(Mouse.LEFT);
 
         camera.setControlPanel(controlPanel);
 
         handlerEntity.createLayers(map);
         handlerEntity.setPlayer(player);
-        handlerEntity.setClickAssignment(Click.RIGHT);
+        handlerEntity.setClickAssignment(Mouse.RIGHT);
 
         createEntity(EntityType.GOLD_MINE, 30, 13);
         createEntity(EntityType.GOLD_MINE, 58, 58);

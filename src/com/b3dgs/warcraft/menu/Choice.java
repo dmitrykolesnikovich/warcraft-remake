@@ -18,7 +18,7 @@
 package com.b3dgs.warcraft.menu;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.warcraft.Sfx;
@@ -76,7 +76,7 @@ final class Choice
         final int cy = cursor.getLocationY();
         boolean pressed = false;
         over = cx >= x && cy >= y && cx <= x + w && cy <= y + h;
-        if (!Menu.clicked && over && cursor.getClick() == Click.LEFT)
+        if (!Menu.clicked && over && cursor.getClick() == Mouse.LEFT)
         {
             Sfx.CLICK.play();
             pressed = true;

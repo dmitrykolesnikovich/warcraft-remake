@@ -19,7 +19,7 @@ package com.b3dgs.warcraft.map;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -86,7 +86,7 @@ public final class Minimap
         final int mw = map.getWidthInTile();
         final int mh = map.getHeightInTile();
         // Assign unit destination from minimap
-        if (cursor.getClick() == Click.RIGHT)
+        if (cursor.getClick() == Mouse.RIGHT)
         {
             if (!clicked && isOver(cursor))
             {
@@ -103,7 +103,7 @@ public final class Minimap
             }
         }
         // Move camera from minimap
-        else if (cursor.getClick() == Click.LEFT)
+        else if (cursor.getClick() == Mouse.LEFT)
         {
             final int cx = cursor.getScreenX() - ox;
             final int cy = mh - cursor.getScreenY();

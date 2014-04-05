@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -87,7 +87,7 @@ public final class ControlPanel
         entityStats = Drawable.loadSprite(UtilityMedia.get("entity_stats.png"));
         progress = Drawable.loadSprite(UtilityMedia.get("progress.png"));
         lastSelection = null;
-        setClickSelection(Click.LEFT);
+        setClickSelection(Mouse.LEFT);
 
         sprite.load(false);
         entityStats.load(false);
