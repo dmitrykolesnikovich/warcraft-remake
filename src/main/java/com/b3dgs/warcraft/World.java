@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
@@ -112,8 +111,8 @@ final class World
     World(Sequence sequence, GameConfig config)
     {
         super(sequence);
-        keyboard = sequence.getInputDevice(DeviceType.KEYBOARD);
-        mouse = sequence.getInputDevice(DeviceType.MOUSE);
+        keyboard = sequence.getInputDevice(Keyboard.class);
+        mouse = sequence.getInputDevice(Mouse.class);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
         fogOfWar = new FogOfWar(config);

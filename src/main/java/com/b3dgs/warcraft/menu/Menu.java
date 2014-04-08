@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.UtilityMath;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -169,8 +168,8 @@ public final class Menu
     public Menu(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(DeviceType.KEYBOARD);
-        mouse = getInputDevice(DeviceType.MOUSE);
+        keyboard = getInputDevice(Keyboard.class);
+        mouse = getInputDevice(Mouse.class);
         logo = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "menu.png"));
         cursor = new Cursor(mouse, getConfig().getSource(), UtilityMedia.get("cursor.png"));
