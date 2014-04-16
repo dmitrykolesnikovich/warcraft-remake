@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.warcraft.entity.orc.FarmOrc;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceBuilding;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceBuilding;
  */
 public final class BuildFarmOrc
         extends SkillProduceBuilding
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class BuildFarmOrc
      */
     public BuildFarmOrc(SetupSkill setup)
     {
-        super(setup, EntityType.FARM_ORC);
+        super(setup, FarmOrc.class);
     }
 }

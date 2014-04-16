@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.game.ObjectTypeUtility;
+import java.util.Locale;
 
 /**
  * List of race types.
@@ -31,26 +31,40 @@ public enum RaceType
     /** Orc race. */
     ORC,
     /** Neutral. */
-    NEUTRAL;
-
-    /** Path name. */
-    private final String path;
+    NEUTRAL,
+    /** None. */
+    NONE;
 
     /**
-     * Constructor.
+     * Get the race enum from the class type.
+     * 
+     * @param type The class type.
+     * @return The enum race type.
      */
-    private RaceType()
+    public static RaceType getRace(Class<? extends Race> type)
     {
-        path = ObjectTypeUtility.getPathName(this);
+        if (RaceHuman.class.isAssignableFrom(type))
+        {
+            return HUMAN;
+        }
+        else if (RaceOrc.class.isAssignableFrom(type))
+        {
+            return ORC;
+        }
+        else if (RaceNeutral.class.isAssignableFrom(type))
+        {
+            return NEUTRAL;
+        }
+        return NONE;
     }
 
     /**
-     * Get the path name.
+     * Get the race path.
      * 
-     * @return The path name.
+     * @return The race path.
      */
-    public String getPathName()
+    public String getPath()
     {
-        return path;
+        return name().toLowerCase(Locale.ENGLISH);
     }
 }

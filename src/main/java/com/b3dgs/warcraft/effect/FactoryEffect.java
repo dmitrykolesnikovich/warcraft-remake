@@ -28,15 +28,14 @@ import com.b3dgs.warcraft.AppWarcraft;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEffect
-        extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
+        extends FactoryObjectGame<SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
      */
     public FactoryEffect()
     {
-        super(EffectType.class, AppWarcraft.EFFECTS_DIR);
-        load();
+        super(AppWarcraft.EFFECTS_DIR);
     }
 
     /*
@@ -44,7 +43,7 @@ public class FactoryEffect
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EffectType type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Effect> type, Media config)
     {
         return new SetupSurfaceGame(config);
     }

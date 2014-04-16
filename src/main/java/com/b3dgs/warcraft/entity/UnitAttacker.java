@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.warcraft.weapon.FactoryWeapon;
 import com.b3dgs.warcraft.weapon.Weapon;
-import com.b3dgs.warcraft.weapon.WeaponType;
 
 /**
  * Mover attacker implementation.
@@ -79,7 +78,7 @@ public abstract class UnitAttacker
      * @param type The weapon type.
      * @param id The weapon id.
      */
-    protected void addWeapon(WeaponType type, int id)
+    protected void addWeapon(Class<? extends Weapon> type, int id)
     {
         final Weapon weapon = factoryWeapon.create(type);
         addWeapon(weapon, id);

@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.warcraft.entity.human.Peasant;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceEntity;
  */
 public final class ProducePeasant
         extends SkillProduceEntity
+        implements RaceHuman
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class ProducePeasant
      */
     public ProducePeasant(SetupSkill setup)
     {
-        super(setup, EntityType.PEASANT);
+        super(setup, Peasant.class);
     }
 }

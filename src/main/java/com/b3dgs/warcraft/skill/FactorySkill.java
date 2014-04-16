@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Cursor;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.HandlerEntity;
 import com.b3dgs.warcraft.map.Map;
@@ -35,7 +36,7 @@ import com.b3dgs.warcraft.map.Map;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactoryObjectGame<SkillType, SetupSkill, Skill>
+        extends FactoryObjectGame<SetupSkill, Skill>
 {
     /** Map. */
     public final Map map;
@@ -62,7 +63,7 @@ public final class FactorySkill
     public FactorySkill(Map map, Cursor cursor, HandlerEntity handlerEntity, FactoryProduction factoryProduction,
             TimedMessage message)
     {
-        super(SkillType.class, AppWarcraft.SKILLS_DIR);
+        super(AppWarcraft.SKILLS_DIR);
         this.map = map;
         this.cursor = cursor;
         this.handlerEntity = handlerEntity;
@@ -70,7 +71,6 @@ public final class FactorySkill
         this.message = message;
         background = Drawable.loadSpriteTiled(UtilityMedia.get("skill_background.png"), 31, 23);
         background.load(false);
-        load();
     }
 
     /*
@@ -78,8 +78,11 @@ public final class FactorySkill
      */
 
     @Override
-    protected SetupSkill createSetup(SkillType type, Media config)
+    protected SetupSkill createSetup(Class<? extends Skill> type, Media config)
     {
-        return new SetupSkill(config, type, background, map, cursor, handlerEntity, factoryProduction, message);
+        final RaceType race = RaceType.getRace(type);
+        final Media media = UtilityMedia.get(folder, race.getPath(), type.getSimpleName() + ".xml");
+
+        return new SetupSkill(media, type, background, map, cursor, handlerEntity, factoryProduction, message);
     }
 }

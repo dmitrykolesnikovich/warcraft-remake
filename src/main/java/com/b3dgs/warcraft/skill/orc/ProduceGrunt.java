@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.warcraft.entity.orc.Grunt;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceEntity;
  */
 public final class ProduceGrunt
         extends SkillProduceEntity
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class ProduceGrunt
      */
     public ProduceGrunt(SetupSkill setup)
     {
-        super(setup, EntityType.GRUNT);
+        super(setup, Grunt.class);
     }
 }

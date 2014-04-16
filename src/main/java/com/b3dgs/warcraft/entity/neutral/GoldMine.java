@@ -18,6 +18,7 @@
 package com.b3dgs.warcraft.entity.neutral;
 
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
+import com.b3dgs.warcraft.RaceNeutral;
 import com.b3dgs.warcraft.ResourceProgressive;
 import com.b3dgs.warcraft.ResourceType;
 import com.b3dgs.warcraft.entity.Building;
@@ -30,7 +31,7 @@ import com.b3dgs.warcraft.entity.SetupEntity;
  */
 public final class GoldMine
         extends Building
-        implements Extractible<ResourceType>
+        implements Extractible, RaceNeutral
 {
     /** Gold amount. */
     private final ResourceProgressive gold;

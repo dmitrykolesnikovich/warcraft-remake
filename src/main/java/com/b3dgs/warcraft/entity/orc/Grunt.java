@@ -17,10 +17,13 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
-import com.b3dgs.warcraft.skill.SkillType;
-import com.b3dgs.warcraft.weapon.WeaponType;
+import com.b3dgs.warcraft.skill.orc.AttackAxe;
+import com.b3dgs.warcraft.skill.orc.MoveOrc;
+import com.b3dgs.warcraft.skill.orc.StopOrc;
+import com.b3dgs.warcraft.weapon.Axe;
 
 /**
  * Grunt implementation.
@@ -29,6 +32,7 @@ import com.b3dgs.warcraft.weapon.WeaponType;
  */
 public final class Grunt
         extends UnitAttacker
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -38,9 +42,9 @@ public final class Grunt
     public Grunt(SetupEntity setup)
     {
         super(setup);
-        addWeapon(WeaponType.AXE, 0);
-        addSkill(0, SkillType.MOVE_ORC, 0);
-        addSkill(0, SkillType.STOP_ORC, 1);
-        addSkill(0, SkillType.ATTACK_AXE, 2);
+        addWeapon(Axe.class, 0);
+        addSkill(0, MoveOrc.class, 0);
+        addSkill(0, StopOrc.class, 1);
+        addSkill(0, AttackAxe.class, 2);
     }
 }

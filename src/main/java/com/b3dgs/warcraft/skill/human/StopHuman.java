@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.Stop;
 
@@ -27,6 +28,7 @@ import com.b3dgs.warcraft.skill.Stop;
  */
 public final class StopHuman
         extends Stop
+        implements RaceHuman
 {
     /**
      * Constructor.

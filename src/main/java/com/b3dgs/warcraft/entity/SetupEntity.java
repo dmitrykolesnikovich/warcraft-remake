@@ -39,8 +39,8 @@ import com.b3dgs.warcraft.weapon.FactoryWeapon;
 public class SetupEntity
         extends SetupSurfaceGame
 {
-    /** Type. */
-    public final EntityType type;
+    /** Race type. */
+    public final RaceType race;
     /** Corpse. */
     public final ImageBuffer corpse;
     /** Map. */
@@ -77,12 +77,11 @@ public class SetupEntity
      * @param handlerEffect The handler effect reference.
      * @param fps The desired fps.
      */
-    public SetupEntity(Media config, EntityType type, Map map, TimedMessage message, FactoryEntity factoryEntity,
-            FactoryEffect factoryEffect, FactorySkill factorySkill, FactoryWeapon factoryWeapon,
-            HandlerEntity handlerEntity, HandlerEffect handlerEffect, int fps)
+    public SetupEntity(Media config, Class<? extends Entity> type, Map map, TimedMessage message,
+            FactoryEntity factoryEntity, FactoryEffect factoryEffect, FactorySkill factorySkill,
+            FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, HandlerEffect handlerEffect, int fps)
     {
         super(config);
-        this.type = type;
         this.map = map;
         this.message = message;
         this.factoryEntity = factoryEntity;
@@ -92,14 +91,15 @@ public class SetupEntity
         this.handlerEntity = handlerEntity;
         this.handlerEffect = handlerEffect;
         this.fps = fps;
-        if (type.race == RaceType.NEUTRAL)
+        race = RaceType.getRace(type);
+        if (RaceType.NEUTRAL == race)
         {
             corpse = null;
         }
         else
         {
             corpse = UtilityImage.getImageBuffer(
-                    UtilityMedia.get(AppWarcraft.EFFECTS_DIR, "corpse_" + type.race.getPathName() + ".png"), false);
+                    UtilityMedia.get(AppWarcraft.EFFECTS_DIR, "corpse_" + race.getPath() + ".png"), false);
         }
     }
 }

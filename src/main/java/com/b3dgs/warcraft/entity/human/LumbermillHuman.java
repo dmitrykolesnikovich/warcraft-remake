@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.entity.Building;
 import com.b3dgs.warcraft.entity.SetupEntity;
 
@@ -27,6 +28,7 @@ import com.b3dgs.warcraft.entity.SetupEntity;
  */
 public final class LumbermillHuman
         extends Building
+        implements RaceHuman
 {
     /**
      * Constructor.

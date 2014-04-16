@@ -33,9 +33,11 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityNotFoundException;
 import com.b3dgs.warcraft.ResourceType;
+import com.b3dgs.warcraft.effect.Construction;
 import com.b3dgs.warcraft.effect.Effect;
-import com.b3dgs.warcraft.effect.EffectType;
 import com.b3dgs.warcraft.effect.HandlerEffect;
+import com.b3dgs.warcraft.entity.human.FarmHuman;
+import com.b3dgs.warcraft.entity.orc.FarmOrc;
 import com.b3dgs.warcraft.map.Tile;
 import com.b3dgs.warcraft.map.TileCollision;
 
@@ -46,12 +48,11 @@ import com.b3dgs.warcraft.map.TileCollision;
  */
 public abstract class UnitWorker
         extends Unit
-        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<EntityType, ProductionCost, ProducibleEntity>, ExtractorUsedServices<ResourceType>,
-        ExtractorServices<ResourceType>
+        implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
+        ProducerServices<Entity, ProductionCost, ProducibleEntity>, ExtractorUsedServices, ExtractorServices
 {
     /** Producer model. */
-    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Handler reference. */
@@ -59,7 +60,7 @@ public abstract class UnitWorker
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
     /** Extractor model. */
-    private final ExtractorModel<ResourceType> extractor;
+    private final ExtractorModel extractor;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Extraction speed. */
@@ -94,7 +95,7 @@ public abstract class UnitWorker
         handlerEffect = setup.handlerEffect;
         message = setup.message;
         producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        extractor = new ExtractorModel<>(this, setup.fps);
+        extractor = new ExtractorModel(this, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
         extractionSpeed = getDataInteger("extraction_speed", "extraction");
         extractionCapacity = getDataInteger("extraction_capacity", "extraction");
@@ -102,7 +103,7 @@ public abstract class UnitWorker
         animWork = getDataAnimation("work");
         animCarryGold = getDataAnimation("carry_gold");
         animCarryWood = getDataAnimation("carry_wood");
-        construction = setup.factoryEffect.create(EffectType.CONSTRUCTION);
+        construction = setup.factoryEffect.create(Construction.class);
     }
 
     /**
@@ -184,7 +185,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType type)
+    public <E extends Entity> E getEntityToProduce(Class<E> type)
     {
         return factory.create(type);
     }
@@ -295,7 +296,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public EntityType getProducingElement()
+    public Class<? extends Entity> getProducingElement()
     {
         return producer.getProducingElement();
     }
@@ -329,13 +330,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void setResource(Extractible<ResourceType> entity)
+    public void setResource(Extractible entity)
     {
         extractor.setResource(entity);
     }
 
     @Override
-    public void setResource(ResourceType type, int tx, int ty, int tw, int th)
+    public void setResource(Enum<?> type, int tx, int ty, int tw, int th)
     {
         extractor.setResource(type, tx, ty, tw, th);
     }
@@ -347,7 +348,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public ResourceType getResourceType()
+    public Enum<?> getResourceType()
     {
         return extractor.getResourceType();
     }
@@ -444,7 +445,7 @@ public abstract class UnitWorker
         setVisible(true);
 
         // Increase pop if needed
-        if (EntityType.FARM_ORC == entity.type || EntityType.FARM_HUMAN == entity.type)
+        if (entity instanceof FarmOrc || entity instanceof FarmHuman)
         {
             getPlayer().changePopulationCapacity(5);
         }
@@ -455,13 +456,13 @@ public abstract class UnitWorker
      */
 
     @Override
-    public void notifyStartGoToRessources(ResourceType type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
     {
         setDestination(resourceLocation);
     }
 
     @Override
-    public void notifyStartExtraction(ResourceType type, Tiled resourceLocation)
+    public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
     {
         // Search gold mine
         try
@@ -469,7 +470,7 @@ public abstract class UnitWorker
             final Entity entity = handlerEntity.getEntityAt(resourceLocation);
             if (entity instanceof Extractible)
             {
-                final Extractible<?> extractible = (Extractible<?>) entity;
+                final Extractible extractible = (Extractible) entity;
                 extractible.extractResource(getExtractionCapacity());
                 setVisible(false);
                 setActive(false);
@@ -489,13 +490,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyExtracted(ResourceType type, int currentQuantity)
+    public void notifyExtracted(Enum<?> type, int currentQuantity)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyStartCarry(ResourceType type, int totalQuantity)
+    public void notifyStartCarry(Enum<?> type, int totalQuantity)
     {
         try
         {
@@ -528,16 +529,19 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyStartDropOff(ResourceType type, int totalQuantity)
+    public void notifyStartDropOff(Enum<?> type, int totalQuantity)
     {
         setVisible(false);
         setActive(false);
         setSelection(false);
-        getPlayer().increase(type, totalQuantity);
+        if (type instanceof ResourceType)
+        {
+            getPlayer().increase((ResourceType) type, totalQuantity);
+        }
     }
 
     @Override
-    public void notifyDroppedOff(ResourceType type, int droppedQuantity)
+    public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
     {
         final CoordTile out = map.getClosestAvailableTile(this, 16, getResourceLocation());
         if (out != null)

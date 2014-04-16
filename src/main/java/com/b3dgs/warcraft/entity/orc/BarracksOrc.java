@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.SetupEntity;
-import com.b3dgs.warcraft.skill.SkillType;
+import com.b3dgs.warcraft.skill.orc.ProduceGrunt;
+import com.b3dgs.warcraft.skill.orc.ProduceSpearman;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
@@ -28,6 +30,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public final class BarracksOrc
         extends BuildingProducer
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -37,7 +40,7 @@ public final class BarracksOrc
     public BarracksOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, SkillType.PRODUCE_GRUNT, 0);
-        addSkill(0, SkillType.PRODUCE_SPEARMAN, 1);
+        addSkill(0, ProduceGrunt.class, 0);
+        addSkill(0, ProduceSpearman.class, 1);
     }
 }

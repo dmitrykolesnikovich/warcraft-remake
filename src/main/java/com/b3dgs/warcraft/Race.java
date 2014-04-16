@@ -15,52 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.warcraft.projectile;
-
-import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.ObjectTypeUtility;
+package com.b3dgs.warcraft;
 
 /**
- * List of projectile types.
+ * Represents the race.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum ProjectileType implements ObjectType
+public interface Race
 {
-    /** Arrow projectile. */
-    ARROW(Arrow.class),
-    /** Spear projectile. */
-    SPEAR(Spear.class);
-
-    /** Class target. */
-    private final Class<?> target;
-    /** Path name. */
-    private final String path;
-
-    /**
-     * The class target.
-     * 
-     * @param target The target class.
-     */
-    private ProjectileType(Class<?> target)
-    {
-        this.target = target;
-        path = ObjectTypeUtility.getPathName(this);
-    }
-
-    /*
-     * ObjectType
-     */
-
-    @Override
-    public Class<?> getTargetClass()
-    {
-        return target;
-    }
-
-    @Override
-    public String getPathName()
-    {
-        return path;
-    }
+    // Marker
 }

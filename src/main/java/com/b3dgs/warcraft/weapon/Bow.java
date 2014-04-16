@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.weapon;
 
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.launcher.LauncherProjectile;
-import com.b3dgs.warcraft.launcher.LauncherType;
 
 /**
  * Bow weapon implementation.
@@ -40,7 +39,7 @@ public final class Bow
     public Bow(SetupWeapon setup)
     {
         super(setup);
-        launcher = setup.factoryLauncher.create(LauncherType.BOW);
+        launcher = setup.factoryLauncher.create(com.b3dgs.warcraft.launcher.Bow.class);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

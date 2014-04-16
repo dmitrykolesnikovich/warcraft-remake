@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.SetupEntity;
-import com.b3dgs.warcraft.skill.SkillType;
+import com.b3dgs.warcraft.skill.human.ProduceArcher;
+import com.b3dgs.warcraft.skill.human.ProduceFootman;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
@@ -28,6 +30,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public final class BarracksHuman
         extends BuildingProducer
+        implements RaceHuman
 {
     /**
      * Constructor.
@@ -37,7 +40,7 @@ public final class BarracksHuman
     public BarracksHuman(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, SkillType.PRODUCE_FOOTMAN, 0);
-        addSkill(0, SkillType.PRODUCE_ARCHER, 1);
+        addSkill(0, ProduceFootman.class, 0);
+        addSkill(0, ProduceArcher.class, 1);
     }
 }

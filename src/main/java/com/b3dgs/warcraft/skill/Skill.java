@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
+import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.entity.Entity;
 
 /**
@@ -36,12 +37,11 @@ import com.b3dgs.warcraft.entity.Entity;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Skill
-        extends SkillStrategy<SkillType>
+        extends SkillStrategy
+        implements Race
 {
     /** Text. */
     protected final Text text;
-    /** Id. */
-    private final SkillType type;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Background. */
@@ -67,7 +67,6 @@ public abstract class Skill
     protected Skill(SetupSkill setup)
     {
         super(setup);
-        type = setup.type;
         message = setup.message;
         text = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
@@ -141,11 +140,5 @@ public abstract class Skill
     {
         return cursor.getScreenX() >= x && cursor.getScreenX() <= x + icon.getTileWidth() && cursor.getScreenY() >= y
                 && cursor.getScreenY() <= y + icon.getTileHeight();
-    }
-
-    @Override
-    public SkillType getType()
-    {
-        return type;
     }
 }

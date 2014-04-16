@@ -39,9 +39,9 @@ import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.Entity;
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.entity.human.FarmHuman;
+import com.b3dgs.warcraft.entity.orc.FarmOrc;
 import com.b3dgs.warcraft.skill.Skill;
-import com.b3dgs.warcraft.skill.SkillType;
 
 /**
  * Control panel implementation.
@@ -174,12 +174,12 @@ public final class ControlPanel
      */
     private void updateMultipleEntity(Set<Entity> entities, CursorStrategy cursor, double extrp)
     {
-        final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
+        final Collection<Class<? extends Skill>> skills = ControlPanel.getSkillsInCommon(entities);
         for (final Entity entity : entities)
         {
             for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
             {
-                if (skills.contains(skill.getType()))
+                if (skills.contains(skill.getClass()))
                 {
                     skill.updateOnPanel(cursor, this);
                 }
@@ -221,7 +221,7 @@ public final class ControlPanel
         // Gold amount
         if (entity instanceof Extractible)
         {
-            text.draw(g, x + 4, y + 50, String.valueOf(((Extractible<?>) entity).getResourceQuantity()));
+            text.draw(g, x + 4, y + 50, String.valueOf(((Extractible) entity).getResourceQuantity()));
         }
 
         if (entity.getPlayer() == player)
@@ -240,7 +240,7 @@ public final class ControlPanel
                 else
                 {
                     // Population capacity
-                    if (EntityType.FARM_ORC == entity.type || EntityType.FARM_HUMAN == entity.type)
+                    if (entity instanceof FarmOrc || entity instanceof FarmHuman)
                     {
                         final String population = "Pop: " + String.valueOf(player.getPopulation()) + " of "
                                 + String.valueOf(player.getPopulationCapacity());
@@ -289,11 +289,11 @@ public final class ControlPanel
     private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorStrategy cursor,
             CameraStrategy camera)
     {
-        final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
+        final Collection<Class<? extends Skill>> skills = ControlPanel.getSkillsInCommon(entities);
         final Entity entity = entities.iterator().next();
         for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
         {
-            if (skills.contains(skill.getType()))
+            if (skills.contains(skill.getClass()))
             {
                 skill.renderOnPanel(g);
             }
@@ -307,16 +307,16 @@ public final class ControlPanel
      * @param entities Entities list.
      * @return Skill list shared by all entities.
      */
-    private static Collection<SkillType> getSkillsInCommon(Set<Entity> entities)
+    private static Collection<Class<? extends Skill>> getSkillsInCommon(Set<Entity> entities)
     {
-        final Set<SkillType> skillsInCommon = new HashSet<>(4);
+        final Set<Class<? extends Skill>> skillsInCommon = new HashSet<>(4);
         final Entity entity = entities.iterator().next();
         final Collection<Skill> skills = entity.getSkills(entity.getSkillPanel());
         for (final Skill skill : skills)
         {
             if (!skill.isIgnored() && ControlPanel.hasSkillInCommon(entities, skill))
             {
-                skillsInCommon.add(skill.getType());
+                skillsInCommon.add(skill.getClass());
             }
         }
         return skillsInCommon;
@@ -338,7 +338,7 @@ public final class ControlPanel
             final Collection<Skill> skillsB = entityB.getSkills(entityB.getSkillPanel());
             for (final Skill skillB : skillsB)
             {
-                if (skillB.getType() == skill.getType() && !skillB.isIgnored())
+                if (skillB.getClass() == skill.getClass() && !skillB.isIgnored())
                 {
                     count += 1;
                     break;

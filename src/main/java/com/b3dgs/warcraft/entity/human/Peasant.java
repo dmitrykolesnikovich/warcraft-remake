@@ -17,9 +17,15 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitWorker;
-import com.b3dgs.warcraft.skill.SkillType;
+import com.b3dgs.warcraft.skill.human.BuildBarracksHuman;
+import com.b3dgs.warcraft.skill.human.BuildFarmHuman;
+import com.b3dgs.warcraft.skill.human.BuildingStandardHuman;
+import com.b3dgs.warcraft.skill.human.CancelHuman;
+import com.b3dgs.warcraft.skill.human.MoveHuman;
+import com.b3dgs.warcraft.skill.human.StopHuman;
 
 /**
  * Peon implementation.
@@ -28,6 +34,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public final class Peasant
         extends UnitWorker
+        implements RaceHuman
 {
     /**
      * Constructor.
@@ -37,11 +44,11 @@ public final class Peasant
     public Peasant(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, SkillType.MOVE_HUMAN, 0);
-        addSkill(0, SkillType.STOP_HUMAN, 1);
-        addSkill(0, SkillType.BUILDING_STANDARD_HUMAN, 2);
-        addSkill(1, SkillType.BUILD_FARM_HUMAN, 0);
-        addSkill(1, SkillType.BUILD_BARRACKS_HUMAN, 1);
-        addSkill(1, SkillType.CANCEL_HUMAN, 2);
+        addSkill(0, MoveHuman.class, 0);
+        addSkill(0, StopHuman.class, 1);
+        addSkill(0, BuildingStandardHuman.class, 2);
+        addSkill(1, BuildFarmHuman.class, 0);
+        addSkill(1, BuildBarracksHuman.class, 1);
+        addSkill(1, CancelHuman.class, 2);
     }
 }

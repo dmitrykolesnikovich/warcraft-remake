@@ -17,10 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.Warehouse;
-import com.b3dgs.warcraft.skill.SkillType;
+import com.b3dgs.warcraft.skill.orc.ProducePeon;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -29,7 +30,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public final class TownhallOrc
         extends BuildingProducer
-        implements Warehouse
+        implements Warehouse, RaceOrc
 {
     /**
      * Constructor.
@@ -39,6 +40,6 @@ public final class TownhallOrc
     public TownhallOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, SkillType.PRODUCE_PEON, 0);
+        addSkill(0, ProducePeon.class, 0);
     }
 }

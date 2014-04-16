@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Cursor;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.HandlerEntity;
 import com.b3dgs.warcraft.map.Map;
@@ -50,8 +51,6 @@ public final class SetupSkill
     final Map map;
     /** Cursor. */
     final Cursor cursor;
-    /** Skill Type. */
-    final SkillType type;
     /** Handler entity. */
     final HandlerEntity handlerEntity;
     /** Production factory. */
@@ -71,20 +70,19 @@ public final class SetupSkill
      * @param factoryProduction The production factory.
      * @param message The timed message reference.
      */
-    public SetupSkill(Media config, SkillType type, SpriteTiled background, Map map, Cursor cursor,
+    public SetupSkill(Media config, Class<? extends Skill> type, SpriteTiled background, Map map, Cursor cursor,
             HandlerEntity handlerEntity, FactoryProduction factoryProduction, TimedMessage message)
     {
         super(config);
-        this.type = type;
         this.background = background;
         this.map = map;
         this.cursor = cursor;
         this.handlerEntity = handlerEntity;
         this.factoryProduction = factoryProduction;
         this.message = message;
+        final RaceType race = RaceType.getRace(type);
         icon = Drawable.loadSpriteTiled(
-                UtilityMedia.get(AppWarcraft.SKILLS_DIR, type.race.getPathName(), configurable.getDataString("icon")),
-                27, 19);
+                UtilityMedia.get(AppWarcraft.SKILLS_DIR, race.getPath(), configurable.getDataString("icon")), 27, 19);
         gold = Drawable.loadSprite(UtilityMedia.get("gold.png"));
         wood = Drawable.loadSprite(UtilityMedia.get("wood.png"));
 

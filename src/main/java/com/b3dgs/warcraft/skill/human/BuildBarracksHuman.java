@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.warcraft.entity.human.BarracksHuman;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceBuilding;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceBuilding;
  */
 public final class BuildBarracksHuman
         extends SkillProduceBuilding
+        implements RaceHuman
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class BuildBarracksHuman
      */
     public BuildBarracksHuman(SetupSkill setup)
     {
-        super(setup, EntityType.BARRACKS_HUMAN);
+        super(setup, BarracksHuman.class);
     }
 }

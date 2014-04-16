@@ -18,9 +18,11 @@
 package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.warcraft.AppWarcraft;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.effect.FactoryEffect;
 import com.b3dgs.warcraft.effect.HandlerEffect;
 import com.b3dgs.warcraft.map.Map;
@@ -34,7 +36,7 @@ import com.b3dgs.warcraft.weapon.FactoryWeapon;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity, Entity>
 {
     /** Map reference. */
     public final Map map;
@@ -70,7 +72,7 @@ public class FactoryEntity
             FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, HandlerEffect handlerEffect,
             HandlerProjectile handlerProjectile, int desiredFps)
     {
-        super(EntityType.class, AppWarcraft.ENTITIES_DIR);
+        super(AppWarcraft.ENTITIES_DIR);
         this.map = map;
         this.message = message;
         this.factoryEffect = factoryEffect;
@@ -79,7 +81,6 @@ public class FactoryEntity
         this.handlerEntity = handlerEntity;
         this.handlerEffect = handlerEffect;
         this.desiredFps = desiredFps;
-        load();
     }
 
     /*
@@ -87,9 +88,12 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(EntityType type, Media config)
+    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
     {
-        return new SetupEntity(config, type, map, message, this, factoryEffect, factorySkill, factoryWeapon,
+        final RaceType race = RaceType.getRace(type);
+        final Media media = UtilityMedia.get(folder, race.getPath(), type.getSimpleName() + ".xml");
+
+        return new SetupEntity(media, type, map, message, this, factoryEffect, factorySkill, factoryWeapon,
                 handlerEntity, handlerEffect, desiredFps);
     }
 }

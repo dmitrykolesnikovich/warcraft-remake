@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.CursorType;
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.ProducibleEntity;
 import com.b3dgs.warcraft.entity.UnitWorker;
@@ -41,7 +41,7 @@ public abstract class SkillProduceBuilding
     /** Production factory. */
     protected final FactoryProduction factoryProduction;
     /** Entity type to produce. */
-    private final EntityType entity;
+    private final Class<? extends Entity> entity;
     /** Production width in tile. */
     private final int width;
     /** Production height in tile. */
@@ -63,7 +63,7 @@ public abstract class SkillProduceBuilding
      * @param setup The setup skill reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceBuilding(SetupSkill setup, EntityType entity)
+    protected SkillProduceBuilding(SetupSkill setup, Class<? extends Entity> entity)
     {
         super(setup);
         cursor = setup.cursor;

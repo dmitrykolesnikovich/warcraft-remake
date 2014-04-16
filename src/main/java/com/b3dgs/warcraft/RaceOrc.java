@@ -15,28 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.warcraft.skill.orc;
-
-import com.b3dgs.warcraft.RaceOrc;
-import com.b3dgs.warcraft.skill.Move;
-import com.b3dgs.warcraft.skill.SetupSkill;
+package com.b3dgs.warcraft;
 
 /**
- * Move skill implementation.
+ * Race orc marker.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class MoveOrc
-        extends Move
-        implements RaceOrc
+public interface RaceOrc
+        extends Race
 {
-    /**
-     * Constructor.
-     * 
-     * @param setup The setup skill reference.
-     */
-    public MoveOrc(SetupSkill setup)
-    {
-        super(setup);
-    }
+    // Marker
 }

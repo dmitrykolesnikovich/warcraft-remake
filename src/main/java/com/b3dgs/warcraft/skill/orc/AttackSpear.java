@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.skill.Attack;
 import com.b3dgs.warcraft.skill.SetupSkill;
 
@@ -27,6 +28,7 @@ import com.b3dgs.warcraft.skill.SetupSkill;
  */
 public final class AttackSpear
         extends Attack
+        implements RaceOrc
 {
     /**
      * Constructor.

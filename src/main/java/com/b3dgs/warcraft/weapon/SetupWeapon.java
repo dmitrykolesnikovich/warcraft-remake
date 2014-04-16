@@ -29,8 +29,6 @@ import com.b3dgs.warcraft.launcher.FactoryLauncher;
 public class SetupWeapon
         extends SetupGame
 {
-    /** Weapon type. */
-    final WeaponType type;
     /** Factory projectile. */
     final FactoryLauncher factoryLauncher;
 
@@ -38,13 +36,11 @@ public class SetupWeapon
      * Constructor.
      * 
      * @param config The config
-     * @param type The weapon type.
      * @param factoryLauncher The launcher factory.
      */
-    public SetupWeapon(Media config, WeaponType type, FactoryLauncher factoryLauncher)
+    public SetupWeapon(Media config, FactoryLauncher factoryLauncher)
     {
         super(config);
-        this.type = type;
         this.factoryLauncher = factoryLauncher;
     }
 }

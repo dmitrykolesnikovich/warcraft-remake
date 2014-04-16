@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.warcraft.entity.orc.Spearman;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceEntity;
  */
 public final class ProduceSpearman
         extends SkillProduceEntity
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class ProduceSpearman
      */
     public ProduceSpearman(SetupSkill setup)
     {
-        super(setup, EntityType.SPEARMAN);
+        super(setup, Spearman.class);
     }
 }

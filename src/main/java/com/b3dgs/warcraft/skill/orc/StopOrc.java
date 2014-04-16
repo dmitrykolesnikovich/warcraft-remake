@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.Stop;
 
@@ -27,6 +28,7 @@ import com.b3dgs.warcraft.skill.Stop;
  */
 public final class StopOrc
         extends Stop
+        implements RaceOrc
 {
     /**
      * Constructor.

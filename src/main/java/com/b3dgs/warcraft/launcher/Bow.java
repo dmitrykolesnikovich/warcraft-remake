@@ -17,6 +17,8 @@
  */
 package com.b3dgs.warcraft.launcher;
 
+import com.b3dgs.warcraft.projectile.Arrow;
+
 /**
  * Bow implementation.
  * 
@@ -26,10 +28,12 @@ public class Bow
         extends LauncherProjectile
 {
     /**
-     * {@link LauncherProjectile#LauncherProjectile(SetupLauncher)}
+     * Constructor.
+     * 
+     * @param setup The setup reference.
      */
     public Bow(SetupLauncher setup)
     {
-        super(setup);
+        super(setup, Arrow.class);
     }
 }

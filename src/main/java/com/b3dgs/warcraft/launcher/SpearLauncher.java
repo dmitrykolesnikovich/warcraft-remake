@@ -17,6 +17,8 @@
  */
 package com.b3dgs.warcraft.launcher;
 
+import com.b3dgs.warcraft.projectile.Spear;
+
 /**
  * Spear launcher implementation.
  * 
@@ -26,10 +28,12 @@ public class SpearLauncher
         extends LauncherProjectile
 {
     /**
-     * {@link LauncherProjectile#LauncherProjectile(SetupLauncher)}
+     * Constructor.
+     * 
+     * @param setup The setup reference.
      */
     public SpearLauncher(SetupLauncher setup)
     {
-        super(setup);
+        super(setup, Spear.class);
     }
 }

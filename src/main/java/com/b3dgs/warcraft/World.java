@@ -36,10 +36,15 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.warcraft.effect.FactoryEffect;
 import com.b3dgs.warcraft.effect.HandlerEffect;
 import com.b3dgs.warcraft.entity.Entity;
-import com.b3dgs.warcraft.entity.EntityType;
 import com.b3dgs.warcraft.entity.FactoryEntity;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.HandlerEntity;
+import com.b3dgs.warcraft.entity.human.Peasant;
+import com.b3dgs.warcraft.entity.neutral.GoldMine;
+import com.b3dgs.warcraft.entity.orc.Grunt;
+import com.b3dgs.warcraft.entity.orc.Peon;
+import com.b3dgs.warcraft.entity.orc.Spearman;
+import com.b3dgs.warcraft.entity.orc.TownhallOrc;
 import com.b3dgs.warcraft.launcher.FactoryLauncher;
 import com.b3dgs.warcraft.map.FogOfWar;
 import com.b3dgs.warcraft.map.Map;
@@ -150,7 +155,7 @@ final class World
      * @param ty The vertical location.
      * @return The entity instance.
      */
-    private Entity createEntity(EntityType type, int tx, int ty)
+    private Entity createEntity(Class<? extends Entity> type, int tx, int ty)
     {
         final Entity entity = factoryEntity.create(type);
         entity.setLocation(tx, ty);
@@ -230,25 +235,25 @@ final class World
         handlerEntity.setPlayer(player);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        createEntity(EntityType.GOLD_MINE, 30, 13);
-        createEntity(EntityType.GOLD_MINE, 58, 58);
+        createEntity(GoldMine.class, 30, 13);
+        createEntity(GoldMine.class, 58, 58);
 
-        final Entity peon = createEntity(EntityType.PEON, 40, 8);
+        final Entity peon = createEntity(Peon.class, 40, 8);
         peon.setPlayer(player);
 
-        Entity grunt = createEntity(EntityType.GRUNT, 38, 5);
+        Entity grunt = createEntity(Grunt.class, 38, 5);
         grunt.setPlayer(player);
 
-        grunt = createEntity(EntityType.GRUNT, 39, 5);
+        grunt = createEntity(Grunt.class, 39, 5);
         grunt.setPlayer(player);
 
-        final Entity spearman = createEntity(EntityType.SPEARMAN, 38, 9);
+        final Entity spearman = createEntity(Spearman.class, 38, 9);
         spearman.setPlayer(player);
 
-        final Entity townHall = createEntity(EntityType.TOWNHALL_ORC, 40, 5);
+        final Entity townHall = createEntity(TownhallOrc.class, 40, 5);
         townHall.setPlayer(player);
 
-        final Entity peasant = createEntity(EntityType.PEASANT, 40, 10);
+        final Entity peasant = createEntity(Peasant.class, 40, 10);
         peasant.setPlayer(cpu);
 
         handlerEntity.update(1.0);

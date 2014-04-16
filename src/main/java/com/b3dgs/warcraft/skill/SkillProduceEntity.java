@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.warcraft.entity.BuildingProducer;
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.ProducibleEntity;
 
@@ -36,7 +36,7 @@ public abstract class SkillProduceEntity
     /** Production factory. */
     protected final FactoryProduction factoryProduction;
     /** Entity type to produce. */
-    private final EntityType entity;
+    private final Class<? extends Entity> entity;
     /** The production cost gold. */
     private final int gold;
     /** The production cost wood. */
@@ -48,7 +48,7 @@ public abstract class SkillProduceEntity
      * @param setup The setup skill reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceEntity(SetupSkill setup, EntityType entity)
+    protected SkillProduceEntity(SetupSkill setup, Class<? extends Entity> entity)
     {
         super(setup);
         this.entity = entity;

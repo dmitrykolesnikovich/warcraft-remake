@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
+import com.b3dgs.warcraft.RaceOrc;
 import com.b3dgs.warcraft.entity.Building;
 import com.b3dgs.warcraft.entity.SetupEntity;
 
@@ -27,6 +28,7 @@ import com.b3dgs.warcraft.entity.SetupEntity;
  */
 public final class LumbermillOrc
         extends Building
+        implements RaceOrc
 {
     /**
      * Constructor.

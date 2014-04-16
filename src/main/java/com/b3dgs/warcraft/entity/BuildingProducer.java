@@ -33,11 +33,11 @@ import com.b3dgs.warcraft.Player;
  */
 public abstract class BuildingProducer
         extends Building
-        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<EntityType, ProductionCost, ProducibleEntity>
+        implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
+        ProducerServices<Entity, ProductionCost, ProducibleEntity>
 {
     /** Producer model. */
-    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Production step per second. */
@@ -97,7 +97,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType type)
+    public <E extends Entity> E getEntityToProduce(Class<E> type)
     {
         return factory.create(type);
     }
@@ -149,7 +149,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public EntityType getProducingElement()
+    public Class<? extends Entity> getProducingElement()
     {
         return producer.getProducingElement();
     }

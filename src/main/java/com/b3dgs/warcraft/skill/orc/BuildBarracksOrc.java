@@ -17,7 +17,8 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.entity.EntityType;
+import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.warcraft.entity.orc.BarracksOrc;
 import com.b3dgs.warcraft.skill.SetupSkill;
 import com.b3dgs.warcraft.skill.SkillProduceBuilding;
 
@@ -28,6 +29,7 @@ import com.b3dgs.warcraft.skill.SkillProduceBuilding;
  */
 public final class BuildBarracksOrc
         extends SkillProduceBuilding
+        implements RaceOrc
 {
     /**
      * Constructor.
@@ -36,6 +38,6 @@ public final class BuildBarracksOrc
      */
     public BuildBarracksOrc(SetupSkill setup)
     {
-        super(setup, EntityType.BARRACKS_ORC);
+        super(setup, BarracksOrc.class);
     }
 }

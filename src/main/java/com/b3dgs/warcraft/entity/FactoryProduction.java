@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
+import com.b3dgs.warcraft.AppWarcraft;
+import com.b3dgs.warcraft.RaceType;
 
 /**
  * The production factory.
@@ -29,15 +31,14 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStra
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProduction
-        extends FactoryProductionStrategy<EntityType, ProductionCost, ProducibleEntity>
+        extends FactoryProductionStrategy<Entity, ProductionCost, ProducibleEntity>
 {
     /**
      * Constructor.
      */
     public FactoryProduction()
     {
-        super(EntityType.class);
-        load();
+        super();
     }
 
     /*
@@ -45,7 +46,7 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity create(EntityType type)
+    public ProducibleEntity create(Class<? extends Entity> type)
     {
         final Configurable config = getSetup(type).configurable;
         final int step = config.getDataInteger("steps", "cost");
@@ -61,7 +62,7 @@ public final class FactoryProduction
     }
 
     @Override
-    public ProducibleEntity create(EntityType type, int tx, int ty)
+    public ProducibleEntity create(Class<? extends Entity> type, int tx, int ty)
     {
         final ProducibleEntity producible = create(type);
 
@@ -71,9 +72,10 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(EntityType type)
+    protected SetupGame createSetup(Class<? extends Entity> type)
     {
-        final Media config = UtilityMedia.get("entities", type.getPathName() + ".xml");
+        final RaceType race = RaceType.getRace(type);
+        final Media config = UtilityMedia.get(AppWarcraft.ENTITIES_DIR, race.getPath(), type.getSimpleName() + ".xml");
         return new SetupGame(config);
     }
 }

@@ -17,10 +17,13 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
-import com.b3dgs.warcraft.skill.SkillType;
-import com.b3dgs.warcraft.weapon.WeaponType;
+import com.b3dgs.warcraft.skill.human.AttackSword;
+import com.b3dgs.warcraft.skill.human.MoveHuman;
+import com.b3dgs.warcraft.skill.human.StopHuman;
+import com.b3dgs.warcraft.weapon.Sword;
 
 /**
  * Grunt implementation.
@@ -29,6 +32,7 @@ import com.b3dgs.warcraft.weapon.WeaponType;
  */
 public final class Footman
         extends UnitAttacker
+        implements RaceHuman
 {
     /**
      * Constructor.
@@ -38,9 +42,9 @@ public final class Footman
     public Footman(SetupEntity setup)
     {
         super(setup);
-        addWeapon(WeaponType.SWORD, 0);
-        addSkill(0, SkillType.MOVE_HUMAN, 0);
-        addSkill(0, SkillType.STOP_HUMAN, 1);
-        addSkill(0, SkillType.ATTACK_SWORD, 2);
+        addWeapon(Sword.class, 0);
+        addSkill(0, MoveHuman.class, 0);
+        addSkill(0, StopHuman.class, 1);
+        addSkill(0, AttackSword.class, 2);
     }
 }

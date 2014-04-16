@@ -28,10 +28,10 @@ import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.map.Map;
 import com.b3dgs.warcraft.skill.FactorySkill;
 import com.b3dgs.warcraft.skill.Skill;
-import com.b3dgs.warcraft.skill.SkillType;
 
 /**
  * Abstract entity implementation.
@@ -40,10 +40,8 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public abstract class Entity
         extends EntityStrategy
-        implements SkilledServices<SkillType, Skill>
+        implements SkilledServices<Skill>, Race
 {
-    /** Entity type. */
-    public final EntityType type;
     /** Map reference. */
     protected final Map map;
     /** Factory skill. */
@@ -55,7 +53,7 @@ public abstract class Entity
     /** Entity icon number. */
     private final Sprite icon;
     /** Skilled model. */
-    private final SkilledModel<SkillType, Skill> skilled;
+    private final SkilledModel<Skill> skilled;
     /** Dead flag. */
     private boolean dead;
     /** Player owner (null if none). */
@@ -71,14 +69,13 @@ public abstract class Entity
     protected Entity(SetupEntity setup)
     {
         super(setup, setup.map);
-        type = setup.type;
         map = setup.map;
         factorySkill = setup.factorySkill;
         skilled = new SkilledModel<>();
         life = new Alterable(getDataInteger("life", "attributes"));
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.ENTITIES_DIR, type.race.getPathName(),
+        icon = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.ENTITIES_DIR, setup.race.getPath(),
                 getDataString("icon")));
         icon.load(false);
         dead = false;
@@ -94,7 +91,7 @@ public abstract class Entity
      * @param type The skill type.
      * @param priority The position number.
      */
-    public void addSkill(int panel, SkillType type, int priority)
+    public void addSkill(int panel, Class<? extends Skill> type, int priority)
     {
         final Skill skill = factorySkill.create(type);
         skill.setOwner(this);
@@ -248,13 +245,13 @@ public abstract class Entity
     }
 
     @Override
-    public Skill getSkill(int panel, SkillType id)
+    public <S extends Skill> S getSkill(int panel, Class<S> id)
     {
         return skilled.getSkill(panel, id);
     }
 
     @Override
-    public void removeSkill(int panel, SkillType id)
+    public void removeSkill(int panel, Class<? extends Skill> id)
     {
         skilled.removeSkill(panel, id);
     }

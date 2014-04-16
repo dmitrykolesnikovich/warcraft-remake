@@ -17,10 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
+import com.b3dgs.warcraft.RaceHuman;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.Warehouse;
-import com.b3dgs.warcraft.skill.SkillType;
+import com.b3dgs.warcraft.skill.human.ProducePeasant;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -29,7 +30,7 @@ import com.b3dgs.warcraft.skill.SkillType;
  */
 public final class TownhallHuman
         extends BuildingProducer
-        implements Warehouse
+        implements Warehouse, RaceHuman
 {
     /**
      * Constructor.
@@ -39,6 +40,6 @@ public final class TownhallHuman
     public TownhallHuman(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, SkillType.PRODUCE_PEASANT, 0);
+        addSkill(0, ProducePeasant.class, 0);
     }
 }

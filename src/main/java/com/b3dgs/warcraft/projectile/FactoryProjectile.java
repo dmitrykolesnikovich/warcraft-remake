@@ -28,15 +28,14 @@ import com.b3dgs.warcraft.AppWarcraft;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProjectile
-        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
+        extends FactoryObjectGame<SetupSurfaceGame, Projectile>
 {
     /**
      * Constructor.
      */
     public FactoryProjectile()
     {
-        super(ProjectileType.class, AppWarcraft.PROJECTILES_DIR);
-        load();
+        super(AppWarcraft.PROJECTILES_DIR);
     }
 
     /*
@@ -44,7 +43,7 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
     {
         return new SetupSurfaceGame(config);
     }

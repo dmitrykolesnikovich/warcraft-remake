@@ -28,7 +28,7 @@ import com.b3dgs.warcraft.launcher.FactoryLauncher;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryObjectGame<WeaponType, SetupWeapon, Weapon>
+        extends FactoryObjectGame<SetupWeapon, Weapon>
 {
     /** Factory projectile. */
     private final FactoryLauncher factoryLauncher;
@@ -40,9 +40,8 @@ public final class FactoryWeapon
      */
     public FactoryWeapon(FactoryLauncher factoryLauncher)
     {
-        super(WeaponType.class, AppWarcraft.WEAPONS_DIR);
+        super(AppWarcraft.WEAPONS_DIR);
         this.factoryLauncher = factoryLauncher;
-        load();
     }
 
     /*
@@ -50,8 +49,8 @@ public final class FactoryWeapon
      */
 
     @Override
-    protected SetupWeapon createSetup(WeaponType type, Media config)
+    protected SetupWeapon createSetup(Class<? extends Weapon> type, Media config)
     {
-        return new SetupWeapon(config, type, factoryLauncher);
+        return new SetupWeapon(config, factoryLauncher);
     }
 }

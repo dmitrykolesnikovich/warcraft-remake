@@ -19,8 +19,9 @@ package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.warcraft.effect.Burning;
 import com.b3dgs.warcraft.effect.Effect;
-import com.b3dgs.warcraft.effect.EffectType;
+import com.b3dgs.warcraft.effect.Explode;
 import com.b3dgs.warcraft.effect.HandlerEffect;
 
 /**
@@ -74,8 +75,8 @@ public abstract class Building
         setLayer(0);
         setFrame(2);
         handlerEffect = setup.handlerEffect;
-        burning = setup.factoryEffect.create(EffectType.BURNING);
-        explode = setup.factoryEffect.create(EffectType.EXPLODE);
+        burning = setup.factoryEffect.create(Burning.class);
+        explode = setup.factoryEffect.create(Explode.class);
         animBurningLow = Anim.createAnimation(1, 4, 0.125, false, true);
         animBurningHigh = Anim.createAnimation(5, 8, 0.125, false, true);
         animExplode = Anim.createAnimation(1, 18, 0.125, false, false);
