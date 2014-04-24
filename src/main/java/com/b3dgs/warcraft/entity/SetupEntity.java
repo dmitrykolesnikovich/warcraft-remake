@@ -17,10 +17,9 @@
  */
 package com.b3dgs.warcraft.entity;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.warcraft.AppWarcraft;
@@ -98,8 +97,8 @@ public class SetupEntity
         }
         else
         {
-            corpse = UtilityImage.getImageBuffer(
-                    UtilityMedia.get(AppWarcraft.EFFECTS_DIR, "corpse_" + race.getPath() + ".png"), false);
+            corpse = Core.GRAPHIC.getImageBuffer(
+                    Core.MEDIA.create(AppWarcraft.EFFECTS_DIR, "corpse_" + race.getPath() + ".png"), false);
         }
     }
 }

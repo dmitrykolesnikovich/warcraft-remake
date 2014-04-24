@@ -17,10 +17,10 @@
  */
 package com.b3dgs.warcraft;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.AudioMidi;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Midi;
-import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * Handle the music.
@@ -76,7 +76,7 @@ public enum Music
      */
     private Music(String music)
     {
-        media = UtilityMedia.get(AppWarcraft.MUSICS_DIR, music + Music.AUDIO_FILE_EXTENSION);
+        media = Core.MEDIA.create(AppWarcraft.MUSICS_DIR, music + Music.AUDIO_FILE_EXTENSION);
     }
 
     /**

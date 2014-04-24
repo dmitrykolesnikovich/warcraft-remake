@@ -22,13 +22,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Bar;
@@ -82,10 +81,10 @@ public final class ControlPanel
         barLife = new Bar(27, 3);
         barProgress = new Bar(62, 6);
         barProgress.setColorForeground(ColorRgba.GREEN);
-        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
-        sprite = Drawable.loadSprite(UtilityMedia.get("hud.png"));
-        entityStats = Drawable.loadSprite(UtilityMedia.get("entity_stats.png"));
-        progress = Drawable.loadSprite(UtilityMedia.get("progress.png"));
+        text = Core.GRAPHIC.createText(Text.DIALOG, 9, TextStyle.NORMAL);
+        sprite = Drawable.loadSprite(Core.MEDIA.create("hud.png"));
+        entityStats = Drawable.loadSprite(Core.MEDIA.create("entity_stats.png"));
+        progress = Drawable.loadSprite(Core.MEDIA.create("progress.png"));
         lastSelection = null;
         setClickSelection(Mouse.LEFT);
 

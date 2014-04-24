@@ -17,10 +17,10 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.TimedMessage;
@@ -68,7 +68,7 @@ public abstract class Skill
     {
         super(setup);
         message = setup.message;
-        text = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
+        text = Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
         background = setup.background;
         gold = setup.gold;

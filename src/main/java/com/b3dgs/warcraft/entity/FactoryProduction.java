@@ -17,8 +17,8 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
@@ -75,7 +75,7 @@ public final class FactoryProduction
     protected SetupGame createSetup(Class<? extends Entity> type)
     {
         final RaceType race = RaceType.getRace(type);
-        final Media config = UtilityMedia.get(AppWarcraft.ENTITIES_DIR, race.getPath(), type.getSimpleName() + ".xml");
+        final Media config = Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, race.getPath(), type.getSimpleName() + ".xml");
         return new SetupGame(config);
     }
 }

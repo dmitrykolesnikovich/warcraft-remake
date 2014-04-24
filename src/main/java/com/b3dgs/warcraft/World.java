@@ -20,14 +20,13 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
@@ -119,15 +118,15 @@ final class World
         keyboard = sequence.getInputDevice(Keyboard.class);
         mouse = sequence.getInputDevice(Mouse.class);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
-        message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
+        message = new TimedMessage(Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL));
         fogOfWar = new FogOfWar(config);
         player = new Player();
         cpu = new Player();
         map = new Map();
 
         camera = new Camera(map);
-        cursor = new Cursor(mouse, camera, source, map, UtilityMedia.get("cursor.png"),
-                UtilityMedia.get("cursor_over.png"), UtilityMedia.get("cursor_order.png"));
+        cursor = new Cursor(mouse, camera, source, map, Core.MEDIA.create("cursor.png"),
+                Core.MEDIA.create("cursor_over.png"), Core.MEDIA.create("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
 
         handlerEffect = new HandlerEffect(camera);

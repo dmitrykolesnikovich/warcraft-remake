@@ -21,16 +21,15 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -51,7 +50,7 @@ public final class Menu
         extends Sequence
 {
     /** Menu font. */
-    static final Text FONT = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
+    static final Text FONT = Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL);
     /** Main menu element color. */
     static final ColorRgba COLOR_HEAD = new ColorRgba(255, 244, 69);
     /** Menu element color. */
@@ -122,7 +121,7 @@ public final class Menu
      */
     private static SpriteTiled getButton(String filename, int width, int height)
     {
-        return Drawable.loadSpriteTiled(UtilityMedia.get(AppWarcraft.MENU_DIR, filename), width, height);
+        return Drawable.loadSpriteTiled(Core.MEDIA.create(AppWarcraft.MENU_DIR, filename), width, height);
     }
 
     /** Keyboard. */
@@ -170,9 +169,9 @@ public final class Menu
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        logo = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "blizzard.png"));
-        background = Drawable.loadSprite(UtilityMedia.get(AppWarcraft.MENU_DIR, "menu.png"));
-        cursor = new Cursor(mouse, getConfig().getSource(), UtilityMedia.get("cursor.png"));
+        logo = Drawable.loadSprite(Core.MEDIA.create(AppWarcraft.MENU_DIR, "blizzard.png"));
+        background = Drawable.loadSprite(Core.MEDIA.create(AppWarcraft.MENU_DIR, "menu.png"));
+        cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor.png"));
         music = Music.MENU;
     }
 

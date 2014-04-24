@@ -17,8 +17,8 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.warcraft.AppWarcraft;
@@ -91,7 +91,7 @@ public class FactoryEntity
     protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
     {
         final RaceType race = RaceType.getRace(type);
-        final Media media = UtilityMedia.get(folder, race.getPath(), type.getSimpleName() + ".xml");
+        final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
 
         return new SetupEntity(media, type, map, message, this, factoryEffect, factorySkill, factoryWeapon,
                 handlerEntity, handlerEffect, desiredFps);

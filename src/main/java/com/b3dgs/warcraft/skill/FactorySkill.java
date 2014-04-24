@@ -17,8 +17,8 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -69,7 +69,7 @@ public final class FactorySkill
         this.handlerEntity = handlerEntity;
         this.factoryProduction = factoryProduction;
         this.message = message;
-        background = Drawable.loadSpriteTiled(UtilityMedia.get("skill_background.png"), 31, 23);
+        background = Drawable.loadSpriteTiled(Core.MEDIA.create("skill_background.png"), 31, 23);
         background.load(false);
     }
 
@@ -81,7 +81,7 @@ public final class FactorySkill
     protected SetupSkill createSetup(Class<? extends Skill> type, Media config)
     {
         final RaceType race = RaceType.getRace(type);
-        final Media media = UtilityMedia.get(folder, race.getPath(), type.getSimpleName() + ".xml");
+        final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
 
         return new SetupSkill(media, type, background, map, cursor, handlerEntity, factoryProduction, message);
     }
