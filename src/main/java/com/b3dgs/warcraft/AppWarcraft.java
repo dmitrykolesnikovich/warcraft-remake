@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.warcraft.menu.Menu;
 
 /**
@@ -69,7 +70,7 @@ public final class AppWarcraft
      */
     public static void main(String[] args)
     {
-        Engine.start(AppWarcraft.PROGRAM, AppWarcraft.VERSION, AppWarcraft.PATH);
+        Engine.start(AppWarcraft.PROGRAM, AppWarcraft.VERSION, Verbose.CRITICAL, AppWarcraft.PATH);
         Music.setEnabled(AppWarcraft.ENABLE_SOUND);
         Sfx.setEnabled(AppWarcraft.ENABLE_SOUND);
 
