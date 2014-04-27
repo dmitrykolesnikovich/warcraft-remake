@@ -17,9 +17,9 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.AudioMidi;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Midi;
 
 /**
