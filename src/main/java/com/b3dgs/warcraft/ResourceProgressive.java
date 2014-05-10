@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
 
 /**
@@ -51,7 +51,7 @@ public final class ResourceProgressive
      */
     public void update(double extrp, double speed)
     {
-        value = UtilityMath.curveValue(value, super.getCurrent(), speed / extrp);
+        value = UtilMath.curveValue(value, super.getCurrent(), speed / extrp);
         if (value >= super.getCurrent() - 0.1 && value <= super.getCurrent() + 0.1)
         {
             value = super.getCurrent();

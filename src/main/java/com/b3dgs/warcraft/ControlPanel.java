@@ -23,7 +23,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
@@ -390,7 +390,7 @@ public final class ControlPanel
         final Rectangle area = getArea();
         final int widthMin = camera.getLocationIntX() - sx + (int) area.getX();
         final int widthMax = camera.getLocationIntX() - sx + (int) (area.getX() + area.getWidth()) - 1;
-        return UtilityMath.fixBetween(super.computeSelectionWidth(cursor, camera, sx, sy), widthMin, widthMax);
+        return UtilMath.fixBetween(super.computeSelectionWidth(cursor, camera, sx, sy), widthMin, widthMax);
     }
 
     @Override
@@ -399,7 +399,7 @@ public final class ControlPanel
         final Rectangle area = getArea();
         final int heightMin = camera.getLocationIntY() - sy + (int) -area.getY() + 1;
         final int heightMax = camera.getLocationIntY() - sy + (int) (-area.getY() + area.getHeight());
-        return UtilityMath.fixBetween(super.computeSelectionHeight(cursor, camera, sx, sy), heightMin, heightMax);
+        return UtilMath.fixBetween(super.computeSelectionHeight(cursor, camera, sx, sy), heightMin, heightMax);
     }
 
     @Override

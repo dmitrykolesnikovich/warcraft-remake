@@ -18,7 +18,7 @@
 package com.b3dgs.warcraft.map;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
@@ -114,8 +114,8 @@ public final class Minimap
             }
             if (move)
             {
-                camera.setLocation(UtilityMath.fixBetween(cx, x - ox, mw + x) * map.getTileWidth(),
-                        UtilityMath.fixBetween(cy - oy + oy, y - oy, mh + y) * map.getTileHeight());
+                camera.setLocation(UtilMath.fixBetween(cx, x - ox, mw + x) * map.getTileWidth(),
+                        UtilMath.fixBetween(cy - oy + oy, y - oy, mh + y) * map.getTileHeight());
             }
         }
         else

@@ -22,7 +22,7 @@ import java.util.Locale;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
@@ -285,7 +285,7 @@ public final class Menu
             pressed = true;
         }
         mouse.setConfig(getConfig());
-        introTimer = UtilityMath.time();
+        introTimer = UtilMath.time();
         setSystemCursorVisible(false);
     }
 
@@ -306,15 +306,15 @@ public final class Menu
         {
             case INTRO_UP:
                 alpha += 3 * extrp;
-                alpha = UtilityMath.fixBetween(alpha, 0, 255);
-                if (UtilityMath.time() - introTimer > 3000)
+                alpha = UtilMath.fixBetween(alpha, 0, 255);
+                if (UtilMath.time() - introTimer > 3000)
                 {
                     Menu.menu = MenuType.INTRO_DOWN;
                 }
                 break;
             case INTRO_DOWN:
                 alpha -= 10 * extrp;
-                alpha = UtilityMath.fixBetween(alpha, 0, 255);
+                alpha = UtilMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
                     Menu.menu = MenuType.MAIN_UP;
@@ -322,7 +322,7 @@ public final class Menu
                 break;
             case MAIN_UP:
                 alpha += 10 * extrp;
-                alpha = UtilityMath.fixBetween(alpha, 0, 255);
+                alpha = UtilMath.fixBetween(alpha, 0, 255);
                 if (alpha == 255)
                 {
                     music.play();
@@ -342,7 +342,7 @@ public final class Menu
                     {
                         if (Math.floor(i / 2.0) == 0)
                         {
-                            playerRace = UtilityMath.fixBetween(playerRace + choices[i].getSide(), 0,
+                            playerRace = UtilMath.fixBetween(playerRace + choices[i].getSide(), 0,
                                     Menu.RACES.length - 1);
                             if (playerRace == 0)
                             {
@@ -355,7 +355,7 @@ public final class Menu
                         }
                         else if (Math.floor(i / 2.0) == 1)
                         {
-                            opponentRace = UtilityMath.fixBetween(opponentRace + choices[i].getSide(), 0,
+                            opponentRace = UtilMath.fixBetween(opponentRace + choices[i].getSide(), 0,
                                     Menu.RACES.length - 1);
                             if (opponentRace == 0)
                             {
@@ -368,11 +368,11 @@ public final class Menu
                         }
                         else if (Math.floor(i / 2.0) == 2)
                         {
-                            map = UtilityMath.fixBetween(map + choices[i].getSide(), 0, Menu.MAPS.length - 1);
+                            map = UtilMath.fixBetween(map + choices[i].getSide(), 0, Menu.MAPS.length - 1);
                         }
                         else if (Math.floor(i / 2.0) == 3)
                         {
-                            fog = UtilityMath.fixBetween(fog + choices[i].getSide(), 0, Menu.FOGS.length - 1);
+                            fog = UtilMath.fixBetween(fog + choices[i].getSide(), 0, Menu.FOGS.length - 1);
                         }
                     }
                 }
@@ -386,7 +386,7 @@ public final class Menu
                 break;
             case NEW_OUT:
                 alpha -= 10 * extrp;
-                alpha = UtilityMath.fixBetween(alpha, 0, 255);
+                alpha = UtilMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
                     Menu.menu = MenuType.PLAY;
