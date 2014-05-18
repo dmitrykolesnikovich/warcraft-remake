@@ -37,25 +37,25 @@ public final class AppWarcraft
     /** Program version. */
     public static final Version VERSION = Version.create(0, 1, 0);
     /** Effects directory. */
-    public static final String EFFECTS_DIR = "effects";
+    public static final String EFFECTS_DIR = "effect";
     /** Entities directory. */
-    public static final String ENTITIES_DIR = "entities";
+    public static final String ENTITIES_DIR = "entity";
     /** Projectiles directory. */
-    public static final String PROJECTILES_DIR = "projectiles";
+    public static final String PROJECTILES_DIR = "projectile";
     /** Projectiles directory. */
-    public static final String LAUNCHERS_DIR = "launchers";
+    public static final String LAUNCHERS_DIR = "launcher";
     /** Skills directory. */
-    public static final String SKILLS_DIR = "skills";
+    public static final String SKILLS_DIR = "skill";
     /** Maps directory. */
-    public static final String MAPS_DIR = "maps";
+    public static final String MAPS_DIR = "map";
     /** Tiles directory. */
-    public static final String TILES_DIR = "tiles";
+    public static final String TILES_DIR = "tile";
     /** Weapons directory. */
-    public static final String WEAPONS_DIR = "weapons";
+    public static final String WEAPONS_DIR = "weapon";
     /** Sounds FX directory. */
     public static final String SFX_DIR = "sfx";
     /** Musics directory. */
-    public static final String MUSICS_DIR = "musics";
+    public static final String MUSICS_DIR = "music";
     /** Menu directory. */
     public static final String MENU_DIR = "menu";
     /** Enable sound. */

@@ -71,8 +71,8 @@ public abstract class SkillProduceBuilding
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
         final Configurable config = factoryProduction.getSetup(entity).configurable;
-        width = config.getDataInteger("widthInTile", "size");
-        height = config.getDataInteger("heightInTile", "size");
+        width = config.getDataInteger("widthInTile", "lionengine:tileSize");
+        height = config.getDataInteger("heightInTile", "lionengine:tileSize");
         gold = config.getDataInteger("gold", "cost");
         wood = config.getDataInteger("wood", "cost");
         setOrder(true);

@@ -52,8 +52,8 @@ public final class FactoryProduction
         final int step = config.getDataInteger("steps", "cost");
         final int gold = config.getDataInteger("gold", "cost");
         final int wood = config.getDataInteger("wood", "cost");
-        final int width = config.getDataInteger("widthInTile", "size");
-        final int height = config.getDataInteger("heightInTile", "size");
+        final int width = config.getDataInteger("widthInTile", "lionengine:tileSize");
+        final int height = config.getDataInteger("heightInTile", "lionengine:tileSize");
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
         final ProducibleEntity producible = new ProducibleEntity(type, cost, height, width);

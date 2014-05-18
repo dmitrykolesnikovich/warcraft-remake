@@ -76,7 +76,7 @@ public abstract class Entity
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
         icon = Drawable.loadSprite(Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, setup.race.getPath(),
-                getDataString("icon")));
+                getDataString("icon", "lionengine:surface")));
         icon.load(false);
         dead = false;
         owner = null;

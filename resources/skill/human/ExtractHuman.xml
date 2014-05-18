@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+	<icon>ExtractHuman.png</icon>
+	<name>Extract</name>
+	<description>Extract resources</description>
+</lionengine:skill>

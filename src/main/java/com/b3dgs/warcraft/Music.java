@@ -84,8 +84,11 @@ public enum Music
      */
     public void stop()
     {
-        midi.stop();
-        midi = null;
+        if (midi != null)
+        {
+            midi.stop();
+            midi = null;
+        }
     }
 
     /**

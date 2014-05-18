@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+	<icon>ProduceGrunt.png</icon>
+	<name>Produce Grunt</name>
+	<description>Produce a Grunt</description>
+</lionengine:skill>

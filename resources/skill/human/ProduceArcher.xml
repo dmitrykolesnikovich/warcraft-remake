@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+	<icon>ProduceArcher.png</icon>
+	<name>Produce Archer</name>
+	<description>Produce an Archer</description>
+</lionengine:skill>
