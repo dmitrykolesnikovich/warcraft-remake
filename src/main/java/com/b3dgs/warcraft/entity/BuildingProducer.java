@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
@@ -56,7 +57,8 @@ public abstract class BuildingProducer
         factory = setup.factoryEntity;
         message = setup.message;
         producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        stepsPerSecond = getDataInteger("steps_per_second", "production");
+        final Configurable configurable = setup.getConfigurable();
+        stepsPerSecond = configurable.getInteger("steps_per_second", "production");
     }
 
     /*

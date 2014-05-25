@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.weapon;
 
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 import com.b3dgs.warcraft.entity.Attacker;
 import com.b3dgs.warcraft.entity.Entity;
@@ -41,15 +42,16 @@ public abstract class Weapon
     {
         super(setup);
 
-        setAttackFrame(getDataInteger("attackFrame"));
-        setAttackTimer(getDataInteger("attackTimer"));
+        final Configurable configurable = setup.getConfigurable();
+        setAttackFrame(configurable.getInteger("attackFrame"));
+        setAttackTimer(configurable.getInteger("attackTimer"));
 
-        final int distMin = getDataInteger("min", "distance");
-        final int distMax = getDataInteger("max", "distance");
+        final int distMin = configurable.getInteger("min", "distance");
+        final int distMax = configurable.getInteger("max", "distance");
         setAttackDistance(distMin, distMax);
 
-        final int dmgMin = getDataInteger("min", "damages");
-        final int dmgMax = getDataInteger("max", "damages");
+        final int dmgMin = configurable.getInteger("min", "damages");
+        final int dmgMax = configurable.getInteger("max", "damages");
         setAttackDamages(dmgMin, dmgMax);
     }
 

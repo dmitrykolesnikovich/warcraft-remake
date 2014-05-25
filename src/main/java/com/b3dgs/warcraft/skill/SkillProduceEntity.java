@@ -53,9 +53,9 @@ public abstract class SkillProduceEntity
         super(setup);
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getSetup(entity).configurable;
-        gold = config.getDataInteger("gold", "cost");
-        wood = config.getDataInteger("wood", "cost");
+        final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
+        gold = configurable.getInteger("gold", "cost");
+        wood = configurable.getInteger("wood", "cost");
         setOrder(false);
     }
 

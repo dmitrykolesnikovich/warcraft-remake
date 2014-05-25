@@ -20,6 +20,7 @@ package com.b3dgs.warcraft.entity;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.warcraft.weapon.FactoryWeapon;
@@ -49,7 +50,8 @@ public abstract class UnitAttacker
     protected UnitAttacker(SetupEntity setup)
     {
         super(setup);
-        animAttack = getDataAnimation("attack");
+        final Configurable configurable = setup.getConfigurable();
+        animAttack = configurable.getAnimation("attack");
         attacker = new AttackerModel<Entity, Attacker, Weapon>(this);
         factoryWeapon = setup.factoryWeapon;
     }

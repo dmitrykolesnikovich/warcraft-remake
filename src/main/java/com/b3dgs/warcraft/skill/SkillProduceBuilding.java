@@ -70,11 +70,11 @@ public abstract class SkillProduceBuilding
         map = setup.map;
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getSetup(entity).configurable;
-        width = config.getDataInteger("widthInTile", "lionengine:tileSize");
-        height = config.getDataInteger("heightInTile", "lionengine:tileSize");
-        gold = config.getDataInteger("gold", "cost");
-        wood = config.getDataInteger("wood", "cost");
+        final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
+        width = configurable.getInteger("widthInTile", "lionengine:tileSize");
+        height = configurable.getInteger("heightInTile", "lionengine:tileSize");
+        gold = configurable.getInteger("gold", "cost");
+        wood = configurable.getInteger("wood", "cost");
         setOrder(true);
     }
 
