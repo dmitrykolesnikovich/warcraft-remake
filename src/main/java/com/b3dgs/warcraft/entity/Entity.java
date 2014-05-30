@@ -23,7 +23,8 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.SurfaceData;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
@@ -77,8 +78,9 @@ public abstract class Entity
         life = new Alterable(configurable.getInteger("life", "attributes"));
         setFov(configurable.getInteger("fov", "attributes"));
         name = configurable.getString("name");
+        final SurfaceData surfaceData = configurable.getSurface();
         icon = Drawable.loadSprite(Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, setup.race.getPath(),
-                configurable.getString("icon", "lionengine:surface")));
+                surfaceData.getIcon()));
         icon.load(false);
         dead = false;
         owner = null;

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.weapon;
 
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 import com.b3dgs.warcraft.entity.Attacker;
 import com.b3dgs.warcraft.entity.Entity;

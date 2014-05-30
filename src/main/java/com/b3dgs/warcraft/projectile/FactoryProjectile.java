@@ -45,6 +45,6 @@ public final class FactoryProjectile
     @Override
     protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurfaceGame(config, false);
     }
 }

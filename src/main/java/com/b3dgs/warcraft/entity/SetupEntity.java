@@ -80,7 +80,7 @@ public class SetupEntity
             FactoryEntity factoryEntity, FactoryEffect factoryEffect, FactorySkill factorySkill,
             FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, HandlerEffect handlerEffect, int fps)
     {
-        super(config);
+        super(config, false);
         this.map = map;
         this.message = message;
         this.factoryEntity = factoryEntity;

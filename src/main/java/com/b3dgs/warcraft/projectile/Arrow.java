@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.projectile;
 
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.warcraft.entity.Entity;
 
@@ -37,7 +37,7 @@ public final class Arrow
     public Arrow(SetupSurfaceGame setup)
     {
         super(setup);
-        setCollision(new CollisionData(0, 1, 0, 1, false));
+        setCollision(new Collision(0, 1, 0, 1, false));
     }
 
     /*

@@ -24,8 +24,9 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.effect.EffectGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Effect implementation.
@@ -47,9 +48,8 @@ public class Effect
     {
         super(setup);
         final Configurable configurable = setup.getConfigurable();
-        final int horizontalFrames = configurable.getInteger("horizontal", "lionengine:frames");
-        final int verticalFrames = configurable.getInteger("vertical", "lionengine:frames");
-        sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);
+        final FramesData framesData = configurable.getFrames();
+        sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
         setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 

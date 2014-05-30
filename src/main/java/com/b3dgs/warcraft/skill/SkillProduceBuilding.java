@@ -18,7 +18,8 @@
 package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -71,8 +72,9 @@ public abstract class SkillProduceBuilding
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
-        width = configurable.getInteger("widthInTile", "lionengine:tileSize");
-        height = configurable.getInteger("heightInTile", "lionengine:tileSize");
+        final SizeData sizeData = configurable.getSize();
+        width = sizeData.getWidth();
+        height = sizeData.getHeight();
         gold = configurable.getInteger("gold", "cost");
         wood = configurable.getInteger("wood", "cost");
         setOrder(true);

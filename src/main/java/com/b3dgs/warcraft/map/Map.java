@@ -20,11 +20,11 @@ package com.b3dgs.warcraft.map;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.strategy.map.Border20;
 import com.b3dgs.lionengine.game.strategy.map.Border20Map;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
+import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.warcraft.ResourceType;
 
 /**
