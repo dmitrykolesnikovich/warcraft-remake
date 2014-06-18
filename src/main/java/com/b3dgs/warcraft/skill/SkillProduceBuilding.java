@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -43,10 +42,6 @@ public abstract class SkillProduceBuilding
     protected final FactoryProduction factoryProduction;
     /** Entity type to produce. */
     private final Class<? extends Entity> entity;
-    /** Production width in tile. */
-    private final int width;
-    /** Production height in tile. */
-    private final int height;
     /** The production cost gold. */
     private final int gold;
     /** The production cost wood. */
@@ -72,9 +67,6 @@ public abstract class SkillProduceBuilding
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
-        final SizeData sizeData = configurable.getSize();
-        width = sizeData.getWidth();
-        height = sizeData.getHeight();
         gold = configurable.getInteger("gold", "cost");
         wood = configurable.getInteger("wood", "cost");
         setOrder(true);
@@ -130,7 +122,8 @@ public abstract class SkillProduceBuilding
             {
                 cursor.setType(CursorType.BOX);
                 cursor.setBoxColor(ColorRgba.GREEN);
-                cursor.setBoxSize(width, height);
+                cursor.setBoxSize(producible.getWidthInTile() * map.getTileWidth(),
+                        producible.getHeightInTile() * map.getTileHeight());
                 toProduce = producible;
             }
             else
