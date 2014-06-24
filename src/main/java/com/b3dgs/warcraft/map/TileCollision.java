@@ -17,12 +17,17 @@
  */
 package com.b3dgs.warcraft.map;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+
 /**
  * List of collision types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum TileCollision
+public enum TileCollision implements CollisionTile
 {
     /** Ground collision. */
     GROUND0(TileCollisionGroup.GROUND),
@@ -76,5 +81,27 @@ public enum TileCollision
     public TileCollisionGroup getGroup()
     {
         return group;
+    }
+
+    /*
+     * CollisionTile
+     */
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return null;
     }
 }
