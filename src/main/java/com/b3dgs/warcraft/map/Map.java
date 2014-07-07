@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.strategy.map.Border20;
 import com.b3dgs.lionengine.game.strategy.map.Border20Map;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
@@ -33,7 +34,7 @@ import com.b3dgs.warcraft.ResourceType;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Map
-        extends MapTileStrategy<TileCollision, ResourceType, Tile>
+        extends MapTileStrategy<ResourceType, Tile>
 {
     /** Tree map layer. */
     public final Border20Map treeMap;
@@ -49,7 +50,7 @@ public final class Map
      */
     public Map()
     {
-        super(16, 16);
+        super(16, 16, TileCollision.values());
         treeMap = new Border20Map(true);
     }
 
@@ -146,7 +147,7 @@ public final class Map
     }
 
     @Override
-    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
+    public Tile createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         return new Tile(width, height, pattern, number, collision, id);
     }

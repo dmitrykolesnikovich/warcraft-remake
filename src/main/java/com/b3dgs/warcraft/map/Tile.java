@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.map;
 
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.strategy.map.Border20;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 import com.b3dgs.warcraft.ResourceType;
@@ -27,7 +28,7 @@ import com.b3dgs.warcraft.ResourceType;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Tile
-        extends TileStrategy<TileCollision, ResourceType>
+        extends TileStrategy<ResourceType>
 {
     /** Border values. */
     private static final Border20[] VALUES = Border20.values();
@@ -48,7 +49,7 @@ public final class Tile
      * @param collision The tile collision.
      * @param theme The theme id.
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision, int theme)
+    public Tile(int width, int height, Integer pattern, int number, CollisionTile collision, int theme)
     {
         super(width, height, pattern, number, collision);
         tree = Border20.NONE;
@@ -95,9 +96,9 @@ public final class Tile
      */
 
     @Override
-    public ResourceType checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType()
     {
-        switch (collision)
+        switch (getCollision())
         {
             case TREE:
                 return ResourceType.WOOD;
@@ -107,8 +108,9 @@ public final class Tile
     }
 
     @Override
-    public boolean checkBlocking(TileCollision collision)
+    public boolean checkBlocking()
     {
+        final TileCollision collision = getCollision();
         if (TileCollision.TREE == collision)
         {
             if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
@@ -138,5 +140,11 @@ public final class Tile
     public boolean hasResources()
     {
         return getResourceType() != ResourceType.NONE;
+    }
+
+    @Override
+    public TileCollision getCollision()
+    {
+        return (TileCollision) super.getCollision();
     }
 }

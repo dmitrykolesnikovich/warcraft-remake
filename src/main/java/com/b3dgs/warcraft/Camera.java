@@ -37,7 +37,7 @@ public class Camera
      * 
      * @param map The map reference.
      */
-    public Camera(MapTile<?, ?> map)
+    public Camera(MapTile<?> map)
     {
         super(map);
     }
