@@ -40,7 +40,8 @@ public final class Spear
     public Spear(SetupWeapon setup)
     {
         super(setup);
-        launcher = setup.factoryLauncher.create(SpearLauncher.class);
+        final ContextWeapon context = setup.getContext(ContextWeapon.class);
+        launcher = context.factoryLauncher.create(SpearLauncher.class);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

@@ -52,7 +52,8 @@ public abstract class SkillProduceEntity
     {
         super(setup);
         this.entity = entity;
-        factoryProduction = setup.factoryProduction;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        factoryProduction = context.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
         gold = configurable.getInteger("gold", "cost");
         wood = configurable.getInteger("wood", "cost");

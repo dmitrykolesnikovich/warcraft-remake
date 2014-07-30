@@ -19,9 +19,8 @@ package com.b3dgs.warcraft.launcher;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.projectile.FactoryProjectile;
-import com.b3dgs.warcraft.projectile.HandlerProjectile;
 
 /**
  * Factory launcher projectile.
@@ -29,24 +28,27 @@ import com.b3dgs.warcraft.projectile.HandlerProjectile;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryLauncher
-        extends FactoryObjectGame<SetupLauncher, LauncherProjectile>
+        extends FactoryObjectGame<SetupLauncher>
 {
-    /** Factory projectile. */
-    private final FactoryProjectile factoryProjectile;
-    /** Handler projectile. */
-    private final HandlerProjectile handlerProjectile;
+    /** Context reference. */
+    private ContextLauncher context;
 
     /**
-     * Constructor.
-     * 
-     * @param factoryProjectile The factory projectile.
-     * @param handlerProjectile The handler projectile.
+     * Constructor..
      */
-    public FactoryLauncher(FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
+    public FactoryLauncher()
     {
         super(AppWarcraft.LAUNCHERS_DIR);
-        this.factoryProjectile = factoryProjectile;
-        this.handlerProjectile = handlerProjectile;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextLauncher context)
+    {
+        this.context = context;
     }
 
     /*
@@ -54,8 +56,8 @@ public final class FactoryLauncher
      */
 
     @Override
-    protected SetupLauncher createSetup(Class<? extends LauncherProjectile> type, Media config)
+    protected SetupLauncher createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupLauncher(config, factoryProjectile, handlerProjectile);
+        return new SetupLauncher(config, context);
     }
 }

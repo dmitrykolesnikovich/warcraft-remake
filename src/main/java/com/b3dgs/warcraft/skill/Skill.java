@@ -67,10 +67,11 @@ public abstract class Skill
     protected Skill(SetupSkill setup)
     {
         super(setup);
-        message = setup.message;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        message = context.message;
         text = Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
-        background = setup.background;
+        background = context.background;
         gold = setup.gold;
         wood = setup.wood;
     }

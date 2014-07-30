@@ -15,27 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.warcraft.weapon;
+package com.b3dgs.warcraft.launcher;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.projectile.FactoryProjectile;
+import com.b3dgs.warcraft.projectile.HandlerProjectile;
 
 /**
- * Setup weapon implementation.
+ * Represents the context related to launchers.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetupWeapon
-        extends SetupGame
+public class ContextLauncher
+        implements ContextGame
 {
+    /** Factory projectile. */
+    final FactoryProjectile factoryProjectile;
+    /** Handler projectile. */
+    final HandlerProjectile handlerProjectile;
+
     /**
      * Constructor.
      * 
-     * @param config The config
-     * @param context The weapon context.
+     * @param factoryProjectile The factory projectile.
+     * @param handlerProjectile The handler projectile.
      */
-    public SetupWeapon(Media config, ContextWeapon context)
+    public ContextLauncher(FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
     {
-        super(config, context);
+        this.factoryProjectile = factoryProjectile;
+        this.handlerProjectile = handlerProjectile;
     }
 }

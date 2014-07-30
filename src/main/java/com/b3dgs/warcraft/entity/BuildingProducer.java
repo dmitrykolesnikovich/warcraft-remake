@@ -54,9 +54,10 @@ public abstract class BuildingProducer
     protected BuildingProducer(SetupEntity setup)
     {
         super(setup);
-        factory = setup.factoryEntity;
-        message = setup.message;
-        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        factory = context.factoryEntity;
+        message = context.message;
+        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
     }

@@ -39,7 +39,8 @@ public final class Bow
     public Bow(SetupWeapon setup)
     {
         super(setup);
-        launcher = setup.factoryLauncher.create(com.b3dgs.warcraft.launcher.Bow.class);
+        final ContextWeapon context = setup.getContext(ContextWeapon.class);
+        launcher = context.factoryLauncher.create(com.b3dgs.warcraft.launcher.Bow.class);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

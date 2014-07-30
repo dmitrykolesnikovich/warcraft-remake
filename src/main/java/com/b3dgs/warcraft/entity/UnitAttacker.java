@@ -53,7 +53,7 @@ public abstract class UnitAttacker
         final Configurable configurable = setup.getConfigurable();
         animAttack = configurable.getAnimation("attack");
         attacker = new AttackerModel<Entity, Attacker, Weapon>(this);
-        factoryWeapon = setup.factoryWeapon;
+        factoryWeapon = setup.getContext(ContextEntity.class).factoryWeapon;
     }
 
     /**

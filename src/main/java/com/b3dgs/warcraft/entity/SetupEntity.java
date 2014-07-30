@@ -21,14 +21,9 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.RaceType;
-import com.b3dgs.warcraft.effect.FactoryEffect;
-import com.b3dgs.warcraft.effect.HandlerEffect;
-import com.b3dgs.warcraft.map.Map;
-import com.b3dgs.warcraft.skill.FactorySkill;
-import com.b3dgs.warcraft.weapon.FactoryWeapon;
 
 /**
  * Setup entity implementation.
@@ -42,54 +37,17 @@ public class SetupEntity
     public final RaceType race;
     /** Corpse. */
     public final ImageBuffer corpse;
-    /** Map. */
-    public final Map map;
-    /** Timed message. */
-    public final TimedMessage message;
-    /** Factory entity. */
-    public final FactoryEntity factoryEntity;
-    /** Factory effect. */
-    public final FactoryEffect factoryEffect;
-    /** Factory skill. */
-    public final FactorySkill factorySkill;
-    /** Factory weapon. */
-    public final FactoryWeapon factoryWeapon;
-    /** Handler entity. */
-    public final HandlerEntity handlerEntity;
-    /** handler effect. */
-    public final HandlerEffect handlerEffect;
-    /** Desired fps. */
-    public final int fps;
 
     /**
      * Constructor.
      * 
      * @param config The config file.
-     * @param type The entity type.
-     * @param map The map reference.
-     * @param message The timed message reference.
-     * @param factoryEntity The factory entity reference.
-     * @param factoryEffect The factory effect reference.
-     * @param factorySkill The factory skill reference.
-     * @param factoryWeapon The factory weapon reference.
-     * @param handlerEntity The handler entity reference.
-     * @param handlerEffect The handler effect reference.
-     * @param fps The desired fps.
+     * @param context The context reference.
+     * @param type The type reference.
      */
-    public SetupEntity(Media config, Class<? extends Entity> type, Map map, TimedMessage message,
-            FactoryEntity factoryEntity, FactoryEffect factoryEffect, FactorySkill factorySkill,
-            FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, HandlerEffect handlerEffect, int fps)
+    public SetupEntity(Media config, ContextEntity context, Class<? extends Fabricable> type)
     {
-        super(config, false);
-        this.map = map;
-        this.message = message;
-        this.factoryEntity = factoryEntity;
-        this.factoryEffect = factoryEffect;
-        this.factorySkill = factorySkill;
-        this.factoryWeapon = factoryWeapon;
-        this.handlerEntity = handlerEntity;
-        this.handlerEffect = handlerEffect;
-        this.fps = fps;
+        super(config, context, false);
         race = RaceType.getRace(type);
         if (RaceType.NEUTRAL == race)
         {

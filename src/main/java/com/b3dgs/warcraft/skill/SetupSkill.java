@@ -22,14 +22,10 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.RaceType;
-import com.b3dgs.warcraft.entity.FactoryProduction;
-import com.b3dgs.warcraft.entity.HandlerEntity;
-import com.b3dgs.warcraft.map.Map;
 
 /**
  * Setup skill implementation.
@@ -41,45 +37,22 @@ public final class SetupSkill
 {
     /** Skill icon. */
     public final SpriteTiled icon;
-    /** Skill background. */
-    public final SpriteTiled background;
     /** Gold. */
     public final Sprite gold;
     /** Wood. */
     public final Sprite wood;
-    /** Map. */
-    final Map map;
-    /** Cursor. */
-    final Cursor cursor;
-    /** Handler entity. */
-    final HandlerEntity handlerEntity;
-    /** Production factory. */
-    final FactoryProduction factoryProduction;
-    /** The timed message reference. */
-    final TimedMessage message;
 
     /**
      * Constructor.
      * 
      * @param config The config media.
+     * @param context The skill context.
      * @param type The skill type.
-     * @param background The skill background.
-     * @param map The map reference.
-     * @param cursor The cursor reference.
-     * @param handlerEntity The handler entity reference.
-     * @param factoryProduction The production factory.
-     * @param message The timed message reference.
      */
-    public SetupSkill(Media config, Class<? extends Skill> type, SpriteTiled background, Map map, Cursor cursor,
-            HandlerEntity handlerEntity, FactoryProduction factoryProduction, TimedMessage message)
+    public SetupSkill(Media config, ContextSkill context, Class<? extends Fabricable> type)
     {
-        super(config);
-        this.background = background;
-        this.map = map;
-        this.cursor = cursor;
-        this.handlerEntity = handlerEntity;
-        this.factoryProduction = factoryProduction;
-        this.message = message;
+        super(config, context);
+
         final RaceType race = RaceType.getRace(type);
         icon = Drawable.loadSpriteTiled(
                 Core.MEDIA.create(AppWarcraft.SKILLS_DIR, race.getPath(), configurable.getText("icon")), 27, 19);

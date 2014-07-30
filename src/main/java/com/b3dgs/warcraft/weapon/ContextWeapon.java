@@ -17,25 +17,27 @@
  */
 package com.b3dgs.warcraft.weapon;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.launcher.FactoryLauncher;
 
 /**
- * Setup weapon implementation.
+ * Represents the context related to weapons.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetupWeapon
-        extends SetupGame
+public class ContextWeapon
+        implements ContextGame
 {
+    /** Factory projectile. */
+    public final FactoryLauncher factoryLauncher;
+
     /**
      * Constructor.
      * 
-     * @param config The config
-     * @param context The weapon context.
+     * @param factoryLauncher The launcher factory.
      */
-    public SetupWeapon(Media config, ContextWeapon context)
+    public ContextWeapon(FactoryLauncher factoryLauncher)
     {
-        super(config, context);
+        this.factoryLauncher = factoryLauncher;
     }
 }

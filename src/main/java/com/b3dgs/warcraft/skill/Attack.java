@@ -43,7 +43,8 @@ public abstract class Attack
     protected Attack(SetupSkill setup)
     {
         super(setup);
-        handler = setup.handlerEntity;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        handler = context.handlerEntity;
         setOrder(true);
     }
 

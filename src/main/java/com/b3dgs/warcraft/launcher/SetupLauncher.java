@@ -19,8 +19,6 @@ package com.b3dgs.warcraft.launcher;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.warcraft.projectile.FactoryProjectile;
-import com.b3dgs.warcraft.projectile.HandlerProjectile;
 
 /**
  * Setup launcher implementation.
@@ -30,22 +28,14 @@ import com.b3dgs.warcraft.projectile.HandlerProjectile;
 public class SetupLauncher
         extends SetupGame
 {
-    /** Factory projectile. */
-    final FactoryProjectile factoryProjectile;
-    /** Handler projectile. */
-    final HandlerProjectile handlerProjectile;
-
     /**
      * Constructor.
      * 
      * @param config The config media.
-     * @param factoryProjectile The factory projectile.
-     * @param handlerProjectile The handler projectile.
+     * @param context The context reference.
      */
-    public SetupLauncher(Media config, FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
+    public SetupLauncher(Media config, ContextLauncher context)
     {
-        super(config);
-        this.factoryProjectile = factoryProjectile;
-        this.handlerProjectile = handlerProjectile;
+        super(config, context);
     }
 }

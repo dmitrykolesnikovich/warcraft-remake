@@ -87,7 +87,7 @@ public abstract class Unit
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");
         animDead = configurable.getAnimation("die");
-        mover = new MoverModel(this, setup.map);
+        mover = new MoverModel(this, setup.getContext(ContextEntity.class).map);
         corpse = Drawable.loadSpriteAnimated(setup.corpse, 4, 2);
         die = Die.NONE;
         setLayer(1);

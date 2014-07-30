@@ -74,9 +74,10 @@ public abstract class Building
         super(setup);
         setLayer(0);
         setFrame(2);
-        handlerEffect = setup.handlerEffect;
-        burning = setup.factoryEffect.create(Burning.class);
-        explode = setup.factoryEffect.create(Explode.class);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        handlerEffect = context.handlerEffect;
+        burning = context.factoryEffect.create(Burning.class);
+        explode = context.factoryEffect.create(Explode.class);
         animBurningLow = Anim.createAnimation(1, 4, 0.125, false, true);
         animBurningHigh = Anim.createAnimation(5, 8, 0.125, false, true);
         animExplode = Anim.createAnimation(1, 18, 0.125, false, false);

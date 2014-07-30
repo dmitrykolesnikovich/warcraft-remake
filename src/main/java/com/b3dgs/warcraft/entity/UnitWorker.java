@@ -91,12 +91,13 @@ public abstract class UnitWorker
     protected UnitWorker(SetupEntity setup)
     {
         super(setup);
-        factory = setup.factoryEntity;
-        handlerEntity = setup.handlerEntity;
-        handlerEffect = setup.handlerEffect;
-        message = setup.message;
-        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        extractor = new ExtractorModel(this, setup.fps);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        factory = context.factoryEntity;
+        handlerEntity = context.handlerEntity;
+        handlerEffect = context.handlerEffect;
+        message = context.message;
+        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
+        extractor = new ExtractorModel(this, context.desiredFps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         extractionSpeed = configurable.getInteger("extraction_speed", "extraction");
@@ -105,7 +106,7 @@ public abstract class UnitWorker
         animWork = configurable.getAnimation("work");
         animCarryGold = configurable.getAnimation("carry_gold");
         animCarryWood = configurable.getAnimation("carry_wood");
-        construction = setup.factoryEffect.create(Construction.class);
+        construction = context.factoryEffect.create(Construction.class);
     }
 
     /**

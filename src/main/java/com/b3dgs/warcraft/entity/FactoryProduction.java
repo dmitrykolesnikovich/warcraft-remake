@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.TileSizeData;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.RaceType;
@@ -73,7 +74,7 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(Class<? extends Entity> type)
+    protected SetupGame createSetup(Class<? extends Fabricable> type)
     {
         final RaceType race = RaceType.getRace(type);
         final Media config = Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, race.getPath(), type.getSimpleName() + ".xml");

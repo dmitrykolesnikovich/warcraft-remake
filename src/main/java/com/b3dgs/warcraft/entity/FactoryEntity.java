@@ -20,15 +20,9 @@ package com.b3dgs.warcraft.entity;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.RaceType;
-import com.b3dgs.warcraft.effect.FactoryEffect;
-import com.b3dgs.warcraft.effect.HandlerEffect;
-import com.b3dgs.warcraft.map.Map;
-import com.b3dgs.warcraft.projectile.HandlerProjectile;
-import com.b3dgs.warcraft.skill.FactorySkill;
-import com.b3dgs.warcraft.weapon.FactoryWeapon;
 
 /**
  * Factory entity implementation.
@@ -36,51 +30,27 @@ import com.b3dgs.warcraft.weapon.FactoryWeapon;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity>
 {
-    /** Map reference. */
-    public final Map map;
-    /** Timed message. */
-    public final TimedMessage message;
-    /** The factory skill. */
-    public final FactorySkill factorySkill;
-    /** The factory weapon. */
-    public final FactoryWeapon factoryWeapon;
-    /** The factory effect. */
-    public final FactoryEffect factoryEffect;
-    /** Handler entity reference. */
-    public final HandlerEntity handlerEntity;
-    /** Handler entity reference. */
-    public final HandlerEffect handlerEffect;
-    /** The desired fps. */
-    public final int desiredFps;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Constructor.
-     * 
-     * @param map The map reference.
-     * @param message The timed message reference.
-     * @param factoryEffect The factory effect reference.
-     * @param factorySkill The factory skill reference.
-     * @param factoryWeapon The factory weapon reference.
-     * @param handlerEntity The handler entity reference.
-     * @param handlerEffect The handler effect reference.
-     * @param handlerProjectile The handler projectile reference.
-     * @param desiredFps The desired fps.
      */
-    public FactoryEntity(Map map, TimedMessage message, FactoryEffect factoryEffect, FactorySkill factorySkill,
-            FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, HandlerEffect handlerEffect,
-            HandlerProjectile handlerProjectile, int desiredFps)
+    public FactoryEntity()
     {
         super(AppWarcraft.ENTITIES_DIR);
-        this.map = map;
-        this.message = message;
-        this.factoryEffect = factoryEffect;
-        this.factorySkill = factorySkill;
-        this.factoryWeapon = factoryWeapon;
-        this.handlerEntity = handlerEntity;
-        this.handlerEffect = handlerEffect;
-        this.desiredFps = desiredFps;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextEntity context)
+    {
+        this.context = context;
     }
 
     /*
@@ -88,12 +58,11 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
     {
         final RaceType race = RaceType.getRace(type);
         final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
 
-        return new SetupEntity(media, type, map, message, this, factoryEffect, factorySkill, factoryWeapon,
-                handlerEntity, handlerEffect, desiredFps);
+        return new SetupEntity(media, context, type);
     }
 }

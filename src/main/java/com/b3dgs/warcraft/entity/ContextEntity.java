@@ -1,0 +1,84 @@
+/*
+ * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+package com.b3dgs.warcraft.entity;
+
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.warcraft.effect.FactoryEffect;
+import com.b3dgs.warcraft.effect.HandlerEffect;
+import com.b3dgs.warcraft.map.Map;
+import com.b3dgs.warcraft.projectile.HandlerProjectile;
+import com.b3dgs.warcraft.skill.FactorySkill;
+import com.b3dgs.warcraft.weapon.FactoryWeapon;
+
+/**
+ * Represents the context related to entities.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ */
+public class ContextEntity
+        implements ContextGame
+{
+    /** Map reference. */
+    public final Map map;
+    /** Timed message. */
+    public final TimedMessage message;
+    /** The factory skill. */
+    public final FactoryEntity factoryEntity;
+    /** The factory skill. */
+    public final FactorySkill factorySkill;
+    /** The factory weapon. */
+    public final FactoryWeapon factoryWeapon;
+    /** The factory effect. */
+    public final FactoryEffect factoryEffect;
+    /** Handler entity reference. */
+    public final HandlerEntity handlerEntity;
+    /** Handler entity reference. */
+    public final HandlerEffect handlerEffect;
+    /** The desired fps. */
+    public final int desiredFps;
+
+    /**
+     * Constructor.
+     * 
+     * @param map The map reference.
+     * @param message The timed message reference.
+     * @param factoryEntity The factory entity reference.
+     * @param factoryEffect The factory effect reference.
+     * @param factorySkill The factory skill reference.
+     * @param factoryWeapon The factory weapon reference.
+     * @param handlerEntity The handler entity reference.
+     * @param handlerEffect The handler effect reference.
+     * @param handlerProjectile The handler projectile reference.
+     * @param desiredFps The desired fps.
+     */
+    public ContextEntity(Map map, TimedMessage message, FactoryEntity factoryEntity, FactoryEffect factoryEffect,
+            FactorySkill factorySkill, FactoryWeapon factoryWeapon, HandlerEntity handlerEntity,
+            HandlerEffect handlerEffect, HandlerProjectile handlerProjectile, int desiredFps)
+    {
+        this.map = map;
+        this.message = message;
+        this.factoryEntity = factoryEntity;
+        this.factoryEffect = factoryEffect;
+        this.factorySkill = factorySkill;
+        this.factoryWeapon = factoryWeapon;
+        this.handlerEntity = handlerEntity;
+        this.handlerEffect = handlerEffect;
+        this.desiredFps = desiredFps;
+    }
+}

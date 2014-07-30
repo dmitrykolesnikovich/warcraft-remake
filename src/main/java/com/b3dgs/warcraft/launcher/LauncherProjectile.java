@@ -41,7 +41,8 @@ public class LauncherProjectile
      */
     public LauncherProjectile(SetupLauncher setup, Class<? extends Projectile> type)
     {
-        super(setup, setup.factoryProjectile, setup.handlerProjectile);
+        super(setup, setup.getContext(ContextLauncher.class).factoryProjectile,
+                setup.getContext(ContextLauncher.class).handlerProjectile);
         this.type = type;
     }
 

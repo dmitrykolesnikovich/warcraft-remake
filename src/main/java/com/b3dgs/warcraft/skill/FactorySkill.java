@@ -19,16 +19,10 @@ package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.RaceType;
-import com.b3dgs.warcraft.entity.FactoryProduction;
-import com.b3dgs.warcraft.entity.HandlerEntity;
-import com.b3dgs.warcraft.map.Map;
 
 /**
  * Skill factory implementation.
@@ -36,41 +30,27 @@ import com.b3dgs.warcraft.map.Map;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactoryObjectGame<SetupSkill, Skill>
+        extends FactoryObjectGame<SetupSkill>
 {
-    /** Map. */
-    public final Map map;
-    /** Cursor. */
-    public final Cursor cursor;
-    /** Handler entity. */
-    public final HandlerEntity handlerEntity;
-    /** Production factory. */
-    public final FactoryProduction factoryProduction;
-    /** Background set. */
-    private final SpriteTiled background;
-    /** The timed message reference. */
-    private final TimedMessage message;
+    /** Context reference. */
+    private ContextSkill context;
 
     /**
      * Create a new entity factory.
-     * 
-     * @param map The map reference.
-     * @param cursor The cursor reference.
-     * @param handlerEntity The handler entity reference.
-     * @param factoryProduction The production factory.
-     * @param message The timed message reference.
      */
-    public FactorySkill(Map map, Cursor cursor, HandlerEntity handlerEntity, FactoryProduction factoryProduction,
-            TimedMessage message)
+    public FactorySkill()
     {
         super(AppWarcraft.SKILLS_DIR);
-        this.map = map;
-        this.cursor = cursor;
-        this.handlerEntity = handlerEntity;
-        this.factoryProduction = factoryProduction;
-        this.message = message;
-        background = Drawable.loadSpriteTiled(Core.MEDIA.create("skill_background.png"), 31, 23);
-        background.load(false);
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextSkill context)
+    {
+        this.context = context;
     }
 
     /*
@@ -78,11 +58,11 @@ public final class FactorySkill
      */
 
     @Override
-    protected SetupSkill createSetup(Class<? extends Skill> type, Media config)
+    protected SetupSkill createSetup(Class<? extends Fabricable> type, Media config)
     {
         final RaceType race = RaceType.getRace(type);
         final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
 
-        return new SetupSkill(media, type, background, map, cursor, handlerEntity, factoryProduction, message);
+        return new SetupSkill(media, context, type);
     }
 }

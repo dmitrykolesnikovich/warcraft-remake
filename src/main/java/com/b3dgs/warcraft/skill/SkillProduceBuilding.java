@@ -62,10 +62,11 @@ public abstract class SkillProduceBuilding
     protected SkillProduceBuilding(SetupSkill setup, Class<? extends Entity> entity)
     {
         super(setup);
-        cursor = setup.cursor;
-        map = setup.map;
         this.entity = entity;
-        factoryProduction = setup.factoryProduction;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        cursor = context.cursor;
+        map = context.map;
+        factoryProduction = context.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
         gold = configurable.getInteger("gold", "cost");
         wood = configurable.getInteger("wood", "cost");

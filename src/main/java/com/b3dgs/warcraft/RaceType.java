@@ -41,7 +41,7 @@ public enum RaceType
      * @param type The class type.
      * @return The enum race type.
      */
-    public static RaceType getRace(Class<? extends Race> type)
+    public static RaceType getRace(Class<?> type)
     {
         if (RaceHuman.class.isAssignableFrom(type))
         {

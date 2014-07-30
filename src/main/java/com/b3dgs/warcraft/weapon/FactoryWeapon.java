@@ -19,8 +19,8 @@ package com.b3dgs.warcraft.weapon;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.launcher.FactoryLauncher;
 
 /**
  * Weapons factory.
@@ -28,20 +28,27 @@ import com.b3dgs.warcraft.launcher.FactoryLauncher;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryObjectGame<SetupWeapon, Weapon>
+        extends FactoryObjectGame<SetupWeapon>
 {
-    /** Factory projectile. */
-    private final FactoryLauncher factoryLauncher;
+    /** Context reference. */
+    private ContextWeapon context;
 
     /**
      * Constructor.
-     * 
-     * @param factoryLauncher The launcher factory.
      */
-    public FactoryWeapon(FactoryLauncher factoryLauncher)
+    public FactoryWeapon()
     {
         super(AppWarcraft.WEAPONS_DIR);
-        this.factoryLauncher = factoryLauncher;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextWeapon context)
+    {
+        this.context = context;
     }
 
     /*
@@ -49,8 +56,8 @@ public final class FactoryWeapon
      */
 
     @Override
-    protected SetupWeapon createSetup(Class<? extends Weapon> type, Media config)
+    protected SetupWeapon createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupWeapon(config, factoryLauncher);
+        return new SetupWeapon(config, context);
     }
 }

@@ -20,6 +20,7 @@ package com.b3dgs.warcraft.projectile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
 
 /**
@@ -28,7 +29,7 @@ import com.b3dgs.warcraft.AppWarcraft;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProjectile
-        extends FactoryObjectGame<SetupSurfaceGame, Projectile>
+        extends FactoryObjectGame<SetupSurfaceGame>
 {
     /**
      * Constructor.
@@ -43,8 +44,8 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupSurfaceGame(config, false);
+        return new SetupSurfaceGame(config);
     }
 }
