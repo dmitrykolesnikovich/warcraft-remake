@@ -17,7 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitWorker;
 import com.b3dgs.warcraft.skill.orc.BuildBarracksOrc;
@@ -34,8 +37,10 @@ import com.b3dgs.warcraft.skill.orc.StopOrc;
  */
 public final class Peon
         extends UnitWorker
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.ORC, Peon.class);
+
     /**
      * Constructor.
      * 
@@ -44,11 +49,17 @@ public final class Peon
     public Peon(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, MoveOrc.class, 0);
-        addSkill(0, StopOrc.class, 1);
-        addSkill(0, BuildingStandardOrc.class, 2);
-        addSkill(1, BuildFarmOrc.class, 0);
-        addSkill(1, BuildBarracksOrc.class, 1);
-        addSkill(1, CancelOrc.class, 2);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(0, MoveOrc.MEDIA, 0);
+        addSkill(0, StopOrc.MEDIA, 1);
+        addSkill(0, BuildingStandardOrc.MEDIA, 2);
+        addSkill(1, BuildFarmOrc.MEDIA, 0);
+        addSkill(1, BuildBarracksOrc.MEDIA, 1);
+        addSkill(1, CancelOrc.MEDIA, 2);
     }
 }

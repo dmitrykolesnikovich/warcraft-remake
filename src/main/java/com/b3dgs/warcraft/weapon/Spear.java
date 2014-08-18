@@ -17,7 +17,11 @@
  */
 package com.b3dgs.warcraft.weapon;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.warcraft.entity.Entity;
+import com.b3dgs.warcraft.launcher.FactoryLauncher;
 import com.b3dgs.warcraft.launcher.LauncherProjectile;
 import com.b3dgs.warcraft.launcher.SpearLauncher;
 
@@ -29,26 +33,34 @@ import com.b3dgs.warcraft.launcher.SpearLauncher;
 public final class Spear
         extends Weapon
 {
+    /** Class media. */
+    public static final Media MEDIA = Weapon.getConfig(Spear.class);
+
     /** Launcher instance. */
-    private final LauncherProjectile launcher;
+    private LauncherProjectile launcher;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Spear(SetupWeapon setup)
+    public Spear(SetupGame setup)
     {
         super(setup);
-        final ContextWeapon context = setup.getContext(ContextWeapon.class);
-        launcher = context.factoryLauncher.create(SpearLauncher.class);
-        launcher.setOwner(this);
-        launcher.setCanHitTargetOnly(true);
     }
 
     /*
      * Weapon
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        launcher = context.getService(FactoryLauncher.class).create(SpearLauncher.MEDIA);
+        launcher.setOwner(this);
+        launcher.setCanHitTargetOnly(true);
+    }
 
     @Override
     public void notifyAttackEnded(int damages, Entity target)

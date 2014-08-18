@@ -17,6 +17,8 @@
  */
 package com.b3dgs.warcraft.launcher;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.warcraft.projectile.Arrow;
 
 /**
@@ -27,13 +29,16 @@ import com.b3dgs.warcraft.projectile.Arrow;
 public class Bow
         extends LauncherProjectile
 {
+    /** Class media. */
+    public static final Media MEDIA = LauncherProjectile.getConfig(Bow.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Bow(SetupLauncher setup)
+    public Bow(SetupGame setup)
     {
-        super(setup, Arrow.class);
+        super(setup, Arrow.MEDIA);
     }
 }

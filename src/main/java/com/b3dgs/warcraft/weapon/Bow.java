@@ -17,7 +17,11 @@
  */
 package com.b3dgs.warcraft.weapon;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.warcraft.entity.Entity;
+import com.b3dgs.warcraft.launcher.FactoryLauncher;
 import com.b3dgs.warcraft.launcher.LauncherProjectile;
 
 /**
@@ -28,26 +32,34 @@ import com.b3dgs.warcraft.launcher.LauncherProjectile;
 public final class Bow
         extends Weapon
 {
+    /** Class media. */
+    public static final Media MEDIA = Weapon.getConfig(Bow.class);
+
     /** Launcher instance. */
-    private final LauncherProjectile launcher;
+    private LauncherProjectile launcher;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Bow(SetupWeapon setup)
+    public Bow(SetupGame setup)
     {
         super(setup);
-        final ContextWeapon context = setup.getContext(ContextWeapon.class);
-        launcher = context.factoryLauncher.create(com.b3dgs.warcraft.launcher.Bow.class);
-        launcher.setOwner(this);
-        launcher.setCanHitTargetOnly(true);
     }
 
     /*
      * Weapon
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        launcher = context.getService(FactoryLauncher.class).create(com.b3dgs.warcraft.launcher.Bow.MEDIA);
+        launcher.setOwner(this);
+        launcher.setCanHitTargetOnly(true);
+    }
 
     @Override
     public void notifyAttackEnded(int damages, Entity target)

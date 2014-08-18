@@ -17,7 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
 import com.b3dgs.warcraft.skill.human.AttackBow;
@@ -32,8 +35,10 @@ import com.b3dgs.warcraft.weapon.Bow;
  */
 public final class Archer
         extends UnitAttacker
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.HUMAN, Archer.class);
+
     /**
      * Constructor.
      * 
@@ -42,9 +47,15 @@ public final class Archer
     public Archer(SetupEntity setup)
     {
         super(setup);
-        addWeapon(Bow.class, 0);
-        addSkill(0, MoveHuman.class, 0);
-        addSkill(0, StopHuman.class, 1);
-        addSkill(0, AttackBow.class, 2);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addWeapon(Bow.MEDIA, 0);
+        addSkill(0, MoveHuman.MEDIA, 0);
+        addSkill(0, StopHuman.MEDIA, 1);
+        addSkill(0, AttackBow.MEDIA, 2);
     }
 }

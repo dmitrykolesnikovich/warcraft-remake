@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.skill.Cancel;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 
 /**
  * Cancel skill implementation.
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.skill.SetupSkill;
  */
 public final class CancelHuman
         extends Cancel
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.HUMAN, CancelHuman.class);
+
     /**
      * Constructor.
      * 

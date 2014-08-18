@@ -36,29 +36,6 @@ public enum RaceType
     NONE;
 
     /**
-     * Get the race enum from the class type.
-     * 
-     * @param type The class type.
-     * @return The enum race type.
-     */
-    public static RaceType getRace(Class<?> type)
-    {
-        if (RaceHuman.class.isAssignableFrom(type))
-        {
-            return HUMAN;
-        }
-        else if (RaceOrc.class.isAssignableFrom(type))
-        {
-            return ORC;
-        }
-        else if (RaceNeutral.class.isAssignableFrom(type))
-        {
-            return NEUTRAL;
-        }
-        return NONE;
-    }
-
-    /**
      * Get the race path.
      * 
      * @return The race path.

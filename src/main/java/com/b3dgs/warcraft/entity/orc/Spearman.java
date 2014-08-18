@@ -17,7 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
 import com.b3dgs.warcraft.skill.orc.AttackSpear;
@@ -32,8 +35,10 @@ import com.b3dgs.warcraft.weapon.Spear;
  */
 public final class Spearman
         extends UnitAttacker
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.ORC, Spearman.class);
+
     /**
      * Constructor.
      * 
@@ -42,9 +47,15 @@ public final class Spearman
     public Spearman(SetupEntity setup)
     {
         super(setup);
-        addWeapon(Spear.class, 0);
-        addSkill(0, MoveOrc.class, 0);
-        addSkill(0, StopOrc.class, 1);
-        addSkill(0, AttackSpear.class, 2);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addWeapon(Spear.MEDIA, 0);
+        addSkill(0, MoveOrc.MEDIA, 0);
+        addSkill(0, StopOrc.MEDIA, 1);
+        addSkill(0, AttackSpear.MEDIA, 2);
     }
 }

@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.orc.Grunt;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
 /**
@@ -29,8 +31,10 @@ import com.b3dgs.warcraft.skill.SkillProduceEntity;
  */
 public final class ProduceGrunt
         extends SkillProduceEntity
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.ORC, ProduceGrunt.class);
+
     /**
      * Constructor.
      * 
@@ -38,6 +42,6 @@ public final class ProduceGrunt
      */
     public ProduceGrunt(SetupSkill setup)
     {
-        super(setup, Grunt.class);
+        super(setup, Grunt.MEDIA);
     }
 }

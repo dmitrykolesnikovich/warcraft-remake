@@ -17,8 +17,10 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.Stop;
 
 /**
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.skill.Stop;
  */
 public final class StopHuman
         extends Stop
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.HUMAN, StopHuman.class);
+
     /**
      * Constructor.
      * 

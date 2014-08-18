@@ -17,12 +17,9 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.RaceType;
 
 /**
  * Factory entity implementation.
@@ -32,9 +29,6 @@ import com.b3dgs.warcraft.RaceType;
 public class FactoryEntity
         extends FactoryObjectGame<SetupEntity>
 {
-    /** Context reference. */
-    private ContextEntity context;
-
     /**
      * Constructor.
      */
@@ -43,26 +37,13 @@ public class FactoryEntity
         super(AppWarcraft.ENTITIES_DIR);
     }
 
-    /**
-     * Set the factory context.
-     * 
-     * @param context The factory context.
-     */
-    public void setContext(ContextEntity context)
-    {
-        this.context = context;
-    }
-
     /*
      * FactoryObjectGame
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupEntity createSetup(Media media)
     {
-        final RaceType race = RaceType.getRace(type);
-        final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
-
-        return new SetupEntity(media, context, type);
+        return new SetupEntity(media);
     }
 }

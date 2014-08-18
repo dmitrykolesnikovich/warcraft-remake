@@ -19,9 +19,11 @@ package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.warcraft.effect.Burning;
 import com.b3dgs.warcraft.effect.Effect;
 import com.b3dgs.warcraft.effect.Explode;
+import com.b3dgs.warcraft.effect.FactoryEffect;
 import com.b3dgs.warcraft.effect.HandlerEffect;
 
 /**
@@ -49,18 +51,18 @@ public abstract class Building
         EXPLODING;
     }
 
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-    /** Burning animation. */
-    private final Effect burning;
-    /** Explode animation surface. */
-    private final Effect explode;
     /** Burning low animation. */
     private final Animation animBurningLow;
     /** Burning high animation. */
     private final Animation animBurningHigh;
     /** Explode animation. */
     private final Animation animExplode;
+    /** Handler effect. */
+    private HandlerEffect handlerEffect;
+    /** Burning animation. */
+    private Effect burning;
+    /** Explode animation surface. */
+    private Effect explode;
     /** Destroy flag. */
     private Destroy destroy;
 
@@ -74,10 +76,6 @@ public abstract class Building
         super(setup);
         setLayer(0);
         setFrame(2);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        handlerEffect = context.handlerEffect;
-        burning = context.factoryEffect.create(Burning.class);
-        explode = context.factoryEffect.create(Explode.class);
         animBurningLow = Anim.createAnimation(1, 4, 0.125, false, true);
         animBurningHigh = Anim.createAnimation(5, 8, 0.125, false, true);
         animExplode = Anim.createAnimation(1, 18, 0.125, false, false);
@@ -121,6 +119,16 @@ public abstract class Building
     /*
      * Entity
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        handlerEffect = context.getService(HandlerEffect.class);
+        final FactoryEffect factoryEffect = context.getService(FactoryEffect.class);
+        burning = factoryEffect.create(Burning.MEDIA);
+        explode = factoryEffect.create(Explode.MEDIA);
+    }
 
     @Override
     public void update(double extrp)

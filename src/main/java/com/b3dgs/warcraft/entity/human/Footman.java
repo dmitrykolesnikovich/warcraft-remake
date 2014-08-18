@@ -17,7 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitAttacker;
 import com.b3dgs.warcraft.skill.human.AttackSword;
@@ -32,8 +35,10 @@ import com.b3dgs.warcraft.weapon.Sword;
  */
 public final class Footman
         extends UnitAttacker
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.HUMAN, Footman.class);
+
     /**
      * Constructor.
      * 
@@ -42,9 +47,15 @@ public final class Footman
     public Footman(SetupEntity setup)
     {
         super(setup);
-        addWeapon(Sword.class, 0);
-        addSkill(0, MoveHuman.class, 0);
-        addSkill(0, StopHuman.class, 1);
-        addSkill(0, AttackSword.class, 2);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addWeapon(Sword.MEDIA, 0);
+        addSkill(0, MoveHuman.MEDIA, 0);
+        addSkill(0, StopHuman.MEDIA, 1);
+        addSkill(0, AttackSword.MEDIA, 2);
     }
 }

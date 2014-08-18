@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.skill.orc.ProduceSpearman</lionengine:class>
 	<icon>ProduceSpearman.png</icon>
 	<name>Produce Spearman</name>
 	<description>Produce a Spearman</description>
+	<race>orc</race>
 </lionengine:skill>

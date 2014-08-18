@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.skill;
 
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
@@ -33,7 +34,7 @@ public abstract class Attack
         extends Skill
 {
     /** Handler reference. */
-    private final HandlerEntity handler;
+    private HandlerEntity handler;
 
     /**
      * Constructor.
@@ -43,14 +44,19 @@ public abstract class Attack
     protected Attack(SetupSkill setup)
     {
         super(setup);
-        final ContextSkill context = setup.getContext(ContextSkill.class);
-        handler = context.handlerEntity;
         setOrder(true);
     }
 
     /*
      * Skill
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        handler = context.getService(HandlerEntity.class);
+    }
 
     @Override
     public void action(ControlPanelModel<?> panel, CursorStrategy cursor)

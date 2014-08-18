@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.human.Archer;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
 /**
@@ -29,8 +31,10 @@ import com.b3dgs.warcraft.skill.SkillProduceEntity;
  */
 public final class ProduceArcher
         extends SkillProduceEntity
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.HUMAN, ProduceArcher.class);
+
     /**
      * Constructor.
      * 
@@ -38,6 +42,6 @@ public final class ProduceArcher
      */
     public ProduceArcher(SetupSkill setup)
     {
-        super(setup, Archer.class);
+        super(setup, Archer.MEDIA);
     }
 }

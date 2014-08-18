@@ -17,8 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.Building;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 
 /**
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.entity.SetupEntity;
  */
 public final class LumbermillOrc
         extends Building
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.ORC, LumbermillOrc.class);
+
     /**
      * Constructor.
      * 

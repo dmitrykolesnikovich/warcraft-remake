@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:entity name="Archer" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.entity.human.Archer</lionengine:class>
     <lionengine:surface image="Archer.png" icon="Archer_icon.png"/>
 	<lionengine:frames horizontal="7" vertical="6"/>
-	<lionengine:tileSize widthInTile="1" heightInTile="1"/>
+	<lionengine:size width="16" height="16"/>
 	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<lionengine:animation name="walk" start="6" end="8" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="attack" start="21" end="23" speed="0.1375" reversed="false" repeat="false"/>
@@ -11,4 +12,5 @@
 	<offsetDeath x="8" y="8"/>
 	<attributes life="100" fov="6"/>
 	<cost steps="5" gold="500" wood="100"/>
+	<race>human</race>
 </lionengine:entity>

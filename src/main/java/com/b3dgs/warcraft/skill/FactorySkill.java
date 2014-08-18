@@ -17,12 +17,9 @@
  */
 package com.b3dgs.warcraft.skill;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.RaceType;
 
 /**
  * Skill factory implementation.
@@ -32,9 +29,6 @@ import com.b3dgs.warcraft.RaceType;
 public final class FactorySkill
         extends FactoryObjectGame<SetupSkill>
 {
-    /** Context reference. */
-    private ContextSkill context;
-
     /**
      * Create a new entity factory.
      */
@@ -43,26 +37,13 @@ public final class FactorySkill
         super(AppWarcraft.SKILLS_DIR);
     }
 
-    /**
-     * Set the factory context.
-     * 
-     * @param context The factory context.
-     */
-    public void setContext(ContextSkill context)
-    {
-        this.context = context;
-    }
-
     /*
      * FactoryObjectGame
      */
 
     @Override
-    protected SetupSkill createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupSkill createSetup(Media media)
     {
-        final RaceType race = RaceType.getRace(type);
-        final Media media = Core.MEDIA.create(folder, race.getPath(), type.getSimpleName() + ".xml");
-
-        return new SetupSkill(media, context, type);
+        return new SetupSkill(media);
     }
 }

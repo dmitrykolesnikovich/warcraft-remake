@@ -18,13 +18,14 @@
 package com.b3dgs.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.warcraft.Cursor;
 import com.b3dgs.warcraft.CursorType;
-import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.FactoryProduction;
 import com.b3dgs.warcraft.entity.ProducibleEntity;
 import com.b3dgs.warcraft.entity.UnitWorker;
@@ -38,18 +39,18 @@ import com.b3dgs.warcraft.map.Map;
 public abstract class SkillProduceBuilding
         extends Skill
 {
+    /** Entity to produce. */
+    private final Media entity;
     /** Production factory. */
-    protected final FactoryProduction factoryProduction;
-    /** Entity type to produce. */
-    private final Class<? extends Entity> entity;
+    protected FactoryProduction factoryProduction;
     /** The production cost gold. */
-    private final int gold;
+    private int gold;
     /** The production cost wood. */
-    private final int wood;
+    private int wood;
     /** Cursor reference. */
-    private final Cursor cursor;
+    private Cursor cursor;
     /** Map reference. */
-    private final Map map;
+    private Map map;
     /** To produce. */
     private ProducibleEntity toProduce;
 
@@ -59,23 +60,28 @@ public abstract class SkillProduceBuilding
      * @param setup The setup skill reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceBuilding(SetupSkill setup, Class<? extends Entity> entity)
+    protected SkillProduceBuilding(SetupSkill setup, Media entity)
     {
         super(setup);
         this.entity = entity;
-        final ContextSkill context = setup.getContext(ContextSkill.class);
-        cursor = context.cursor;
-        map = context.map;
-        factoryProduction = context.factoryProduction;
-        final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
-        gold = configurable.getInteger("gold", "cost");
-        wood = configurable.getInteger("wood", "cost");
         setOrder(true);
     }
 
     /*
      * Skill
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        cursor = context.getService(Cursor.class);
+        map = context.getService(Map.class);
+        factoryProduction = context.getService(FactoryProduction.class);
+        final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
+        gold = configurable.getInteger("gold", "cost");
+        wood = configurable.getInteger("wood", "cost");
+    }
 
     @Override
     public void updateOnMap(double extrp, CameraStrategy camera, CursorStrategy cursor)

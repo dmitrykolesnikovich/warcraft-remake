@@ -25,12 +25,14 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverUsedServices;
+import com.b3dgs.warcraft.map.Map;
 
 /**
  * Abstract mover entity implementation.
@@ -62,14 +64,14 @@ public abstract class Unit
     protected final Animation animWalk;
     /** Walk animation. */
     protected final Animation animDead;
-    /** Mover model. */
-    private final MoverModel mover;
     /** Dead animation. */
     private final SpriteAnimated corpse;
     /** Horizontal death offset. */
     private final int deathOffsetX;
     /** Horizontal death offset. */
     private final int deathOffsetY;
+    /** Mover model. */
+    private MoverModel mover;
     /** Dyeing flag. */
     private Die die;
 
@@ -87,7 +89,6 @@ public abstract class Unit
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");
         animDead = configurable.getAnimation("die");
-        mover = new MoverModel(this, setup.getContext(ContextEntity.class).map);
         corpse = Drawable.loadSpriteAnimated(setup.corpse, 4, 2);
         die = Die.NONE;
         setLayer(1);
@@ -126,6 +127,13 @@ public abstract class Unit
     /*
      * Entity
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        mover = new MoverModel(this, context.getService(Map.class));
+    }
 
     @Override
     public void update(double extrp)

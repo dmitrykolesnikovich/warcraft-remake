@@ -17,15 +17,12 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.TileSizeData;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
-import com.b3dgs.warcraft.AppWarcraft;
-import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.map.Map;
 
 /**
  * The production factory.
@@ -48,25 +45,25 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity create(Class<? extends Entity> type)
+    public ProducibleEntity create(Media media)
     {
-        final Configurable configurable = getSetup(type).getConfigurable();
+        final Configurable configurable = getSetup(media).getConfigurable();
         final int step = configurable.getInteger("steps", "cost");
         final int gold = configurable.getInteger("gold", "cost");
         final int wood = configurable.getInteger("wood", "cost");
-        final TileSizeData tileSizeData = configurable.getTileSize();
+        final SizeData sizeData = configurable.getSize();
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
-        final ProducibleEntity producible = new ProducibleEntity(type, cost, tileSizeData.getWidthInTile(),
-                tileSizeData.getHeightInTile());
+        final ProducibleEntity producible = new ProducibleEntity(media, cost, sizeData.getWidth() / Map.TILE_WIDTH,
+                sizeData.getHeight() / Map.TILE_HEIGHT);
 
         return producible;
     }
 
     @Override
-    public ProducibleEntity create(Class<? extends Entity> type, int tx, int ty)
+    public ProducibleEntity create(Media media, int tx, int ty)
     {
-        final ProducibleEntity producible = create(type);
+        final ProducibleEntity producible = create(media);
 
         producible.setLocation(tx, ty);
 
@@ -74,10 +71,8 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(Class<? extends Fabricable> type)
+    protected SetupGame createSetup(Media media)
     {
-        final RaceType race = RaceType.getRace(type);
-        final Media config = Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, race.getPath(), type.getSimpleName() + ".xml");
-        return new SetupGame(config);
+        return new SetupGame(media);
     }
 }

@@ -17,8 +17,10 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.Stop;
 
 /**
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.skill.Stop;
  */
 public final class StopOrc
         extends Stop
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.ORC, StopOrc.class);
+
     /**
      * Constructor.
      * 

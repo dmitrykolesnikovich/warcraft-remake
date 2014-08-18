@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.human.FarmHuman;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.SkillProduceBuilding;
 
 /**
@@ -29,8 +31,10 @@ import com.b3dgs.warcraft.skill.SkillProduceBuilding;
  */
 public final class BuildFarmHuman
         extends SkillProduceBuilding
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.HUMAN, BuildFarmHuman.class);
+
     /**
      * Constructor.
      * 
@@ -38,6 +42,6 @@ public final class BuildFarmHuman
      */
     public BuildFarmHuman(SetupSkill setup)
     {
-        super(setup, FarmHuman.class);
+        super(setup, FarmHuman.MEDIA);
     }
 }

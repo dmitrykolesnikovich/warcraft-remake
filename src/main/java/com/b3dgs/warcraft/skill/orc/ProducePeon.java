@@ -17,20 +17,24 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.orc.Peon;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 import com.b3dgs.warcraft.skill.SkillProduceEntity;
 
 /**
- * Produce grunt implementation.
+ * Produce peon implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProducePeon
         extends SkillProduceEntity
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.ORC, ProducePeon.class);
+
     /**
      * Constructor.
      * 
@@ -38,6 +42,6 @@ public final class ProducePeon
      */
     public ProducePeon(SetupSkill setup)
     {
-        super(setup, Peon.class);
+        super(setup, Peon.MEDIA);
     }
 }

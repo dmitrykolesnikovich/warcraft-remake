@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.effect;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -27,6 +28,9 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public class Explode
         extends Effect
 {
+    /** Explode media. */
+    public static final Media MEDIA = Effect.getConfig(Explode.class);
+
     /**
      * Constructor.
      * 

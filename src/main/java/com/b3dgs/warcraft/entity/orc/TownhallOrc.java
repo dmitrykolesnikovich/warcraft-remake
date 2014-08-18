@@ -17,8 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.BuildingProducer;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.Warehouse;
 import com.b3dgs.warcraft.skill.orc.ProducePeon;
@@ -30,8 +33,11 @@ import com.b3dgs.warcraft.skill.orc.ProducePeon;
  */
 public final class TownhallOrc
         extends BuildingProducer
-        implements Warehouse, RaceOrc
+        implements Warehouse
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.ORC, TownhallOrc.class);
+
     /**
      * Constructor.
      * 
@@ -40,6 +46,12 @@ public final class TownhallOrc
     public TownhallOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, ProducePeon.class, 0);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(0, ProducePeon.MEDIA, 0);
     }
 }

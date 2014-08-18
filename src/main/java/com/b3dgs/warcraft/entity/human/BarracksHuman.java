@@ -17,8 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.BuildingProducer;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.skill.human.ProduceArcher;
 import com.b3dgs.warcraft.skill.human.ProduceFootman;
@@ -30,8 +33,10 @@ import com.b3dgs.warcraft.skill.human.ProduceFootman;
  */
 public final class BarracksHuman
         extends BuildingProducer
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.HUMAN, BarracksHuman.class);
+
     /**
      * Constructor.
      * 
@@ -40,7 +45,13 @@ public final class BarracksHuman
     public BarracksHuman(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, ProduceFootman.class, 0);
-        addSkill(0, ProduceArcher.class, 1);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(0, ProduceFootman.MEDIA, 0);
+        addSkill(0, ProduceArcher.MEDIA, 1);
     }
 }

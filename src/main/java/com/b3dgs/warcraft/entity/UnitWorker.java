@@ -20,6 +20,8 @@ package com.b3dgs.warcraft.entity;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -36,6 +38,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityNotFoundException;
 import com.b3dgs.warcraft.ResourceType;
 import com.b3dgs.warcraft.effect.Construction;
 import com.b3dgs.warcraft.effect.Effect;
+import com.b3dgs.warcraft.effect.FactoryEffect;
 import com.b3dgs.warcraft.effect.HandlerEffect;
 import com.b3dgs.warcraft.entity.human.FarmHuman;
 import com.b3dgs.warcraft.entity.orc.FarmOrc;
@@ -52,16 +55,6 @@ public abstract class UnitWorker
         implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
         ProducerServices<Entity, ProductionCost, ProducibleEntity>, ExtractorUsedServices, ExtractorServices
 {
-    /** Producer model. */
-    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
-    /** Factory reference. */
-    private final FactoryEntity factory;
-    /** Handler reference. */
-    private final HandlerEntity handlerEntity;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-    /** Extractor model. */
-    private final ExtractorModel extractor;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Extraction speed. */
@@ -76,10 +69,20 @@ public abstract class UnitWorker
     private final Animation animCarryGold;
     /** Carry wood animation. */
     private final Animation animCarryWood;
+    /** Producer model. */
+    private ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
+    /** Factory reference. */
+    private FactoryEntity factory;
+    /** Handler reference. */
+    private HandlerEntity handlerEntity;
+    /** Handler effect. */
+    private HandlerEffect handlerEffect;
+    /** Extractor model. */
+    private ExtractorModel extractor;
     /** Construction surface. */
-    private final Effect construction;
+    private Effect construction;
     /** Timed message. */
-    private final TimedMessage message;
+    private TimedMessage message;
     /** Last town hall. */
     private Entity townHall;
 
@@ -91,13 +94,6 @@ public abstract class UnitWorker
     protected UnitWorker(SetupEntity setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        factory = context.factoryEntity;
-        handlerEntity = context.handlerEntity;
-        handlerEffect = context.handlerEffect;
-        message = context.message;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
-        extractor = new ExtractorModel(this, context.desiredFps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         extractionSpeed = configurable.getInteger("extraction_speed", "extraction");
@@ -106,7 +102,6 @@ public abstract class UnitWorker
         animWork = configurable.getAnimation("work");
         animCarryGold = configurable.getAnimation("carry_gold");
         animCarryWood = configurable.getAnimation("carry_wood");
-        construction = context.factoryEffect.create(Construction.class);
     }
 
     /**
@@ -121,6 +116,21 @@ public abstract class UnitWorker
     /*
      * Unit
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        factory = context.getService(FactoryEntity.class);
+        handlerEntity = context.getService(HandlerEntity.class);
+        handlerEffect = context.getService(HandlerEffect.class);
+        message = context.getService(TimedMessage.class);
+
+        final int desiredFps = context.getService(Integer.class).intValue();
+        producer = new ProducerModel<>(this, handlerEntity, desiredFps);
+        extractor = new ExtractorModel(this, desiredFps);
+        construction = context.getService(FactoryEffect.class).create(Construction.MEDIA);
+    }
 
     @Override
     public void update(double extrp)
@@ -188,9 +198,9 @@ public abstract class UnitWorker
     }
 
     @Override
-    public <E extends Entity> E getEntityToProduce(Class<E> type)
+    public Entity getEntityToProduce(Media media)
     {
-        return factory.create(type);
+        return factory.create(media);
     }
 
     @Override
@@ -299,7 +309,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Class<? extends Entity> getProducingElement()
+    public Media getProducingElement()
     {
         return producer.getProducingElement();
     }

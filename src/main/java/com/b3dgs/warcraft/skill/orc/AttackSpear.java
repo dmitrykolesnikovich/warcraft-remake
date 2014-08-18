@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.skill.Attack;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 
 /**
  * Sword attack skill.
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.skill.SetupSkill;
  */
 public final class AttackSpear
         extends Attack
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.ORC, AttackSpear.class);
+
     /**
      * Constructor.
      * 

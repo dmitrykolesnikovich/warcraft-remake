@@ -17,6 +17,8 @@
  */
 package com.b3dgs.warcraft.weapon;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.warcraft.entity.Entity;
 
 /**
@@ -27,12 +29,15 @@ import com.b3dgs.warcraft.entity.Entity;
 public final class Sword
         extends Weapon
 {
+    /** Class media. */
+    public static final Media MEDIA = Weapon.getConfig(Sword.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Sword(SetupWeapon setup)
+    public Sword(SetupGame setup)
     {
         super(setup);
     }

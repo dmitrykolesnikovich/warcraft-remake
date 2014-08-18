@@ -87,8 +87,8 @@ public final class Cursor
      */
     public void setBoxSize(int width, int height)
     {
-        boxWidth = width * getGridWidth();
-        boxHeight = height * getGridHeight();
+        boxWidth = width;
+        boxHeight = height;
     }
 
     /**

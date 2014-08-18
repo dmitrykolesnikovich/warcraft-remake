@@ -36,6 +36,10 @@ import com.b3dgs.warcraft.ResourceType;
 public final class Map
         extends MapTileStrategy<ResourceType, Tile>
 {
+    /** Tile width. */
+    public static final int TILE_WIDTH = 16;
+    /** Tile height. */
+    public static final int TILE_HEIGHT = 16;
     /** Tree map layer. */
     public final Border20Map treeMap;
     /** The map theme id. */
@@ -50,7 +54,7 @@ public final class Map
      */
     public Map()
     {
-        super(16, 16, TileCollision.values());
+        super(Map.TILE_WIDTH, Map.TILE_HEIGHT, TileCollision.values());
         treeMap = new Border20Map(true);
     }
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.skill.human.ProduceFootman</lionengine:class>
 	<icon>ProduceFootman.png</icon>
 	<name>Produce Footman</name>
 	<description>Produce a Footman</description>
+	<race>human</race>
 </lionengine:skill>

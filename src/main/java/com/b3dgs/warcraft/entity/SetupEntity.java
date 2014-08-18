@@ -17,11 +17,12 @@
  */
 package com.b3dgs.warcraft.entity;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.RaceType;
 
@@ -41,14 +42,12 @@ public class SetupEntity
     /**
      * Constructor.
      * 
-     * @param config The config file.
-     * @param context The context reference.
-     * @param type The type reference.
+     * @param media The config file.
      */
-    public SetupEntity(Media config, ContextEntity context, Class<? extends Fabricable> type)
+    public SetupEntity(Media media)
     {
-        super(config, context, false);
-        race = RaceType.getRace(type);
+        super(media, false);
+        race = RaceType.valueOf(configurable.getText("race").toUpperCase(Locale.ENGLISH));
         if (RaceType.NEUTRAL == race)
         {
             corpse = null;

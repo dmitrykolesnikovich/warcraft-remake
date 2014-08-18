@@ -17,18 +17,24 @@
  */
 package com.b3dgs.warcraft.skill;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
-import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.AppWarcraft;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.Entity;
 
 /**
@@ -38,22 +44,34 @@ import com.b3dgs.warcraft.entity.Entity;
  */
 public abstract class Skill
         extends SkillStrategy
-        implements Race
 {
+    /**
+     * Get a skill configuration file.
+     * 
+     * @param race The race type.
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    public static Media getConfig(RaceType race, Class<? extends Skill> type)
+    {
+        return Core.MEDIA.create(AppWarcraft.SKILLS_DIR, race.name().toLowerCase(Locale.ENGLISH), type.getSimpleName()
+                + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Text. */
     protected final Text text;
     /** Sprite. */
     private final SpriteTiled icon;
-    /** Background. */
-    private final SpriteTiled background;
     /** Gold icon. */
     private final Sprite gold;
     /** Wood icon. */
     private final Sprite wood;
-    /** Timed message handler. */
-    private final TimedMessage message;
     /** Owner. */
     protected Entity owner;
+    /** Background. */
+    private SpriteTiled background;
+    /** Timed message handler. */
+    private TimedMessage message;
     /** Location x on panel. */
     private int x;
     /** Location y on panel. */
@@ -67,11 +85,8 @@ public abstract class Skill
     protected Skill(SetupSkill setup)
     {
         super(setup);
-        final ContextSkill context = setup.getContext(ContextSkill.class);
-        message = context.message;
         text = Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
-        background = context.background;
         gold = setup.gold;
         wood = setup.wood;
     }
@@ -99,6 +114,13 @@ public abstract class Skill
     /*
      * SkillStrategy
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        message = context.getService(TimedMessage.class);
+        background = context.getService(SpriteTiled.class);
+    }
 
     @Override
     public void updateOnMap(double extrp, CameraStrategy camera, CursorStrategy cursor)

@@ -24,11 +24,13 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -36,7 +38,6 @@ import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.warcraft.effect.FactoryEffect;
 import com.b3dgs.warcraft.effect.HandlerEffect;
-import com.b3dgs.warcraft.entity.ContextEntity;
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.FactoryEntity;
 import com.b3dgs.warcraft.entity.FactoryProduction;
@@ -47,16 +48,13 @@ import com.b3dgs.warcraft.entity.orc.Grunt;
 import com.b3dgs.warcraft.entity.orc.Peon;
 import com.b3dgs.warcraft.entity.orc.Spearman;
 import com.b3dgs.warcraft.entity.orc.TownhallOrc;
-import com.b3dgs.warcraft.launcher.ContextLauncher;
 import com.b3dgs.warcraft.launcher.FactoryLauncher;
 import com.b3dgs.warcraft.map.FogOfWar;
 import com.b3dgs.warcraft.map.Map;
 import com.b3dgs.warcraft.map.Minimap;
 import com.b3dgs.warcraft.projectile.FactoryProjectile;
 import com.b3dgs.warcraft.projectile.HandlerProjectile;
-import com.b3dgs.warcraft.skill.ContextSkill;
 import com.b3dgs.warcraft.skill.FactorySkill;
-import com.b3dgs.warcraft.weapon.ContextWeapon;
 import com.b3dgs.warcraft.weapon.FactoryWeapon;
 
 /**
@@ -152,24 +150,43 @@ final class World
         factoryEffect = new FactoryEffect();
         factoryEntity = new FactoryEntity();
 
-        createContexts();
+        createContextsAndPreparators();
     }
 
     /**
      * Create the contexts and assign them.
      */
-    private void createContexts()
+    private void createContextsAndPreparators()
     {
-        final ContextEntity contextEntity = new ContextEntity(map, message, factoryEntity, factoryEffect, factorySkill,
-                factoryWeapon, handlerEntity, handlerEffect, handlerProjectile, source.getRate());
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
+        contextEntity.addService(message);
+        contextEntity.addService(factoryEntity);
+        contextEntity.addService(factoryEffect);
+        contextEntity.addService(factorySkill);
+        contextEntity.addService(factoryWeapon);
+        contextEntity.addService(handlerEntity);
+        contextEntity.addService(handlerEffect);
+        contextEntity.addService(handlerProjectile);
+        contextEntity.addService(Integer.valueOf(source.getRate()));
 
-        final ContextLauncher contextLauncher = new ContextLauncher(factoryProjectile, handlerProjectile);
-        final ContextWeapon contextWeapon = new ContextWeapon(factoryLauncher);
+        final ContextGame contextLauncher = new ContextGame();
+        contextLauncher.addService(factoryProjectile);
+        contextLauncher.addService(handlerProjectile);
+
+        final ContextGame contextWeapon = new ContextGame();
+        contextWeapon.addService(factoryLauncher);
 
         final SpriteTiled background = Drawable.loadSpriteTiled(Core.MEDIA.create("skill_background.png"), 31, 23);
         background.load(false);
-        final ContextSkill contextSkill = new ContextSkill(background, map, cursor, handlerEntity, factoryProduction,
-                message);
+
+        final ContextGame contextSkill = new ContextGame();
+        contextSkill.addService(background);
+        contextSkill.addService(map);
+        contextSkill.addService(cursor);
+        contextSkill.addService(handlerEntity);
+        contextSkill.addService(factoryProduction);
+        contextSkill.addService(message);
 
         factoryEntity.setContext(contextEntity);
         factoryLauncher.setContext(contextLauncher);
@@ -178,16 +195,16 @@ final class World
     }
 
     /**
-     * Create an entity from its type.
+     * Create an entity from its media.
      * 
-     * @param type The entity type.
+     * @param media The entity media.
      * @param tx The horizontal location.
      * @param ty The vertical location.
      * @return The entity instance.
      */
-    private Entity createEntity(Class<? extends Entity> type, int tx, int ty)
+    private Entity createEntity(Media media, int tx, int ty)
     {
-        final Entity entity = factoryEntity.create(type);
+        final Entity entity = factoryEntity.create(media);
         entity.setLocation(tx, ty);
         handlerEntity.add(entity);
         return entity;
@@ -265,25 +282,25 @@ final class World
         handlerEntity.setPlayer(player);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        createEntity(GoldMine.class, 30, 13);
-        createEntity(GoldMine.class, 58, 58);
+        createEntity(GoldMine.MEDIA, 30, 13);
+        createEntity(GoldMine.MEDIA, 58, 58);
 
-        final Entity peon = createEntity(Peon.class, 40, 8);
+        final Entity peon = createEntity(Peon.MEDIA, 40, 8);
         peon.setPlayer(player);
 
-        Entity grunt = createEntity(Grunt.class, 38, 5);
+        Entity grunt = createEntity(Grunt.MEDIA, 38, 5);
         grunt.setPlayer(player);
 
-        grunt = createEntity(Grunt.class, 39, 5);
+        grunt = createEntity(Grunt.MEDIA, 39, 5);
         grunt.setPlayer(player);
 
-        final Entity spearman = createEntity(Spearman.class, 38, 9);
+        final Entity spearman = createEntity(Spearman.MEDIA, 38, 9);
         spearman.setPlayer(player);
 
-        final Entity townHall = createEntity(TownhallOrc.class, 40, 5);
+        final Entity townHall = createEntity(TownhallOrc.MEDIA, 40, 5);
         townHall.setPlayer(player);
 
-        final Entity peasant = createEntity(Peasant.class, 40, 10);
+        final Entity peasant = createEntity(Peasant.MEDIA, 40, 10);
         peasant.setPlayer(cpu);
 
         handlerEntity.update(1.0);

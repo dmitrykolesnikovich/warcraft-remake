@@ -17,11 +17,13 @@
  */
 package com.b3dgs.warcraft.entity.neutral;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
-import com.b3dgs.warcraft.RaceNeutral;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.ResourceProgressive;
 import com.b3dgs.warcraft.ResourceType;
 import com.b3dgs.warcraft.entity.Building;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 
 /**
@@ -31,8 +33,11 @@ import com.b3dgs.warcraft.entity.SetupEntity;
  */
 public final class GoldMine
         extends Building
-        implements Extractible, RaceNeutral
+        implements Extractible
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.NEUTRAL, GoldMine.class);
+
     /** Gold amount. */
     private final ResourceProgressive gold;
     /** Resource type. */

@@ -19,14 +19,19 @@ package com.b3dgs.warcraft.effect;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.warcraft.AppWarcraft;
 
 /**
  * Effect implementation.
@@ -36,6 +41,18 @@ import com.b3dgs.lionengine.game.configurable.FramesData;
 public class Effect
         extends ObjectGame
 {
+    /**
+     * Get an effect configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Effect> type)
+    {
+        return Core.MEDIA.create(AppWarcraft.EFFECTS_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Sprite. */
     private final SpriteAnimated sprite;
 
@@ -97,6 +114,12 @@ public class Effect
     /*
      * EffectGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void update(double extrp)

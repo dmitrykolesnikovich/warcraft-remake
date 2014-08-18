@@ -17,9 +17,11 @@
  */
 package com.b3dgs.warcraft.skill.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.skill.BuildingStandard;
 import com.b3dgs.warcraft.skill.SetupSkill;
+import com.b3dgs.warcraft.skill.Skill;
 
 /**
  * Buildings standard human skill implementation.
@@ -28,8 +30,10 @@ import com.b3dgs.warcraft.skill.SetupSkill;
  */
 public final class BuildingStandardOrc
         extends BuildingStandard
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(RaceType.ORC, BuildingStandardOrc.class);
+
     /**
      * Constructor.
      * 

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ability.producer.Producible;
 
 /**
@@ -30,13 +31,13 @@ public final class ProducibleEntity
     /**
      * Constructor.
      * 
-     * @param id The entity id.
+     * @param media The entity media.
      * @param cost The production cost.
      * @param tw The production width.
      * @param th The production height.
      */
-    ProducibleEntity(Class<? extends Entity> id, ProductionCost cost, int tw, int th)
+    ProducibleEntity(Media media, ProductionCost cost, int tw, int th)
     {
-        super(id, cost, tw, th);
+        super(media, cost, tw, th);
     }
 }

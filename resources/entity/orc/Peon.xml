@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:entity name="Peon" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.entity.orc.Peon</lionengine:class>
     <lionengine:surface image="Peon.png" icon="Peon_icon.png"/>
 	<lionengine:frames horizontal="15" vertical="9"/>
-	<lionengine:tileSize widthInTile="1" heightInTile="1"/>
+	<lionengine:size width="16" height="16"/>
 	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<lionengine:animation name="walk" start="16" end="20" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="work" start="91" end="95" speed="0.1875" reversed="true" repeat="true"/>
@@ -15,4 +16,5 @@
 	<production steps_per_second="1"/>
 	<extraction extraction_speed="100" extraction_capacity="100" drop_off_speed="100"/>
 	<cost steps="5" gold="500" wood="100"/>
+	<race>orc</race>
 </lionengine:entity>

@@ -17,7 +17,13 @@
  */
 package com.b3dgs.warcraft.launcher;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
+import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.projectile.Projectile;
 import com.b3dgs.warcraft.weapon.Weapon;
@@ -30,8 +36,20 @@ import com.b3dgs.warcraft.weapon.Weapon;
 public class LauncherProjectile
         extends LauncherProjectileGame<Entity, Weapon, Projectile>
 {
-    /** Projectile type. */
-    private final Class<? extends Projectile> type;
+    /**
+     * Get a launcher configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends LauncherProjectile> type)
+    {
+        return Core.MEDIA.create(AppWarcraft.LAUNCHERS_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
+    /** Projectile media. */
+    private final Media type;
 
     /**
      * Constructor.
@@ -39,16 +57,21 @@ public class LauncherProjectile
      * @param setup The setup reference.
      * @param type The projectile type used.
      */
-    public LauncherProjectile(SetupLauncher setup, Class<? extends Projectile> type)
+    public LauncherProjectile(SetupGame setup, Media type)
     {
-        super(setup, setup.getContext(ContextLauncher.class).factoryProjectile,
-                setup.getContext(ContextLauncher.class).handlerProjectile);
+        super(setup);
         this.type = type;
     }
 
     /*
      * LauncherProjectileGame
      */
+
+    @Override
+    protected void prepareProjectile(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     protected void launchProjectile(Weapon owner)

@@ -17,12 +17,13 @@
  */
 package com.b3dgs.warcraft.skill;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.RaceType;
@@ -46,14 +47,12 @@ public final class SetupSkill
      * Constructor.
      * 
      * @param config The config media.
-     * @param context The skill context.
-     * @param type The skill type.
      */
-    public SetupSkill(Media config, ContextSkill context, Class<? extends Fabricable> type)
+    public SetupSkill(Media config)
     {
-        super(config, context);
+        super(config);
 
-        final RaceType race = RaceType.getRace(type);
+        final RaceType race = RaceType.valueOf(configurable.getText("race").toUpperCase(Locale.ENGLISH));
         icon = Drawable.loadSpriteTiled(
                 Core.MEDIA.create(AppWarcraft.SKILLS_DIR, race.getPath(), configurable.getText("icon")), 27, 19);
         gold = Drawable.loadSprite(Core.MEDIA.create("gold.png"));

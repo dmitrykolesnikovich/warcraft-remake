@@ -19,6 +19,8 @@ package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
@@ -40,7 +42,7 @@ public abstract class UnitAttacker
     /** Mover model. */
     private final AttackerModel<Entity, Attacker, Weapon> attacker;
     /** Factory weapon. */
-    private final FactoryWeapon factoryWeapon;
+    private FactoryWeapon factoryWeapon;
 
     /**
      * Constructor.
@@ -53,7 +55,6 @@ public abstract class UnitAttacker
         final Configurable configurable = setup.getConfigurable();
         animAttack = configurable.getAnimation("attack");
         attacker = new AttackerModel<Entity, Attacker, Weapon>(this);
-        factoryWeapon = setup.getContext(ContextEntity.class).factoryWeapon;
     }
 
     /**
@@ -75,20 +76,27 @@ public abstract class UnitAttacker
     }
 
     /**
-     * Add a weapon from its type.
+     * Add a weapon from its media.
      * 
-     * @param type The weapon type.
+     * @param media The weapon media.
      * @param id The weapon id.
      */
-    protected void addWeapon(Class<? extends Weapon> type, int id)
+    protected void addWeapon(Media media, int id)
     {
-        final Weapon weapon = factoryWeapon.create(type);
+        final Weapon weapon = factoryWeapon.create(media);
         addWeapon(weapon, id);
     }
 
     /*
      * Unit
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        factoryWeapon = context.getService(FactoryWeapon.class);
+    }
 
     @Override
     public void update(double extrp)

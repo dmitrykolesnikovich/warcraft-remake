@@ -17,6 +17,7 @@
  */
 package com.b3dgs.warcraft.projectile;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.warcraft.entity.Entity;
@@ -29,6 +30,9 @@ import com.b3dgs.warcraft.entity.Entity;
 public final class Arrow
         extends Projectile
 {
+    /** Class media. */
+    public static final Media MEDIA = Projectile.getConfig(Arrow.class);
+
     /**
      * Constructor.
      * 

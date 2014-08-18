@@ -17,7 +17,10 @@
  */
 package com.b3dgs.warcraft.entity.human;
 
-import com.b3dgs.warcraft.RaceHuman;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.entity.UnitWorker;
 import com.b3dgs.warcraft.skill.human.BuildBarracksHuman;
@@ -34,8 +37,10 @@ import com.b3dgs.warcraft.skill.human.StopHuman;
  */
 public final class Peasant
         extends UnitWorker
-        implements RaceHuman
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.HUMAN, Peasant.class);
+
     /**
      * Constructor.
      * 
@@ -44,11 +49,17 @@ public final class Peasant
     public Peasant(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, MoveHuman.class, 0);
-        addSkill(0, StopHuman.class, 1);
-        addSkill(0, BuildingStandardHuman.class, 2);
-        addSkill(1, BuildFarmHuman.class, 0);
-        addSkill(1, BuildBarracksHuman.class, 1);
-        addSkill(1, CancelHuman.class, 2);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(0, MoveHuman.MEDIA, 0);
+        addSkill(0, StopHuman.MEDIA, 1);
+        addSkill(0, BuildingStandardHuman.MEDIA, 2);
+        addSkill(1, BuildFarmHuman.MEDIA, 0);
+        addSkill(1, BuildBarracksHuman.MEDIA, 1);
+        addSkill(1, CancelHuman.MEDIA, 2);
     }
 }

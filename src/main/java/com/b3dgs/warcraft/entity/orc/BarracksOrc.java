@@ -17,8 +17,11 @@
  */
 package com.b3dgs.warcraft.entity.orc;
 
-import com.b3dgs.warcraft.RaceOrc;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.entity.BuildingProducer;
+import com.b3dgs.warcraft.entity.Entity;
 import com.b3dgs.warcraft.entity.SetupEntity;
 import com.b3dgs.warcraft.skill.orc.ProduceGrunt;
 import com.b3dgs.warcraft.skill.orc.ProduceSpearman;
@@ -30,8 +33,10 @@ import com.b3dgs.warcraft.skill.orc.ProduceSpearman;
  */
 public final class BarracksOrc
         extends BuildingProducer
-        implements RaceOrc
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(RaceType.ORC, BarracksOrc.class);
+
     /**
      * Constructor.
      * 
@@ -40,7 +45,13 @@ public final class BarracksOrc
     public BarracksOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(0, ProduceGrunt.class, 0);
-        addSkill(0, ProduceSpearman.class, 1);
+    }
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(0, ProduceGrunt.MEDIA, 0);
+        addSkill(0, ProduceSpearman.MEDIA, 1);
     }
 }

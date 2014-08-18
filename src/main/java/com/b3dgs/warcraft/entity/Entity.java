@@ -18,11 +18,15 @@
 package com.b3dgs.warcraft.entity;
 
 import java.util.Collection;
+import java.util.Locale;
 
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.SurfaceData;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
@@ -30,7 +34,7 @@ import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.warcraft.AppWarcraft;
 import com.b3dgs.warcraft.Player;
-import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.RaceType;
 import com.b3dgs.warcraft.map.Map;
 import com.b3dgs.warcraft.skill.FactorySkill;
 import com.b3dgs.warcraft.skill.Skill;
@@ -42,12 +46,21 @@ import com.b3dgs.warcraft.skill.Skill;
  */
 public abstract class Entity
         extends EntityStrategy
-        implements SkilledServices<Skill>, Race
+        implements SkilledServices<Skill>
 {
-    /** Map reference. */
-    protected final Map map;
-    /** Factory skill. */
-    private final FactorySkill factorySkill;
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param race The race type.
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(RaceType race, Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(AppWarcraft.ENTITIES_DIR, race.name().toLowerCase(Locale.ENGLISH),
+                type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Entity life. */
     private final Alterable life;
     /** Entity name. */
@@ -56,6 +69,10 @@ public abstract class Entity
     private final Sprite icon;
     /** Skilled model. */
     private final SkilledModel<Skill> skilled;
+    /** Map reference. */
+    protected Map map;
+    /** Factory skill. */
+    private FactorySkill factorySkill;
     /** Dead flag. */
     private boolean dead;
     /** Player owner (null if none). */
@@ -70,10 +87,7 @@ public abstract class Entity
      */
     protected Entity(SetupEntity setup)
     {
-        super(setup, setup.getContext(ContextEntity.class).map);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        map = context.map;
-        factorySkill = context.factorySkill;
+        super(setup);
         skilled = new SkilledModel<>();
         final Configurable configurable = setup.getConfigurable();
         life = new Alterable(configurable.getInteger("life", "attributes"));
@@ -93,12 +107,12 @@ public abstract class Entity
      * Add a skill.
      * 
      * @param panel The skill panel.
-     * @param type The skill type.
+     * @param media The skill media.
      * @param priority The position number.
      */
-    public void addSkill(int panel, Class<? extends Skill> type, int priority)
+    public void addSkill(int panel, Media media, int priority)
     {
-        final Skill skill = factorySkill.create(type);
+        final Skill skill = factorySkill.create(media);
         skill.setOwner(this);
         skill.setPriority(priority);
         skill.prepare();
@@ -237,6 +251,17 @@ public abstract class Entity
     void setProgressPercent(int progress)
     {
         this.progress = progress;
+    }
+
+    /*
+     * EntityStrategy
+     */
+
+    @Override
+    protected void prepareEntity(ContextGame context)
+    {
+        map = context.getService(Map.class);
+        factorySkill = context.getService(FactorySkill.class);
     }
 
     /*
