@@ -1,22 +1,21 @@
-<div align="center">
-	<a href="http://www.b3dgs.com/v6/page.php?lang=en&section=warcraft_remake" border="1">
-		<img align="center" src="http://www.b3dgs.com/v6/projects/warcraft_remake/warcraft_remake.jpg"/>
-	</a>
-</div>
-
-<div align="right">
- <table><tr><td>
-  <h4 align="center">Summary</h4>
-  <div align="left">
-   <ul>
-    <li><a href="#presentation">Presentation</a></li>
-    <li><a href="#general-features">General features</a></li>
-	<li><a href="#screenshots">Screenshots</a></li>
-    <li><a href="#downloads">Downloads</a></li>
-   </ul>
-  </div>
- </td></tr></table>
-</div>
+<table>
+    <tr>
+        <td>
+            <a href="http://www.b3dgs.com/v6/page.php?lang=en&section=warcraft_remake" border="1"><img src="http://www.b3dgs.com/v6/projects/warcraft_remake/warcraft_remake.jpg"/></a>
+        </td>
+        <td>
+            <h4 align="center">Summary</h4>
+            <div align="left">
+                <ul>
+                    <li><a href="#presentation">Presentation</a></li>
+                    <li><a href="#general-features">General features</a></li>
+                    <li><a href="#screenshots">Screenshots</a></li>
+                    <li><a href="#downloads">Downloads</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</table>
 
 ## Presentation
 
@@ -41,7 +40,7 @@ Note: A tribute to _Blizzard_'s classic __Warcraft: Orcs & Humans__ (1994). Copy
 >  * Unlimited unit selection
 
 * #### __Special__
->  * Level editor with map importer from level rip
+>  * Level editor
 
 ## Screenshots
 
