@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:type xmlns:lionengine="http://lionengine.b3dgs.com">
-    <name>race</name>
+    <lionengine:name>Race</lionengine:name>
 </lionengine:type>
