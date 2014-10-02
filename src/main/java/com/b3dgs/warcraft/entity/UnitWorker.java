@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorModel;
@@ -95,13 +96,14 @@ public abstract class UnitWorker
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
         stepsPerSecond = configurer.getInteger("steps_per_second", "production");
         extractionSpeed = configurer.getInteger("extraction_speed", "extraction");
         extractionCapacity = configurer.getInteger("extraction_capacity", "extraction");
         dropOffSpeed = configurer.getInteger("drop_off_speed", "extraction");
-        animWork = configurer.getAnimation("work");
-        animCarryGold = configurer.getAnimation("carry_gold");
-        animCarryWood = configurer.getAnimation("carry_wood");
+        animWork = configAnimations.getAnimation("work");
+        animCarryGold = configAnimations.getAnimation("carry_gold");
+        animCarryWood = configAnimations.getAnimation("carry_wood");
     }
 
     /**
