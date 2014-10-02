@@ -52,9 +52,9 @@ public final class SetupSkill
     {
         super(config);
 
-        final RaceType race = RaceType.valueOf(configurable.getText("race").toUpperCase(Locale.ENGLISH));
+        final RaceType race = RaceType.valueOf(configurer.getText("race").toUpperCase(Locale.ENGLISH));
         icon = Drawable.loadSpriteTiled(
-                Core.MEDIA.create(AppWarcraft.SKILLS_DIR, race.getPath(), configurable.getText("icon")), 27, 19);
+                Core.MEDIA.create(AppWarcraft.SKILLS_DIR, race.getPath(), configurer.getText("icon")), 27, 19);
         gold = Drawable.loadSprite(Core.MEDIA.create("gold.png"));
         wood = Drawable.loadSprite(Core.MEDIA.create("wood.png"));
 

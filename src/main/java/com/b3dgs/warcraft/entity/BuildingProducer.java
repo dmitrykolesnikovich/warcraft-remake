@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
@@ -56,8 +56,8 @@ public abstract class BuildingProducer
     protected BuildingProducer(SetupEntity setup)
     {
         super(setup);
-        final Configurable configurable = setup.getConfigurable();
-        stepsPerSecond = configurable.getInteger("steps_per_second", "production");
+        final Configurer configurer = setup.getConfigurer();
+        stepsPerSecond = configurer.getInteger("steps_per_second", "production");
     }
 
     /*

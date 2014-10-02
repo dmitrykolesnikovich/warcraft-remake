@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverUsedServices;
@@ -83,12 +83,12 @@ public abstract class Unit
     protected Unit(SetupEntity setup)
     {
         super(setup);
-        final Configurable configurable = setup.getConfigurable();
-        deathOffsetX = configurable.getInteger("x", "offsetDeath");
-        deathOffsetY = configurable.getInteger("y", "offsetDeath");
-        animIdle = configurable.getAnimation("idle");
-        animWalk = configurable.getAnimation("walk");
-        animDead = configurable.getAnimation("die");
+        final Configurer configurer = setup.getConfigurer();
+        deathOffsetX = configurer.getInteger("x", "offsetDeath");
+        deathOffsetY = configurer.getInteger("y", "offsetDeath");
+        animIdle = configurer.getAnimation("idle");
+        animWalk = configurer.getAnimation("walk");
+        animDead = configurer.getAnimation("die");
         corpse = Drawable.loadSpriteAnimated(setup.corpse, 4, 2);
         die = Die.NONE;
         setLayer(1);

@@ -20,7 +20,7 @@ package com.b3dgs.warcraft.skill;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -78,9 +78,9 @@ public abstract class SkillProduceBuilding
         cursor = context.getService(Cursor.class);
         map = context.getService(Map.class);
         factoryProduction = context.getService(FactoryProduction.class);
-        final Configurable configurable = factoryProduction.getSetup(entity).getConfigurable();
-        gold = configurable.getInteger("gold", "cost");
-        wood = configurable.getInteger("wood", "cost");
+        final Configurer configurer = factoryProduction.getSetup(entity).getConfigurer();
+        gold = configurer.getInteger("gold", "cost");
+        wood = configurer.getInteger("wood", "cost");
     }
 
     @Override

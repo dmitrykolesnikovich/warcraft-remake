@@ -47,7 +47,7 @@ public class SetupEntity
     public SetupEntity(Media media)
     {
         super(media, false);
-        race = RaceType.valueOf(configurable.getText("race").toUpperCase(Locale.ENGLISH));
+        race = RaceType.valueOf(configurer.getText("race").toUpperCase(Locale.ENGLISH));
         if (RaceType.NEUTRAL == race)
         {
             corpse = null;

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.warcraft.weapon.FactoryWeapon;
@@ -52,8 +52,8 @@ public abstract class UnitAttacker
     protected UnitAttacker(SetupEntity setup)
     {
         super(setup);
-        final Configurable configurable = setup.getConfigurable();
-        animAttack = configurable.getAnimation("attack");
+        final Configurer configurer = setup.getConfigurer();
+        animAttack = configurer.getAnimation("attack");
         attacker = new AttackerModel<Entity, Attacker, Weapon>(this);
     }
 

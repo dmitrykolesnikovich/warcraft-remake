@@ -19,8 +19,8 @@ package com.b3dgs.warcraft.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.SizeData;
+import com.b3dgs.lionengine.game.configurer.ConfigSize;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 import com.b3dgs.warcraft.map.Map;
 
@@ -47,11 +47,11 @@ public final class FactoryProduction
     @Override
     public ProducibleEntity create(Media media)
     {
-        final Configurable configurable = getSetup(media).getConfigurable();
-        final int step = configurable.getInteger("steps", "cost");
-        final int gold = configurable.getInteger("gold", "cost");
-        final int wood = configurable.getInteger("wood", "cost");
-        final SizeData sizeData = configurable.getSize();
+        final Configurer configurer = getSetup(media).getConfigurer();
+        final int step = configurer.getInteger("steps", "cost");
+        final int gold = configurer.getInteger("gold", "cost");
+        final int wood = configurer.getInteger("wood", "cost");
+        final ConfigSize sizeData = ConfigSize.create(configurer);
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
         final ProducibleEntity producible = new ProducibleEntity(media, cost, sizeData.getWidth() / Map.TILE_WIDTH,
