@@ -31,7 +31,7 @@ import com.b3dgs.warcraft.RaceType;
 /**
  * Setup skill implementation.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SetupSkill
         extends SetupSkillStrategy

@@ -20,9 +20,10 @@ package com.b3dgs.warcraft;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.warcraft.menu.Menu;
 
 /**
@@ -56,7 +57,7 @@ public final class Scene
         super(loader, Scene.NATIVE);
         this.config = config;
         keyboard = getInputDevice(Keyboard.class);
-        world = new World(this, config);
+        world = new World(getConfig(), keyboard, getInputDevice(Mouse.class), config);
         music = Music.ORCS;
         setSystemCursorVisible(false);
     }

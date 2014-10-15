@@ -20,14 +20,14 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Mouse;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.ContextGame;
@@ -67,8 +67,6 @@ final class World
 {
     /** Keyboard. */
     private final Keyboard keyboard;
-    /** Mouse. */
-    private final Mouse mouse;
     /** Text reference. */
     private final TextGame text;
     /** HUD text. */
@@ -115,18 +113,20 @@ final class World
     /**
      * Constructor.
      * 
-     * @param sequence The sequence reference.
-     * @param config The game configuration.
+     * @param config The config reference.
+     * @param keyboard The keyboard reference.
+     * @param mouse The mouse reference.
+     * @param gameConfig The game configuration.
      */
-    World(Sequence sequence, GameConfig config)
+    World(Config config, Keyboard keyboard, Mouse mouse, GameConfig gameConfig)
     {
-        super(sequence);
-        keyboard = sequence.getInputDevice(Keyboard.class);
-        mouse = sequence.getInputDevice(Mouse.class);
+        super(config);
+
+        this.keyboard = keyboard;
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         textHud = Core.GRAPHIC.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         message = new TimedMessage();
-        fogOfWar = new FogOfWar(config);
+        fogOfWar = new FogOfWar(gameConfig);
         player = new Player();
         cpu = new Player();
         map = new Map();
