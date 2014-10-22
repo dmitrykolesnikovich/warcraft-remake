@@ -17,7 +17,7 @@
  */
 package com.b3dgs.warcraft.entity;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -247,7 +247,7 @@ public abstract class Unit
     }
 
     @Override
-    public void setSharedPathIds(Set<Integer> ids)
+    public void setSharedPathIds(Collection<Integer> ids)
     {
         mover.setSharedPathIds(ids);
     }

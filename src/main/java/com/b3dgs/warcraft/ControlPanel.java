@@ -19,7 +19,6 @@ package com.b3dgs.warcraft;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.TextStyle;
@@ -61,7 +60,7 @@ public final class ControlPanel
     /** Cursor reference. */
     private final Cursor cursor;
     /** Last selection. */
-    private Set<Entity> lastSelection;
+    private Collection<Entity> lastSelection;
     /** Player reference for this panel. */
     private Player player;
     /** Entity life bar. */
@@ -171,7 +170,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param extrp The extrapolation value.
      */
-    private void updateMultipleEntity(Set<Entity> entities, CursorStrategy cursor, double extrp)
+    private void updateMultipleEntity(Collection<Entity> entities, CursorStrategy cursor, double extrp)
     {
         final Collection<Class<? extends Skill>> skills = ControlPanel.getSkillsInCommon(entities);
         for (final Entity entity : entities)
@@ -285,7 +284,7 @@ public final class ControlPanel
      * @param cursor The cursor reference.
      * @param camera The camera reference.
      */
-    private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorStrategy cursor,
+    private static void renderMultipleEntity(Graphic g, Collection<Entity> entities, CursorStrategy cursor,
             CameraStrategy camera)
     {
         final Collection<Class<? extends Skill>> skills = ControlPanel.getSkillsInCommon(entities);
@@ -306,9 +305,9 @@ public final class ControlPanel
      * @param entities Entities list.
      * @return Skill list shared by all entities.
      */
-    private static Collection<Class<? extends Skill>> getSkillsInCommon(Set<Entity> entities)
+    private static Collection<Class<? extends Skill>> getSkillsInCommon(Collection<Entity> entities)
     {
-        final Set<Class<? extends Skill>> skillsInCommon = new HashSet<>(4);
+        final Collection<Class<? extends Skill>> skillsInCommon = new HashSet<>(4);
         final Entity entity = entities.iterator().next();
         final Collection<Skill> skills = entity.getSkills(entity.getSkillPanel());
         for (final Skill skill : skills)
@@ -328,7 +327,7 @@ public final class ControlPanel
      * @param skill Skill to check.
      * @return <code>true</code> if in common, <code>false</code> else.
      */
-    private static boolean hasSkillInCommon(Set<Entity> entities, Skill skill)
+    private static boolean hasSkillInCommon(Collection<Entity> entities, Skill skill)
     {
         final int size = entities.size();
         int count = 0;
@@ -379,7 +378,7 @@ public final class ControlPanel
     }
 
     @Override
-    public void notifyUpdatedSelection(Set<Entity> selection)
+    public void notifyUpdatedSelection(Collection<Entity> selection)
     {
         lastSelection = selection;
     }

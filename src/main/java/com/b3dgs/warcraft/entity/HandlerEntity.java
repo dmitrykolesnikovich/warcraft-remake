@@ -18,8 +18,7 @@
 package com.b3dgs.warcraft.entity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
@@ -132,14 +131,14 @@ public final class HandlerEntity
     }
 
     @Override
-    protected void notifyUpdatedSelection(Set<Entity> selection)
+    protected void notifyUpdatedSelection(Collection<Entity> selection)
     {
         boolean hasUnit = false;
         boolean hasBuilding = false;
         boolean hasEnemy = false;
         Entity firstBuilding = null;
         Entity firstEnemy = null;
-        final List<Entity> toUnselect = new ArrayList<>(selection.size() / 2);
+        final Collection<Entity> toUnselect = new ArrayList<>(selection.size() / 2);
         for (final Entity entity : selection)
         {
             // Same faction selection
