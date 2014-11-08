@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategyListener;
 import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
 import com.b3dgs.warcraft.ControlPanel;
 import com.b3dgs.warcraft.Cursor;
@@ -40,10 +41,13 @@ import com.b3dgs.warcraft.map.Tile;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
-        extends HandlerEntityStrategy<ResourceType, Tile, Entity, ControlPanel>
+        extends HandlerEntityStrategy<ResourceType, Tile, Entity>
+        implements EntityStrategyListener<Entity>
 {
     /** Cursor reference. */
     private final Cursor cursor;
+    /** Control panel reference. */
+    private final ControlPanel controlPanel;
     /** Fog of war reference. */
     private final FogOfWar fogOfWar;
     /** The player. */
@@ -60,8 +64,9 @@ public final class HandlerEntity
      */
     public HandlerEntity(CameraStrategy camera, Cursor cursor, ControlPanel controlPanel, Map map, FogOfWar fogOfWar)
     {
-        super(camera, cursor, controlPanel, map);
+        super(camera, cursor, map);
         this.cursor = cursor;
+        this.controlPanel = controlPanel;
         this.fogOfWar = fogOfWar;
     }
 
@@ -124,14 +129,38 @@ public final class HandlerEntity
     protected void renderingEntity(Graphic g, Entity entity, CameraStrategy camera, CursorStrategy cursor)
     {
         if (cursor.getClick() == 0 && entity.isOver() && this.cursor.getType() != CursorType.BOX
-                && !panel.canClick(cursor) || entity.isSelected())
+                && !controlPanel.canClick(cursor) || entity.isSelected())
         {
             super.renderingEntity(g, entity, camera, cursor);
         }
     }
 
     @Override
-    protected void notifyUpdatedSelection(Collection<Entity> selection)
+    protected ColorRgba getEntityColorOver(Entity entity)
+    {
+        return ColorRgba.GRAY;
+    }
+
+    @Override
+    public ColorRgba getEntityColorSelection(Entity entity)
+    {
+        if (entity.getPlayer() == player)
+        {
+            return ColorRgba.GREEN;
+        }
+        else if (entity.getPlayer() == null)
+        {
+            return ColorRgba.GRAY_LIGHT;
+        }
+        return ColorRgba.RED;
+    }
+
+    /*
+     * EntityStrategyListener
+     */
+
+    @Override
+    public void notifyUpdatedSelection(Collection<Entity> selection)
     {
         boolean hasUnit = false;
         boolean hasBuilding = false;
@@ -195,22 +224,8 @@ public final class HandlerEntity
     }
 
     @Override
-    protected ColorRgba getEntityColorOver(Entity entity)
+    public void entityMoved(Entity entity)
     {
-        return ColorRgba.GRAY;
-    }
-
-    @Override
-    public ColorRgba getEntityColorSelection(Entity entity)
-    {
-        if (entity.getPlayer() == player)
-        {
-            return ColorRgba.GREEN;
-        }
-        else if (entity.getPlayer() == null)
-        {
-            return ColorRgba.GRAY_LIGHT;
-        }
-        return ColorRgba.RED;
+        // Nothing to do
     }
 }

@@ -150,6 +150,9 @@ final class World
         factoryEffect = new FactoryEffect();
         factoryEntity = new FactoryEntity();
 
+        controlPanel.addListener(handlerEntity);
+        handlerEntity.addListener(controlPanel);
+
         createContextsAndPreparators();
     }
 

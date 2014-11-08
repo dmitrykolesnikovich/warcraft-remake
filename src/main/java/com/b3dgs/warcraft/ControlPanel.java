@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategyListener;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.warcraft.entity.BuildingProducer;
 import com.b3dgs.warcraft.entity.Entity;
@@ -48,6 +49,7 @@ import com.b3dgs.warcraft.skill.Skill;
  */
 public final class ControlPanel
         extends ControlPanelModel<Entity>
+        implements EntityStrategyListener<Entity>
 {
     /** Text. */
     private final Text text;
@@ -381,6 +383,12 @@ public final class ControlPanel
     public void notifyUpdatedSelection(Collection<Entity> selection)
     {
         lastSelection = selection;
+    }
+
+    @Override
+    public void entityMoved(Entity entity)
+    {
+        // Nothing to do
     }
 
     @Override

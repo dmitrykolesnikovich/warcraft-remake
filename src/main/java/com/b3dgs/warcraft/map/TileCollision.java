@@ -104,6 +104,12 @@ public enum TileCollision implements CollisionTile
     }
 
     @Override
+    public void removeCollisions()
+    {
+        model.removeCollisions();
+    }
+
+    @Override
     public Collection<CollisionFunction> getCollisionFunctions()
     {
         return model.getCollisionFunctions();
