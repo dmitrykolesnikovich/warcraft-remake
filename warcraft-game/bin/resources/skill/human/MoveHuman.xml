@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.skill.human.MoveHuman</lionengine:class>
+	<icon>MoveHuman.png</icon>
+	<name>Move</name>
+	<description>Move to destination</description>
+	<race>human</race>
+</lionengine:skill>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:entity name="Lumber Mill" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.entity.orc.LumbermillOrc</lionengine:class>
+    <lionengine:surface image="LumbermillOrc.png" icon="LumbermillOrc_icon.png"/>
+	<lionengine:frames horizontal="2" vertical="1"/>
+	<lionengine:size width="48" height="48"/>
+	<lionengine:offset x="0" y="0"/>
+	<attributes life="100" fov="3"/>
+	<cost steps="5" gold="500" wood="100"/>
+	<race>orc</race>
+</lionengine:entity>
