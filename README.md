@@ -26,7 +26,7 @@ Note: A tribute to _Blizzard_'s classic __Warcraft: Orcs & Humans__ (1994). Copy
 ## General features
 
 * #### __Target__
->  * Requires Java 7
+>  * Requires Java 8
 >  * Multiplatform (tested on Windows, Linux, Mac, Android)
 >  * Can be played from a browser (Firefox, IE...)
 >  * Need at least 32MB of RAM
