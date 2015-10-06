@@ -22,7 +22,7 @@
 
 Note: A tribute to _Blizzard_'s classic __Warcraft: Orcs & Humans__ (1994). Copyright goes to Blizzard (c), due to original idea, gfx, sfx, and music uses.
 
-Note: This project is prototype, a use case for the [__LionEngine__](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
+**Note: This project is prototype, a use case for the [__LionEngine__](https://github.com/b3dgs/lionengine).**
 
 ## General features
 
