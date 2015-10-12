@@ -8,7 +8,7 @@
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>warcraft-buildtools</artifactId>
-    <name>Lionheart Remake Build Tools</name>
+    <name>Warcraft Remake Build Tools</name>
     <packaging>pom</packaging>
     <build>
         <plugins>

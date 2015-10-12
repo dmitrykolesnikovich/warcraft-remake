@@ -9,7 +9,7 @@
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>warcraft-game</artifactId>
-    <name>Lionheart Remake Game</name>
+    <name>Warcraft Remake Game</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

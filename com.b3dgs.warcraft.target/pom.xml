@@ -8,7 +8,7 @@
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>com.b3dgs.warcraft.platform</artifactId>
-    <name>Lionheart Remake Target Platform</name>
+    <name>Warcraft Remake Target Platform</name>
     <packaging>eclipse-target-definition</packaging>
     <build>
         <plugins>

@@ -4,7 +4,7 @@ Bundle-Description: Remake of the original Warcraft on the Amiga by Thal
 Bundle-DocURL: www.b3dgs.com
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Bundle-ManifestVersion: 2
-Bundle-Name: Lionheart Remake Game
+Bundle-Name: Warcraft Remake Game
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.b3dgs.warcraft.game
 Bundle-Vendor: Byron 3D Games Studio
