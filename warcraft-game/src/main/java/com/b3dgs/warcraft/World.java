@@ -19,14 +19,14 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ComponentCollision;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * World game representation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class World extends WorldGame
 {

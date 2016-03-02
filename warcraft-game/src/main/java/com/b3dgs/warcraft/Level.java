@@ -17,13 +17,11 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
  * List of levels with their file.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Level
 {
@@ -31,7 +29,7 @@ public enum Level
     SWAMP(WorldType.SWAMP, "swamp");
 
     /** Levels folder. */
-    public static final String DIR = "levels";
+    public static final String DIR = "map";
     /** Levels file extension. */
     public static final String EXTENSION = ".wrl";
 

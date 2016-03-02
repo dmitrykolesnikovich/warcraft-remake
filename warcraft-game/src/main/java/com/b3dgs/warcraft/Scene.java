@@ -19,11 +19,11 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game scene implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Scene extends Sequence
 {
@@ -55,7 +53,7 @@ public class Scene extends Sequence
         }
         catch (final IOException exception)
         {
-            Verbose.exception(Scene.class, "importLevelAndSave", exception);
+            Verbose.exception(exception);
         }
     }
 
@@ -67,17 +65,17 @@ public class Scene extends Sequence
     /**
      * Create the scene.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, RESOLUTION);
+        super(context, RESOLUTION);
 
         level = Level.SWAMP;
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         if (!level.getFile().exists())
         {

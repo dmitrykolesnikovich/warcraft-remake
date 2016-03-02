@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * List of world types.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum WorldType
 {

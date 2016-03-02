@@ -14,5 +14,8 @@ Export-Package: com.b3dgs.warcraft;uses:="com.b3dgs.lionengine,com.b3dgs
  e,com.b3dgs.lionengine.stream";version="0.1.0"
 Import-Package: com.b3dgs.lionengine,com.b3dgs.lionengine.core,com.b3dgs
  .lionengine.core.awt,com.b3dgs.lionengine.game,com.b3dgs.lionengine.gam
- e.map,com.b3dgs.lionengine.game.object,com.b3dgs.lionengine.stream,org.
- junit;resolution:=optional
+ e.collision.object,com.b3dgs.lionengine.game.map,com.b3dgs.lionengine.g
+ ame.object,com.b3dgs.lionengine.stream,org.junit;resolution:=optional
+JDK_6_HOME: C:\Program Files\Java\jdk1.6.0_45
+JDK_7_HOME: C:\Program Files\Java\jdk1.7.0_80
+JDK_8_HOME: C:\Program Files\Java\jdk1.8.0_74
