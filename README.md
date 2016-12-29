@@ -28,9 +28,8 @@ Note: A tribute to _Blizzard_'s classic __Warcraft: Orcs & Humans__ (1994). Copy
 
 * #### __Target__
 >  * Uses the [__LionEngine__](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)
->  * Requires Java 8
->  * Multiplatform (tested on Windows, Linux, Mac, Android)
->  * Can be played from a browser (Firefox, IE...)
+>  * Requires Java 6
+>  * Multiplatform (tested on Windows, Linux, Android)
 >  * Need at least 32MB of RAM
 >  * Need at least 6MB of free disk space
 
