@@ -15,36 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.warcraft;
 
 /**
- * List of available musics.
+ * PC package base.
  */
-public enum Music
-{
-    /** Orc music. */
-    ORC("intro.sc68");
-
-    /** Music filename. */
-    private final String filename;
-
-    /**
-     * Constructor.
-     * 
-     * @param filename The music filename.
-     */
-    Music(String filename)
-    {
-        this.filename = filename;
-    }
-
-    /**
-     * Get the music filename.
-     * 
-     * @return The music filename.
-     */
-    public String getFilename()
-    {
-        return filename;
-    }
-}
+package com.b3dgs.warcraft;

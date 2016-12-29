@@ -31,6 +31,11 @@
       <plugin id="com.b3dgs.lionengine.core.awt"/>
       <plugin id="com.b3dgs.lionengine.core.swt"/>
       <plugin id="com.b3dgs.lionengine.editor"/>
+      <plugin id="com.b3dgs.lionengine.editor.animation"/>
+      <plugin id="com.b3dgs.lionengine.editor.collision"/>
+      <plugin id="com.b3dgs.lionengine.editor.map"/>
+      <plugin id="com.b3dgs.lionengine.editor.object"/>
+      <plugin id="com.b3dgs.lionengine.editor.pathfinding"/>
       <plugin id="com.b3dgs.lionengine.game"/>
       <plugin id="com.b3dgs.warcraft.editor"/>
       <plugin id="com.b3dgs.warcraft.game"/>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:transition in="none" out="none" type="CENTER">
+        <lionengine:tile number="32" sheet="0"/>
+        <lionengine:tile number="30" sheet="0"/>
+        <lionengine:tile number="13" sheet="0"/>
+        <lionengine:tile number="29" sheet="0"/>
+        <lionengine:tile number="28" sheet="0"/>
+        <lionengine:tile number="12" sheet="0"/>
+        <lionengine:tile number="11" sheet="0"/>
+        <lionengine:tile number="26" sheet="0"/>
+        <lionengine:tile number="7" sheet="0"/>
+        <lionengine:tile number="38" sheet="0"/>
+        <lionengine:tile number="19" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="test" out="test" type="CENTER">
+        <lionengine:tile number="16" sheet="0"/>
+        <lionengine:tile number="15" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="new" out="new" type="CENTER">
+        <lionengine:tile number="0" sheet="0"/>
+    </lionengine:transition>
+</lionengine:transitions>

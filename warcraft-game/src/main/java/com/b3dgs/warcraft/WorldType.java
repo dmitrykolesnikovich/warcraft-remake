@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2016 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,8 +20,8 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.stream.FileReading;
-import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.io.FileReading;
+import com.b3dgs.lionengine.io.FileWriting;
 
 /**
  * List of world types.
@@ -92,10 +92,6 @@ public enum WorldType
     {
         return name().toLowerCase(Locale.ENGLISH);
     }
-
-    /*
-     * Object
-     */
 
     @Override
     public String toString()

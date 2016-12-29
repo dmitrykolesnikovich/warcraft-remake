@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2016 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +17,11 @@
  */
 package com.b3dgs.warcraft;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.EngineAwt;
+import com.b3dgs.lionengine.core.sequence.Loader;
 
 /**
  * Program starts here.
@@ -33,8 +32,6 @@ public final class AppWarcraft
     public static final String NAME = "Warcraft Remake";
     /** Application version. */
     public static final Version VERSION = Version.create(0, 1, 0);
-    /** Resources directory. */
-    public static final String RESOURCES_DIR = "resources";
 
     /**
      * Main function.
@@ -43,10 +40,9 @@ public final class AppWarcraft
      */
     public static void main(String[] args)
     {
-        EngineAwt.start(NAME, VERSION, RESOURCES_DIR);
-        LionEngineException.setIgnoreEngineTrace(false);
+        EngineAwt.start(NAME, VERSION, AppWarcraft.class);
 
-        final Resolution output = new Resolution(640, 480, 60);
+        final Resolution output = new Resolution(640, 400, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
         loader.start(config, Scene.class);
