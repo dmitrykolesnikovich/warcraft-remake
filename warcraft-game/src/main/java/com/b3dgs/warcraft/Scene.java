@@ -20,7 +20,6 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.SequenceGame;
@@ -37,8 +36,6 @@ import com.b3dgs.lionengine.util.UtilStream;
  */
 public class Scene extends SequenceGame
 {
-    private static final Resolution NATIVE = new Resolution(320, 200, 60);
-
     /**
      * Import the level and save it.
      * 
@@ -73,7 +70,7 @@ public class Scene extends SequenceGame
      */
     public Scene(Context context)
     {
-        super(context, NATIVE, new WorldCreator()
+        super(context, Constant.NATIVE, new WorldCreator()
         {
             @Override
             public WorldGame createWorld(Context context, Services services)
@@ -82,7 +79,7 @@ public class Scene extends SequenceGame
             }
         });
 
-        level = Level.SWAMP;
+        level = Level.FOREST;
     }
 
     @Override

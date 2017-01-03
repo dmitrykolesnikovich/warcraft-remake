@@ -24,13 +24,20 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.WorldGame;
+import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
@@ -76,13 +83,16 @@ public class World extends WorldGame
 
         map.addFeature(new MapTileViewerModel());
         map.addFeature(new MapTilePersisterModel());
+        map.addFeature(new MapTileGroupModel());
+        map.addFeature(new MapTilePathModel());
         handler.add(map);
 
         final Selector selector = new Selector();
-        selector.addFeature(new LayerableModel(1));
+        selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(Mouse.LEFT);
+        selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
         handler.add(selector);
     }
 
@@ -137,6 +147,9 @@ public class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         map.getFeature(MapTilePersister.class).load(file);
+        map.getFeature(MapTileGroup.class).loadGroups(Medias.create(map.getMedia().getParentPath(), "groups.xml"));
+        map.getFeature(MapTilePath.class)
+           .loadPathfinding(Medias.create(map.getMedia().getParentPath(), "pathfinding.xml"));
 
         minimap.load();
         minimap.automaticColor();
@@ -153,6 +166,10 @@ public class World extends WorldGame
 
         hud.load();
         hud.prepare();
+
+        final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "peon.xml"));
+        peon.getFeature(Pathfindable.class).setLocation(10, 10);
+        handler.add(peon);
     }
 
     @Override

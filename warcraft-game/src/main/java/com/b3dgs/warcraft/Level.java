@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.core.Medias;
  */
 public enum Level
 {
+    /** Forest level. */
+    FOREST(WorldType.FOREST, "forest"),
     /** Swamp level. */
     SWAMP(WorldType.SWAMP, "swamp");
 
