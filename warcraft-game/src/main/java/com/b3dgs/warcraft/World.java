@@ -22,13 +22,13 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
+import com.b3dgs.lionengine.game.feature.selector.Hud;
 import com.b3dgs.lionengine.game.feature.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -43,7 +43,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterMode
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Image;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.Keyboard;
@@ -60,12 +62,12 @@ public class World extends WorldGame
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
 
+    private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
     private final MapTile map = services.create(MapTileGame.class);
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
-    private final Image hud = Drawable.loadImage(Medias.create("hud.png"));
 
     /**
      * Create the world.
@@ -87,13 +89,19 @@ public class World extends WorldGame
         map.addFeature(new MapTilePathModel());
         handler.add(map);
 
-        final Selector selector = new Selector();
+        final Hud hud = factory.create(Medias.create("Hud.xml"));
+        handler.add(hud);
+
+        final Selector selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(Mouse.LEFT);
         selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
-        handler.add(selector);
+
+        text.setLocation(74, 192);
+
+        services.add(Integer.valueOf(source.getRate()));
     }
 
     /**
@@ -129,12 +137,7 @@ public class World extends WorldGame
     private void drawFov(Graphic g)
     {
         g.setColor(ColorRgba.GREEN);
-
-        final int x = (int) Math.floor((camera.getX() + camera.getViewX()) / map.getTileWidth());
-        final int y = (int) -Math.floor((camera.getY() + camera.getHeight()) / map.getTileHeight());
-        final int width = camera.getWidth() / map.getTileWidth();
-        final int height = camera.getHeight() / map.getTileHeight();
-        g.drawRect(MINIMAP_X + x, MINIMAP_Y + y + minimap.getHeight(), width, height, false);
+        camera.drawFov(g, MINIMAP_X, MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
     }
 
     @Override
@@ -159,15 +162,13 @@ public class World extends WorldGame
         camera.setLimits(map);
 
         cursor.addImage(0, Medias.create("cursor.png"));
+        cursor.addImage(1, Medias.create("cursor_order.png"));
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
-        hud.load();
-        hud.prepare();
-
-        final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "peon.xml"));
+        final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"));
         peon.getFeature(Pathfindable.class).setLocation(10, 10);
         handler.add(peon);
     }
@@ -175,6 +176,7 @@ public class World extends WorldGame
     @Override
     public void update(double extrp)
     {
+        text.setText(com.b3dgs.lionengine.Constant.EMPTY_STRING);
         mouse.update(extrp);
         cursor.update(extrp);
 
@@ -188,8 +190,8 @@ public class World extends WorldGame
     {
         super.render(g);
 
-        hud.render(g);
         minimap.render(g);
+        text.render(g);
         cursor.render(g);
         drawFov(g);
     }

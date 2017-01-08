@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Service;
@@ -33,6 +34,14 @@ import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.ProducerChecker;
+import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
+import com.b3dgs.lionengine.game.feature.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -41,6 +50,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Entity representation base.
@@ -49,12 +59,10 @@ public class Entity extends FeaturableModel
 {
     private static final int FRAME_OFFSET = 8;
 
-    private final boolean visible = true;
+    private boolean visible = true;
 
     @Service private MapTile map;
     @Service private Viewer viewer;
-
-    private boolean selected;
 
     /**
      * Create entity.
@@ -78,24 +86,79 @@ public class Entity extends FeaturableModel
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setGroup(Constant.LAYER_ENTITY);
-        collidable.setCollisionVisibility(true);
         collidable.addCollision(Collision.AUTOMATIC);
 
-        addFeature(new SelectableModel()
+        final Producer producer = addFeatureAndGet(new ProducerModel(setup));
+        producer.setStepsPerSecond(1.0);
+        producer.setChecker(new ProducerChecker()
         {
             @Override
-            public void onSelection(boolean selected)
+            public boolean checkProduction(Featurable featurable)
             {
-                Entity.this.selected = selected;
+                final Producible producible = featurable.getFeature(Producible.class);
+                return UtilMath.isBetween(transformable.getX(),
+                                          producible.getX(),
+                                          producible.getX() + producible.getWidth())
+                       && UtilMath.isBetween(transformable.getY(),
+                                             producible.getY() - producible.getHeight(),
+                                             producible.getY());
+            }
+        });
+        producer.addListener(new ProducerListener()
+        {
+            @Override
+            public void notifyStartProduction(Featurable featurable)
+            {
+                visible = false;
+            }
+
+            @Override
+            public void notifyProducing(Featurable featurable)
+            {
+            }
+
+            @Override
+            public void notifyProduced(Featurable featurable)
+            {
+                visible = true;
+                final Transformable transformable = featurable.getFeature(Transformable.class);
+                pathfindable.setLocation(map.getInTileX(transformable) - 2, map.getInTileY(transformable));
+            }
+
+            @Override
+            public void notifyCanNotProduce(Featurable featurable)
+            {
             }
         });
 
+        final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
+        producible.addListener(new ProducibleListener()
+        {
+            @Override
+            public void notifyProductionStarted()
+            {
+            }
+
+            @Override
+            public void notifyProductionProgress()
+            {
+            }
+
+            @Override
+            public void notifyProductionEnded()
+            {
+                surface.setFrame(2);
+            }
+        });
+
+        final Selectable selectable = addFeatureAndGet(new SelectableModel());
         addFeature(new RefreshableModel(new Updatable()
         {
             @Override
             public void update(double extrp)
             {
                 pathfindable.update(extrp);
+                producer.update(extrp);
                 surface.setLocation(viewer, transformable);
             }
         }));
@@ -108,7 +171,7 @@ public class Entity extends FeaturableModel
                 if (visible)
                 {
                     surface.render(g);
-                    if (selected)
+                    if (selectable.isSelected())
                     {
                         g.setColor(ColorRgba.GREEN);
                         g.drawRect(viewer,

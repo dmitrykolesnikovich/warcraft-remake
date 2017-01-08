@@ -11,6 +11,30 @@
 	<lionengine:animation name="carry_wood" start="66" end="70" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="die" start="113" end="115" speed="0.1375" reversed="false" repeat="false"/>
 	<lionengine:offset x="8" y="8"/>
+    <lionengine:pathfindable>
+        <lionengine:path category="ground" cost="1" block="false">
+            <lionengine:movement>UP</lionengine:movement>
+            <lionengine:movement>LEFT</lionengine:movement>
+            <lionengine:movement>RIGHT</lionengine:movement>
+            <lionengine:movement>DOWN</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_UP_RIGHT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_LEFT</lionengine:movement>
+            <lionengine:movement>DIAGONAL_DOWN_RIGHT</lionengine:movement>
+        </lionengine:path>
+        <lionengine:path category="border" block="true"/>
+        <lionengine:path category="tree" block="true"/>
+        <lionengine:path category="water" block="true"/>
+    </lionengine:pathfindable>
+    <lionengine:producible steps="3"/>
+    <lionengine:producer>
+        <lionengine:action path="action/orc/MoveOrc.xml"/>
+        <lionengine:action path="action/orc/StopOrc.xml"/>
+        <lionengine:action path="action/orc/BuildingStandardOrc.xml">
+            <lionengine:action path="action/orc/CancelOrc.xml" cancel="true"/>
+            <lionengine:action path="action/orc/BuildFarmOrc.xml"/>
+        </lionengine:action>
+    </lionengine:producer>
 	<offsetDeath x="8" y="8"/>
 	<attributes life="100" fov="3"/>
 	<production steps_per_second="1"/>

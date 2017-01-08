@@ -30,6 +30,8 @@ public final class Constant
 
     /** Entity folder. */
     public static final String FOLDER_ENTITY = "entity";
+    /** Action folder. */
+    public static final String FOLDER_ACTION = "action";
     /** Orc folder. */
     public static final String FOLDER_ORC = "orc";
     /** Human folder. */
@@ -39,10 +41,12 @@ public final class Constant
     /** Map folder. */
     public static final String FOLDER_MAP = "map";
 
-    /** Selection layer. */
-    public static final int LAYER_ENTITY = 1;
     /** Entity layer. */
-    public static final int LAYER_SELECTION = LAYER_ENTITY + 1;
+    public static final int LAYER_ENTITY = 1;
+    /** Hud layer. */
+    public static final int LAYER_HUD = LAYER_ENTITY + 1;
+    /** Selection layer. */
+    public static final int LAYER_SELECTION = LAYER_HUD + 1;
 
     /**
      * Private constructor.
