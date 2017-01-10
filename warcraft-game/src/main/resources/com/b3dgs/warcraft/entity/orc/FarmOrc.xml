@@ -3,9 +3,8 @@
     <lionengine:class>com.b3dgs.warcraft.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.producible.ProducibleModel</lionengine:feature>
     <lionengine:surface image="FarmOrc.png" icon="FarmOrc_icon.png"/>
-	<lionengine:frames horizontal="2" vertical="1"/>
+	<lionengine:frames horizontal="2" vertical="1" offsetX="8" offsetY="0"/>
 	<lionengine:size width="32" height="32"/>
-	<lionengine:offset x="8" y="0"/>
     <lionengine:producible steps="3"/>
 	<attributes life="100" fov="3"/>
 	<production steps_per_second="1"/>

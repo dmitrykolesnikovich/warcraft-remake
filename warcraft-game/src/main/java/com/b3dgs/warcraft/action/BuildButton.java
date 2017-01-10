@@ -29,13 +29,14 @@ import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilMath;
-import com.b3dgs.warcraft.Constant;
 
 /**
  * Build button action.
@@ -47,6 +48,7 @@ public class BuildButton extends ActionModel
 
     @Service private Factory factory;
     @Service private Viewer viewer;
+    @Service private Selector selector;
 
     /**
      * Create build button action.
@@ -57,7 +59,7 @@ public class BuildButton extends ActionModel
     {
         super(setup);
 
-        target = Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, setup.getText("media"));
+        target = Medias.create(setup.getText("media").split("/"));
     }
 
     @Override
@@ -71,11 +73,13 @@ public class BuildButton extends ActionModel
     @Override
     protected void assign()
     {
-        for (final Producer producer : handler.get(Producer.class))
+        for (final Selectable selectable : selector.getSelection())
         {
             final Featurable building = factory.create(target);
             final Producible producible = building.getFeature(Producible.class);
             producible.setLocation(area.getX(), area.getY());
+
+            final Producer producer = selectable.getFeature(Producer.class);
             producer.addToProductionQueue(building);
             producer.getFeature(Pathfindable.class).setDestination(area);
         }
@@ -89,7 +93,7 @@ public class BuildButton extends ActionModel
         if (area != null)
         {
             area.set(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
-                     UtilMath.getRoundedC(cursor.getY(), cursor.getHeight()),
+                     UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                      area.getWidthReal(),
                      area.getHeightReal());
         }
@@ -101,7 +105,7 @@ public class BuildButton extends ActionModel
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), area.getWidth(), area.getHeight(), false);
+            g.drawRect(viewer, Origin.BOTTOM_LEFT, area.getX(), area.getY(), area.getWidth(), area.getHeight(), false);
         }
     }
 }

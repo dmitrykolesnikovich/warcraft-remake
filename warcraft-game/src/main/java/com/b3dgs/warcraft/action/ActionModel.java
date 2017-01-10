@@ -76,6 +76,7 @@ public class ActionModel extends FeaturableModel
             public void execute()
             {
                 cursor.setSurfaceId(1);
+                cursor.setRenderingOffset(-5, -5);
                 selector.setEnabled(false);
                 state.set(assignable);
                 ActionModel.this.action();
@@ -92,6 +93,7 @@ public class ActionModel extends FeaturableModel
             {
                 ActionModel.this.assign();
                 cursor.setSurfaceId(0);
+                cursor.setRenderingOffset(0, 0);
                 selector.setEnabled(true);
                 state.set(actionable);
             }

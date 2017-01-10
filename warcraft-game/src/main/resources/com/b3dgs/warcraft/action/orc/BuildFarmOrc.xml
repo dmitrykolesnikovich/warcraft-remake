@@ -3,5 +3,5 @@
     <lionengine:class>com.b3dgs.warcraft.action.BuildButton</lionengine:class>
     <lionengine:surface image="BuildFarmOrc.png"/>
     <lionengine:action name="Build Farm" description="Build a Farm" x="35" y="114" width="27" height="19"/>
-    <media>FarmOrc.xml</media>
+    <media>entity/orc/FarmOrc.xml</media>
 </lionengine:skill>
