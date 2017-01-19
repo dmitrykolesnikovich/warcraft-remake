@@ -20,7 +20,9 @@ package com.b3dgs.warcraft.action;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.drawable.Drawable;
+import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.Service;
@@ -29,7 +31,6 @@ import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
-import com.b3dgs.lionengine.game.feature.actionable.Action;
 import com.b3dgs.lionengine.game.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.feature.assignable.Assign;
@@ -38,6 +39,7 @@ import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.selector.Selector;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.SpriteTiled;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.io.Mouse;
@@ -66,7 +68,11 @@ public class ActionModel extends FeaturableModel
     {
         super();
 
-        addFeature(new LayerableModel(Constant.LAYER_SELECTION));
+        addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
+
+        final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
+        background.load();
+        background.prepare();
 
         actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
@@ -101,6 +107,7 @@ public class ActionModel extends FeaturableModel
 
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);
         surface.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
+        background.setLocation(actionable.getButton().getX() - 2, actionable.getButton().getY() - 2);
 
         addFeature(new RefreshableModel(new Updatable()
         {
@@ -121,6 +128,7 @@ public class ActionModel extends FeaturableModel
             @Override
             public void render(Graphic g)
             {
+                background.render(g);
                 surface.render(g);
                 ActionModel.this.render(g);
             }

@@ -62,7 +62,7 @@ public class World extends WorldGame
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
 
-    private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+    private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
     private final MapTile map = services.create(MapTileGame.class);
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
@@ -93,13 +93,14 @@ public class World extends WorldGame
         handler.add(hud);
 
         final Selector selector = services.get(Selector.class);
-        selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION));
+        selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(Mouse.LEFT);
         selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
 
         text.setLocation(74, 192);
+        text.setColor(new ColorRgba(240, 255, 220));
 
         services.add(Integer.valueOf(source.getRate()));
     }
@@ -160,6 +161,7 @@ public class World extends WorldGame
         minimap.setLocation(MINIMAP_X, MINIMAP_Y);
 
         camera.setLimits(map);
+        camera.teleport(64, 64);
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.addImage(1, Medias.create("cursor_order.png"));
@@ -171,18 +173,24 @@ public class World extends WorldGame
         final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"));
         peon.getFeature(Pathfindable.class).setLocation(10, 10);
         handler.add(peon);
+
+        final Featurable grunt = factory.create(Medias.create(Constant.FOLDER_ENTITY,
+                                                              Constant.FOLDER_ORC,
+                                                              "Grunt.xml"));
+        grunt.getFeature(Pathfindable.class).setLocation(12, 11);
+        handler.add(grunt);
     }
 
     @Override
     public void update(double extrp)
     {
         text.setText(com.b3dgs.lionengine.Constant.EMPTY_STRING);
+
+        updateNavigation(extrp);
         mouse.update(extrp);
         cursor.update(extrp);
 
         super.update(extrp);
-
-        updateNavigation(extrp);
     }
 
     @Override
@@ -192,7 +200,7 @@ public class World extends WorldGame
 
         minimap.render(g);
         text.render(g);
-        cursor.render(g);
         drawFov(g);
+        cursor.render(g);
     }
 }

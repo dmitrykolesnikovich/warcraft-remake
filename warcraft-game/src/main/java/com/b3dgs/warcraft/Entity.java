@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Service;
@@ -35,8 +34,6 @@ import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.ProducerChecker;
-import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
@@ -44,23 +41,18 @@ import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.SpriteAnimated;
-import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Entity representation base.
  */
 public class Entity extends FeaturableModel
 {
-    private boolean visible = true;
-
     @Service private MapTile map;
     @Service private Viewer viewer;
 
@@ -73,7 +65,7 @@ public class Entity extends FeaturableModel
     {
         super(setup);
 
-        addFeature(new LayerableModel(Constant.LAYER_ENTITY));
+        addFeature(new LayerableModel(setup));
 
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(setup));
@@ -85,6 +77,8 @@ public class Entity extends FeaturableModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
+        final EntityStats stats = addFeatureAndGet(new EntityStats(setup));
+
         final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setGroup(Constant.LAYER_ENTITY);
         collidable.addCollision(Collision.AUTOMATIC);
@@ -93,47 +87,6 @@ public class Entity extends FeaturableModel
 
         final Producer producer = addFeatureAndGet(new ProducerModel(setup));
         producer.setStepsPerSecond(1.0);
-        producer.setChecker(new ProducerChecker()
-        {
-            @Override
-            public boolean checkProduction(Featurable featurable)
-            {
-                return UtilMath.getDistance(featurable.getFeature(Producible.class),
-                                            transformable) < map.getTileWidth();
-            }
-        });
-        producer.addListener(new ProducerListener()
-        {
-            @Override
-            public void notifyStartProduction(Featurable featurable)
-            {
-                visible = false;
-            }
-
-            @Override
-            public void notifyProducing(Featurable featurable)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyProduced(Featurable featurable)
-            {
-                producer.getFeature(Pathfindable.class).clearPath();
-
-                final CoordTile coord = map.getFeature(MapTilePath.class)
-                                           .getFreeTileAround(pathfindable, featurable.getFeature(Pathfindable.class));
-                pathfindable.setLocation(coord);
-
-                visible = true;
-            }
-
-            @Override
-            public void notifyCanNotProduce(Featurable featurable)
-            {
-                // Nothing to do
-            }
-        });
 
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
         producible.addListener(new ProducibleListener()
@@ -158,7 +111,6 @@ public class Entity extends FeaturableModel
             }
         });
 
-        final Selectable selectable = addFeatureAndGet(new SelectableModel());
         addFeature(new RefreshableModel(new Updatable()
         {
             @Override
@@ -170,12 +122,14 @@ public class Entity extends FeaturableModel
             }
         }));
 
+        final Selectable selectable = addFeatureAndGet(new SelectableModel());
+
         addFeature(new DisplayableModel(new Renderable()
         {
             @Override
             public void render(Graphic g)
             {
-                if (visible)
+                if (stats.isVisible())
                 {
                     surface.render(g);
                     collidable.render(g);
@@ -183,9 +137,9 @@ public class Entity extends FeaturableModel
                     {
                         g.setColor(ColorRgba.GREEN);
                         g.drawRect(viewer,
-                                   Origin.TOP_LEFT,
+                                   Origin.BOTTOM_LEFT,
                                    transformable.getX(),
-                                   transformable.getY() + surface.getFrameOffsetY() + surface.getFrameHeight(),
+                                   transformable.getY(),
                                    transformable.getWidth(),
                                    transformable.getHeight(),
                                    false);

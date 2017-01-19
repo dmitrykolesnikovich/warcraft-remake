@@ -19,37 +19,33 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**
- * Move action.
+ * Attack action.
  */
-public class Stop extends ActionModel
+public class Attack extends ActionModel
 {
     /**
-     * Create move action.
+     * Create attack action.
      * 
      * @param setup The setup reference.
      */
-    public Stop(Setup setup)
+    public Attack(Setup setup)
     {
         super(setup);
+    }
 
-        actionable.setAction(new Action()
+    @Override
+    protected void assign()
+    {
+        final List<Selectable> selection = selector.getSelection();
+        final int n = selection.size();
+        for (int i = 0; i < n; i++)
         {
-            @Override
-            public void execute()
-            {
-                final List<Selectable> selection = selector.getSelection();
-                final int n = selection.size();
-                for (int i = 0; i < n; i++)
-                {
-                    selection.get(i).getFeature(Pathfindable.class).stopMoves();
-                }
-            }
-        });
+            selection.get(i).getFeature(Pathfindable.class).setDestination(cursor);
+        }
     }
 }

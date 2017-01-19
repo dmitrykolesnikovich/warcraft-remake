@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.orc.ProduceGrunt</lionengine:class>
-	<icon>ProduceGrunt.png</icon>
-	<name>Produce Grunt</name>
-	<description>Produce a Grunt</description>
-	<race>orc</race>
+    <lionengine:class>com.b3dgs.warcraft.action.ProduceButton</lionengine:class>
+    <lionengine:surface image="ProduceGrunt.png"/>
+    <lionengine:action name="Produce Grunt" description="Produce a Grunt" x="4" y="118" width="27" height="19"/>
+    <media>entity/orc/Grunt.xml</media>
 </lionengine:skill>

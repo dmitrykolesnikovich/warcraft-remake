@@ -2,5 +2,5 @@
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.action.ActionModel</lionengine:class>
     <lionengine:surface image="BuildingStandardOrc.png"/>
-    <lionengine:action name="Building" description="Standard building" x="4" y="136" width="27" height="19"/>
+    <lionengine:action name="Building" description="Standard building" x="4" y="164" width="27" height="19"/>
 </lionengine:skill>

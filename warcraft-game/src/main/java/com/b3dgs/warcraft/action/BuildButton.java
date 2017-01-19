@@ -27,16 +27,23 @@ import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Factory;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.ProducerChecker;
+import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.selector.Selector;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.Xml;
 import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.warcraft.EntityStats;
 
 /**
  * Build button action.
@@ -49,6 +56,7 @@ public class BuildButton extends ActionModel
     @Service private Factory factory;
     @Service private Viewer viewer;
     @Service private Selector selector;
+    @Service private MapTile map;
 
     /**
      * Create build button action.
@@ -80,8 +88,56 @@ public class BuildButton extends ActionModel
             producible.setLocation(area.getX(), area.getY());
 
             final Producer producer = selectable.getFeature(Producer.class);
+            final Transformable transformable = producer.getFeature(Transformable.class);
+            producer.setChecker(new ProducerChecker()
+            {
+                @Override
+                public boolean checkProduction(Featurable featurable)
+                {
+                    return UtilMath.getDistance(featurable.getFeature(Producible.class),
+                                                transformable) < map.getTileWidth();
+                }
+            });
+
             producer.addToProductionQueue(building);
-            producer.getFeature(Pathfindable.class).setDestination(area);
+
+            final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
+            pathfindable.setDestination(area);
+
+            final EntityStats stats = producer.getFeature(EntityStats.class);
+            producer.addListener(new ProducerListener()
+            {
+                @Override
+                public void notifyStartProduction(Featurable featurable)
+                {
+                    stats.setVisible(false);
+                }
+
+                @Override
+                public void notifyProducing(Featurable featurable)
+                {
+                    // Nothing to do
+                }
+
+                @Override
+                public void notifyProduced(Featurable featurable)
+                {
+                    pathfindable.clearPath();
+
+                    final CoordTile coord = map.getFeature(MapTilePath.class)
+                                               .getFreeTileAround(pathfindable,
+                                                                  featurable.getFeature(Pathfindable.class));
+                    pathfindable.setLocation(coord);
+
+                    stats.setVisible(true);
+                }
+
+                @Override
+                public void notifyCanNotProduce(Featurable featurable)
+                {
+                    // Nothing to do
+                }
+            });
         }
         area = null;
         cursor.setVisible(true);

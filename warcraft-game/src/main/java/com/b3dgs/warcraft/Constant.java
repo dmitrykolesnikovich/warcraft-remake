@@ -41,12 +41,26 @@ public final class Constant
     /** Map folder. */
     public static final String FOLDER_MAP = "map";
 
+    /** Buildings layer. */
+    public static final int LAYER_BUILDING = 1;
     /** Entity layer. */
-    public static final int LAYER_ENTITY = 1;
+    public static final int LAYER_ENTITY = LAYER_BUILDING + 1;
     /** Hud layer. */
     public static final int LAYER_HUD = LAYER_ENTITY + 1;
     /** Selection layer. */
     public static final int LAYER_SELECTION = LAYER_HUD + 1;
+
+    /** Selection render layer. */
+    public static final int LAYER_SELECTION_RENDER = LAYER_HUD + 1;
+    /** Hud render layer. */
+    public static final int LAYER_HUD_RENDER = LAYER_SELECTION_RENDER + 1;
+    /** Hud menus render layer. */
+    public static final int LAYER_MENUS_RENDER = LAYER_HUD_RENDER + 1;
+
+    /** Entity info X. */
+    public static final int ENTITY_INFO_X = 2;
+    /** Entity info X. */
+    public static final int ENTITY_INFO_Y = 72;
 
     /**
      * Private constructor.

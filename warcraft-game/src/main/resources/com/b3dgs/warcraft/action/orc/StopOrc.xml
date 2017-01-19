@@ -2,5 +2,5 @@
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.action.Stop</lionengine:class>
 	<lionengine:surface image="StopOrc.png"/>
-    <lionengine:action name="Stop" description="Stop movement" x="35" y="114" width="27" height="19"/>
+    <lionengine:action name="Stop" description="Stop movement" x="38" y="118" width="27" height="19"/>
 </lionengine:skill>
