@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Setup;
-import com.b3dgs.lionengine.game.feature.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**

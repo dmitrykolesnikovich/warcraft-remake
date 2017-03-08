@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
-import com.b3dgs.lionengine.game.feature.selector.Hud;
-import com.b3dgs.lionengine.game.feature.selector.Selector;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -48,8 +48,8 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.Keyboard;
-import com.b3dgs.lionengine.io.Mouse;
+import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * World game representation.
