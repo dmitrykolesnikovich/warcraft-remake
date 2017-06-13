@@ -20,6 +20,7 @@ package com.b3dgs.warcraft.action;
 import java.util.List;
 
 import com.b3dgs.lionengine.game.Action;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -32,11 +33,12 @@ public class Stop extends ActionModel
     /**
      * Create move action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Stop(Setup setup)
+    public Stop(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
 
         actionable.setAction(new Action()
         {

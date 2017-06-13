@@ -30,7 +30,7 @@ public class Activator implements BundleActivator
     /** Plugin name. */
     public static final String PLUGIN_NAME = "Warcraft Remake Editor";
     /** Plugin version. */
-    public static final Version PLUGIN_VERSION = Version.create(0, 1, 0);
+    public static final Version PLUGIN_VERSION = Version.create(0, 0, 1);
     /** Plugin website. */
     public static final String PLUGIN_WEBSITE = "www.b3dgs.com";
     /** Plugin ID. */

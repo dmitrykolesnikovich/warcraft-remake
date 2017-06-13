@@ -15,44 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.android;
+
+import android.os.Bundle;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.audio.AudioFactory;
+import com.b3dgs.lionengine.audio.AudioVoidFormat;
+import com.b3dgs.lionengine.core.android.ActivityGame;
+import com.b3dgs.lionengine.core.android.EngineAndroid;
 import com.b3dgs.lionengine.core.sequence.Loader;
+import com.b3dgs.warcraft.Constant;
+import com.b3dgs.warcraft.Loading;
 
 /**
- * Program starts here.
+ * Android entry point.
  */
-public final class AppWarcraft
+public final class ActivityWarcraft extends ActivityGame
 {
-    /** Application name. */
-    public static final String NAME = "Warcraft Remake";
-    /** Application version. */
-    public static final Version VERSION = Version.create(0, 1, 0);
-
     /**
-     * Main function.
-     * 
-     * @param args The arguments (none).
+     * Constructor.
      */
-    public static void main(String[] args)
+    public ActivityWarcraft()
     {
-        EngineAwt.start(NAME, VERSION, AppWarcraft.class);
-
-        final Resolution output = new Resolution(640, 400, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, Scene.class);
+        super();
     }
 
-    /**
-     * Private constructor.
-     */
-    private AppWarcraft()
+    @Override
+    protected void start(Bundle bundle)
     {
-        throw new RuntimeException();
+        EngineAndroid.start(Constant.NAME, Constant.VERSION, this);
+        AudioFactory.addFormat(new AudioVoidFormat("wav", "lds"));
+        Loader.start(Config.windowed(Constant.NATIVE), Loading.class);
     }
 }

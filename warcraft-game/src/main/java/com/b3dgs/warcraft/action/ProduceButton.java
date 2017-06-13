@@ -23,11 +23,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
@@ -41,21 +40,20 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
  */
 public class ProduceButton extends ActionModel
 {
-    @Service private Factory factory;
-    @Service private Selector selector;
-    @Service private MapTile map;
-
     /**
      * Create build button action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public ProduceButton(Setup setup)
+    public ProduceButton(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
 
         final Media target = Medias.create(setup.getText("media").split("/"));
 
+        final Factory factory = services.get(Factory.class);
+        final MapTile map = services.get(MapTile.class);
         actionable.setAction(new Action()
         {
             @Override

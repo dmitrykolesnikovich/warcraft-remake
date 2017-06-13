@@ -46,8 +46,7 @@ public class Scene extends SequenceGame
         final Services services = new Services();
         final MapTile map = services.create(MapTileGame.class);
         map.create(level.getRip());
-        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel());
-        map.prepareFeatures(services);
+        final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         FileWriting output = null;
         try
         {
@@ -58,7 +57,10 @@ public class Scene extends SequenceGame
         {
             Verbose.exception(exception, "Error on saving map !");
         }
-        UtilStream.safeClose(output);
+        finally
+        {
+            UtilStream.safeClose(output);
+        }
     }
 
     private final Level level;
@@ -75,7 +77,7 @@ public class Scene extends SequenceGame
             @Override
             public WorldGame createWorld(Context context, Services services)
             {
-                return new World(context);
+                return new World(context, services);
             }
         });
 

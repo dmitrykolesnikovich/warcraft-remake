@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Factory;
@@ -53,19 +53,25 @@ public class BuildButton extends ActionModel
     private final Media target;
     private Rectangle area;
 
-    @Service private Factory factory;
-    @Service private Viewer viewer;
-    @Service private Selector selector;
-    @Service private MapTile map;
+    private final Factory factory;
+    private final Viewer viewer;
+    private final Selector selector;
+    private final MapTile map;
 
     /**
      * Create build button action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public BuildButton(Setup setup)
+    public BuildButton(Services services, Setup setup)
     {
-        super(setup);
+        super(services, setup);
+
+        factory = services.get(Factory.class);
+        viewer = services.get(Viewer.class);
+        selector = services.get(Selector.class);
+        map = services.get(MapTile.class);
 
         target = Medias.create(setup.getText("media").split("/"));
     }
@@ -144,7 +150,7 @@ public class BuildButton extends ActionModel
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (area != null)
         {
@@ -156,7 +162,7 @@ public class BuildButton extends ActionModel
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {

@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.warcraft</groupId>
         <artifactId>warcraft-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>com.b3dgs.warcraft.editor.product</artifactId>
@@ -14,7 +14,6 @@
         <dependency>
             <groupId>com.b3dgs.warcraft</groupId>
             <artifactId>warcraft-game</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -38,7 +37,6 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-p2-repository-plugin</artifactId>
-                <version>${tycho.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>

@@ -20,11 +20,14 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Context;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
@@ -48,7 +51,7 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.awt.Keyboard;
+import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
@@ -56,37 +59,41 @@ import com.b3dgs.lionengine.io.awt.Mouse;
  */
 public class World extends WorldGame
 {
-    private static final int MOVE_FACTOR = 1;
+    // private static final int MOVE_FACTOR = 1;
     private static final int MINIMAP_X = 3;
     private static final int MINIMAP_Y = 6;
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
+    private static final ColorRgba TEXT_COLOR = new ColorRgba(240, 255, 220);
+    private static final int TEXT_X = 74;
+    private static final int TEXT_Y = 192;
 
     private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
     private final MapTile map = services.create(MapTileGame.class);
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
-    private final Mouse mouse = getInputDevice(Mouse.class);
-    private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
+    private final InputDevicePointer pointer = getInputDevice(InputDevicePointer.class);
+    // private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
 
     /**
      * Create the world.
      * 
      * @param context The context reference.
+     * @param services The services reference.
      */
-    public World(Context context)
+    public World(Context context, Services services)
     {
-        super(context);
+        super(context, services);
 
         final Resolution source = context.getConfig().getSource();
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
         handler.addComponent(new ComponentCollision());
 
-        map.addFeature(new MapTileViewerModel());
-        map.addFeature(new MapTilePersisterModel());
+        map.addFeature(new MapTileViewerModel(services));
+        map.addFeature(new MapTilePersisterModel(services));
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTilePathModel());
+        map.addFeature(new MapTilePathModel(services));
         handler.add(map);
 
         final Hud hud = factory.create(Medias.create("Hud.xml"));
@@ -99,8 +106,8 @@ public class World extends WorldGame
         selector.setClickSelection(Mouse.LEFT);
         selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
 
-        text.setLocation(74, 192);
-        text.setColor(new ColorRgba(240, 255, 220));
+        text.setLocation(TEXT_X, TEXT_Y);
+        text.setColor(TEXT_COLOR);
 
         services.add(Integer.valueOf(source.getRate()));
     }
@@ -112,22 +119,26 @@ public class World extends WorldGame
      */
     private void updateNavigation(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.UP))
+        if (pointer.getClick() > 1)
         {
-            camera.moveLocation(extrp, 0, map.getTileHeight() * MOVE_FACTOR);
+            camera.moveLocation(extrp, -pointer.getMoveX(), pointer.getMoveY());
         }
-        if (keyboard.isPressed(Keyboard.DOWN))
-        {
-            camera.moveLocation(extrp, 0, -map.getTileHeight() * MOVE_FACTOR);
-        }
-        if (keyboard.isPressed(Keyboard.LEFT))
-        {
-            camera.moveLocation(extrp, -map.getTileWidth() * MOVE_FACTOR, 0);
-        }
-        if (keyboard.isPressed(Keyboard.RIGHT))
-        {
-            camera.moveLocation(extrp, map.getTileWidth() * MOVE_FACTOR, 0);
-        }
+        // if (keyboard.isPressed(Keyboard.UP))
+        // {
+        // camera.moveLocation(extrp, 0, map.getTileHeight() * MOVE_FACTOR);
+        // }
+        // if (keyboard.isPressed(Keyboard.DOWN))
+        // {
+        // camera.moveLocation(extrp, 0, -map.getTileHeight() * MOVE_FACTOR);
+        // }
+        // if (keyboard.isPressed(Keyboard.LEFT))
+        // {
+        // camera.moveLocation(extrp, -map.getTileWidth() * MOVE_FACTOR, 0);
+        // }
+        // if (keyboard.isPressed(Keyboard.RIGHT))
+        // {
+        // camera.moveLocation(extrp, map.getTileWidth() * MOVE_FACTOR, 0);
+        // }
     }
 
     /**
@@ -152,8 +163,8 @@ public class World extends WorldGame
     {
         map.getFeature(MapTilePersister.class).load(file);
         map.getFeature(MapTileGroup.class).loadGroups(Medias.create(map.getMedia().getParentPath(), "groups.xml"));
-        map.getFeature(MapTilePath.class)
-           .loadPathfinding(Medias.create(map.getMedia().getParentPath(), "pathfinding.xml"));
+        final Media pathfinding = Medias.create(map.getMedia().getParentPath(), "pathfinding.xml");
+        map.getFeature(MapTilePath.class).loadPathfinding(pathfinding);
 
         minimap.load();
         minimap.automaticColor();
@@ -161,24 +172,40 @@ public class World extends WorldGame
         minimap.setLocation(MINIMAP_X, MINIMAP_Y);
 
         camera.setLimits(map);
-        camera.teleport(64, 64);
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.addImage(1, Medias.create("cursor_order.png"));
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
-        cursor.setInputDevice(mouse);
+        cursor.setInputDevice(pointer);
         cursor.setViewer(camera);
 
+        final int baseX = 10;
+        final int baseY = 10;
+        createBase(baseX, baseY);
+    }
+
+    /**
+     * Create base world.
+     * 
+     * @param x The horizontal base.
+     * @param y The vertical base.
+     */
+    private void createBase(int x, int y)
+    {
         final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"));
-        peon.getFeature(Pathfindable.class).setLocation(10, 10);
+        peon.getFeature(Pathfindable.class).setLocation(x, y);
         handler.add(peon);
 
         final Featurable grunt = factory.create(Medias.create(Constant.FOLDER_ENTITY,
                                                               Constant.FOLDER_ORC,
                                                               "Grunt.xml"));
-        grunt.getFeature(Pathfindable.class).setLocation(12, 11);
+        grunt.getFeature(Pathfindable.class).setLocation(x + 2, y + 1);
         handler.add(grunt);
+
+        camera.teleport(grunt.getFeature(Transformable.class).getX()
+                        - camera.getWidth() / 2,
+                        grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
     }
 
     @Override
@@ -187,7 +214,7 @@ public class World extends WorldGame
         text.setText(com.b3dgs.lionengine.Constant.EMPTY_STRING);
 
         updateNavigation(extrp);
-        mouse.update(extrp);
+        pointer.update(extrp);
         cursor.update(extrp);
 
         super.update(extrp);
@@ -201,6 +228,9 @@ public class World extends WorldGame
         minimap.render(g);
         text.render(g);
         drawFov(g);
-        cursor.render(g);
+        if (!cursor.hasClicked(2))
+        {
+            cursor.render(g);
+        }
     }
 }

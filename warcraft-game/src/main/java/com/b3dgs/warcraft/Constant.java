@@ -19,12 +19,17 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
 
 /**
  * Game constants.
  */
 public final class Constant
 {
+    /** Application name. */
+    public static final String NAME = "Warcraft Remake";
+    /** Application version. */
+    public static final Version VERSION = Version.create(0, 0, 1);
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
 
@@ -40,6 +45,8 @@ public final class Constant
     public static final String FOLDER_NEUTRAL = "neutral";
     /** Map folder. */
     public static final String FOLDER_MAP = "map";
+    /** Menu folder. */
+    public static final String FOLDER_MENU = "menu";
 
     /** Buildings layer. */
     public static final int LAYER_BUILDING = 1;

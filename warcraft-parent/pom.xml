@@ -3,21 +3,20 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <b3dgs.version>1.0.2</b3dgs.version>
         <buildtools-project>warcraft-buildtools</buildtools-project>
-        <lionengine.version>8.4.0-SNAPSHOT</lionengine.version>
+        <lionengine.version>8.4.0</lionengine.version>
     </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
     </parent>
     <groupId>com.b3dgs.warcraft</groupId>
     <artifactId>warcraft-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>Warcraft Remake</name>
-    <description>Remake of the original Warcraft on the Amiga by Thalion</description>
+    <description>Remake of the original Warcraft on the DOS by Blizzard</description>
     <url>https://github.com/b3dgs/warcraft-remake</url>
     <organization>
         <name>Byron 3D Games Studio</name>
@@ -41,6 +40,13 @@
             </modules>
         </profile>
         <profile>
+            <id>plugins</id>
+            <modules>
+                <module>../com.b3dgs.warcraft.target</module>
+                <module>../com.b3dgs.warcraft.editor</module>
+            </modules>
+        </profile>
+        <profile>
             <id>editor</id>
             <modules>
                 <module>../com.b3dgs.warcraft.target</module>
@@ -48,15 +54,20 @@
                 <module>../com.b3dgs.warcraft.editor.product</module>
             </modules>
         </profile>
+		<profile>
+            <id>target</id>
+            <modules>
+                <module>../warcraft-buildtools</module>
+                <module>../warcraft-game</module>
+                <module>../warcraft-android</module>
+                <module>../warcraft-pc</module>
+            </modules>
+        </profile>
     </profiles>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-audio-sc68</artifactId>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -81,13 +92,13 @@
             </dependency>
             <dependency>
                 <groupId>com.b3dgs.lionengine</groupId>
-                <artifactId>lionengine-audio-sc68</artifactId>
+                <artifactId>lionengine-game</artifactId>
                 <version>${lionengine.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.b3dgs.lionengine</groupId>
-                <artifactId>lionengine-game</artifactId>
-                <version>${lionengine.version}</version>
+                <groupId>com.b3dgs.warcraft</groupId>
+                <artifactId>warcraft-game</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

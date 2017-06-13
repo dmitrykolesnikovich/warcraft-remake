@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -48,16 +48,19 @@ public class EntityStats extends FeatureModel implements Renderable
     private final Image icon;
     private boolean visible = true;
 
-    @Service private Text text;
+    private final Text text;
 
     /**
      * Create icon provider.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public EntityStats(Setup setup)
+    public EntityStats(Services services, Setup setup)
     {
         super();
+
+        text = services.get(Text.class);
 
         name = setup.getString("name");
         final Media media = setup.getIconFile();

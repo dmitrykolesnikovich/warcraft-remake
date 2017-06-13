@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.warcraft</groupId>
         <artifactId>warcraft-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>com.b3dgs.warcraft.editor</artifactId>
@@ -12,8 +12,8 @@
     <packaging>eclipse-plugin</packaging>
     <repositories>
         <repository>
-            <id>mars</id>
-            <url>http://download.eclipse.org/releases/mars</url>
+            <id>neon</id>
+            <url>http://download.eclipse.org/releases/neon</url>
             <layout>p2</layout>
         </repository>
     </repositories>
@@ -21,7 +21,6 @@
         <dependency>
             <groupId>com.b3dgs.warcraft</groupId>
             <artifactId>warcraft-game</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>

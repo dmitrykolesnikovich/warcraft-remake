@@ -25,12 +25,11 @@ import com.b3dgs.lionengine.core.drawable.Drawable;
 import com.b3dgs.lionengine.game.Action;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.FeaturableModel;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
-import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.assignable.Assign;
@@ -48,25 +47,37 @@ import com.b3dgs.warcraft.Constant;
 /**
  * Move action.
  */
-public class ActionModel extends FeaturableModel
+public class ActionModel extends FeaturableModel implements Updatable, Renderable
 {
+    private static final int CURSOR_OFFSET = -5;
+
+    /** Actionable reference. */
     protected final Actionable actionable;
+    /** Assignable reference. */
     protected final Assignable assignable;
+    /** Current state reference. */
     protected final AtomicReference<Updatable> state;
 
-    @Service protected Text text;
-    @Service protected Cursor cursor;
-    @Service protected Handler handler;
-    @Service protected Selector selector;
+    /** Cursor reference. */
+    protected final Cursor cursor;
+    /** Selector reference. */
+    protected final Selector selector;
+    /** Text reference. */
+    protected final Text text;
 
     /**
      * Create move action.
      * 
+     * @param services The services reference.
      * @param setup The setup reference.
      */
-    public ActionModel(Setup setup)
+    public ActionModel(Services services, Setup setup)
     {
         super();
+
+        cursor = services.get(Cursor.class);
+        selector = services.get(Selector.class);
+        text = services.get(Text.class);
 
         addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
 
@@ -74,7 +85,7 @@ public class ActionModel extends FeaturableModel
         background.load();
         background.prepare();
 
-        actionable = addFeatureAndGet(new ActionableModel(setup));
+        actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setClickAction(Mouse.LEFT);
         actionable.setAction(new Action()
         {
@@ -82,7 +93,7 @@ public class ActionModel extends FeaturableModel
             public void execute()
             {
                 cursor.setSurfaceId(1);
-                cursor.setRenderingOffset(-5, -5);
+                cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
                 selector.setEnabled(false);
                 state.set(assignable);
                 ActionModel.this.action();
@@ -90,7 +101,7 @@ public class ActionModel extends FeaturableModel
         });
         state = new AtomicReference<Updatable>(actionable);
 
-        assignable = addFeatureAndGet(new AssignableModel());
+        assignable = addFeatureAndGet(new AssignableModel(services));
         assignable.setClickAssign(Mouse.LEFT);
         assignable.setAssign(new Assign()
         {
@@ -135,22 +146,36 @@ public class ActionModel extends FeaturableModel
         }));
     }
 
+    /**
+     * Executed action. Does nothing by default.
+     */
     protected void action()
     {
         // Nothing by default
     }
 
+    /**
+     * Executed assign. Does nothing by default.
+     */
     protected void assign()
     {
         // Nothing by default
     }
 
-    protected void update(double extrp)
+    /**
+     * {@inheritDoc} Does nothing by default.
+     */
+    @Override
+    public void update(double extrp)
     {
         // Nothing by default
     }
 
-    protected void render(Graphic g)
+    /**
+     * {@inheritDoc} Does nothing by default.
+     */
+    @Override
+    public void render(Graphic g)
     {
         // Nothing by default
     }
