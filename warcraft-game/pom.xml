@@ -5,19 +5,15 @@
     <parent>
         <groupId>com.b3dgs.warcraft</groupId>
         <artifactId>warcraft-parent</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>../warcraft-parent</relativePath>
     </parent>
     <artifactId>warcraft-game</artifactId>
-    <name>Warcraft Remake Game</name>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-core-awt</artifactId>
-            <version>${lionengine.version}</version>
-        </dependency>
-    </dependencies>
+    <name>Warcraft Remake Game</name>
+    <properties>
+        <checkstyle.skip>true</checkstyle.skip>
+    </properties>
     <build>
         <plugins>
             <plugin>

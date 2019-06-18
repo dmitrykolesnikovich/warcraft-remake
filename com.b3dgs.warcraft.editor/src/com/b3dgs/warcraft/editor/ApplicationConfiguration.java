@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2013-2017 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2019 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package com.b3dgs.warcraft.editor;
 
@@ -32,8 +31,8 @@ import org.eclipse.e4.ui.workbench.UIEvents;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.project.ProjectImportHandler;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectFactory;
@@ -42,6 +41,8 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppender;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
@@ -133,12 +134,15 @@ public class ApplicationConfiguration
                                   .add(new PrefMapRegion(new TileRef(0, 0), new TileArea(4, 4, 60, 60), 1, 100));
 
                         final MapGenerator generator = new MapGeneratorImpl();
-                        map.append(generator.generateMap(parameters,
-                                                         Arrays.asList(Medias.create("map", "forest", "forest.png")),
-                                                         Medias.create("map", "forest", "sheets.xml"),
-                                                         Medias.create("map", "forest", "groups.xml")),
-                                   0,
-                                   0);
+                        final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(WorldModel.INSTANCE.getServices()));
+                        appender.append(generator.generateMap(parameters,
+                                                              Arrays.asList(Medias.create("map",
+                                                                                          "forest",
+                                                                                          "forest.png")),
+                                                              Medias.create("map", "forest", "sheets.xml"),
+                                                              Medias.create("map", "forest", "groups.xml")),
+                                        0,
+                                        0);
                         UtilPart.getPart(WorldPart.ID, WorldPart.class).update();
                     }
                 }

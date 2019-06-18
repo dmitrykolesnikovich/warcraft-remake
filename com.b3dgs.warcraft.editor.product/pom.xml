@@ -2,38 +2,16 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.b3dgs.warcraft</groupId>
-        <artifactId>warcraft-parent</artifactId>
-        <version>0.0.1</version>
-        <relativePath>../warcraft-parent</relativePath>
+        <groupId>com.b3dgs.warcraft.editor</groupId>
+        <artifactId>warcraft-editor-parent</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <relativePath>../warcraft-editor-parent</relativePath>
     </parent>
     <artifactId>com.b3dgs.warcraft.editor.product</artifactId>
-    <name>Warcraft Remake Editor Product</name>
     <packaging>eclipse-repository</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>com.b3dgs.warcraft</groupId>
-            <artifactId>warcraft-game</artifactId>
-        </dependency>
-    </dependencies>
+    <name>Warcraft Remake Editor Product</name>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>target-platform-configuration</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-versions-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-p2-repository-plugin</artifactId>
@@ -54,19 +32,6 @@
                         <goals>
                             <goal>archive-products</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>lt.velykis.maven</groupId>
-                <artifactId>pde-target-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pde-target</id>
-                        <goals>
-                            <goal>add-pom-dependencies</goal>
-                        </goals>
-                        <phase>none</phase>
                     </execution>
                 </executions>
             </plugin>

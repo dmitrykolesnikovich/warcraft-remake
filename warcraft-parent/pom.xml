@@ -2,20 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <buildtools-project>warcraft-buildtools</buildtools-project>
-        <lionengine.version>8.4.0</lionengine.version>
-    </properties>
     <parent>
         <groupId>com.b3dgs</groupId>
         <artifactId>b3dgs-parent</artifactId>
-        <version>1.0.4</version>
+        <version>1.1.2</version>
     </parent>
     <groupId>com.b3dgs.warcraft</groupId>
     <artifactId>warcraft-parent</artifactId>
-    <packaging>pom</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Warcraft Remake</name>
+    <packaging>pom</packaging>
     <description>Remake of the original Warcraft on the DOS by Blizzard</description>
     <url>https://github.com/b3dgs/warcraft-remake</url>
     <organization>
@@ -28,50 +24,13 @@
         <developerConnection>scm:git:git@github.com:b3dgs/warcraft-remake.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <profiles>
-        <profile>
-            <id>game</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>../warcraft-buildtools</module>
-                <module>../warcraft-game</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>plugins</id>
-            <modules>
-                <module>../com.b3dgs.warcraft.target</module>
-                <module>../com.b3dgs.warcraft.editor</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>editor</id>
-            <modules>
-                <module>../com.b3dgs.warcraft.target</module>
-                <module>../com.b3dgs.warcraft.editor</module>
-                <module>../com.b3dgs.warcraft.editor.product</module>
-            </modules>
-        </profile>
-		<profile>
-            <id>target</id>
-            <modules>
-                <module>../warcraft-buildtools</module>
-                <module>../warcraft-game</module>
-                <module>../warcraft-android</module>
-                <module>../warcraft-pc</module>
-            </modules>
-        </profile>
-    </profiles>
+    <properties>
+        <lionengine.version>9.0.2-SNAPSHOT</lionengine.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-audio-wav</artifactId>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -83,11 +42,6 @@
             <dependency>
                 <groupId>com.b3dgs.lionengine</groupId>
                 <artifactId>lionengine-core</artifactId>
-                <version>${lionengine.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.b3dgs.lionengine</groupId>
-                <artifactId>lionengine-audio-wav</artifactId>
                 <version>${lionengine.version}</version>
             </dependency>
             <dependency>
@@ -110,4 +64,22 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>game</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>../warcraft-game</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>pc</id>
+            <modules>
+                <module>../warcraft-game</module>
+                <module>../warcraft-pc</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

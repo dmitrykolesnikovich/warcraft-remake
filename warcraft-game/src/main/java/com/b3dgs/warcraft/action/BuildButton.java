@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2013-2017 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2019 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,26 +12,26 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package com.b3dgs.warcraft.action;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.Setup;
+import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Factory;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.ProducerChecker;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.io.Xml;
-import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.warcraft.EntityStats;
 
 /**
@@ -95,15 +93,8 @@ public class BuildButton extends ActionModel
 
             final Producer producer = selectable.getFeature(Producer.class);
             final Transformable transformable = producer.getFeature(Transformable.class);
-            producer.setChecker(new ProducerChecker()
-            {
-                @Override
-                public boolean checkProduction(Featurable featurable)
-                {
-                    return UtilMath.getDistance(featurable.getFeature(Producible.class),
-                                                transformable) < map.getTileWidth();
-                }
-            });
+            producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
+                                                                   transformable) < map.getTileWidth());
 
             producer.addToProductionQueue(building);
 

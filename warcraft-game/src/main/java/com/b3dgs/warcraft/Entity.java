@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2013-2017 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2019 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,22 +12,19 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.drawable.Drawable;
-import com.b3dgs.lionengine.game.FeaturableModel;
 import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.Setup;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -44,9 +41,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
-import com.b3dgs.lionengine.graphic.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
 /**
  * Entity representation base.
@@ -113,39 +109,31 @@ public class Entity extends FeaturableModel
 
         final Viewer viewer = services.get(Viewer.class);
 
-        addFeature(new RefreshableModel(new Updatable()
+        addFeature(new RefreshableModel(extrp ->
         {
-            @Override
-            public void update(double extrp)
-            {
-                pathfindable.update(extrp);
-                producer.update(extrp);
-                surface.setLocation(viewer, transformable);
-            }
+            pathfindable.update(extrp);
+            producer.update(extrp);
+            surface.setLocation(viewer, transformable);
         }));
 
         final Selectable selectable = addFeatureAndGet(new SelectableModel());
 
-        addFeature(new DisplayableModel(new Renderable()
+        addFeature(new DisplayableModel(g ->
         {
-            @Override
-            public void render(Graphic g)
+            if (stats.isVisible())
             {
-                if (stats.isVisible())
+                surface.render(g);
+                collidable.render(g);
+                if (selectable.isSelected())
                 {
-                    surface.render(g);
-                    collidable.render(g);
-                    if (selectable.isSelected())
-                    {
-                        g.setColor(ColorRgba.GREEN);
-                        g.drawRect(viewer,
-                                   Origin.BOTTOM_LEFT,
-                                   transformable.getX(),
-                                   transformable.getY(),
-                                   transformable.getWidth(),
-                                   transformable.getHeight(),
-                                   false);
-                    }
+                    g.setColor(ColorRgba.GREEN);
+                    g.drawRect(viewer,
+                               Origin.BOTTOM_LEFT,
+                               transformable.getX(),
+                               transformable.getY(),
+                               transformable.getWidth(),
+                               transformable.getHeight(),
+                               false);
                 }
             }
         }));

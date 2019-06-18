@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2013-2017 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2019 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,21 +12,18 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -52,7 +49,6 @@ import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDevicePointer;
-import com.b3dgs.lionengine.io.awt.Mouse;
 
 /**
  * World game representation.
@@ -78,14 +74,12 @@ public class World extends WorldGame
     /**
      * Create the world.
      * 
-     * @param context The context reference.
      * @param services The services reference.
      */
-    public World(Context context, Services services)
+    public World(Services services)
     {
-        super(context, services);
+        super(services);
 
-        final Resolution source = context.getConfig().getSource();
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
         handler.addComponent(new ComponentCollision());
@@ -103,7 +97,7 @@ public class World extends WorldGame
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
-        selector.setClickSelection(Mouse.LEFT);
+        selector.setClickSelection(1);
         selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
 
         text.setLocation(TEXT_X, TEXT_Y);
@@ -203,8 +197,7 @@ public class World extends WorldGame
         grunt.getFeature(Pathfindable.class).setLocation(x + 2, y + 1);
         handler.add(grunt);
 
-        camera.teleport(grunt.getFeature(Transformable.class).getX()
-                        - camera.getWidth() / 2,
+        camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
                         grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
     }
 
