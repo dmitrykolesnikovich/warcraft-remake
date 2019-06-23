@@ -90,9 +90,10 @@ public class World extends WorldGame
         map.addFeature(new MapTilePathModel(services));
         handler.add(map);
 
-        final Hud hud = factory.create(Medias.create("Hud.xml"));
+        final Hud hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
-
+        hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
+        
         final Selector selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
@@ -100,6 +101,13 @@ public class World extends WorldGame
         selector.setClickSelection(1);
         selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
 
+        hud.addListener(() ->
+        {
+            cursor.setVisible(true);
+            cursor.setSurfaceId(0);
+            selector.setEnabled(true);
+        });
+        
         text.setLocation(TEXT_X, TEXT_Y);
         text.setColor(TEXT_COLOR);
 

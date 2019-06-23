@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
@@ -55,6 +56,7 @@ public class BuildButton extends ActionModel
     private final Viewer viewer;
     private final Selector selector;
     private final MapTile map;
+    private final Hud hud;
 
     /**
      * Create build button action.
@@ -70,6 +72,7 @@ public class BuildButton extends ActionModel
         viewer = services.get(Viewer.class);
         selector = services.get(Selector.class);
         map = services.get(MapTile.class);
+        hud = services.get(Hud.class);
 
         target = Medias.create(setup.getText("media").split("/"));
     }
@@ -138,6 +141,7 @@ public class BuildButton extends ActionModel
         }
         area = null;
         cursor.setVisible(true);
+        hud.clearMenus();
     }
 
     @Override
