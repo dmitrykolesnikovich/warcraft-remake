@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -115,17 +116,17 @@ public class World extends WorldGame
     }
 
     /**
-     * Update map navigation.
+     * Update map navigation with directional device.
      * 
      * @param extrp The extrapolation value.
      */
-    private void updateNavigation(double extrp)
+    private void updateNavigationDirectional(double extrp)
     {
         if (directional.getVerticalDirection() > 0)
         {
             camera.moveLocation(extrp, 0, map.getTileHeight());
         }
-        if (directional.getVerticalDirection() < 0)
+        else if (directional.getVerticalDirection() < 0)
         {
             camera.moveLocation(extrp, 0, -map.getTileHeight());
         }
@@ -133,9 +134,41 @@ public class World extends WorldGame
         {
             camera.moveLocation(extrp, -map.getTileWidth(), 0);
         }
-        if (directional.getHorizontalDirection() > 0)
+        else if (directional.getHorizontalDirection() > 0)
         {
             camera.moveLocation(extrp, map.getTileWidth(), 0);
+        }
+    }
+
+    /**
+     * Update map navigation with pointer device.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateNavigationPointer(double extrp)
+    {
+        if (pointer.getClick() > 1)
+        {
+            if (UtilMath.isBetween(pointer.getY(),
+                                   camera.getViewY() + camera.getHeight() - map.getTileHeight(),
+                                   camera.getViewY() + camera.getHeight() - map.getTileHeight() / 2))
+            {
+                camera.moveLocation(extrp, 0, -map.getTileHeight());
+            }
+            else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + map.getTileHeight() / 2))
+            {
+                camera.moveLocation(extrp, 0, map.getTileHeight());
+            }
+            if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + map.getTileWidth() / 2))
+            {
+                camera.moveLocation(extrp, -map.getTileWidth(), 0);
+            }
+            else if (UtilMath.isBetween(pointer.getX(),
+                                        camera.getViewX() + camera.getWidth() - map.getTileWidth(),
+                                        camera.getViewX() + camera.getWidth() - map.getTileWidth() / 2))
+            {
+                camera.moveLocation(extrp, map.getTileWidth(), 0);
+            }
         }
     }
 
@@ -210,9 +243,10 @@ public class World extends WorldGame
     {
         text.setText(com.b3dgs.lionengine.Constant.EMPTY_STRING);
 
-        updateNavigation(extrp);
         pointer.update(extrp);
         cursor.update(extrp);
+        updateNavigationDirectional(extrp);
+        updateNavigationPointer(extrp);
 
         super.update(extrp);
     }
