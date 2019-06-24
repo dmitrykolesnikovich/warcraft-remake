@@ -48,6 +48,7 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
+import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 
 /**
@@ -55,7 +56,6 @@ import com.b3dgs.lionengine.io.InputDevicePointer;
  */
 public class World extends WorldGame
 {
-    // private static final int MOVE_FACTOR = 1;
     private static final int MINIMAP_X = 3;
     private static final int MINIMAP_Y = 6;
     private static final int VIEW_X = 72;
@@ -69,7 +69,7 @@ public class World extends WorldGame
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
     private final InputDevicePointer pointer = getInputDevice(InputDevicePointer.class);
-    // private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
+    private final InputDeviceDirectional directional = services.add(getInputDevice(InputDeviceDirectional.class));
 
     /**
      * Create the world.
@@ -93,7 +93,7 @@ public class World extends WorldGame
         final Hud hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
         hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
-        
+
         final Selector selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
@@ -107,7 +107,7 @@ public class World extends WorldGame
             cursor.setSurfaceId(0);
             selector.setEnabled(true);
         });
-        
+
         text.setLocation(TEXT_X, TEXT_Y);
         text.setColor(TEXT_COLOR);
 
@@ -121,26 +121,22 @@ public class World extends WorldGame
      */
     private void updateNavigation(double extrp)
     {
-        if (pointer.getClick() > 1)
+        if (directional.getVerticalDirection() > 0)
         {
-            camera.moveLocation(extrp, -pointer.getMoveX(), pointer.getMoveY());
+            camera.moveLocation(extrp, 0, map.getTileHeight());
         }
-        // if (keyboard.isPressed(Keyboard.UP))
-        // {
-        // camera.moveLocation(extrp, 0, map.getTileHeight() * MOVE_FACTOR);
-        // }
-        // if (keyboard.isPressed(Keyboard.DOWN))
-        // {
-        // camera.moveLocation(extrp, 0, -map.getTileHeight() * MOVE_FACTOR);
-        // }
-        // if (keyboard.isPressed(Keyboard.LEFT))
-        // {
-        // camera.moveLocation(extrp, -map.getTileWidth() * MOVE_FACTOR, 0);
-        // }
-        // if (keyboard.isPressed(Keyboard.RIGHT))
-        // {
-        // camera.moveLocation(extrp, map.getTileWidth() * MOVE_FACTOR, 0);
-        // }
+        if (directional.getVerticalDirection() < 0)
+        {
+            camera.moveLocation(extrp, 0, -map.getTileHeight());
+        }
+        if (directional.getHorizontalDirection() < 0)
+        {
+            camera.moveLocation(extrp, -map.getTileWidth(), 0);
+        }
+        if (directional.getHorizontalDirection() > 0)
+        {
+            camera.moveLocation(extrp, map.getTileWidth(), 0);
+        }
     }
 
     /**
