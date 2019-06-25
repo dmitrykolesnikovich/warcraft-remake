@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
@@ -69,7 +70,9 @@ public class World extends WorldGame
     private final MapTile map = services.create(MapTileGame.class);
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
-    private final InputDevicePointer pointer = getInputDevice(InputDevicePointer.class);
+    private final Hud hud;
+    private final Selector selector;
+    private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
     private final InputDeviceDirectional directional = services.add(getInputDevice(InputDeviceDirectional.class));
 
     /**
@@ -91,11 +94,10 @@ public class World extends WorldGame
         map.addFeature(new MapTilePathModel(services));
         handler.add(map);
 
-        final Hud hud = services.add(factory.create(Medias.create("Hud.xml")));
+        hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
-        hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
 
-        final Selector selector = services.get(Selector.class);
+        selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
@@ -107,6 +109,7 @@ public class World extends WorldGame
             cursor.setVisible(true);
             cursor.setSurfaceId(0);
             selector.setEnabled(true);
+            hud.setCancelShortcut(() -> false);
         });
 
         text.setLocation(TEXT_X, TEXT_Y);
@@ -144,9 +147,11 @@ public class World extends WorldGame
      * Update map navigation with pointer device.
      * 
      * @param extrp The extrapolation value.
+     * @return <code>true</code> if map moved, <code>false</code> else.
      */
-    private void updateNavigationPointer(double extrp)
+    private boolean updateNavigationPointer(double extrp)
     {
+        boolean updated = false;
         if (pointer.getClick() > 1)
         {
             final int h = camera.getViewY() + camera.getHeight() - map.getTileHeight();
@@ -155,10 +160,12 @@ public class World extends WorldGame
             if (UtilMath.isBetween(pointer.getY(), h, h + marginY))
             {
                 camera.moveLocation(extrp, 0, -map.getTileHeight());
+                updated = true;
             }
             else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + marginY))
             {
                 camera.moveLocation(extrp, 0, map.getTileHeight());
+                updated = true;
             }
 
             final int w = camera.getViewX() + camera.getWidth() - map.getTileWidth();
@@ -167,12 +174,15 @@ public class World extends WorldGame
             if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + marginX))
             {
                 camera.moveLocation(extrp, -map.getTileWidth(), 0);
+                updated = true;
             }
             else if (UtilMath.isBetween(pointer.getX(), w, w + marginX))
             {
                 camera.moveLocation(extrp, map.getTileWidth(), 0);
+                updated = true;
             }
         }
+        return updated;
     }
 
     /**
@@ -244,16 +254,14 @@ public class World extends WorldGame
      */
     private void createBase(int x, int y)
     {
-        final Featurable peon = factory.create(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"));
-        peon.getFeature(Pathfindable.class).setLocation(x, y);
-        handler.add(peon);
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
 
-        final Featurable grunt = factory.create(Medias.create(Constant.FOLDER_ENTITY,
-                                                              Constant.FOLDER_ORC,
-                                                              "Grunt.xml"));
-        grunt.getFeature(Pathfindable.class).setLocation(x + 2, y + 1);
-        handler.add(grunt);
+        spawn(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"), x * tw, y * th);
 
+        final Featurable grunt = spawn(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Grunt.xml"),
+                                       (x + 2) * tw,
+                                       (y + 1) * th);
         camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
                         grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
     }
@@ -266,10 +274,17 @@ public class World extends WorldGame
         pointer.update(extrp);
         cursor.update(extrp);
         updateNavigationDirectional(extrp);
-        updateNavigationPointer(extrp);
         updateNavigationMinimap(extrp);
 
         super.update(extrp);
+
+        if (!updateNavigationPointer(extrp) && cursor.hasClickedOnce(3))
+        {
+            for (final Selectable selectable : selector.getSelection())
+            {
+                selectable.getFeature(Pathfindable.class).setDestination(cursor);
+            }
+        }
     }
 
     @Override

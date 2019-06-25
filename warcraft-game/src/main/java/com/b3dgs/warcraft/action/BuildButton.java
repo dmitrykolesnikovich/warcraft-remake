@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.EntityStats;
 
 /**
@@ -56,6 +57,7 @@ public class BuildButton extends ActionModel
     private final Viewer viewer;
     private final Selector selector;
     private final MapTile map;
+    private final InputDevicePointer pointer;
     private final Hud hud;
 
     /**
@@ -72,6 +74,7 @@ public class BuildButton extends ActionModel
         viewer = services.get(Viewer.class);
         selector = services.get(Selector.class);
         map = services.get(MapTile.class);
+        pointer = services.get(InputDevicePointer.class);
         hud = services.get(Hud.class);
 
         target = Medias.create(setup.getText("media").split("/"));
@@ -83,6 +86,7 @@ public class BuildButton extends ActionModel
         final SizeConfig size = SizeConfig.imports(new Xml(target));
         area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
         cursor.setVisible(false);
+        hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
     }
 
     @Override
@@ -142,6 +146,7 @@ public class BuildButton extends ActionModel
         area = null;
         cursor.setVisible(true);
         hud.clearMenus();
+        hud.setCancelShortcut(() -> false);
     }
 
     @Override
