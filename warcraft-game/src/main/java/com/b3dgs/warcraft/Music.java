@@ -16,34 +16,31 @@
  */
 package com.b3dgs.warcraft;
 
+import java.util.Locale;
+
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.warcraft.constant.Extension;
+import com.b3dgs.warcraft.constant.Folder;
+
 /**
  * List of available musics.
+ * <p>
+ * Music file name is enum name in lower case.
+ * </p>
  */
 public enum Music
 {
     /** Orc music. */
-    ORC("intro.sc68");
-
-    /** Music filename. */
-    private final String filename;
+    ORC;
 
     /**
-     * Constructor.
+     * Get the music media.
      * 
-     * @param filename The music filename.
+     * @return The music media.
      */
-    Music(String filename)
+    public Media get()
     {
-        this.filename = filename;
-    }
-
-    /**
-     * Get the music filename.
-     * 
-     * @return The music filename.
-     */
-    public String getFilename()
-    {
-        return filename;
+        return Medias.create(Folder.MUSICS, name().toLowerCase(Locale.ENGLISH) + Extension.MUSIC);
     }
 }

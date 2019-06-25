@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Alterable;
@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Icon renderer feature.

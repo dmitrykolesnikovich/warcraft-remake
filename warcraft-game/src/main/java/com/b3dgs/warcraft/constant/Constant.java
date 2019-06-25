@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.constant;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
@@ -31,21 +31,6 @@ public final class Constant
     public static final Version VERSION = Version.create(0, 0, 2);
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
-
-    /** Entity folder. */
-    public static final String FOLDER_ENTITY = "entity";
-    /** Action folder. */
-    public static final String FOLDER_ACTION = "action";
-    /** Orc folder. */
-    public static final String FOLDER_ORC = "orc";
-    /** Human folder. */
-    public static final String FOLDER_HUMAN = "human";
-    /** Neutral folder. */
-    public static final String FOLDER_NEUTRAL = "neutral";
-    /** Map folder. */
-    public static final String FOLDER_MAP = "map";
-    /** Menu folder. */
-    public static final String FOLDER_MENU = "menu";
 
     /** Buildings layer. */
     public static final int LAYER_BUILDING = 1;

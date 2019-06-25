@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.io.FileWriting;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Game scene implementation.

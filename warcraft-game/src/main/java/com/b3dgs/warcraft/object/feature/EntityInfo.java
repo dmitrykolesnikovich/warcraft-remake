@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.object.feature;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,9 +28,10 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
- * Handle the selected entities information.
+ * Handle the selected entities information on Hud.
  */
 @FeatureInterface
 public class EntityInfo extends FeatureModel implements Renderable, SelectionListener

@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
-import com.b3dgs.warcraft.Constant;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Move action.

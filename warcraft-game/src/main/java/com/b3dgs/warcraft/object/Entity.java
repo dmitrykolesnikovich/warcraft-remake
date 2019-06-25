@@ -14,23 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.FramesConfig;
-import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
-import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
@@ -40,9 +34,9 @@ import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Entity representation base.
@@ -60,21 +54,14 @@ public class Entity extends FeaturableModel
         super(services, setup);
 
         addFeature(new LayerableModel(services, setup));
+        addFeature(new TransformableModel(setup));
+        addFeature(new SelectableModel());
+        addFeature(new EntityStats(services, setup));
 
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 
-        final FramesConfig config = FramesConfig.imports(setup);
-        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(),
-                                                                   config.getHorizontal(),
-                                                                   config.getVertical());
-        surface.setOrigin(Origin.BOTTOM_LEFT);
-        surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
-
-        final EntityStats stats = addFeatureAndGet(new EntityStats(services, setup));
-
         final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
-        collidable.setGroup(Constant.LAYER_ENTITY);
+        collidable.setGroup(Integer.valueOf(Constant.LAYER_ENTITY));
         collidable.addCollision(Collision.AUTOMATIC);
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
@@ -83,6 +70,9 @@ public class Entity extends FeaturableModel
         producer.setStepsPerSecond(1.0);
 
         final MapTile map = services.get(MapTile.class);
+
+        final EntityModel model = addFeatureAndGet(new EntityModel(services, setup));
+        final SpriteAnimated surface = model.getSurface();
 
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
         producible.addListener(new ProducibleListener()
@@ -107,35 +97,7 @@ public class Entity extends FeaturableModel
             }
         });
 
-        final Viewer viewer = services.get(Viewer.class);
-
-        addFeature(new RefreshableModel(extrp ->
-        {
-            pathfindable.update(extrp);
-            producer.update(extrp);
-            surface.setLocation(viewer, transformable);
-        }));
-
-        final Selectable selectable = addFeatureAndGet(new SelectableModel());
-
-        addFeature(new DisplayableModel(g ->
-        {
-            if (stats.isVisible())
-            {
-                surface.render(g);
-                collidable.render(g);
-                if (selectable.isSelected())
-                {
-                    g.setColor(ColorRgba.GREEN);
-                    g.drawRect(viewer,
-                               Origin.BOTTOM_LEFT,
-                               transformable.getX(),
-                               transformable.getY(),
-                               transformable.getWidth(),
-                               transformable.getHeight(),
-                               false);
-                }
-            }
-        }));
+        addFeature(new EntityUpdater(services));
+        addFeature(new EntityRenderer(services, model));
     }
 }

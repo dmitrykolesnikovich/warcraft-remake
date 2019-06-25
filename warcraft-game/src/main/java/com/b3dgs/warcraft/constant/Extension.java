@@ -14,39 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.constant;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.audio.adlmidi.AdlMidiFormat;
-import com.b3dgs.lionengine.audio.wav.WavFormat;
-import com.b3dgs.lionengine.awt.graphic.EngineAwt;
-import com.b3dgs.lionengine.graphic.engine.Loader;
-import com.b3dgs.warcraft.constant.Constant;
 
 /**
- * Program starts here.
+ * Extensions constants.
  */
-public final class AppWarcraftPc
+public final class Extension
 {
-    /**
-     * Main function.
-     * 
-     * @param args The arguments (none).
-     */
-    public static void main(String[] args) // CHECKSTYLE IGNORE LINE: TrailingComment|UncommentedMain
-    {
-        EngineAwt.start(Constant.NAME, Constant.VERSION, AppWarcraftPc.class);
-        Loader.start(Config.windowed(Constant.NATIVE.get2x()), Loading.class);
-        AudioFactory.addFormat(new WavFormat());
-        AudioFactory.addFormat(new AdlMidiFormat());
-    }
+    /** Image file extension (with dot). */
+    public static final String IMAGE = ".png";
+    /** Levels file extension (with dot). */
+    public static final String LEVEL = ".wrl";
+    /** Sounds file extension (with dot). */
+    public static final String SFX = ".wav";
+    /** Musics file extension (with dot). */
+    public static final String MUSIC = ".mid";
 
     /**
      * Private constructor.
      */
-    private AppWarcraftPc()
+    private Extension()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

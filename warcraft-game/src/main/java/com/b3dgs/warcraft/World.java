@@ -52,6 +52,8 @@ import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Folder;
 
 /**
  * World game representation.
@@ -257,11 +259,9 @@ public class World extends WorldGame
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        spawn(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Peon.xml"), x * tw, y * th);
+        spawn(Medias.create(Folder.ORCS, "Peon.xml"), x * tw, y * th);
 
-        final Featurable grunt = spawn(Medias.create(Constant.FOLDER_ENTITY, Constant.FOLDER_ORC, "Grunt.xml"),
-                                       (x + 2) * tw,
-                                       (y + 1) * th);
+        final Featurable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), (x + 2) * tw, (y + 1) * th);
         camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
                         grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
     }

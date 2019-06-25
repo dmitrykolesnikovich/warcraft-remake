@@ -14,39 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.constant;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.audio.AudioFactory;
-import com.b3dgs.lionengine.audio.adlmidi.AdlMidiFormat;
-import com.b3dgs.lionengine.audio.wav.WavFormat;
-import com.b3dgs.lionengine.awt.graphic.EngineAwt;
-import com.b3dgs.lionengine.graphic.engine.Loader;
-import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilFolder;
 
 /**
- * Program starts here.
+ * Folder constants.
  */
-public final class AppWarcraftPc
+public final class Folder
 {
-    /**
-     * Main function.
-     * 
-     * @param args The arguments (none).
-     */
-    public static void main(String[] args) // CHECKSTYLE IGNORE LINE: TrailingComment|UncommentedMain
-    {
-        EngineAwt.start(Constant.NAME, Constant.VERSION, AppWarcraftPc.class);
-        Loader.start(Config.windowed(Constant.NATIVE.get2x()), Loading.class);
-        AudioFactory.addFormat(new WavFormat());
-        AudioFactory.addFormat(new AdlMidiFormat());
-    }
+    /** Entities folder. */
+    public static final String ENTITIES = "entity";
+    /** Items folder. */
+    public static final String ACTIONS = "action";
+    /** Monsters folder. */
+    public static final String ORCS = UtilFolder.getPathSeparator(Medias.getSeparator(), ENTITIES, "orc");
+    /** Sceneries folder. */
+    public static final String HUMANS = UtilFolder.getPathSeparator(Medias.getSeparator(), ENTITIES, "human");
+    /** Players folder. */
+    public static final String NEUTRAL = UtilFolder.getPathSeparator(Medias.getSeparator(), ENTITIES, "neutral");
+    /** Effects folder. */
+    public static final String MAPS = "map";
+    /** Levels folder. */
+    public static final String MENU = "menu";
+    /** Musics folder. */
+    public static final String MUSICS = "music";
 
     /**
      * Private constructor.
      */
-    private AppWarcraftPc()
+    private Folder()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

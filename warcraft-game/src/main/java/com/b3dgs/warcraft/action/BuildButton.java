@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.InputDevicePointer;
-import com.b3dgs.warcraft.EntityStats;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Build button action.
