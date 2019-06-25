@@ -100,7 +100,7 @@ public class World extends WorldGame
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(1);
-        selector.getFeature(Collidable.class).addAccept(Constant.LAYER_ENTITY);
+        selector.getFeature(Collidable.class).addAccept(Integer.valueOf(Constant.LAYER_ENTITY));
 
         hud.addListener(() ->
         {
@@ -149,26 +149,46 @@ public class World extends WorldGame
     {
         if (pointer.getClick() > 1)
         {
-            if (UtilMath.isBetween(pointer.getY(),
-                                   camera.getViewY() + camera.getHeight() - map.getTileHeight(),
-                                   camera.getViewY() + camera.getHeight() - map.getTileHeight() / 2))
+            final int h = camera.getViewY() + camera.getHeight() - map.getTileHeight();
+            final int marginY = map.getTileHeight() / 2;
+
+            if (UtilMath.isBetween(pointer.getY(), h, h + marginY))
             {
                 camera.moveLocation(extrp, 0, -map.getTileHeight());
             }
-            else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + map.getTileHeight() / 2))
+            else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + marginY))
             {
                 camera.moveLocation(extrp, 0, map.getTileHeight());
             }
-            if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + map.getTileWidth() / 2))
+
+            final int w = camera.getViewX() + camera.getWidth() - map.getTileWidth();
+            final int marginX = map.getTileWidth() / 2;
+
+            if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + marginX))
             {
                 camera.moveLocation(extrp, -map.getTileWidth(), 0);
             }
-            else if (UtilMath.isBetween(pointer.getX(),
-                                        camera.getViewX() + camera.getWidth() - map.getTileWidth(),
-                                        camera.getViewX() + camera.getWidth() - map.getTileWidth() / 2))
+            else if (UtilMath.isBetween(pointer.getX(), w, w + marginX))
             {
                 camera.moveLocation(extrp, map.getTileWidth(), 0);
             }
+        }
+    }
+
+    /**
+     * Update map navigation with minimap.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateNavigationMinimap(double extrp)
+    {
+        if (pointer.getClick() > 0
+            && UtilMath.isBetween(pointer.getX(), MINIMAP_X, MINIMAP_X + map.getInTileWidth())
+            && UtilMath.isBetween(pointer.getY(), MINIMAP_Y, MINIMAP_Y + map.getInTileHeight()))
+        {
+            final int x = (pointer.getX() - MINIMAP_X) * map.getTileWidth();
+            final int y = (map.getInTileHeight() + MINIMAP_Y - pointer.getY()) * map.getTileHeight();
+            camera.setLocation(x - camera.getWidth() / 2.0, y - camera.getHeight() / 2.0);
         }
     }
 
@@ -247,6 +267,7 @@ public class World extends WorldGame
         cursor.update(extrp);
         updateNavigationDirectional(extrp);
         updateNavigationPointer(extrp);
+        updateNavigationMinimap(extrp);
 
         super.update(extrp);
     }
