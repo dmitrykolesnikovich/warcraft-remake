@@ -16,16 +16,24 @@
  */
 package com.b3dgs.warcraft.object;
 
+import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Displayable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
@@ -41,9 +49,15 @@ public class EntityRenderer extends FeatureModel implements Displayable
     private final SpriteAnimated surface;
 
     @FeatureGet private Transformable transformable;
+    @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Mirrorable mirrorable;
+    @FeatureGet private Animatable animatable;
     @FeatureGet private Collidable collidable;
     @FeatureGet private Selectable selectable;
     @FeatureGet private EntityStats stats;
+
+    private int frameOffset;
+    private int animFrames;
 
     /**
      * Create updater.
@@ -57,6 +71,27 @@ public class EntityRenderer extends FeatureModel implements Displayable
 
         viewer = services.get(Viewer.class);
         surface = model.getSurface();
+    }
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        animatable.addListener(new AnimatorFrameListener()
+        {
+            @Override
+            public void notifyAnimPlayed(Animation anim)
+            {
+                animFrames = anim.getLast() - anim.getFirst() + 1;
+            }
+
+            @Override
+            public void notifyAnimFrame(int frame)
+            {
+                // Nothing to do
+            }
+        });
     }
 
     /**
@@ -76,12 +111,35 @@ public class EntityRenderer extends FeatureModel implements Displayable
                    false);
     }
 
+    /**
+     * Update frame offset to match animation with orientation.
+     */
+    private void updateFrameOffset()
+    {
+        final int sx = UtilMath.getSign(pathfindable.getMoveX());
+        final int sy = UtilMath.getSign(pathfindable.getMoveY());
+        final Orientation orientation = Orientation.get(sx, sy);
+        if (orientation != null)
+        {
+            frameOffset = orientation.ordinal();
+            if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
+            {
+                frameOffset = Orientation.ORIENTATIONS_NUMBER - orientation.ordinal();
+            }
+        }
+    }
+
     @Override
     public void render(Graphic g)
     {
         if (stats.isVisible())
         {
+            updateFrameOffset();
+
+            surface.setFrame(frameOffset * animFrames + animatable.getFrame());
             surface.setLocation(viewer, transformable);
+            surface.setMirror(mirrorable.getMirror());
+
             surface.render(g);
             collidable.render(g);
 

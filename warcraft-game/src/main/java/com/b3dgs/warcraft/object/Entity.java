@@ -16,9 +16,13 @@
  */
 package com.b3dgs.warcraft.object;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
+import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
@@ -31,18 +35,34 @@ import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
+import com.b3dgs.lionengine.game.feature.state.State;
+import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
  * Entity representation base.
  */
 public class Entity extends FeaturableModel
 {
+    private static final int PREFIX = State.class.getSimpleName().length();
+
+    /**
+     * Get animation name from state class.
+     * 
+     * @param state The state class.
+     * @return The animation name.
+     */
+    public static String getAnimationName(Class<? extends State> state)
+    {
+        return state.getSimpleName().substring(PREFIX).toLowerCase(Locale.ENGLISH);
+    }
+
     /**
      * Create entity.
      * 
@@ -54,9 +74,13 @@ public class Entity extends FeaturableModel
         super(services, setup);
 
         addFeature(new LayerableModel(services, setup));
+        addFeature(new MirrorableModel());
         addFeature(new TransformableModel(setup));
         addFeature(new SelectableModel());
+        addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
+
+        addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName)).changeState(StateIdle.class);
 
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 

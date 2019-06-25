@@ -16,12 +16,18 @@
  */
 package com.b3dgs.warcraft.object;
 
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**
@@ -30,7 +36,10 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 @FeatureInterface
 public class EntityUpdater extends FeatureModel implements Refreshable
 {
+    @FeatureGet private StateHandler stateHandler;
+    @FeatureGet private Mirrorable mirrorable;
     @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Animatable animatable;
     @FeatureGet private Producer producer;
 
     /**
@@ -43,10 +52,36 @@ public class EntityUpdater extends FeatureModel implements Refreshable
         super();
     }
 
+    /**
+     * Update mirror depending on orientation.
+     */
+    private void updateMirror()
+    {
+        final int sx = UtilMath.getSign(pathfindable.getMoveX());
+        final int sy = UtilMath.getSign(pathfindable.getMoveY());
+        final Orientation orientation = Orientation.get(sx, sy);
+        if (orientation != null)
+        {
+            if (orientation.ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF)
+            {
+                mirrorable.mirror(Mirror.HORIZONTAL);
+            }
+            else
+            {
+                mirrorable.mirror(Mirror.NONE);
+            }
+        }
+    }
+
     @Override
     public void update(double extrp)
     {
+        stateHandler.update(extrp);
         pathfindable.update(extrp);
         producer.update(extrp);
+        stateHandler.postUpdate();
+        updateMirror();
+        mirrorable.update(extrp);
+        animatable.update(extrp);
     }
 }
