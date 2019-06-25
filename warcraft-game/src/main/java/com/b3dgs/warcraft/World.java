@@ -213,6 +213,15 @@ public class World extends WorldGame
     {
         g.setColor(ColorRgba.GREEN);
         camera.drawFov(g, MINIMAP_X, MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
+
+        for (final Pathfindable entity : handler.get(Pathfindable.class))
+        {
+            g.drawRect(MINIMAP_X + entity.getInTileX(),
+                       MINIMAP_Y - entity.getInTileY() + map.getInTileHeight(),
+                       entity.getInTileWidth(),
+                       entity.getInTileHeight(),
+                       true);
+        }
     }
 
     @Override
