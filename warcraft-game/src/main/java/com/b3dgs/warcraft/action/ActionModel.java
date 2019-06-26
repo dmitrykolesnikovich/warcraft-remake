@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.ActionableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -32,6 +33,8 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.assignable.Assignable;
 import com.b3dgs.lionengine.game.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
@@ -54,10 +57,16 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     /** Current state reference. */
     protected final AtomicReference<Updatable> state;
 
+    /** Map reference. */
+    protected final MapTile map;
+    /** Map path reference. */
+    protected final MapTilePath mapPath;
     /** Cursor reference. */
     protected final Cursor cursor;
     /** Selector reference. */
     protected final Selector selector;
+    /** Handler reference. */
+    protected final Handler handler;
     /** Text reference. */
     protected final Text text;
 
@@ -71,8 +80,11 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     {
         super();
 
+        map = services.get(MapTile.class);
+        mapPath = services.get(MapTilePath.class);
         cursor = services.get(Cursor.class);
         selector = services.get(Selector.class);
+        handler = services.get(Handler.class);
         text = services.get(Text.class);
 
         addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));

@@ -20,6 +20,8 @@ import java.util.List;
 
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
@@ -46,7 +48,15 @@ public class Attack extends ActionModel
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
-            selection.get(i).getFeature(Pathfindable.class).setDestination(cursor);
+            final int tx = map.getInTileX(cursor);
+            final int ty = map.getInTileY(cursor);
+
+            for (final Integer id : mapPath.getObjectsId(tx, ty))
+            {
+                final Transformable transformable = handler.get(id).getFeature(Transformable.class);
+                selection.get(i).getFeature(Pathfindable.class).setDestination(transformable);
+                selection.get(i).getFeature(Attacker.class).attack(transformable);
+            }
         }
     }
 }

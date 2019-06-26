@@ -93,7 +93,7 @@ public class World extends WorldGame
         map.addFeature(new MapTileViewerModel(services));
         map.addFeature(new MapTilePersisterModel(services));
         map.addFeature(new MapTileGroupModel());
-        map.addFeature(new MapTilePathModel(services));
+        services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
         handler.add(map);
 
         hud = services.add(factory.create(Medias.create("Hud.xml")));
@@ -265,14 +265,22 @@ public class World extends WorldGame
      */
     private void createBase(int x, int y)
     {
+        spawn(Medias.create(Folder.ORCS, "Peon.xml"), x, y);
+
+        final Featurable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), x + 2, y + 1);
+        camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
+                        grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
+    }
+
+    private Featurable spawn(Media media, int x, int y)
+    {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        spawn(Medias.create(Folder.ORCS, "Peon.xml"), x * tw, y * th);
+        final Featurable featurable = super.spawn(media, x * tw, y * th);
+        featurable.getFeature(Pathfindable.class).setLocation(x, y);
 
-        final Featurable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), (x + 2) * tw, (y + 1) * th);
-        camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
-                        grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
+        return featurable;
     }
 
     @Override

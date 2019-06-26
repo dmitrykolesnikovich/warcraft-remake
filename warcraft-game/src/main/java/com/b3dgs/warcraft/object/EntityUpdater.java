@@ -26,9 +26,12 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Refreshable;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Entity updating implementation.
@@ -41,6 +44,9 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private Animatable animatable;
     @FeatureGet private Producer producer;
+    @FeatureGet private Selectable selectable;
+    @FeatureGet private Attacker attacker;
+    @FeatureGet private EntityStats stats;
 
     /**
      * Create updater.
@@ -78,6 +84,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     {
         stateHandler.update(extrp);
         pathfindable.update(extrp);
+        attacker.update(extrp);
         producer.update(extrp);
         stateHandler.postUpdate();
         updateMirror();

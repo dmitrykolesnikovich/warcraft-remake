@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerChecker;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
@@ -48,7 +50,7 @@ import com.b3dgs.warcraft.object.state.StateIdle;
 /**
  * Entity representation base.
  */
-public class Entity extends FeaturableModel
+public class Entity extends FeaturableModel implements AttackerChecker
 {
     private static final int PREFIX = State.class.getSimpleName().length();
 
@@ -79,6 +81,7 @@ public class Entity extends FeaturableModel
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
+        addFeatureAndGet(new AttackerModel()).setAttackDistance(0, 1);
 
         addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName)).changeState(StateIdle.class);
 
@@ -123,5 +126,11 @@ public class Entity extends FeaturableModel
 
         addFeature(new EntityUpdater(services));
         addFeature(new EntityRenderer(services, model));
+    }
+
+    @Override
+    public boolean canAttack()
+    {
+        return true;
     }
 }

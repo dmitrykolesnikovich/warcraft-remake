@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -46,6 +48,8 @@ public abstract class State extends StateAbstract
     protected final Transformable transformable;
     /** Pathfindable reference. */
     protected final Pathfindable pathfindable;
+    /** Attacker reference. */
+    protected final Attacker attacker;
     /** Mirrorable reference. */
     protected final Mirrorable mirrorable;
     /** Collidable reference. */
@@ -61,6 +65,11 @@ public abstract class State extends StateAbstract
     protected final AtomicBoolean moving = new AtomicBoolean();
     /** Move arrived flag. */
     protected final AtomicBoolean moveArrived = new AtomicBoolean();
+
+    /** Attack started flag. */
+    protected final AtomicBoolean attackStarted = new AtomicBoolean();
+    /** Attack ended flag. */
+    protected final AtomicBoolean attackEnded = new AtomicBoolean();
 
     /**
      * Create the state.
@@ -78,6 +87,7 @@ public abstract class State extends StateAbstract
         animatable = model.getFeature(Animatable.class);
         transformable = model.getFeature(Transformable.class);
         pathfindable = model.getFeature(Pathfindable.class);
+        attacker = model.getFeature(Attacker.class);
         mirrorable = model.getFeature(Mirrorable.class);
         collidable = model.getFeature(Collidable.class);
         stats = model.getFeature(EntityStats.class);
@@ -100,6 +110,38 @@ public abstract class State extends StateAbstract
             public void notifyArrived()
             {
                 moveArrived.set(true);
+            }
+        });
+        attacker.addListener(new AttackerListener()
+        {
+            @Override
+            public void notifyReachingTarget(Transformable target)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyPreparingAttack()
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyAttackStarted(Transformable target)
+            {
+                attackStarted.set(true);
+            }
+
+            @Override
+            public void notifyAttackEnded(int damages, Transformable target)
+            {
+                attackEnded.set(true);
+            }
+
+            @Override
+            public void notifyAttackAnimEnded()
+            {
+                // Nothing to do
             }
         });
     }
@@ -138,6 +180,8 @@ public abstract class State extends StateAbstract
         moveStarted.set(false);
         moving.set(false);
         moveArrived.set(false);
+        attackStarted.set(false);
+        attackEnded.set(false);
     }
 
     /**
