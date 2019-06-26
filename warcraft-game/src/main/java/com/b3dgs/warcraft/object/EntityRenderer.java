@@ -102,13 +102,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     private void drawSelection(Graphic g)
     {
         g.setColor(ColorRgba.GREEN);
-        g.drawRect(viewer,
-                   Origin.BOTTOM_LEFT,
-                   transformable.getX(),
-                   transformable.getY(),
-                   transformable.getWidth(),
-                   transformable.getHeight(),
-                   false);
+        g.drawRect(viewer, Origin.BOTTOM_LEFT, transformable, false);
     }
 
     /**

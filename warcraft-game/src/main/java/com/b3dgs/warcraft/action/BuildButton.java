@@ -167,7 +167,7 @@ public class BuildButton extends ActionModel
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.BOTTOM_LEFT, area.getX(), area.getY(), area.getWidth(), area.getHeight(), false);
+            g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
         }
     }
 }
