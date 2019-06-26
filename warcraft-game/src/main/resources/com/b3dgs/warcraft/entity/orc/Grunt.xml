@@ -8,7 +8,8 @@
 	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<lionengine:animation name="walk" start="6" end="10" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="attack" start="31" end="34" speed="0.1875" reversed="true" repeat="false"/>
-	<lionengine:animation name="die" start="39" end="41" speed="0.1375" reversed="false" repeat="false"/>
+	<lionengine:animation name="die" start="51" end="53" speed="0.1375" reversed="false" repeat="false"/>
+	<lionengine:animation name="dead" start="53" end="53" speed="0.1375" reversed="false" repeat="false"/>
 	<lionengine:pathfindable>
         <lionengine:path category="ground" cost="1" block="false">
             <lionengine:movement>UP</lionengine:movement>

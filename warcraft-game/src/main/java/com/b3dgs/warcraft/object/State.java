@@ -22,18 +22,22 @@ import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.feature.Animatable;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Base state with animation implementation.
  */
 public abstract class State extends StateAbstract
 {
+    /** Identifiable reference. */
+    protected final Identifiable identifiable;
     /** Model reference. */
     protected final EntityModel model;
     /** Animatable reference. */
@@ -48,6 +52,8 @@ public abstract class State extends StateAbstract
     protected final Collidable collidable;
     /** State animation data. */
     protected final Animation animation;
+    /** Stats reference. */
+    protected final EntityStats stats;
 
     /** Move started flag. */
     protected final AtomicBoolean moveStarted = new AtomicBoolean();
@@ -68,11 +74,13 @@ public abstract class State extends StateAbstract
 
         this.model = model;
         this.animation = animation;
+        identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);
         transformable = model.getFeature(Transformable.class);
         pathfindable = model.getFeature(Pathfindable.class);
         mirrorable = model.getFeature(Mirrorable.class);
         collidable = model.getFeature(Collidable.class);
+        stats = model.getFeature(EntityStats.class);
 
         pathfindable.addListener(new PathfindableListener()
         {

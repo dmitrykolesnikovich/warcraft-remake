@@ -16,14 +16,15 @@
  */
 package com.b3dgs.warcraft.object.state;
 
+import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
 /**
- * Idle state implementation.
+ * Die state implementation.
  */
-public final class StateIdle extends State
+final class StateDie extends State
 {
     /**
      * Create the state.
@@ -31,11 +32,10 @@ public final class StateIdle extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateIdle(EntityModel model, Animation animation)
+    public StateDie(EntityModel model, Animation animation)
     {
         super(model, animation);
 
-        addTransition(StateWalk.class, moveStarted::get);
-        addTransition(StateDie.class, () -> stats.getLife() == 0);
+        addTransition(StateDead.class, () -> is(AnimState.FINISHED));
     }
 }

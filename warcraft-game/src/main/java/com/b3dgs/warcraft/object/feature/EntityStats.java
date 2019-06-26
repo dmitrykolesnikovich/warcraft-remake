@@ -101,6 +101,16 @@ public class EntityStats extends FeatureModel implements Renderable
         return visible;
     }
 
+    /**
+     * Get current life.
+     * 
+     * @return The current life.
+     */
+    public int getLife()
+    {
+        return life.getCurrent();
+    }
+
     @Override
     public void render(Graphic g)
     {
