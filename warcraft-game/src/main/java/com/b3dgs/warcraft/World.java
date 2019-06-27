@@ -31,19 +31,8 @@ import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
-import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
-import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
-import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Graphics;
@@ -55,6 +44,8 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.world.WorldMap;
+import com.b3dgs.warcraft.world.WorldMinimap;
 
 /**
  * World game representation.
@@ -68,11 +59,9 @@ public class World extends WorldGame
     private static final int TEXT_Y = 192;
 
     private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
-    private final MapTile map = services.create(MapTileGame.class);
-    private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
-    private final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
-    private final MapTilePath mapPath = services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
-    private final Minimap minimap = new Minimap(map);
+    private final WorldMap worldMap = new WorldMap(services);
+    private final MapTile map = services.get(MapTile.class);
+    private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
     private final Hud hud;
     private final Selector selector;
@@ -93,9 +82,6 @@ public class World extends WorldGame
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
         handler.addComponent(new ComponentCollision());
-
-        map.addFeature(new MapTileViewerModel(services));
-        handler.add(map);
 
         hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
@@ -121,44 +107,17 @@ public class World extends WorldGame
         text.setColor(TEXT_COLOR);
     }
 
-    /**
-     * Draw field of view.
-     * 
-     * @param g The graphic output.
-     */
-    private void drawFov(Graphic g)
-    {
-        g.setColor(ColorRgba.GREEN);
-        camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
-
-        for (final Pathfindable entity : handler.get(Pathfindable.class))
-        {
-            g.drawRect(Constant.MINIMAP_X + entity.getInTileX(),
-                       Constant.MINIMAP_Y - entity.getInTileY() + map.getInTileHeight(),
-                       entity.getInTileWidth(),
-                       entity.getInTileHeight(),
-                       true);
-        }
-    }
-
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.getFeature(MapTilePersister.class).save(file);
+        worldMap.save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        mapPersister.load(file);
-        final String parent = map.getMedia().getParentPath();
-        mapGroup.loadGroups(Medias.create(parent, TileGroupsConfig.FILENAME));
-        mapPath.loadPathfinding(Medias.create(parent, PathfindingConfig.FILENAME));
-
+        worldMap.load(file);
         minimap.load();
-        minimap.automaticColor();
-        minimap.prepare();
-        minimap.setLocation(Constant.MINIMAP_X, Constant.MINIMAP_Y);
 
         camera.setLimits(map);
 
@@ -227,7 +186,6 @@ public class World extends WorldGame
 
         minimap.render(g);
         text.render(g);
-        drawFov(g);
         if (!cursor.hasClicked(2))
         {
             cursor.render(g);
