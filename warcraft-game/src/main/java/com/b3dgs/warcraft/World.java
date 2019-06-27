@@ -18,9 +18,9 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
@@ -60,8 +61,6 @@ import com.b3dgs.warcraft.constant.Folder;
  */
 public class World extends WorldGame
 {
-    private static final int MINIMAP_X = 3;
-    private static final int MINIMAP_Y = 6;
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
     private static final ColorRgba TEXT_COLOR = new ColorRgba(240, 255, 220);
@@ -70,12 +69,15 @@ public class World extends WorldGame
 
     private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
     private final MapTile map = services.create(MapTileGame.class);
+    private final MapTileGroup mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
+    private final MapTilePersister mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
+    private final MapTilePath mapPath = services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
     private final Minimap minimap = new Minimap(map);
     private final Cursor cursor = services.create(Cursor.class);
     private final Hud hud;
     private final Selector selector;
+    private final WorldNavigator navigator;
     private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
-    private final InputDeviceDirectional directional = services.add(getInputDevice(InputDeviceDirectional.class));
 
     /**
      * Create the world.
@@ -86,18 +88,19 @@ public class World extends WorldGame
     {
         super(services);
 
+        services.add(getInputDevice(InputDeviceDirectional.class));
+
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
         handler.addComponent(new ComponentCollision());
 
         map.addFeature(new MapTileViewerModel(services));
-        map.addFeature(new MapTilePersisterModel(services));
-        map.addFeature(new MapTileGroupModel());
-        services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
         handler.add(map);
 
         hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
+
+        navigator = new WorldNavigator(services);
 
         selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
@@ -116,92 +119,6 @@ public class World extends WorldGame
 
         text.setLocation(TEXT_X, TEXT_Y);
         text.setColor(TEXT_COLOR);
-
-        services.add(Integer.valueOf(source.getRate()));
-    }
-
-    /**
-     * Update map navigation with directional device.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateNavigationDirectional(double extrp)
-    {
-        if (directional.getVerticalDirection() > 0)
-        {
-            camera.moveLocation(extrp, 0, map.getTileHeight());
-        }
-        else if (directional.getVerticalDirection() < 0)
-        {
-            camera.moveLocation(extrp, 0, -map.getTileHeight());
-        }
-        if (directional.getHorizontalDirection() < 0)
-        {
-            camera.moveLocation(extrp, -map.getTileWidth(), 0);
-        }
-        else if (directional.getHorizontalDirection() > 0)
-        {
-            camera.moveLocation(extrp, map.getTileWidth(), 0);
-        }
-    }
-
-    /**
-     * Update map navigation with pointer device.
-     * 
-     * @param extrp The extrapolation value.
-     * @return <code>true</code> if map moved, <code>false</code> else.
-     */
-    private boolean updateNavigationPointer(double extrp)
-    {
-        boolean updated = false;
-        if (pointer.getClick() > 1)
-        {
-            final int h = camera.getViewY() + camera.getHeight() - map.getTileHeight();
-            final int marginY = map.getTileHeight() / 2;
-
-            if (UtilMath.isBetween(pointer.getY(), h, h + marginY))
-            {
-                camera.moveLocation(extrp, 0, -map.getTileHeight());
-                updated = true;
-            }
-            else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + marginY))
-            {
-                camera.moveLocation(extrp, 0, map.getTileHeight());
-                updated = true;
-            }
-
-            final int w = camera.getViewX() + camera.getWidth() - map.getTileWidth();
-            final int marginX = map.getTileWidth() / 2;
-
-            if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + marginX))
-            {
-                camera.moveLocation(extrp, -map.getTileWidth(), 0);
-                updated = true;
-            }
-            else if (UtilMath.isBetween(pointer.getX(), w, w + marginX))
-            {
-                camera.moveLocation(extrp, map.getTileWidth(), 0);
-                updated = true;
-            }
-        }
-        return updated;
-    }
-
-    /**
-     * Update map navigation with minimap.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateNavigationMinimap(double extrp)
-    {
-        if (pointer.getClick() > 0
-            && UtilMath.isBetween(pointer.getX(), MINIMAP_X, MINIMAP_X + map.getInTileWidth())
-            && UtilMath.isBetween(pointer.getY(), MINIMAP_Y, MINIMAP_Y + map.getInTileHeight()))
-        {
-            final int x = (pointer.getX() - MINIMAP_X) * map.getTileWidth();
-            final int y = (map.getInTileHeight() + MINIMAP_Y - pointer.getY()) * map.getTileHeight();
-            camera.setLocation(x - camera.getWidth() / 2.0, y - camera.getHeight() / 2.0);
-        }
     }
 
     /**
@@ -212,12 +129,12 @@ public class World extends WorldGame
     private void drawFov(Graphic g)
     {
         g.setColor(ColorRgba.GREEN);
-        camera.drawFov(g, MINIMAP_X, MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
+        camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
 
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
-            g.drawRect(MINIMAP_X + entity.getInTileX(),
-                       MINIMAP_Y - entity.getInTileY() + map.getInTileHeight(),
+            g.drawRect(Constant.MINIMAP_X + entity.getInTileX(),
+                       Constant.MINIMAP_Y - entity.getInTileY() + map.getInTileHeight(),
                        entity.getInTileWidth(),
                        entity.getInTileHeight(),
                        true);
@@ -233,15 +150,15 @@ public class World extends WorldGame
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.getFeature(MapTilePersister.class).load(file);
-        map.getFeature(MapTileGroup.class).loadGroups(Medias.create(map.getMedia().getParentPath(), "groups.xml"));
-        final Media pathfinding = Medias.create(map.getMedia().getParentPath(), "pathfinding.xml");
-        map.getFeature(MapTilePath.class).loadPathfinding(pathfinding);
+        mapPersister.load(file);
+        final String parent = map.getMedia().getParentPath();
+        mapGroup.loadGroups(Medias.create(parent, TileGroupsConfig.FILENAME));
+        mapPath.loadPathfinding(Medias.create(parent, PathfindingConfig.FILENAME));
 
         minimap.load();
         minimap.automaticColor();
         minimap.prepare();
-        minimap.setLocation(MINIMAP_X, MINIMAP_Y);
+        minimap.setLocation(Constant.MINIMAP_X, Constant.MINIMAP_Y);
 
         camera.setLimits(map);
 
@@ -260,27 +177,35 @@ public class World extends WorldGame
     /**
      * Create base world.
      * 
-     * @param x The horizontal base.
-     * @param y The vertical base.
+     * @param tx The horizontal tile base.
+     * @param ty The vertical tile base.
      */
-    private void createBase(int x, int y)
+    private void createBase(int tx, int ty)
     {
-        spawn(Medias.create(Folder.ORCS, "Peon.xml"), x, y);
+        spawn(Medias.create(Folder.ORCS, "Peon.xml"), tx, ty);
 
-        final Featurable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), x + 2, y + 1);
-        camera.teleport(grunt.getFeature(Transformable.class).getX() - camera.getWidth() / 2,
-                        grunt.getFeature(Transformable.class).getY() - camera.getHeight() / 2);
+        final Transformable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), tx + 2, ty + 1);
+        camera.teleport(grunt.getX() - camera.getWidth() / 2, grunt.getY() - camera.getHeight() / 2);
     }
 
-    private Featurable spawn(Media media, int x, int y)
+    /**
+     * Spawn a {@link Featurable} at specified location. Must have {@link Transformable} feature.
+     * 
+     * @param media The featurable media.
+     * @param tx The horizontal tile spawn location.
+     * @param ty The vertical tile spawn location.
+     * @return The spawned featurable.
+     * @throws LionEngineException If invalid media or missing feature.
+     */
+    private Transformable spawn(Media media, int tx, int ty)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        final Featurable featurable = super.spawn(media, x * tw, y * th);
-        featurable.getFeature(Pathfindable.class).setLocation(x, y);
+        final Featurable featurable = super.spawn(media, tx * tw, ty * th);
+        featurable.getFeature(Pathfindable.class).setLocation(tx, ty);
 
-        return featurable;
+        return featurable.getFeature(Transformable.class);
     }
 
     @Override
@@ -290,18 +215,9 @@ public class World extends WorldGame
 
         pointer.update(extrp);
         cursor.update(extrp);
-        updateNavigationDirectional(extrp);
-        updateNavigationMinimap(extrp);
+        navigator.update(extrp);
 
         super.update(extrp);
-
-        if (!updateNavigationPointer(extrp) && cursor.hasClickedOnce(3))
-        {
-            for (final Selectable selectable : selector.getSelection())
-            {
-                selectable.getFeature(Pathfindable.class).setDestination(cursor);
-            }
-        }
     }
 
     @Override

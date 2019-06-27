@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
@@ -50,6 +53,8 @@ public abstract class State extends StateAbstract
     protected final Pathfindable pathfindable;
     /** Attacker reference. */
     protected final Attacker attacker;
+    /** Producible reference. */
+    protected final Producible producible;
     /** Mirrorable reference. */
     protected final Mirrorable mirrorable;
     /** Collidable reference. */
@@ -71,6 +76,11 @@ public abstract class State extends StateAbstract
     /** Attack ended flag. */
     protected final AtomicBoolean attackEnded = new AtomicBoolean();
 
+    /** Producible started flag. */
+    protected final AtomicBoolean producibleStarted = new AtomicBoolean();
+    /** Producible ended flag. */
+    protected final AtomicBoolean producibleEnded = new AtomicBoolean();
+
     /**
      * Create the state.
      * 
@@ -88,6 +98,7 @@ public abstract class State extends StateAbstract
         transformable = model.getFeature(Transformable.class);
         pathfindable = model.getFeature(Pathfindable.class);
         attacker = model.getFeature(Attacker.class);
+        producible = model.getFeature(Producible.class);
         mirrorable = model.getFeature(Mirrorable.class);
         collidable = model.getFeature(Collidable.class);
         stats = model.getFeature(EntityStats.class);
@@ -144,6 +155,26 @@ public abstract class State extends StateAbstract
                 // Nothing to do
             }
         });
+        producible.addListener(new ProducibleListener()
+        {
+            @Override
+            public void notifyProductionStarted(Producer producer)
+            {
+                producibleStarted.set(true);
+            }
+
+            @Override
+            public void notifyProductionProgress(Producer producer)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyProductionEnded(Producer producer)
+            {
+                producibleEnded.set(true);
+            }
+        });
     }
 
     /**
@@ -182,6 +213,8 @@ public abstract class State extends StateAbstract
         moveArrived.set(false);
         attackStarted.set(false);
         attackEnded.set(false);
+        producibleStarted.set(false);
+        producibleEnded.set(false);
     }
 
     /**

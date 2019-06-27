@@ -53,6 +53,11 @@ public final class Constant
     /** Entity info X. */
     public static final int ENTITY_INFO_Y = 72;
 
+    /** Minimap horizontal location. */
+    public static final int MINIMAP_X = 3;
+    /** Minimap vertical location. */
+    public static final int MINIMAP_Y = 6;
+
     /**
      * Private constructor.
      */

@@ -5,6 +5,8 @@
     <lionengine:surface image="FarmOrc.png" icon="FarmOrc_icon.png"/>
 	<lionengine:frames horizontal="2" vertical="1" offsetX="8" offsetY="0"/>
 	<lionengine:size width="32" height="32"/>
+	<lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
+	<lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:producible steps="3"/>
 	<attributes life="100" fov="3"/>
 	<production steps_per_second="1"/>

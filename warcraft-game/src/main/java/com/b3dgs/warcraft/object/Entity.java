@@ -42,9 +42,9 @@ import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.state.StateProducing;
 import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
@@ -83,7 +83,8 @@ public class Entity extends FeaturableModel implements AttackerChecker
         addFeature(new EntityStats(services, setup));
         addFeatureAndGet(new AttackerModel()).setAttackDistance(0, 1);
 
-        addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName)).changeState(StateIdle.class);
+        final StateHandler stateHandler = addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName));
+        stateHandler.changeState(StateIdle.class);
 
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 
@@ -99,7 +100,6 @@ public class Entity extends FeaturableModel implements AttackerChecker
         final MapTile map = services.get(MapTile.class);
 
         final EntityModel model = addFeatureAndGet(new EntityModel(services, setup));
-        final SpriteAnimated surface = model.getSurface();
 
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
         producible.addListener(new ProducibleListener()
@@ -108,7 +108,7 @@ public class Entity extends FeaturableModel implements AttackerChecker
             public void notifyProductionStarted(Producer producer)
             {
                 pathfindable.setLocation(map.getInTileX(producible), map.getInTileY(producible));
-                surface.setFrame(1);
+                stateHandler.changeState(StateProducing.class);
             }
 
             @Override
@@ -120,7 +120,7 @@ public class Entity extends FeaturableModel implements AttackerChecker
             @Override
             public void notifyProductionEnded(Producer producer)
             {
-                surface.setFrame(2);
+                // Nothing to do
             }
         });
 
