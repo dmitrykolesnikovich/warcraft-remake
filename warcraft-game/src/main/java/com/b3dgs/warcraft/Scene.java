@@ -64,7 +64,7 @@ public class Scene extends SequenceGame
      */
     public Scene(Context context)
     {
-        super(context, Constant.NATIVE, (services) -> new World(services));
+        super(context, Constant.NATIVE, World::new);
 
         level = Level.FOREST;
     }
