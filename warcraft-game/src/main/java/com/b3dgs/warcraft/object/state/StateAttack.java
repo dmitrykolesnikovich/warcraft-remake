@@ -16,7 +16,6 @@
  */
 package com.b3dgs.warcraft.object.state;
 
-import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
@@ -36,6 +35,14 @@ final class StateAttack extends State
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, () -> attackEnded.get() && is(AnimState.FINISHED));
+        addTransition(StateIdle.class, attackEnded::get);
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        attacker.setAttackFrame(animation.getFrames());
     }
 }

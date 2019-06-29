@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerChecker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
@@ -44,13 +43,13 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
-import com.b3dgs.warcraft.object.state.StateProducing;
 import com.b3dgs.warcraft.object.state.StateIdle;
+import com.b3dgs.warcraft.object.state.StateProducing;
 
 /**
  * Entity representation base.
  */
-public class Entity extends FeaturableModel implements AttackerChecker
+public class Entity extends FeaturableModel
 {
     private static final int PREFIX = State.class.getSimpleName().length();
 
@@ -81,7 +80,7 @@ public class Entity extends FeaturableModel implements AttackerChecker
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
-        addFeatureAndGet(new AttackerModel()).setAttackDistance(0, 1);
+        addFeature(new AttackerModel(setup));
 
         final StateHandler stateHandler = addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName));
         stateHandler.changeState(StateIdle.class);
@@ -126,11 +125,5 @@ public class Entity extends FeaturableModel implements AttackerChecker
 
         addFeature(new EntityUpdater(services));
         addFeature(new EntityRenderer(services, model));
-    }
-
-    @Override
-    public boolean canAttack()
-    {
-        return true;
     }
 }

@@ -146,13 +146,13 @@ public abstract class State extends StateAbstract
             @Override
             public void notifyAttackEnded(int damages, Transformable target)
             {
-                attackEnded.set(true);
+                // Nothing to do
             }
 
             @Override
             public void notifyAttackAnimEnded()
             {
-                // Nothing to do
+                attackEnded.set(true);
             }
         });
         producible.addListener(new ProducibleListener()
