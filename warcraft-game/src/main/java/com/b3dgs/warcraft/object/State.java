@@ -73,8 +73,6 @@ public abstract class State extends StateAbstract
 
     /** Attack started flag. */
     protected final AtomicBoolean attackStarted = new AtomicBoolean();
-    /** Attack ended flag. */
-    protected final AtomicBoolean attackEnded = new AtomicBoolean();
 
     /** Producible started flag. */
     protected final AtomicBoolean producibleStarted = new AtomicBoolean();
@@ -152,7 +150,7 @@ public abstract class State extends StateAbstract
             @Override
             public void notifyAttackAnimEnded()
             {
-                attackEnded.set(true);
+                // Nothing to do
             }
         });
         producible.addListener(new ProducibleListener()
@@ -212,7 +210,6 @@ public abstract class State extends StateAbstract
         moving.set(false);
         moveArrived.set(false);
         attackStarted.set(false);
-        attackEnded.set(false);
         producibleStarted.set(false);
         producibleEnded.set(false);
     }

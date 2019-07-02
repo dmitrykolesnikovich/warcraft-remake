@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft.object.state;
 
+import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.EntityModel;
@@ -36,7 +37,7 @@ final class StateAttack extends State
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, attackEnded::get);
+        addTransition(StateIdle.class, () -> is(AnimState.FINISHED));
     }
 
     @Override

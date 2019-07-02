@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
@@ -45,6 +46,7 @@ public class Stop extends ActionModel
             for (int i = 0; i < n; i++)
             {
                 selection.get(i).getFeature(Pathfindable.class).stopMoves();
+                selection.get(i).getFeature(Attacker.class).stopAttack();
             }
         });
     }
