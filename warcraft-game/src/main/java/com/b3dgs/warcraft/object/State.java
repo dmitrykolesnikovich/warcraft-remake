@@ -146,7 +146,7 @@ public abstract class State extends StateAbstract
             @Override
             public void notifyAttackEnded(int damages, Transformable target)
             {
-                // Nothing to do
+                target.getFeature(EntityStats.class).applyDamages(damages);
             }
 
             @Override

@@ -44,8 +44,8 @@ public class EntityStats extends FeatureModel implements Renderable
     private static final int BAR_LIFE_X = 31;
     private static final int BAR_LIFE_Y = 16;
 
-    private final Alterable life = new Alterable(60);
-    private final Bar barLife = new Bar(27, 3);
+    private final Alterable health = new Alterable(60);
+    private final Bar barHealth = new Bar(27, 3);
     private final String name;
     private final Image icon;
     private boolean visible = true;
@@ -76,9 +76,21 @@ public class EntityStats extends FeatureModel implements Renderable
         {
             icon = null;
         }
-        life.fill();
-        barLife.setColorForeground(COLOR_LIFE);
-        barLife.setLocation((int) (icon.getX() + BAR_LIFE_X), (int) (icon.getY() + BAR_LIFE_Y));
+        health.fill();
+        barHealth.setColorForeground(COLOR_LIFE);
+        barHealth.setLocation((int) (icon.getX() + BAR_LIFE_X), (int) (icon.getY() + BAR_LIFE_Y));
+    }
+
+    /**
+     * Apply damages.
+     * 
+     * @param damages The damages to apply.
+     * @return <code>true</code> if empty health, <code>false</code> else.
+     */
+    public boolean applyDamages(int damages)
+    {
+        health.decrease(damages);
+        return health.isEmpty();
     }
 
     /**
@@ -108,14 +120,14 @@ public class EntityStats extends FeatureModel implements Renderable
      */
     public int getLife()
     {
-        return life.getCurrent();
+        return health.getCurrent();
     }
 
     @Override
     public void render(Graphic g)
     {
-        barLife.setWidthPercent(life.getPercent());
-        barLife.render(g);
+        barHealth.setWidthPercent(health.getPercent());
+        barHealth.render(g);
 
         text.draw(g, TEXT_X, TEXT_Y, name);
 
