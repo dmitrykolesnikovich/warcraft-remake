@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -43,6 +44,7 @@ final class StateAttack extends State
     {
         super.enter();
 
-        attacker.setAttackFrame(animation.getFrames());
+        pathfindable.pointTo(attacker.getTarget().getFeature(Pathfindable.class));
+        attacker.setAttackFrame(animation.getLast());
     }
 }

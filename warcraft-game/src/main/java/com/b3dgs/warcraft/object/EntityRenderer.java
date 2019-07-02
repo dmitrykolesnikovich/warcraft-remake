@@ -48,6 +48,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     private final Viewer viewer;
     private final SpriteAnimated surface;
 
+    @FeatureGet private EntityModel model;
     @FeatureGet private Transformable transformable;
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private Mirrorable mirrorable;
@@ -56,7 +57,6 @@ public class EntityRenderer extends FeatureModel implements Displayable
     @FeatureGet private Selectable selectable;
     @FeatureGet private EntityStats stats;
 
-    private int frameOffset;
     private int animFrames;
 
     /**
@@ -71,27 +71,6 @@ public class EntityRenderer extends FeatureModel implements Displayable
 
         viewer = services.get(Viewer.class);
         surface = model.getSurface();
-    }
-
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        animatable.addListener(new AnimatorFrameListener()
-        {
-            @Override
-            public void notifyAnimPlayed(Animation anim)
-            {
-                animFrames = anim.getLast() - anim.getFirst() + 1;
-            }
-
-            @Override
-            public void notifyAnimFrame(int frame)
-            {
-                // Nothing to do
-            }
-        });
     }
 
     /**
@@ -112,15 +91,38 @@ public class EntityRenderer extends FeatureModel implements Displayable
     {
         final int sx = UtilMath.getSign(pathfindable.getMoveX());
         final int sy = UtilMath.getSign(pathfindable.getMoveY());
-        final Orientation orientation = Orientation.get(sx, sy);
-        if (orientation != null)
+        Orientation orientation = Orientation.get(sx, sy);
+        if (orientation == null)
         {
-            frameOffset = orientation.ordinal();
-            if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
-            {
-                frameOffset = Orientation.ORIENTATIONS_NUMBER - orientation.ordinal();
-            }
+            orientation = pathfindable.getOrientation();
         }
+        int frameOffset = orientation.ordinal();
+        if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
+        {
+            frameOffset = Orientation.ORIENTATIONS_NUMBER - orientation.ordinal();
+        }
+        surface.setFrame(frameOffset * animFrames + animatable.getFrame());
+    }
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        animatable.addListener(new AnimatorFrameListener()
+        {
+            @Override
+            public void notifyAnimPlayed(Animation anim)
+            {
+                animFrames = anim.getFrames();
+            }
+
+            @Override
+            public void notifyAnimFrame(int frame)
+            {
+                // Nothing to do
+            }
+        });
     }
 
     @Override
@@ -129,8 +131,6 @@ public class EntityRenderer extends FeatureModel implements Displayable
         if (stats.isVisible())
         {
             updateFrameOffset();
-
-            surface.setFrame(frameOffset * animFrames + animatable.getFrame());
             surface.setLocation(viewer, transformable);
             surface.setMirror(mirrorable.getMirror());
 

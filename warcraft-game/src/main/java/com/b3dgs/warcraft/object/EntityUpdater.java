@@ -65,17 +65,18 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     {
         final int sx = UtilMath.getSign(pathfindable.getMoveX());
         final int sy = UtilMath.getSign(pathfindable.getMoveY());
-        final Orientation orientation = Orientation.get(sx, sy);
-        if (orientation != null)
+        Orientation orientation = Orientation.get(sx, sy);
+        if (orientation == null)
         {
-            if (orientation.ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF)
-            {
-                mirrorable.mirror(Mirror.HORIZONTAL);
-            }
-            else
-            {
-                mirrorable.mirror(Mirror.NONE);
-            }
+            orientation = pathfindable.getOrientation();
+        }
+        if (orientation.ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF)
+        {
+            mirrorable.mirror(Mirror.HORIZONTAL);
+        }
+        else
+        {
+            mirrorable.mirror(Mirror.NONE);
         }
     }
 
