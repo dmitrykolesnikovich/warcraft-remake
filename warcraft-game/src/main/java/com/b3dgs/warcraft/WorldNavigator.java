@@ -142,13 +142,24 @@ public class WorldNavigator implements Updatable
         }
     }
 
+    /**
+     * Check if cursor is inside map view.
+     * 
+     * @return <code>true</code> if over map, <code>false</code> on Hud.
+     */
+    private boolean isCursorOverMap()
+    {
+        return UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + camera.getWidth() - 8)
+               && UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + camera.getHeight() - 16);
+    }
+
     @Override
     public void update(double extrp)
     {
         updateNavigationDirectional(extrp);
         updateNavigationMinimap(extrp);
 
-        if (!updateNavigationPointer(extrp) && cursor.hasClickedOnce(3))
+        if (!updateNavigationPointer(extrp) && isCursorOverMap() && cursor.hasClickedOnce(3))
         {
             for (final Selectable selectable : selector.getSelection())
             {
