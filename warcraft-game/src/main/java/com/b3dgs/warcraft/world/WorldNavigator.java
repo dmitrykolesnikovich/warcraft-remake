@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft;
+package com.b3dgs.warcraft.world;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;

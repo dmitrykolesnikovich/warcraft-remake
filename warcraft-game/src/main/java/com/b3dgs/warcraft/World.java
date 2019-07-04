@@ -46,6 +46,7 @@ import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Folder;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
+import com.b3dgs.warcraft.world.WorldNavigator;
 
 /**
  * World game representation.
@@ -142,6 +143,7 @@ public class World extends WorldGame
     private void createBase(int tx, int ty)
     {
         spawn(Medias.create(Folder.ORCS, "Peon.xml"), tx, ty);
+        spawn(Medias.create(Folder.ORCS, "BarracksOrc.xml"), tx + 4, ty);
 
         final Transformable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), tx + 2, ty + 1);
         camera.teleport(grunt.getX() - camera.getWidth() / 2, grunt.getY() - camera.getHeight() / 2);
