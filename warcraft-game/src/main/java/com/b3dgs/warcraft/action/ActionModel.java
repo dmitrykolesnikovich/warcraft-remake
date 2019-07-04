@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.warcraft.constant.Constant;
 
 /**
- * Move action.
+ * Action model implementation..
  */
 public class ActionModel extends FeaturableModel implements Updatable, Renderable
 {
@@ -133,9 +133,12 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
         addFeature(new DisplayableModel(g ->
         {
-            background.render(g);
-            surface.render(g);
-            ActionModel.this.render(g);
+            if (actionable.isEnabled())
+            {
+                background.render(g);
+                surface.render(g);
+                ActionModel.this.render(g);
+            }
         }));
     }
 

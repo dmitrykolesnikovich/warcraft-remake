@@ -9,7 +9,7 @@
 	<lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
 	<lionengine:producible steps="3"/>
     <lionengine:actions>
-        <lionengine:action path="action/orc/ProduceGrunt.xml"/>
+        <lionengine:action path="action/orc/ProduceGrunt.xml" unique="true"/>
     </lionengine:actions>
 	<attributes life="100" fov="3"/>
 	<production steps_per_second="1"/>

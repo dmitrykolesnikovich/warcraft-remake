@@ -32,7 +32,7 @@
         <lionengine:action path="action/orc/StopOrc.xml"/>
         <lionengine:action path="action/orc/AttackAxe.xml"/>
     </lionengine:actions>
-    <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="1" damages_max="1"/>
+    <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="4" damages_max="6"/>
 	<offsetDeath x="8" y="8"/>
 	<attributes life="100" fov="4"/>
 	<cost steps="5" gold="500" wood="100"/>

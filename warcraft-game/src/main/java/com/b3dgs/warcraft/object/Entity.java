@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -82,6 +83,7 @@ public class Entity extends FeaturableModel
         addFeature(new EntityStats(services, setup));
         addFeature(new PathfindableModel(services, setup));
         addFeature(new ProducibleModel(setup));
+        addFeature(new ActionerModel(setup));
         addFeatureAndGet(new AttackerModel(setup)).addListener(new AttackerListenerVoid()
         {
             @Override
