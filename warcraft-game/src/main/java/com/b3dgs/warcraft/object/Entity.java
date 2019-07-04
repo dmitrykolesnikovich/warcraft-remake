@@ -20,26 +20,26 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
-import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.state.State;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -80,12 +80,30 @@ public class Entity extends FeaturableModel
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
-        addFeature(new AttackerModel(setup));
+        addFeature(new PathfindableModel(services, setup));
+        addFeature(new ProducibleModel(setup));
+        addFeatureAndGet(new AttackerModel(setup)).addListener(new AttackerListenerVoid()
+        {
+            @Override
+            public void notifyAttackEnded(int damages, Transformable target)
+            {
+                target.getFeature(EntityStats.class).applyDamages(damages);
+            }
+        });
+
+        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
+        producer.setStepsPerSecond(1.0);
+        producer.addListener(new ProducerListenerVoid()
+        {
+            @Override
+            public void notifyStartProduction(Featurable featurable)
+            {
+                featurable.getFeature(StateHandler.class).changeState(StateProducing.class);
+            }
+        });
 
         final StateHandler stateHandler = addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName));
         stateHandler.changeState(StateIdle.class);
-
-        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
         collidable.setGroup(Integer.valueOf(Constant.LAYER_ENTITY));
@@ -93,35 +111,7 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
-        producer.setStepsPerSecond(1.0);
-
-        final MapTile map = services.get(MapTile.class);
-
         final EntityModel model = addFeatureAndGet(new EntityModel(services, setup));
-
-        final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
-        producible.addListener(new ProducibleListener()
-        {
-            @Override
-            public void notifyProductionStarted(Producer producer)
-            {
-                pathfindable.setLocation(map.getInTileX(producible), map.getInTileY(producible));
-                stateHandler.changeState(StateProducing.class);
-            }
-
-            @Override
-            public void notifyProductionProgress(Producer producer)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyProductionEnded(Producer producer)
-            {
-                // Nothing to do
-            }
-        });
 
         addFeature(new EntityUpdater(services));
         addFeature(new EntityRenderer(services, model));

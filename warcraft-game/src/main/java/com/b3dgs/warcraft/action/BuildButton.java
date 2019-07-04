@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.ProducerListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
@@ -109,18 +109,12 @@ public class BuildButton extends ActionModel
             pathfindable.setDestination(area);
 
             final EntityStats stats = producer.getFeature(EntityStats.class);
-            producer.addListener(new ProducerListener()
+            producer.addListener(new ProducerListenerVoid()
             {
                 @Override
                 public void notifyStartProduction(Featurable featurable)
                 {
                     stats.setVisible(false);
-                }
-
-                @Override
-                public void notifyProducing(Featurable featurable)
-                {
-                    // Nothing to do
                 }
 
                 @Override
@@ -134,12 +128,6 @@ public class BuildButton extends ActionModel
                     pathfindable.setLocation(coord);
 
                     stats.setVisible(true);
-                }
-
-                @Override
-                public void notifyCanNotProduce(Featurable featurable)
-                {
-                    // Nothing to do
                 }
             });
         }

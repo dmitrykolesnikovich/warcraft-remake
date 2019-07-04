@@ -18,8 +18,11 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -28,16 +31,39 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Build button action.
+ * Produce button action.
  */
 public class ProduceButton extends ActionModel
 {
+    /**
+     * Create progress bar.
+     * 
+     * @param actionable The actionable reference.
+     * @return The created progress bar.
+     */
+    private static Bar createBar(Actionable actionable)
+    {
+        final Area area = actionable.getButton();
+        final Bar bar = new Bar(area.getWidth(), area.getHeight());
+        bar.setLocation((int) area.getX(), (int) area.getY());
+        bar.setWidthPercent(0);
+        bar.setHeightPercent(100);
+        bar.setColorForeground(ColorRgba.GREEN);
+        return bar;
+    }
+
+    /** Production progress bar. */
+    private final Bar progress = createBar(actionable);
+
     /**
      * Create build button action.
      * 
@@ -48,38 +74,15 @@ public class ProduceButton extends ActionModel
     {
         super(services, setup);
 
-        final Media target = Medias.create(setup.getText("media").split("/"));
-
+        final Media target = Medias.create(setup.getText("media").split(Constant.SLASH));
         final Factory factory = services.get(Factory.class);
-        final MapTile map = services.get(MapTile.class);
+
         actionable.setAction(() ->
         {
             final Featurable entity = factory.create(target);
             final Producible producible = entity.getFeature(Producible.class);
-            producible.addListener(new ProducibleListener()
-            {
-                @Override
-                public void notifyProductionStarted(Producer producer)
-                {
-                    // Nothing to do
-                }
+            producible.addListener(createListener(producible));
 
-                @Override
-                public void notifyProductionProgress(Producer producer)
-                {
-                    // Nothing to do
-                }
-
-                @Override
-                public void notifyProductionEnded(Producer producer)
-                {
-                    final Pathfindable pathfindable = producible.getFeature(Pathfindable.class);
-                    final CoordTile coord = map.getFeature(MapTilePath.class)
-                                               .getFreeTileAround(pathfindable,
-                                                                  producer.getFeature(Pathfindable.class));
-                    pathfindable.setLocation(coord);
-                }
-            });
             final List<Selectable> selection = selector.getSelection();
             final int n = selection.size();
             for (int i = 0; i < n; i++)
@@ -88,5 +91,50 @@ public class ProduceButton extends ActionModel
                 producer.addToProductionQueue(entity);
             }
         });
+    }
+
+    /**
+     * Create production listener.
+     * 
+     * @param producible The producible in production.
+     * @return The created listener.
+     */
+    private ProducibleListener createListener(Producible producible)
+    {
+        return new ProducibleListenerVoid()
+        {
+            @Override
+            public void notifyProductionProgress(Producer producer)
+            {
+                progress.setWidthPercent(producer.getProgressPercent());
+            }
+
+            @Override
+            public void notifyProductionEnded(Producer producer)
+            {
+                teleportOutside(producible, producer);
+                progress.setWidthPercent(0);
+            }
+        };
+    }
+
+    /**
+     * Teleport producer outside producible area.
+     * 
+     * @param producible The producible reference.
+     * @param producer The producer to teleport.
+     */
+    private void teleportOutside(Producible producible, Producer producer)
+    {
+        final Pathfindable pathfindable = producible.getFeature(Pathfindable.class);
+        final CoordTile coord = map.getFeature(MapTilePath.class)
+                                   .getFreeTileAround(pathfindable, producer.getFeature(Pathfindable.class));
+        pathfindable.setLocation(coord);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        progress.render(g);
     }
 }

@@ -26,14 +26,15 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
@@ -41,6 +42,9 @@ import com.b3dgs.warcraft.object.feature.EntityStats;
  */
 public abstract class State extends StateAbstract
 {
+    /** Map reference. */
+    protected final MapTile map;
+
     /** Identifiable reference. */
     protected final Identifiable identifiable;
     /** Model reference. */
@@ -66,16 +70,12 @@ public abstract class State extends StateAbstract
 
     /** Move started flag. */
     protected final AtomicBoolean moveStarted = new AtomicBoolean();
-    /** Moving flag. */
-    protected final AtomicBoolean moving = new AtomicBoolean();
     /** Move arrived flag. */
     protected final AtomicBoolean moveArrived = new AtomicBoolean();
 
     /** Attack started flag. */
     protected final AtomicBoolean attackStarted = new AtomicBoolean();
 
-    /** Producible started flag. */
-    protected final AtomicBoolean producibleStarted = new AtomicBoolean();
     /** Producible ended flag. */
     protected final AtomicBoolean producibleEnded = new AtomicBoolean();
 
@@ -91,6 +91,9 @@ public abstract class State extends StateAbstract
 
         this.model = model;
         this.animation = animation;
+
+        map = model.getMap();
+
         identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);
         transformable = model.getFeature(Transformable.class);
@@ -101,7 +104,7 @@ public abstract class State extends StateAbstract
         collidable = model.getFeature(Collidable.class);
         stats = model.getFeature(EntityStats.class);
 
-        pathfindable.addListener(new PathfindableListener()
+        pathfindable.addListener(new PathfindableListenerVoid()
         {
             @Override
             public void notifyStartMove()
@@ -110,63 +113,21 @@ public abstract class State extends StateAbstract
             }
 
             @Override
-            public void notifyMoving()
-            {
-                moving.set(true);
-            }
-
-            @Override
             public void notifyArrived()
             {
                 moveArrived.set(true);
             }
         });
-        attacker.addListener(new AttackerListener()
+        attacker.addListener(new AttackerListenerVoid()
         {
-            @Override
-            public void notifyReachingTarget(Transformable target)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyPreparingAttack()
-            {
-                // Nothing to do
-            }
-
             @Override
             public void notifyAttackStarted(Transformable target)
             {
                 attackStarted.set(true);
             }
-
-            @Override
-            public void notifyAttackEnded(int damages, Transformable target)
-            {
-                target.getFeature(EntityStats.class).applyDamages(damages);
-            }
-
-            @Override
-            public void notifyAttackAnimEnded()
-            {
-                // Nothing to do
-            }
         });
-        producible.addListener(new ProducibleListener()
+        producible.addListener(new ProducibleListenerVoid()
         {
-            @Override
-            public void notifyProductionStarted(Producer producer)
-            {
-                producibleStarted.set(true);
-            }
-
-            @Override
-            public void notifyProductionProgress(Producer producer)
-            {
-                // Nothing to do
-            }
-
             @Override
             public void notifyProductionEnded(Producer producer)
             {
@@ -207,10 +168,8 @@ public abstract class State extends StateAbstract
     public void exit()
     {
         moveStarted.set(false);
-        moving.set(false);
         moveArrived.set(false);
         attackStarted.set(false);
-        producibleStarted.set(false);
         producibleEnded.set(false);
     }
 
