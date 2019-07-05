@@ -43,6 +43,8 @@ public class EntityStats extends FeatureModel implements Renderable
     private static final int TEXT_Y = 98;
     private static final int BAR_LIFE_X = 31;
     private static final int BAR_LIFE_Y = 16;
+    private static final int BAR_RED_PERCENT = 25;
+    private static final int BAR_YELLOW_PERCENT = 50;
 
     private final Alterable health = new Alterable(60);
     private final Bar barHealth = new Bar(27, 3);
@@ -90,6 +92,7 @@ public class EntityStats extends FeatureModel implements Renderable
     public boolean applyDamages(int damages)
     {
         health.decrease(damages);
+        updateHealthBar();
         return health.isEmpty();
     }
 
@@ -123,10 +126,26 @@ public class EntityStats extends FeatureModel implements Renderable
         return health.getCurrent();
     }
 
+    /**
+     * Update bar size and color depending of health percent.
+     */
+    private void updateHealthBar()
+    {
+        final int percent = health.getPercent();
+        barHealth.setWidthPercent(percent);
+        if (percent < BAR_RED_PERCENT)
+        {
+            barHealth.setColorForeground(ColorRgba.RED);
+        }
+        else if (percent < BAR_YELLOW_PERCENT)
+        {
+            barHealth.setColorForeground(ColorRgba.YELLOW);
+        }
+    }
+
     @Override
     public void render(Graphic g)
     {
-        barHealth.setWidthPercent(health.getPercent());
         barHealth.render(g);
 
         text.draw(g, TEXT_X, TEXT_Y, name);
