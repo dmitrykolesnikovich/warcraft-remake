@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.b3dgs.warcraft</groupId>
     <artifactId>warcraft-parent</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Warcraft Remake</name>
     <packaging>pom</packaging>
     <description>Remake of the original Warcraft on the DOS by Blizzard</description>
