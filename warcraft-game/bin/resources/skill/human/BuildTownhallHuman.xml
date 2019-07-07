@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.human.BuildingTownhallHuman</lionengine:class>
-	<icon>BuildTownhallHuman.png</icon>
-	<name>Build TownHall</name>
-	<description>Build a TownHall</description>
-	<race>human</race>
-</lionengine:skill>
