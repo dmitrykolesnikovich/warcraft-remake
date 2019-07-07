@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
-import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
@@ -82,7 +81,7 @@ public class World extends WorldGame
 
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
-        handler.addComponent(new ComponentCollision());
+        handler.addComponent(services.add(new ComponentCollision()));
 
         hud = services.add(factory.create(Medias.create("Hud.xml")));
         handler.add(hud);
@@ -94,7 +93,6 @@ public class World extends WorldGame
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(1);
-        selector.getFeature(Collidable.class).addAccept(Integer.valueOf(Constant.LAYER_ENTITY));
 
         hud.addListener(() ->
         {
