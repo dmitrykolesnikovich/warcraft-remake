@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.warcraft.Food;
+import com.b3dgs.warcraft.object.feature.FoodConsumer;
 
 /**
  * Produce button action.
@@ -76,19 +78,27 @@ public class ProduceButton extends ActionModel
 
         final Media target = Medias.create(setup.getText("media").split(Constant.SLASH));
         final Factory factory = services.get(Factory.class);
+        final Food food = services.get(Food.class);
 
         actionable.setAction(() ->
         {
-            final Featurable entity = factory.create(target);
-            final Producible producible = entity.getFeature(Producible.class);
-            producible.addListener(createListener(producible));
-
-            final List<Selectable> selection = selector.getSelection();
-            final int n = selection.size();
-            for (int i = 0; i < n; i++)
+            if (food.isAvailable())
             {
-                final Producer producer = selection.get(i).getFeature(Producer.class);
-                producer.addToProductionQueue(entity);
+                final Featurable entity = factory.create(target);
+                if (entity.hasFeature(FoodConsumer.class))
+                {
+                    food.consume();
+                }
+                final Producible producible = entity.getFeature(Producible.class);
+                producible.addListener(createListener(producible));
+
+                final List<Selectable> selection = selector.getSelection();
+                final int n = selection.size();
+                for (int i = 0; i < n; i++)
+                {
+                    final Producer producer = selection.get(i).getFeature(Producer.class);
+                    producer.addToProductionQueue(entity);
+                }
             }
         });
     }

@@ -36,6 +36,8 @@ public final class EntityModel extends FeatureModel
     private final SpriteAnimated surface;
     /** Map reference. */
     private final MapTile map;
+    /** Services reference. */
+    private final Services services;
 
     /**
      * Create model.
@@ -46,6 +48,8 @@ public final class EntityModel extends FeatureModel
     public EntityModel(Services services, Setup setup)
     {
         super();
+
+        this.services = services;
 
         final FramesConfig config = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
@@ -73,5 +77,15 @@ public final class EntityModel extends FeatureModel
     public MapTile getMap()
     {
         return map;
+    }
+
+    /**
+     * Get the services reference.
+     * 
+     * @return The services reference.
+     */
+    public Services getServices()
+    {
+        return services;
     }
 }

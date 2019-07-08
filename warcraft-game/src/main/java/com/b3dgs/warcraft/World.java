@@ -78,6 +78,7 @@ public class World extends WorldGame
         super(services);
 
         services.add(getInputDevice(InputDeviceDirectional.class));
+        services.add(new Food());
 
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 

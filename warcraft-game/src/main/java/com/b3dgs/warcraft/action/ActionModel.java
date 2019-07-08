@@ -57,6 +57,8 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     /** Current state reference. */
     protected final AtomicReference<Updatable> state;
 
+    /** Services reference. */
+    protected final Services services;
     /** Map reference. */
     protected final MapTile map;
     /** Map path reference. */
@@ -80,6 +82,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     {
         super();
 
+        this.services = services;
         map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);
         cursor = services.get(Cursor.class);
