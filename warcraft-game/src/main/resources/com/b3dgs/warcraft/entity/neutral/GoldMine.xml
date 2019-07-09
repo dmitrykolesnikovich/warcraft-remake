@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:entity name="Gold Mine" xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.entity.neutral.GoldMine</lionengine:class>
+    <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="GoldMine.png" icon="GoldMine_icon.png"/>
 	<lionengine:frames horizontal="1" vertical="1"/>
 	<lionengine:size width="48" height="48"/>
+    <lionengine:animation name="idle" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:producible steps="3"/>
 	<lionengine:offset x="0" y="0"/>
 	<attributes life="1000" fov="3"/>
 	<cost steps="5" gold="500" wood="100"/>
