@@ -20,19 +20,26 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.warcraft.Food;
 
 /**
  * Represents food production.
  */
 @FeatureInterface
-public class FoodProduction extends FeatureModel
+public class FoodProduction extends FeatureModel implements Routine
 {
+    private static final int TEXT_X = 5;
+    private static final int TEXT_Y = 115;
+
+    private final Text text;
     private final Food food;
 
     @FeatureGet private Producible producible;
@@ -47,6 +54,7 @@ public class FoodProduction extends FeatureModel
     {
         super();
 
+        text = services.get(Text.class);
         food = services.get(Food.class);
     }
 
@@ -63,5 +71,11 @@ public class FoodProduction extends FeatureModel
                 food.increase();
             }
         });
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        text.draw(g, TEXT_X, TEXT_Y, food.getConsumed() + " of " + food.getAvailable());
     }
 }

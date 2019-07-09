@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -56,6 +57,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     @FeatureGet private Collidable collidable;
     @FeatureGet private Selectable selectable;
     @FeatureGet private EntityStats stats;
+    @FeatureGet private Routines routines;
 
     private int animFrames;
 
@@ -141,6 +143,8 @@ public class EntityRenderer extends FeatureModel implements Displayable
             {
                 drawSelection(g);
             }
+
+            routines.render(g);
         }
     }
 }

@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Refreshable;
+import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -45,6 +46,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     @FeatureGet private Producer producer;
     @FeatureGet private Selectable selectable;
     @FeatureGet private Attacker attacker;
+    @FeatureGet private Routines routines;
 
     /**
      * Create updater.
@@ -81,6 +83,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     @Override
     public void update(double extrp)
     {
+        routines.update(extrp);
         stateHandler.update(extrp);
         pathfindable.update(extrp);
         attacker.update(extrp);

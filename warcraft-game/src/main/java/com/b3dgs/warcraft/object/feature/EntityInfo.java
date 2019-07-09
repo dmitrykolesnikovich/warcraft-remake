@@ -22,6 +22,7 @@ import java.util.List;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -60,7 +61,7 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
         }
         for (final Selectable selectable : selection)
         {
-            selectable.getFeature(EntityStats.class).render(g);
+            selectable.getFeature(Routines.class).render(g);
         }
     }
 

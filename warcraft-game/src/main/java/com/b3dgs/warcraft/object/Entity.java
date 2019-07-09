@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
+import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -113,8 +114,15 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        final EntityModel model = addFeatureAndGet(new EntityModel(services, setup));
+        addFeature(new EntityModel(services, setup));
+    }
 
+    @Override
+    public void addAfter(Services services, Setup setup)
+    {
+        addFeature(new Routines());
+
+        final EntityModel model = getFeature(EntityModel.class);
         addFeature(new EntityUpdater(services));
         addFeature(new EntityRenderer(services, model));
     }

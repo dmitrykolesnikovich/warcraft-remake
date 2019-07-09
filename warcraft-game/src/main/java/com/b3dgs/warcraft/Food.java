@@ -51,6 +51,26 @@ public class Food
     }
 
     /**
+     * Get available food.
+     * 
+     * @return The available food.
+     */
+    public int getAvailable()
+    {
+        return available.getCurrent();
+    }
+
+    /**
+     * Get consumed food.
+     * 
+     * @return The consumed food.
+     */
+    public int getConsumed()
+    {
+        return consumed.getCurrent();
+    }
+
+    /**
      * Check if can consume food.
      * 
      * @return <code>true</code> if enough food, <code>false</code> else.

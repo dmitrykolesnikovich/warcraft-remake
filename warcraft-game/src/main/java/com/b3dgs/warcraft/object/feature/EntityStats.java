@@ -21,11 +21,11 @@ import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
@@ -35,7 +35,7 @@ import com.b3dgs.warcraft.constant.Constant;
  * Icon renderer feature.
  */
 @FeatureInterface
-public class EntityStats extends FeatureModel implements Renderable
+public class EntityStats extends FeatureModel implements Routine
 {
     private static final ColorRgba COLOR_LIFE = new ColorRgba(0, 200, 0);
     private static final int ENTITY_INFO_MARGIN = 4;
