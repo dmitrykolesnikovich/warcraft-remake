@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.orc.ExtractOrc</lionengine:class>
-	<icon>ExtractOrc.png</icon>
-	<name>Extract</name>
-	<description>Extract resources</description>
-	<race>orc</race>
-</lionengine:skill>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.Extract</lionengine:class>
+    <lionengine:surface image="ExtractOrc.png"/>
+    <lionengine:action name="Extract" description="Extract at" x="4" y="141" width="27" height="19"/>
+</lionengine:featurable>

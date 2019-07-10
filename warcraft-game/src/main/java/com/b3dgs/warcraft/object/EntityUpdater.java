@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**
@@ -42,6 +43,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     @FeatureGet private StateHandler stateHandler;
     @FeatureGet private Mirrorable mirrorable;
     @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Extractor extractor;
     @FeatureGet private Animatable animatable;
     @FeatureGet private Producer producer;
     @FeatureGet private Selectable selectable;
@@ -88,6 +90,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
         pathfindable.update(extrp);
         attacker.update(extrp);
         producer.update(extrp);
+        extractor.update(extrp);
         stateHandler.postUpdate();
         updateMirror();
         mirrorable.update(extrp);

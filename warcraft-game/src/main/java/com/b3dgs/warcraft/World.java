@@ -142,6 +142,7 @@ public class World extends WorldGame
     private void createBase(int tx, int ty)
     {
         spawn(Medias.create(Folder.ORCS, "Peon.xml"), tx, ty);
+        spawn(Medias.create(Folder.ORCS, "TownHallOrc.xml"), tx + 6, ty - 5);
         spawn(Medias.create(Folder.NEUTRAL, "GoldMine.xml"), tx + 4, ty);
 
         final Transformable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), tx + 2, ty + 1);

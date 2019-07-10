@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -42,6 +43,9 @@ import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.state.State;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -82,9 +86,9 @@ public class Entity extends FeaturableModel
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
-        addFeature(new PathfindableModel(services, setup));
         addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
+        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         addFeatureAndGet(new AttackerModel(setup)).addListener(new AttackerListenerVoid()
         {
             @Override
@@ -102,6 +106,24 @@ public class Entity extends FeaturableModel
             public void notifyStartProduction(Featurable featurable)
             {
                 featurable.getFeature(StateHandler.class).changeState(StateProducing.class);
+            }
+        });
+        final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
+        extractor.setChecker(new ExtractorChecker()
+        {
+            @Override
+            public boolean canExtract()
+            {
+                return UtilMath.getDistance(pathfindable.getInTileX(),
+                                            pathfindable.getInTileY(),
+                                            extractor.getResourceLocation().getInTileX(),
+                                            extractor.getResourceLocation().getInTileY()) < 2;
+            }
+
+            @Override
+            public boolean canCarry()
+            {
+                return true;
             }
         });
 

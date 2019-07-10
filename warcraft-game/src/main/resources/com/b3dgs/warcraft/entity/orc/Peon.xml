@@ -28,9 +28,11 @@
         <lionengine:path category="water" block="true"/>
     </lionengine:pathfindable>
     <lionengine:producible steps="3"/>
+    <lionengine:extractor extract="1.0" dropoff="1.0" capacity="10"/>
     <lionengine:actions>
         <lionengine:action path="action/orc/MoveOrc.xml"/>
         <lionengine:action path="action/orc/StopOrc.xml"/>
+        <lionengine:action path="action/orc/ExtractOrc.xml"/>
         <lionengine:action path="action/orc/BuildingStandardOrc.xml">
             <lionengine:action path="action/orc/BuildFarmOrc.xml"/>
             <lionengine:action path="action/orc/BuildBarracksOrc.xml"/>

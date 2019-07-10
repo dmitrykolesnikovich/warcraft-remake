@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
@@ -33,6 +34,8 @@ import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -59,6 +62,8 @@ public abstract class State extends StateAbstract
     protected final Attacker attacker;
     /** Producible reference. */
     protected final Producible producible;
+    /** Extractor reference. */
+    protected final Extractor extractor;
     /** Mirrorable reference. */
     protected final Mirrorable mirrorable;
     /** Collidable reference. */
@@ -100,6 +105,7 @@ public abstract class State extends StateAbstract
         pathfindable = model.getFeature(Pathfindable.class);
         attacker = model.getFeature(Attacker.class);
         producible = model.getFeature(Producible.class);
+        extractor = model.getFeature(Extractor.class);
         mirrorable = model.getFeature(Mirrorable.class);
         collidable = model.getFeature(Collidable.class);
         stats = model.getFeature(EntityStats.class);
@@ -132,6 +138,45 @@ public abstract class State extends StateAbstract
             public void notifyProductionEnded(Producer producer)
             {
                 producibleEnded.set(true);
+            }
+        });
+        extractor.addListener(new ExtractorListener()
+        {
+            @Override
+            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyStartCarry(Enum<?> type, int totalQuantity)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyExtracted(Enum<?> type, int currentQuantity)
+            {
+                // Nothing to do
+
+            }
+
+            @Override
+            public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
+            {
+                // Nothing to do
             }
         });
     }
