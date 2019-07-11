@@ -50,7 +50,6 @@ public class EntityStats extends FeatureModel implements Routine
     private final Bar barHealth = new Bar(27, 3);
     private final String name;
     private final Image icon;
-    private boolean visible = true;
 
     private final Text text;
 
@@ -94,26 +93,6 @@ public class EntityStats extends FeatureModel implements Routine
         health.decrease(damages);
         updateHealthBar();
         return health.isEmpty();
-    }
-
-    /**
-     * Set the visibility.
-     * 
-     * @param visible <code>true</code> if visible, <code>false</code> else.
-     */
-    public void setVisible(boolean visible)
-    {
-        this.visible = visible;
-    }
-
-    /**
-     * Check visibility flag.
-     * 
-     * @return <code>true</code> if visible, <code>false</code> else.
-     */
-    public boolean isVisible()
-    {
-        return visible;
     }
 
     /**

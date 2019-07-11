@@ -21,9 +21,9 @@ import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
 /**
- * Idle state implementation.
+ * Carry gold state implementation.
  */
-public final class StateIdle extends State
+final class StateCarryGold extends State
 {
     /**
      * Create the state.
@@ -31,13 +31,10 @@ public final class StateIdle extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateIdle(EntityModel model, Animation animation)
+    public StateCarryGold(EntityModel model, Animation animation)
     {
         super(model, animation);
 
-        addTransition(StateCarryGold.class, carryResource::get);
-        addTransition(StateWalk.class, moveStarted::get);
-        addTransition(StateAttack.class, attackStarted::get);
-        addTransition(StateDie.class, () -> stats.getLife() == 0);
+        addTransition(StateIdle.class, moveArrived::get);
     }
 }

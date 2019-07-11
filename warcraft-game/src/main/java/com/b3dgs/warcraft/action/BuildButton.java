@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.InputDevicePointer;
-import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.EntityModel;
 
 /**
  * Build button action.
@@ -108,13 +108,13 @@ public class BuildButton extends ActionModel
             final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
             pathfindable.setDestination(area);
 
-            final EntityStats stats = producer.getFeature(EntityStats.class);
+            final EntityModel model = producer.getFeature(EntityModel.class);
             producer.addListener(new ProducerListenerVoid()
             {
                 @Override
                 public void notifyStartProduction(Featurable featurable)
                 {
-                    stats.setVisible(false);
+                    model.setVisible(false);
                 }
 
                 @Override
@@ -127,7 +127,7 @@ public class BuildButton extends ActionModel
                                                                   featurable.getFeature(Pathfindable.class));
                     pathfindable.setLocation(coord);
 
-                    stats.setVisible(true);
+                    model.setVisible(true);
                 }
             });
         }

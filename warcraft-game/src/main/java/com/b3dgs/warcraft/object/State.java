@@ -23,28 +23,36 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Animatable;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.feature.Warehouse;
 
 /**
  * Base state with animation implementation.
  */
 public abstract class State extends StateAbstract
 {
+    /** Handler reference. */
+    protected final Handler handler;
     /** Map reference. */
     protected final MapTile map;
 
@@ -84,6 +92,71 @@ public abstract class State extends StateAbstract
     /** Producible ended flag. */
     protected final AtomicBoolean producibleEnded = new AtomicBoolean();
 
+    /** Carry resource flag. */
+    protected final AtomicBoolean carryResource = new AtomicBoolean();
+
+    private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
+    {
+        @Override
+        public void notifyStartMove()
+        {
+            moveStarted.set(true);
+        }
+
+        @Override
+        public void notifyArrived()
+        {
+            moveArrived.set(true);
+        }
+    };
+    private final AttackerListener attackerListener = new AttackerListenerVoid()
+    {
+        @Override
+        public void notifyAttackStarted(Transformable target)
+        {
+            attackStarted.set(true);
+        }
+    };
+    private final ProducibleListener producibleListener = new ProducibleListenerVoid()
+    {
+        @Override
+        public void notifyProductionEnded(Producer producer)
+        {
+            producibleEnded.set(true);
+        }
+    };
+
+    private final ExtractorListener extractorListener = new ExtractorListenerVoid()
+    {
+        @Override
+        public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+        {
+            model.setVisible(true);
+            pathfindable.setDestination(resourceLocation);
+            carryResource.set(false);
+        }
+
+        @Override
+        public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+        {
+            model.setVisible(false);
+        }
+
+        @Override
+        public void notifyStartCarry(Enum<?> type, int totalQuantity)
+        {
+            pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
+            model.setVisible(true);
+            carryResource.set(true);
+        }
+
+        @Override
+        public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+        {
+            model.setVisible(false);
+        }
+    };
+
     /**
      * Create the state.
      * 
@@ -97,6 +170,7 @@ public abstract class State extends StateAbstract
         this.model = model;
         this.animation = animation;
 
+        handler = model.getHandler();
         map = model.getMap();
 
         identifiable = model.getFeature(Identifiable.class);
@@ -109,76 +183,6 @@ public abstract class State extends StateAbstract
         mirrorable = model.getFeature(Mirrorable.class);
         collidable = model.getFeature(Collidable.class);
         stats = model.getFeature(EntityStats.class);
-
-        pathfindable.addListener(new PathfindableListenerVoid()
-        {
-            @Override
-            public void notifyStartMove()
-            {
-                moveStarted.set(true);
-            }
-
-            @Override
-            public void notifyArrived()
-            {
-                moveArrived.set(true);
-            }
-        });
-        attacker.addListener(new AttackerListenerVoid()
-        {
-            @Override
-            public void notifyAttackStarted(Transformable target)
-            {
-                attackStarted.set(true);
-            }
-        });
-        producible.addListener(new ProducibleListenerVoid()
-        {
-            @Override
-            public void notifyProductionEnded(Producer producer)
-            {
-                producibleEnded.set(true);
-            }
-        });
-        extractor.addListener(new ExtractorListener()
-        {
-            @Override
-            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyStartDropOff(Enum<?> type, int totalQuantity)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyStartCarry(Enum<?> type, int totalQuantity)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void notifyExtracted(Enum<?> type, int currentQuantity)
-            {
-                // Nothing to do
-
-            }
-
-            @Override
-            public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
-            {
-                // Nothing to do
-            }
-        });
     }
 
     /**
@@ -207,15 +211,25 @@ public abstract class State extends StateAbstract
     public void enter()
     {
         animatable.play(animation);
+        pathfindable.addListener(pathfindableListener);
+        attacker.addListener(attackerListener);
+        producible.addListener(producibleListener);
+        extractor.addListener(extractorListener);
     }
 
     @Override
     public void exit()
     {
+        pathfindable.removeListener(pathfindableListener);
+        attacker.removeListener(attackerListener);
+        producible.removeListener(producibleListener);
+        extractor.removeListener(extractorListener);
+
         moveStarted.set(false);
         moveArrived.set(false);
         attackStarted.set(false);
         producibleEnded.set(false);
+        carryResource.set(false);
     }
 
     /**

@@ -18,10 +18,13 @@ package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
@@ -34,10 +37,16 @@ public final class EntityModel extends FeatureModel
 {
     /** Surface reference. */
     private final SpriteAnimated surface;
+    /** Handler reference. */
+    private final Handler handler;
     /** Map reference. */
     private final MapTile map;
     /** Services reference. */
     private final Services services;
+
+    @FeatureGet private Collidable collidable;
+
+    private boolean visible = true;
 
     /**
      * Create model.
@@ -56,7 +65,29 @@ public final class EntityModel extends FeatureModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
+        handler = services.get(Handler.class);
         map = services.get(MapTile.class);
+    }
+
+    /**
+     * Set the visible flag.
+     * 
+     * @param visible <code>true</code> if visible, <code>false</code> else.
+     */
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
+        collidable.setEnabled(visible);
+    }
+
+    /**
+     * Check visible flag.
+     * 
+     * @return <code>true</code> if visible, <code>false</code> else.
+     */
+    public boolean isVisible()
+    {
+        return visible;
     }
 
     /**
@@ -67,6 +98,16 @@ public final class EntityModel extends FeatureModel
     public SpriteAnimated getSurface()
     {
         return surface;
+    }
+
+    /**
+     * Get handler reference.
+     * 
+     * @return The handler reference.
+     */
+    public Handler getHandler()
+    {
+        return handler;
     }
 
     /**

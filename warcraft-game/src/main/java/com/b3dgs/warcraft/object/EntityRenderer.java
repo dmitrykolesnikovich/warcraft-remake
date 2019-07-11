@@ -130,7 +130,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     @Override
     public void render(Graphic g)
     {
-        if (stats.isVisible())
+        if (model.isVisible())
         {
             updateFrameOffset();
             surface.setLocation(viewer, transformable);

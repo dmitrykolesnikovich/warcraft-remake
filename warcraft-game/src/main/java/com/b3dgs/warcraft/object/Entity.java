@@ -20,10 +20,12 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Routines;
@@ -49,6 +51,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.feature.Warehouse;
 import com.b3dgs.warcraft.object.state.StateIdle;
 import com.b3dgs.warcraft.object.state.StateProducing;
 
@@ -108,6 +111,8 @@ public class Entity extends FeaturableModel
                 featurable.getFeature(StateHandler.class).changeState(StateProducing.class);
             }
         });
+
+        final Handler handler = services.get(Handler.class);
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()
         {
@@ -123,7 +128,11 @@ public class Entity extends FeaturableModel
             @Override
             public boolean canCarry()
             {
-                return true;
+                final Tiled warehouse = handler.get(Warehouse.class).iterator().next();
+                return UtilMath.getDistance(pathfindable.getInTileX(),
+                                            pathfindable.getInTileY(),
+                                            warehouse.getInTileX(),
+                                            warehouse.getInTileY()) < 2;
             }
         });
 
