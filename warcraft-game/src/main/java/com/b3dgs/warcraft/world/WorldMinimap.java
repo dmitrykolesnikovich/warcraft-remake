@@ -67,7 +67,7 @@ public class WorldMinimap implements Resource, Renderable
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
             g.drawRect(Constant.MINIMAP_X + entity.getInTileX(),
-                       Constant.MINIMAP_Y - entity.getInTileY() + map.getInTileHeight(),
+                       Constant.MINIMAP_Y - entity.getInTileY() - entity.getInTileHeight() + map.getInTileHeight(),
                        entity.getInTileWidth(),
                        entity.getInTileHeight(),
                        true);
