@@ -18,6 +18,7 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -57,12 +58,15 @@ public class World extends WorldGame
     private static final ColorRgba TEXT_COLOR = new ColorRgba(240, 255, 220);
     private static final int TEXT_X = 74;
     private static final int TEXT_Y = 192;
+    private static final int RESOURCES_GOLD_X = 270;
+    private static final int RESOURCES_Y = 2;
 
     private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
     private final WorldMap worldMap = new WorldMap(services);
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
+    private final Resources resources = services.create(Resources.class);
     private final Hud hud;
     private final Selector selector;
     private final WorldNavigator navigator;
@@ -78,7 +82,6 @@ public class World extends WorldGame
         super(services);
 
         services.add(getInputDevice(InputDeviceDirectional.class));
-        services.add(new Food());
 
         camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
 
@@ -177,6 +180,7 @@ public class World extends WorldGame
         pointer.update(extrp);
         cursor.update(extrp);
         navigator.update(extrp);
+        resources.update(extrp);
 
         super.update(extrp);
     }
@@ -188,6 +192,7 @@ public class World extends WorldGame
 
         minimap.render(g);
         text.render(g);
+        text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(resources.getGold()));
         if (!cursor.hasClicked(2))
         {
             cursor.render(g);

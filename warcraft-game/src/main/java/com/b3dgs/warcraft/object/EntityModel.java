@@ -21,11 +21,12 @@ import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 
@@ -37,14 +38,15 @@ public final class EntityModel extends FeatureModel
 {
     /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Handler reference. */
-    private final Handler handler;
-    /** Map reference. */
-    private final MapTile map;
+    /** Hud reference. */
+    private final Hud hud;
+    /** Selector reference. */
+    private final Selector selector;
     /** Services reference. */
     private final Services services;
 
     @FeatureGet private Collidable collidable;
+    @FeatureGet private Selectable selectable;
 
     private boolean visible = true;
 
@@ -65,8 +67,8 @@ public final class EntityModel extends FeatureModel
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
 
-        handler = services.get(Handler.class);
-        map = services.get(MapTile.class);
+        hud = services.get(Hud.class);
+        selector = services.get(Selector.class);
     }
 
     /**
@@ -78,6 +80,11 @@ public final class EntityModel extends FeatureModel
     {
         this.visible = visible;
         collidable.setEnabled(visible);
+        if (!visible)
+        {
+            selector.getSelection().remove(selectable);
+            hud.clearMenus();
+        }
     }
 
     /**
@@ -98,26 +105,6 @@ public final class EntityModel extends FeatureModel
     public SpriteAnimated getSurface()
     {
         return surface;
-    }
-
-    /**
-     * Get handler reference.
-     * 
-     * @return The handler reference.
-     */
-    public Handler getHandler()
-    {
-        return handler;
-    }
-
-    /**
-     * Get the map reference.
-     * 
-     * @return The map reference.
-     */
-    public MapTile getMap()
-    {
-        return map;
     }
 
     /**

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
@@ -43,6 +44,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerV
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
+import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -55,6 +57,8 @@ public abstract class State extends StateAbstract
     protected final Handler handler;
     /** Map reference. */
     protected final MapTile map;
+    /** Resources reference. */
+    protected final Resources resources;
 
     /** Identifiable reference. */
     protected final Identifiable identifiable;
@@ -154,6 +158,7 @@ public abstract class State extends StateAbstract
         public void notifyStartDropOff(Enum<?> type, int totalQuantity)
         {
             model.setVisible(false);
+            resources.increaseGold(totalQuantity);
         }
     };
 
@@ -170,8 +175,10 @@ public abstract class State extends StateAbstract
         this.model = model;
         this.animation = animation;
 
-        handler = model.getHandler();
-        map = model.getMap();
+        final Services services = model.getServices();
+        handler = services.get(Handler.class);
+        map = services.get(MapTile.class);
+        resources = services.get(Resources.class);
 
         identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);

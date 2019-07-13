@@ -16,28 +16,53 @@
  */
 package com.b3dgs.warcraft;
 
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
 
 /**
- * Describes the food.
+ * Describes the resources.
  */
-public class Food
+public final class Resources implements Updatable
 {
+    private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);
     private final Alterable consumed = new Alterable(99);
 
+    private double currentGold;
+
     /**
-     * Create food data.
+     * Create resources data.
      */
-    public Food()
+    public Resources()
     {
         super();
     }
 
     /**
+     * Increase gold resource.
+     * 
+     * @param amount The amount of gold.
+     */
+    public void increaseGold(int amount)
+    {
+        gold.increase(amount);
+    }
+
+    /**
+     * Decrease gold resource.
+     * 
+     * @param amount The amount of gold.
+     */
+    public void decreaseGold(int amount)
+    {
+        gold.decrease(amount);
+    }
+
+    /**
      * Increase available food.
      */
-    public void increase()
+    public void increaseFood()
     {
         available.increase(1);
     }
@@ -45,7 +70,7 @@ public class Food
     /**
      * Increase consumed food.
      */
-    public void consume()
+    public void consumeFood()
     {
         consumed.increase(1);
     }
@@ -55,7 +80,7 @@ public class Food
      * 
      * @return The available food.
      */
-    public int getAvailable()
+    public int getAvailableFood()
     {
         return available.getCurrent();
     }
@@ -65,9 +90,19 @@ public class Food
      * 
      * @return The consumed food.
      */
-    public int getConsumed()
+    public int getConsumedFood()
     {
         return consumed.getCurrent();
+    }
+
+    /**
+     * Get current gold resource.
+     * 
+     * @return The current gold resource.
+     */
+    public int getGold()
+    {
+        return (int) Math.round(currentGold);
     }
 
     /**
@@ -75,8 +110,25 @@ public class Food
      * 
      * @return <code>true</code> if enough food, <code>false</code> else.
      */
-    public boolean isAvailable()
+    public boolean isAvailableFood()
     {
         return consumed.getCurrent() < available.getCurrent();
+    }
+
+    /**
+     * Check if has enough available gold.
+     * 
+     * @param amount The required amount of gold.
+     * @return <code>true</code> if enough gold, <code>false</code> else.
+     */
+    public boolean isAvailableGold(int amount)
+    {
+        return gold.isEnough(amount);
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        currentGold = (int) Math.ceil(UtilMath.curveValue(currentGold, gold.getCurrent(), 15) * 10) / 10.0;
     }
 }

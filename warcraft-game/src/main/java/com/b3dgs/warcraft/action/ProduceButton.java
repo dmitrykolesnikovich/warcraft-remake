@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.warcraft.Food;
+import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.object.feature.FoodConsumer;
 
 /**
@@ -78,16 +78,16 @@ public class ProduceButton extends ActionModel
 
         final Media target = Medias.create(setup.getText("media").split(Constant.SLASH));
         final Factory factory = services.get(Factory.class);
-        final Food food = services.get(Food.class);
+        final Resources food = services.get(Resources.class);
 
         actionable.setAction(() ->
         {
-            if (food.isAvailable())
+            if (food.isAvailableFood())
             {
                 final Featurable entity = factory.create(target);
                 if (entity.hasFeature(FoodConsumer.class))
                 {
-                    food.consume();
+                    food.consumeFood();
                 }
                 final Producible producible = entity.getFeature(Producible.class);
                 producible.addListener(createListener(producible));
