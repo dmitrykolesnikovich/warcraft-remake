@@ -14,39 +14,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft.action;
+package com.b3dgs.warcraft.object.feature;
 
-import java.util.List;
-
+import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.warcraft.object.feature.RightClickMove;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**
- * Move action.
+ * Right click move implementation.
  */
-public class Move extends ActionModel
+@FeatureInterface
+public class RightClickMove extends FeatureModel implements RightClickHandler
 {
+    private final Cursor cursor;
+
+    private @FeatureGet Pathfindable pathfindable;
+
     /**
-     * Create move action.
+     * Create action.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Move(Services services, Setup setup)
+    public RightClickMove(Services services, Setup setup)
     {
-        super(services, setup);
+        super();
+
+        cursor = services.get(Cursor.class);
     }
 
     @Override
-    protected void assign()
+    public void execute()
     {
-        final List<Selectable> selection = selector.getSelection();
-        final int n = selection.size();
-        for (int i = 0; i < n; i++)
-        {
-            selection.get(i).getFeature(RightClickMove.class).execute();
-        }
+        pathfindable.setDestination(cursor);
     }
 }
