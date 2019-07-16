@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
 
@@ -25,11 +26,19 @@ import com.b3dgs.lionengine.game.Alterable;
  */
 public final class Resources implements Updatable
 {
+    private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);
     private final Alterable consumed = new Alterable(99);
 
+    private final Updatable updateWood;
+    private final Updatable updateGold;
+
+    private Updatable updaterWood = UpdatableVoid.getInstance();
+    private Updatable updaterGold = UpdatableVoid.getInstance();
+
     private double currentGold;
+    private double currentWood;
 
     /**
      * Create resources data.
@@ -37,6 +46,54 @@ public final class Resources implements Updatable
     public Resources()
     {
         super();
+
+        updateWood = extrp ->
+        {
+            if (getWood() < wood.getCurrent())
+            {
+                currentWood = (int) Math.ceil(UtilMath.curveValue(currentWood, wood.getCurrent(), 15) * 10) / 10.0;
+            }
+            else
+            {
+                currentWood = wood.getCurrent();
+                updaterWood = UpdatableVoid.getInstance();
+            }
+        };
+
+        updateGold = extrp ->
+        {
+            if (getGold() < gold.getCurrent())
+            {
+                currentGold = (int) Math.ceil(UtilMath.curveValue(currentGold, gold.getCurrent(), 15) * 10) / 10.0;
+            }
+            else
+            {
+                currentGold = gold.getCurrent();
+                updaterGold = UpdatableVoid.getInstance();
+            }
+        };
+    }
+
+    /**
+     * Increase wood resource.
+     * 
+     * @param amount The amount of wood.
+     */
+    public void increaseWood(int amount)
+    {
+        wood.increase(amount);
+        updaterWood = updateWood;
+    }
+
+    /**
+     * Decrease wood resource.
+     * 
+     * @param amount The amount of wood.
+     */
+    public void decreaseWood(int amount)
+    {
+        wood.decrease(amount);
+        updaterWood = updateWood;
     }
 
     /**
@@ -47,6 +104,7 @@ public final class Resources implements Updatable
     public void increaseGold(int amount)
     {
         gold.increase(amount);
+        updaterGold = updateGold;
     }
 
     /**
@@ -57,6 +115,7 @@ public final class Resources implements Updatable
     public void decreaseGold(int amount)
     {
         gold.decrease(amount);
+        updaterGold = updateGold;
     }
 
     /**
@@ -96,6 +155,16 @@ public final class Resources implements Updatable
     }
 
     /**
+     * Get current wood resource.
+     * 
+     * @return The current wood resource.
+     */
+    public int getWood()
+    {
+        return (int) Math.round(currentWood);
+    }
+
+    /**
      * Get current gold resource.
      * 
      * @return The current gold resource.
@@ -116,6 +185,17 @@ public final class Resources implements Updatable
     }
 
     /**
+     * Check if has enough available wood.
+     * 
+     * @param amount The required amount of wood.
+     * @return <code>true</code> if enough wood, <code>false</code> else.
+     */
+    public boolean isAvailableWood(int amount)
+    {
+        return wood.isEnough(amount);
+    }
+
+    /**
      * Check if has enough available gold.
      * 
      * @param amount The required amount of gold.
@@ -129,6 +209,7 @@ public final class Resources implements Updatable
     @Override
     public void update(double extrp)
     {
-        currentGold = (int) Math.ceil(UtilMath.curveValue(currentGold, gold.getCurrent(), 15) * 10) / 10.0;
+        updaterWood.update(extrp);
+        updaterGold.update(extrp);
     }
 }
