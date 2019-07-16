@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractable;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
@@ -42,7 +41,8 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     private final MapTile map;
     private final MapTilePath mapPath;
 
-    private @FeatureGet Selectable selectable;
+    private @FeatureGet Extractor extractor;
+    private @FeatureGet Pathfindable pathfindable;
 
     /**
      * Create action.
@@ -60,12 +60,15 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
         mapPath = map.getFeature(MapTilePath.class);
     }
 
-    @Override
-    public void execute()
+    /**
+     * Check extraction at destination.
+     * 
+     * @return <code>true</code> if start extraction, <code>false</code> else.
+     */
+    private boolean extract()
     {
         final int tx = map.getInTileX(cursor);
         final int ty = map.getInTileY(cursor);
-        final Extractor extractor = selectable.getFeature(Extractor.class);
 
         for (final Integer id : mapPath.getObjectsId(tx, ty))
         {
@@ -74,9 +77,21 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
             {
                 final Extractable extractable = featurable.getFeature(Extractable.class);
                 extractor.setResource(extractable);
-                extractor.getFeature(Pathfindable.class).setDestination(extractable);
+                pathfindable.setDestination(extractable);
                 extractor.startExtraction();
+
+                return true;
             }
+        }
+        return false;
+    }
+
+    @Override
+    public void execute()
+    {
+        if (!extract())
+        {
+            pathfindable.setDestination(cursor);
         }
     }
 }
