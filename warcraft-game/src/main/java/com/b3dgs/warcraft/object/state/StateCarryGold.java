@@ -37,4 +37,12 @@ final class StateCarryGold extends State
 
         addTransition(StateIdle.class, moveArrived::get);
     }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        model.setVisible(true);
+    }
 }

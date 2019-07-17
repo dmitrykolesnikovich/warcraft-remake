@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft.object;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
@@ -96,6 +97,8 @@ public abstract class State extends StateAbstract
     /** Producible ended flag. */
     protected final AtomicBoolean producibleEnded = new AtomicBoolean();
 
+    /** Extract resource flag. */
+    protected final AtomicReference<String> extractResource = new AtomicReference<>();
     /** Carry resource flag. */
     protected final AtomicBoolean carryResource = new AtomicBoolean();
 
@@ -129,36 +132,49 @@ public abstract class State extends StateAbstract
             producibleEnded.set(true);
         }
     };
-
     private final ExtractorListener extractorListener = new ExtractorListenerVoid()
     {
         @Override
-        public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
+        public void notifyStartGoToRessources(String type, Tiled resourceLocation)
         {
-            model.setVisible(true);
             pathfindable.setDestination(resourceLocation);
             carryResource.set(false);
         }
 
         @Override
-        public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
+        public void notifyStartExtraction(String type, Tiled resourceLocation)
         {
-            model.setVisible(false);
+            extractResource.set(type);
         }
 
         @Override
-        public void notifyStartCarry(Enum<?> type, int totalQuantity)
+        public void notifyStartCarry(String type, int totalQuantity)
         {
             pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
-            model.setVisible(true);
             carryResource.set(true);
         }
 
         @Override
-        public void notifyStartDropOff(Enum<?> type, int totalQuantity)
+        public void notifyStartDropOff(String type, int totalQuantity)
         {
             model.setVisible(false);
-            resources.increaseGold(totalQuantity);
+            if (Resources.TYPE_WOOD.equals(type))
+            {
+                resources.increaseWood(totalQuantity);
+            }
+            else if (Resources.TYPE_GOLD.equals(type))
+            {
+                resources.increaseGold(totalQuantity);
+            }
+        }
+
+        @Override
+        public void notifyDroppedOff(String type, int droppedQuantity)
+        {
+            if (droppedQuantity == 0)
+            {
+                model.setVisible(true);
+            }
         }
     };
 
@@ -237,6 +253,7 @@ public abstract class State extends StateAbstract
         attackStarted.set(false);
         producibleEnded.set(false);
         carryResource.set(false);
+        extractResource.set(null);
     }
 
     /**

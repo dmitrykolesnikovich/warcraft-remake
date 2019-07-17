@@ -26,6 +26,11 @@ import com.b3dgs.lionengine.game.Alterable;
  */
 public final class Resources implements Updatable
 {
+    /** Wood type. */
+    public static final String TYPE_WOOD = "wood";
+    /** Gold type. */
+    public static final String TYPE_GOLD = "gold";
+
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);

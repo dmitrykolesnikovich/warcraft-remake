@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -35,6 +36,8 @@ final class StateWalk extends State
     {
         super(model, animation);
 
+        addTransition(StateExtractWood.class, () -> Resources.TYPE_WOOD.equals(extractResource.get()));
+        addTransition(StateExtractGold.class, () -> Resources.TYPE_GOLD.equals(extractResource.get()));
         addTransition(StateIdle.class, moveArrived::get);
     }
 }

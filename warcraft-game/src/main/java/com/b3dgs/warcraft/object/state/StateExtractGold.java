@@ -17,14 +17,13 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
 /**
- * Idle state implementation.
+ * Extract gold state implementation.
  */
-public final class StateIdle extends State
+final class StateExtractGold extends State
 {
     /**
      * Create the state.
@@ -32,15 +31,18 @@ public final class StateIdle extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateIdle(EntityModel model, Animation animation)
+    public StateExtractGold(EntityModel model, Animation animation)
     {
         super(model, animation);
 
-        addTransition(StateExtractWood.class, () -> Resources.TYPE_WOOD.equals(extractResource.get()));
-        addTransition(StateExtractGold.class, () -> Resources.TYPE_GOLD.equals(extractResource.get()));
         addTransition(StateCarryGold.class, carryResource::get);
-        addTransition(StateWalk.class, moveStarted::get);
-        addTransition(StateAttack.class, attackStarted::get);
-        addTransition(StateDie.class, () -> stats.getLife() == 0);
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        model.setVisible(false);
     }
 }

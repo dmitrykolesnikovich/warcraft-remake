@@ -36,13 +36,9 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 @FeatureInterface
 public final class EntityModel extends FeatureModel
 {
-    /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Hud reference. */
     private final Hud hud;
-    /** Selector reference. */
     private final Selector selector;
-    /** Services reference. */
     private final Services services;
 
     @FeatureGet private Collidable collidable;
@@ -80,9 +76,9 @@ public final class EntityModel extends FeatureModel
     {
         this.visible = visible;
         collidable.setEnabled(visible);
-        if (!visible)
+        if (!visible && selector.getSelection().remove(selectable))
         {
-            selector.getSelection().remove(selectable);
+            selectable.onSelection(false);
             hud.clearMenus();
         }
     }
