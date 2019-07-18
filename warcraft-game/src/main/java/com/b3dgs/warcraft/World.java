@@ -58,6 +58,7 @@ public class World extends WorldGame
     private static final ColorRgba TEXT_COLOR = new ColorRgba(240, 255, 220);
     private static final int TEXT_X = 74;
     private static final int TEXT_Y = 192;
+    private static final int RESOURCES_WOOD_X = 170;
     private static final int RESOURCES_GOLD_X = 270;
     private static final int RESOURCES_Y = 2;
 
@@ -192,6 +193,7 @@ public class World extends WorldGame
 
         minimap.render(g);
         text.render(g);
+        text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(resources.getWood()));
         text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(resources.getGold()));
         if (!cursor.hasClicked(2))
         {
