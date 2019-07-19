@@ -2,6 +2,7 @@
 <lionengine:entity name="Gold Mine" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractableModel</lionengine:feature>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.GoldQuantityRenderer</lionengine:feature>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="GoldMine.png" icon="GoldMine_icon.png"/>
 	<lionengine:frames horizontal="1" vertical="1"/>
