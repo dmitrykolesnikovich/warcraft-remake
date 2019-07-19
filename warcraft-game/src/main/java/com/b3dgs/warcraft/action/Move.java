@@ -18,16 +18,19 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.warcraft.object.feature.RightClickMove;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 
 /**
  * Move action.
  */
 public class Move extends ActionModel
 {
+    private final Cursor cursor;
+
     /**
      * Create move action.
      * 
@@ -37,6 +40,8 @@ public class Move extends ActionModel
     public Move(Services services, Setup setup)
     {
         super(services, setup);
+
+        cursor = services.get(Cursor.class);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class Move extends ActionModel
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
-            selection.get(i).getFeature(RightClickMove.class).execute();
+            selection.get(i).getFeature(Pathfindable.class).setDestination(cursor);
         }
     }
 }
