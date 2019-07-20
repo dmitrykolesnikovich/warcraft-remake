@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -46,6 +47,7 @@ public class EntityStats extends FeatureModel implements Routine
     private static final int BAR_RED_PERCENT = 25;
     private static final int BAR_YELLOW_PERCENT = 50;
 
+    private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
     private final Alterable health = new Alterable(60);
     private final Bar barHealth = new Bar(27, 3);
     private final String name;
@@ -64,6 +66,10 @@ public class EntityStats extends FeatureModel implements Routine
         super();
 
         text = services.get(Text.class);
+
+        stats.load();
+        stats.prepare();
+        stats.setLocation(Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
 
         name = setup.getString("name");
         final Media media = setup.getIconFile();
@@ -125,6 +131,7 @@ public class EntityStats extends FeatureModel implements Routine
     @Override
     public void render(Graphic g)
     {
+        stats.render(g);
         barHealth.render(g);
 
         text.draw(g, TEXT_X, TEXT_Y, name);

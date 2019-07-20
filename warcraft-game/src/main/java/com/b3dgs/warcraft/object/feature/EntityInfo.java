@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.object.feature;
 import java.util.Collections;
 import java.util.List;
 
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Routines;
@@ -29,10 +28,8 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.RenderableVoid;
 import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.graphic.drawable.Drawable;
-import com.b3dgs.lionengine.graphic.drawable.Image;
-import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Handle the selected entities information on Hud.
@@ -42,10 +39,14 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
 {
     private static final int COUNT_X = 5;
     private static final int COUNT_Y = 88;
+    private static final String COUNT_TEXT = "Army: ";
 
-    private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
-    private List<Selectable> selection = Collections.emptyList();
     private final Text text;
+    private final Renderable infoSingle;
+    private final Renderable infoArmy;
+    private Renderable info = RenderableVoid.getInstance();
+    private List<Selectable> selection = Collections.emptyList();
+    private int selectionCount;
 
     /**
      * Create the entity information.
@@ -59,32 +60,44 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
 
         text = services.get(Text.class);
 
-        stats.load();
-        stats.prepare();
-        stats.setLocation(Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
+        infoSingle = g ->
+        {
+            for (final Selectable selectable : selection)
+            {
+                selectable.getFeature(Routines.class).render(g);
+            }
+        };
+        infoArmy = g -> text.draw(g, COUNT_X, COUNT_Y, COUNT_TEXT + selectionCount);
     }
 
     @Override
     public void render(Graphic g)
     {
-        final int count = selection.size();
-        if (count == 1)
-        {
-            stats.render(g);
-            for (final Selectable selectable : selection)
-            {
-                selectable.getFeature(Routines.class).render(g);
-            }
-        }
-        else if (count > 1)
-        {
-            text.draw(g, COUNT_X, COUNT_Y, "Army: " + count);
-        }
+        info.render(g);
+    }
+
+    @Override
+    public void notifySelectionStarted()
+    {
+        info = RenderableVoid.getInstance();
     }
 
     @Override
     public void notifySelected(List<Selectable> selection)
     {
         this.selection = selection;
+        selectionCount = selection.size();
+        if (selectionCount == 1)
+        {
+            info = infoSingle;
+        }
+        else if (selectionCount > 1)
+        {
+            info = infoArmy;
+        }
+        else
+        {
+            info = RenderableVoid.getInstance();
+        }
     }
 }
