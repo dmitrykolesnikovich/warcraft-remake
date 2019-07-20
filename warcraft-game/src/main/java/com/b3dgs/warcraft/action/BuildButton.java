@@ -114,20 +114,21 @@ public class BuildButton extends ActionModel
                 @Override
                 public void notifyStartProduction(Featurable featurable)
                 {
+                    pathfindable.stopMoves();
+                    pathfindable.clearPath();
+                    featurable.getFeature(Pathfindable.class)
+                              .setLocation(map.getInTileX(producible), map.getInTileY(producible));
                     model.setVisible(false);
                 }
 
                 @Override
                 public void notifyProduced(Featurable featurable)
                 {
-                    pathfindable.clearPath();
-
+                    model.setVisible(true);
                     final CoordTile coord = map.getFeature(MapTilePath.class)
                                                .getFreeTileAround(pathfindable,
                                                                   featurable.getFeature(Pathfindable.class));
                     pathfindable.setLocation(coord);
-
-                    model.setVisible(true);
                 }
             });
         }
