@@ -126,7 +126,10 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
         addFeature(new RefreshableModel(extrp ->
         {
-            if (actionable.isOver() && actionable.isEnabled())
+            if (!actionable.isEnabled())
+                return;
+
+            if (actionable.isOver())
             {
                 text.setText(actionable.getDescription());
             }
