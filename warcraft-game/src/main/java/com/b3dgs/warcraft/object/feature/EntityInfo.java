@@ -23,10 +23,13 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Routines;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
@@ -37,15 +40,24 @@ import com.b3dgs.warcraft.constant.Constant;
 @FeatureInterface
 public class EntityInfo extends FeatureModel implements Renderable, SelectionListener
 {
+    private static final int COUNT_X = 5;
+    private static final int COUNT_Y = 88;
+
     private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
     private List<Selectable> selection = Collections.emptyList();
+    private final Text text;
 
     /**
      * Create the entity information.
+     * 
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
-    public EntityInfo()
+    public EntityInfo(Services services, Setup setup)
     {
         super();
+
+        text = services.get(Text.class);
 
         stats.load();
         stats.prepare();
@@ -55,13 +67,18 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
     @Override
     public void render(Graphic g)
     {
-        if (!selection.isEmpty())
+        final int count = selection.size();
+        if (count == 1)
         {
             stats.render(g);
+            for (final Selectable selectable : selection)
+            {
+                selectable.getFeature(Routines.class).render(g);
+            }
         }
-        for (final Selectable selectable : selection)
+        else if (count > 1)
         {
-            selectable.getFeature(Routines.class).render(g);
+            text.draw(g, COUNT_X, COUNT_Y, "Army: " + count);
         }
     }
 
