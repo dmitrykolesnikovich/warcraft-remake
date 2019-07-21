@@ -122,7 +122,8 @@ public class Entity extends FeaturableModel
                 return UtilMath.getDistance(pathfindable.getInTileX(),
                                             pathfindable.getInTileY(),
                                             extractor.getResourceLocation().getInTileX(),
-                                            extractor.getResourceLocation().getInTileY()) < 2;
+                                            extractor.getResourceLocation().getInTileY()) < 2
+                       && !pathfindable.isMoving();
             }
 
             @Override

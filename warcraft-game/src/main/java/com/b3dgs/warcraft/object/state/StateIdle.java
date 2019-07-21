@@ -32,13 +32,16 @@ public final class StateIdle extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateIdle(EntityModel model, Animation animation)
+    StateIdle(EntityModel model, Animation animation)
     {
         super(model, animation);
 
         addTransition(StateExtractWood.class, () -> Resources.TYPE_WOOD.equals(extractResource.get()));
         addTransition(StateExtractGold.class, () -> Resources.TYPE_GOLD.equals(extractResource.get()));
-        addTransition(StateCarryGold.class, carryResource::get);
+        addTransition(StateCarryWood.class,
+                      () -> Resources.TYPE_WOOD.equals(extractResource.get()) && carryResource.get());
+        addTransition(StateCarryGold.class,
+                      () -> Resources.TYPE_GOLD.equals(extractResource.get()) && carryResource.get());
         addTransition(StateWalk.class, moveStarted::get);
         addTransition(StateAttack.class, attackStarted::get);
         addTransition(StateDie.class, () -> stats.getLife() == 0);

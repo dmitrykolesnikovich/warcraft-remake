@@ -58,6 +58,9 @@ public final class Constant
     /** Minimap vertical location. */
     public static final int MINIMAP_Y = 6;
 
+    /** Tile path category tree. */
+    public static final String CATEGORY_TREE = "tree";
+
     /**
      * Private constructor.
      */

@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractable;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
+import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Right click extraction implementation.
@@ -60,38 +63,31 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
         mapPath = map.getFeature(MapTilePath.class);
     }
 
-    /**
-     * Check extraction at destination.
-     * 
-     * @return <code>true</code> if start extraction, <code>false</code> else.
-     */
-    private boolean extract()
-    {
-        final int tx = map.getInTileX(cursor);
-        final int ty = map.getInTileY(cursor);
-
-        for (final Integer id : mapPath.getObjectsId(tx, ty))
-        {
-            final Featurable featurable = handler.get(id);
-            if (featurable.hasFeature(Extractable.class))
-            {
-                final Extractable extractable = featurable.getFeature(Extractable.class);
-                extractor.setResource(extractable);
-                pathfindable.setDestination(extractable);
-                extractor.startExtraction();
-
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void execute()
     {
-        if (!extract())
+        final int tx = map.getInTileX(cursor);
+        final int ty = map.getInTileY(cursor);
+        pathfindable.setDestination(tx, ty);
+
+        if (Constant.CATEGORY_TREE.equals(map.getTile(tx, ty).getFeature(TilePath.class).getCategory()))
         {
-            pathfindable.setDestination(cursor);
+            extractor.setResource(Resources.TYPE_WOOD, tx, ty, 1, 1);
+            extractor.startExtraction();
+        }
+        else
+        {
+            for (final Integer id : mapPath.getObjectsId(tx, ty))
+            {
+                final Featurable featurable = handler.get(id);
+                if (featurable.hasFeature(Extractable.class))
+                {
+                    final Extractable extractable = featurable.getFeature(Extractable.class);
+                    extractor.setResource(extractable);
+                    pathfindable.setDestination(extractable);
+                    extractor.startExtraction();
+                }
+            }
         }
     }
 }
