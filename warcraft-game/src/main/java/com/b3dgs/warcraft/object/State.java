@@ -21,7 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -38,14 +40,20 @@ import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerVoid;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -58,6 +66,10 @@ public abstract class State extends StateAbstract
     protected final Handler handler;
     /** Map reference. */
     protected final MapTile map;
+    /** Map path reference. */
+    protected final MapTilePath mapPath;
+    /** Map transition reference. */
+    protected final MapTileTransition mapTransition;
     /** Resources reference. */
     protected final Resources resources;
 
@@ -145,6 +157,10 @@ public abstract class State extends StateAbstract
         public void notifyStartExtraction(String type, Tiled resourceLocation)
         {
             extractResource.set(type);
+            if (Resources.TYPE_WOOD.equals(type))
+            {
+                pathfindable.pointTo(resourceLocation);
+            }
         }
 
         @Override
@@ -152,6 +168,21 @@ public abstract class State extends StateAbstract
         {
             pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
             carryResource.set(true);
+
+            if (Resources.TYPE_WOOD.equals(type))
+            {
+                final Tile tile = mapPath.getTile(extractor.getResourceLocation());
+                final Tile cut = map.createTile(tile.getSheet(), Constant.TILE_NUM_TREE_CUT, tile.getX(), tile.getY());
+                map.setTile(cut);
+                mapTransition.resolve(cut);
+                mapPath.loadPathfinding(Medias.create(map.getMedia().getParentPath(), PathfindingConfig.FILENAME));
+
+                final Tile next = getClosestTree(cut);
+                if (next != null)
+                {
+                    extractor.setResource(type, next);
+                }
+            }
         }
 
         @Override
@@ -194,6 +225,8 @@ public abstract class State extends StateAbstract
         final Services services = model.getServices();
         handler = services.get(Handler.class);
         map = services.get(MapTile.class);
+        mapPath = map.getFeature(MapTilePath.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
         resources = services.get(Resources.class);
 
         identifiable = model.getFeature(Identifiable.class);
@@ -228,6 +261,33 @@ public abstract class State extends StateAbstract
     protected final boolean is(Mirror mirror)
     {
         return mirrorable.is(mirror);
+    }
+
+    private Tile getClosestTree(Tile cut)
+    {
+        double dist = Double.MAX_VALUE;
+        Tile next = null;
+        for (int tx = -1; tx < 2; tx++)
+        {
+            for (int ty = -1; ty < 2; ty++)
+            {
+                if (tx == 0 && ty == 0)
+                {
+                    continue;
+                }
+                final Tile tree = map.getTile(cut.getInTileX() + tx, cut.getInTileY() + ty);
+                if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
+                {
+                    final double cur = UtilMath.getDistance(tree, transformable);
+                    if (cur < dist)
+                    {
+                        dist = cur;
+                        next = tree;
+                    }
+                }
+            }
+        }
+        return next;
     }
 
     @Override

@@ -60,6 +60,8 @@ public final class Constant
 
     /** Tile path category tree. */
     public static final String CATEGORY_TREE = "tree";
+    /** Tile number tree cut. */
+    public static final int TILE_NUM_TREE_CUT = 124;
 
     /**
      * Private constructor.

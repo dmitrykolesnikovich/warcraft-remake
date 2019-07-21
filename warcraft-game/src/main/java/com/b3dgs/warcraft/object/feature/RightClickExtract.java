@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractable;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
@@ -44,8 +45,8 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     private final MapTile map;
     private final MapTilePath mapPath;
 
-    private @FeatureGet Extractor extractor;
-    private @FeatureGet Pathfindable pathfindable;
+    @FeatureGet private Extractor extractor;
+    @FeatureGet private Pathfindable pathfindable;
 
     /**
      * Create action.
@@ -70,9 +71,10 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
         final int ty = map.getInTileY(cursor);
         pathfindable.setDestination(tx, ty);
 
-        if (Constant.CATEGORY_TREE.equals(map.getTile(tx, ty).getFeature(TilePath.class).getCategory()))
+        final Tile tree = map.getTile(tx, ty);
+        if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
         {
-            extractor.setResource(Resources.TYPE_WOOD, tx, ty, 1, 1);
+            extractor.setResource(Resources.TYPE_WOOD, tree);
             extractor.startExtraction();
         }
         else

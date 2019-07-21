@@ -32,6 +32,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.CircuitsConfig;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
@@ -45,6 +51,8 @@ public class WorldMap implements Persistable
     private final MapTileGroup mapGroup;
     private final MapTilePersister mapPersister;
     private final MapTilePath mapPath;
+    private final MapTileTransition mapTransition;
+    private final MapTileCircuit mapCircuit;
 
     /**
      * Create the world.
@@ -59,6 +67,9 @@ public class WorldMap implements Persistable
         mapGroup = map.addFeatureAndGet(new MapTileGroupModel());
         mapPersister = map.addFeatureAndGet(new MapTilePersisterModel(services));
         mapPath = services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
+        mapTransition = map.addFeatureAndGet(new MapTileTransitionModel(services));
+        mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel(services));
+
         map.addFeature(new MapTileViewerModel(services));
 
         services.get(Handler.class).add(map);
@@ -78,5 +89,7 @@ public class WorldMap implements Persistable
         final String parent = map.getMedia().getParentPath();
         mapGroup.loadGroups(Medias.create(parent, TileGroupsConfig.FILENAME));
         mapPath.loadPathfinding(Medias.create(parent, PathfindingConfig.FILENAME));
+        mapTransition.loadTransitions(Medias.create(parent, TransitionsConfig.FILENAME));
+        mapCircuit.loadCircuits(Medias.create(parent, CircuitsConfig.FILENAME));
     }
 }
