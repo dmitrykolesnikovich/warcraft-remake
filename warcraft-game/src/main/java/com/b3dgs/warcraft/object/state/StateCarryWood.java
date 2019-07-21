@@ -31,7 +31,7 @@ final class StateCarryWood extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateCarryWood(EntityModel model, Animation animation)
+    StateCarryWood(EntityModel model, Animation animation)
     {
         super(model, animation);
 

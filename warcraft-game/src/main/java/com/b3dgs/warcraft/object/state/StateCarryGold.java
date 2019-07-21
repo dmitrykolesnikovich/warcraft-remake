@@ -31,7 +31,7 @@ final class StateCarryGold extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateCarryGold(EntityModel model, Animation animation)
+    StateCarryGold(EntityModel model, Animation animation)
     {
         super(model, animation);
 

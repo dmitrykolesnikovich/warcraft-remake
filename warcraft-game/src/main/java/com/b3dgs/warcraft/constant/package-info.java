@@ -14,27 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft.object.state;
-
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.object.EntityModel;
-import com.b3dgs.warcraft.object.State;
 
 /**
- * Extract wood state implementation.
+ * Constants package base.
  */
-final class StateExtractWood extends State
-{
-    /**
-     * Create the state.
-     * 
-     * @param model The model reference.
-     * @param animation The animation reference.
-     */
-    StateExtractWood(EntityModel model, Animation animation)
-    {
-        super(model, animation);
-
-        addTransition(StateCarryWood.class, carryResource::get);
-    }
-}
+package com.b3dgs.warcraft.constant;

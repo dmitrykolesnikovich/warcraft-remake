@@ -31,7 +31,7 @@ public final class StateProducing extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateProducing(EntityModel model, Animation animation)
+    StateProducing(EntityModel model, Animation animation)
     {
         super(model, animation);
 

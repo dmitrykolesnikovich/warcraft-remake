@@ -31,7 +31,7 @@ final class StateDead extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateDead(EntityModel model, Animation animation)
+    StateDead(EntityModel model, Animation animation)
     {
         super(model, animation);
     }

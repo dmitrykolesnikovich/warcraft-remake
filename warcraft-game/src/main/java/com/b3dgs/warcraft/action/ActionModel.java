@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.warcraft.constant.Constant;
 
 /**
- * Action model implementation..
+ * Action model implementation.
  */
 public class ActionModel extends FeaturableModel implements Updatable, Renderable
 {

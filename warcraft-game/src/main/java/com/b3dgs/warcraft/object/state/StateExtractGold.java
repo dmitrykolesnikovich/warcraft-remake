@@ -31,7 +31,7 @@ final class StateExtractGold extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateExtractGold(EntityModel model, Animation animation)
+    StateExtractGold(EntityModel model, Animation animation)
     {
         super(model, animation);
 

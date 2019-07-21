@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
-import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Entity rendering implementation.
@@ -56,7 +55,6 @@ public class EntityRenderer extends FeatureModel implements Displayable
     @FeatureGet private Animatable animatable;
     @FeatureGet private Collidable collidable;
     @FeatureGet private Selectable selectable;
-    @FeatureGet private EntityStats stats;
     @FeatureGet private Routines routines;
 
     private int animFrames;

@@ -32,7 +32,7 @@ final class StateDie extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateDie(EntityModel model, Animation animation)
+    StateDie(EntityModel model, Animation animation)
     {
         super(model, animation);
 
