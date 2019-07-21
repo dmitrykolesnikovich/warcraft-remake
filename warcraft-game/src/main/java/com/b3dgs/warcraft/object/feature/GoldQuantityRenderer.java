@@ -32,8 +32,11 @@ import com.b3dgs.lionengine.graphic.Text;
 @FeatureInterface
 public class GoldQuantityRenderer extends FeatureModel implements Routine
 {
-    private static final int TEXT_X = 5;
-    private static final int TEXT_Y = 115;
+    private static final String GOLD_LEFT = "Gold Left";
+    private static final int GOLD_LEFT_TEXT_X = 5;
+    private static final int GOLD_LEFT_TEXT_Y = 118;
+    private static final int AMOUNT_TEXT_X = 10;
+    private static final int AMOUNT_TEXT_Y = 128;
 
     private final Text text;
 
@@ -55,6 +58,7 @@ public class GoldQuantityRenderer extends FeatureModel implements Routine
     @Override
     public void render(Graphic g)
     {
-        text.draw(g, TEXT_X, TEXT_Y, String.valueOf(extractable.getResourceQuantity()));
+        text.draw(g, GOLD_LEFT_TEXT_X, GOLD_LEFT_TEXT_Y, GOLD_LEFT);
+        text.draw(g, AMOUNT_TEXT_X, AMOUNT_TEXT_Y, String.valueOf(extractable.getResourceQuantity()));
     }
 }
