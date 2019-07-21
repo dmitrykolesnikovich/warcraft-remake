@@ -32,12 +32,12 @@ final class StateWalk extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    public StateWalk(EntityModel model, Animation animation)
+    StateWalk(EntityModel model, Animation animation)
     {
         super(model, animation);
 
         addTransition(StateExtractWood.class, () -> Resources.TYPE_WOOD.equals(extractResource.get()));
         addTransition(StateExtractGold.class, () -> Resources.TYPE_GOLD.equals(extractResource.get()));
-        addTransition(StateIdle.class, moveArrived::get);
+        addTransition(StateIdle.class, () -> moveArrived.get() && extractResource.get() == null);
     }
 }
