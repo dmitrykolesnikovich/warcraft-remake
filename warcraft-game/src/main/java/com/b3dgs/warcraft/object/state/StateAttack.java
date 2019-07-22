@@ -18,7 +18,10 @@ package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -27,6 +30,10 @@ import com.b3dgs.warcraft.object.State;
  */
 final class StateAttack extends State
 {
+    private final Animator animator = model.getSurface();
+    private final AnimatorFrameListener listener;
+    private boolean cut;
+
     /**
      * Create the state.
      * 
@@ -36,6 +43,19 @@ final class StateAttack extends State
     StateAttack(EntityModel model, Animation animation)
     {
         super(model, animation);
+
+        listener = frame ->
+        {
+            if (!cut && animatable.getFrame() == animation.getLast())
+            {
+                cut = true;
+                Sfx.playRandomSword();
+            }
+            else if (animatable.getFrame() == animation.getFirst())
+            {
+                cut = false;
+            }
+        };
 
         addTransition(StateIdle.class, () -> is(AnimState.FINISHED));
     }
@@ -47,5 +67,14 @@ final class StateAttack extends State
 
         pathfindable.pointTo(attacker.getTarget().getFeature(Pathfindable.class));
         attacker.setAttackFrame(animation.getLast());
+        animator.addListener(listener);
+    }
+
+    @Override
+    public void exit()
+    {
+        super.exit();
+
+        animator.removeListener(listener);
     }
 }

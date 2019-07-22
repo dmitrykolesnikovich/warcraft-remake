@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.constant.Constant;
 
 /**
@@ -91,5 +92,6 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
                 }
             }
         }
+        Sfx.playRandomOrcConfirm();
     }
 }

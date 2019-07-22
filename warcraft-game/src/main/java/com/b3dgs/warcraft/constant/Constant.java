@@ -64,7 +64,7 @@ public final class Constant
     public static final int TILE_NUM_TREE_CUT = 124;
 
     /** Sound bank id. */
-    public static final int SOUND_BANK_ID = 43;
+    public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
 
     /**
      * Private constructor.

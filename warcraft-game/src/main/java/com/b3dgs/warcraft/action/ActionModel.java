@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
+import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.constant.Constant;
 
 /**
@@ -118,6 +119,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
             cursor.setRenderingOffset(0, 0);
             selector.setEnabled(true);
             state.set(actionable);
+            Sfx.playRandomOrcConfirm();
         });
 
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);

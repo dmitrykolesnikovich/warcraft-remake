@@ -17,6 +17,9 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Animator;
+import com.b3dgs.lionengine.AnimatorFrameListener;
+import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -25,6 +28,10 @@ import com.b3dgs.warcraft.object.State;
  */
 final class StateExtractWood extends State
 {
+    private final Animator animator = model.getSurface();
+    private final AnimatorFrameListener listener;
+    private boolean cut;
+
     /**
      * Create the state.
      * 
@@ -35,6 +42,35 @@ final class StateExtractWood extends State
     {
         super(model, animation);
 
+        listener = frame ->
+        {
+            if (!cut && animatable.getFrame() == animation.getLast())
+            {
+                cut = true;
+                Sfx.playRandomTreeCut();
+            }
+            else if (animatable.getFrame() == animation.getFirst())
+            {
+                cut = false;
+            }
+        };
+
         addTransition(StateCarryWood.class, carryResource::get);
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        animator.addListener(listener);
+    }
+
+    @Override
+    public void exit()
+    {
+        super.exit();
+
+        animator.removeListener(listener);
     }
 }

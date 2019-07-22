@@ -14,37 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft.object.state;
-
-import com.b3dgs.lionengine.AnimState;
-import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Sfx;
-import com.b3dgs.warcraft.object.EntityModel;
-import com.b3dgs.warcraft.object.State;
+package com.b3dgs.warcraft;
 
 /**
- * Die state implementation.
+ * List of available races.
  */
-final class StateDie extends State
+public enum Race
 {
-    /**
-     * Create the state.
-     * 
-     * @param model The model reference.
-     * @param animation The animation reference.
-     */
-    StateDie(EntityModel model, Animation animation)
-    {
-        super(model, animation);
-
-        addTransition(StateDead.class, () -> is(AnimState.FINISHED));
-    }
-
-    @Override
-    public void enter()
-    {
-        super.enter();
-
-        Sfx.ORCS_DEAD.play();
-    }
+    /** Orc race. */
+    ORC,
+    /** Human race. */
+    HUMAN,
+    /** Neutral. */
+    NEUTRAL;
 }

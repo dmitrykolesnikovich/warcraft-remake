@@ -41,6 +41,8 @@ public final class Folder
     public static final String MENU = "menu";
     /** Musics folder. */
     public static final String MUSICS = "music";
+    /** Sounds folder. */
+    public static final String SOUNDS = "sfx";
 
     /**
      * Private constructor.

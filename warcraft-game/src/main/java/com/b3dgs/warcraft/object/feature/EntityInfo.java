@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.RenderableVoid;
 import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.warcraft.Sfx;
 
 /**
  * Handle the selected entities information on Hud.
@@ -90,6 +91,7 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
         if (selectionCount == 1)
         {
             info = infoSingle;
+            Sfx.playRandomOrcSelect();
         }
         else if (selectionCount > 1)
         {
