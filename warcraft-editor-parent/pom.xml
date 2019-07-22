@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.b3dgs.warcraft.editor</groupId>
     <artifactId>warcraft-editor-parent</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>warcraft Remake Editor</name>
     <description>warcraft Remake Editor</description>
@@ -30,7 +30,7 @@
     </ciManagement>
     <properties>
         <radial.base-package>com.b3dgs.warcraft.editor</radial.base-package>
-        <sonar-branch>warcraft-editor-0.0.3</sonar-branch>
+        <sonar-branch>warcraft-editor-0.0.4</sonar-branch>
     </properties>
     <dependencies>
 		<dependency>
