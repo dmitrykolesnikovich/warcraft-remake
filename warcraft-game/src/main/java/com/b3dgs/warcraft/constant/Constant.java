@@ -63,6 +63,9 @@ public final class Constant
     /** Tile number tree cut. */
     public static final int TILE_NUM_TREE_CUT = 124;
 
+    /** Sound bank id. */
+    public static final int SOUND_BANK_ID = 43;
+
     /**
      * Private constructor.
      */

@@ -41,6 +41,7 @@ public final class AppWarcraftPc
         Loader.start(Config.windowed(Constant.NATIVE.get2x()), Loading.class);
         AudioFactory.addFormat(new WavFormat());
         AudioFactory.addFormat(new AdlMidiFormat());
+        AdlMidiFormat.setDefaultBank(Constant.SOUND_BANK_ID);
     }
 
     /**

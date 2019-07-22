@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.audio.Audio;
+import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
@@ -72,6 +74,7 @@ public class World extends WorldGame
     private final Selector selector;
     private final WorldNavigator navigator;
     private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
+    private Audio music;
 
     /**
      * Create the world.
@@ -135,6 +138,9 @@ public class World extends WorldGame
         final int baseX = 10;
         final int baseY = 10;
         createBase(baseX, baseY);
+
+        music = AudioFactory.loadAudio(Medias.create(Folder.MUSICS, "orc_campaign_2.xmi"));
+        music.play();
     }
 
     /**
