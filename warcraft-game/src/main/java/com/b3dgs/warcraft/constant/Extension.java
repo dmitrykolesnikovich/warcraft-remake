@@ -30,7 +30,7 @@ public final class Extension
     /** Sounds file extension (with dot). */
     public static final String SFX = ".wav";
     /** Musics file extension (with dot). */
-    public static final String MUSIC = ".mid";
+    public static final String MUSIC = ".xmi";
 
     /**
      * Private constructor.
