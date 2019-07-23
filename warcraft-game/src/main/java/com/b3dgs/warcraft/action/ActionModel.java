@@ -91,54 +91,27 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         handler = services.get(Handler.class);
         text = services.get(Text.class);
 
-        addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
-
         final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
         background.load();
         background.prepare();
 
+        addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
+
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
-        state = new AtomicReference<>(actionable);
-        assignable = addFeatureAndGet(new AssignableModel(services));
-
+        actionable.setAction(this::onClickButton);
         actionable.setClickAction(1);
-        actionable.setAction(() ->
-        {
-            cursor.setSurfaceId(1);
-            cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
-            selector.setEnabled(false);
-            state.set(assignable);
-            ActionModel.this.action();
-        });
 
+        state = new AtomicReference<>(actionable);
+
+        assignable = addFeatureAndGet(new AssignableModel(services));
+        assignable.setAssign(this::onAssignMap);
         assignable.setClickAssign(1);
-        assignable.setAssign(() ->
-        {
-            ActionModel.this.assign();
-            cursor.setSurfaceId(0);
-            cursor.setRenderingOffset(0, 0);
-            selector.setEnabled(true);
-            state.set(actionable);
-            Sfx.playRandomOrcConfirm();
-        });
 
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);
         surface.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
         background.setLocation(actionable.getButton().getX() - 2, actionable.getButton().getY() - 2);
 
-        addFeature(new RefreshableModel(extrp ->
-        {
-            if (actionable.isEnabled())
-            {
-                if (actionable.isOver())
-                {
-                    text.setText(actionable.getDescription());
-                }
-                state.get().update(extrp);
-                ActionModel.this.update(extrp);
-            }
-        }));
-
+        addFeature(new RefreshableModel(this::refresh));
         addFeature(new DisplayableModel(g ->
         {
             if (actionable.isEnabled())
@@ -164,6 +137,49 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     protected void assign()
     {
         // Nothing by default
+    }
+
+    /**
+     * Called on button click.
+     */
+    private void onClickButton()
+    {
+        cursor.setSurfaceId(1);
+        cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
+        selector.setEnabled(false);
+        state.set(assignable);
+        ActionModel.this.action();
+    }
+
+    /**
+     * Called on assign map after clicked on button.
+     */
+    private void onAssignMap()
+    {
+        ActionModel.this.assign();
+        cursor.setSurfaceId(0);
+        cursor.setRenderingOffset(0, 0);
+        selector.setEnabled(true);
+        state.set(actionable);
+        Sfx.playRandomOrcConfirm();
+    }
+
+    /**
+     * Refresh loop.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void refresh(double extrp)
+    {
+        if (actionable.isEnabled())
+        {
+            if (actionable.isOver())
+            {
+                text.setText(actionable.getDescription());
+            }
+            state.get().update(extrp);
+            ActionModel.this.update(extrp);
+        }
     }
 
     /**

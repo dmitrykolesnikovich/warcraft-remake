@@ -30,7 +30,7 @@ public enum WorldType
     /** Forest world. */
     FOREST("Forest"),
     /** Swamp world. */
-    SWAMP("Swamp", Music.ORC);
+    SWAMP("Swamp");
 
     /**
      * Load type from its saved format.
@@ -46,19 +46,15 @@ public enum WorldType
 
     /** Title displayed. */
     private final String title;
-    /** World music. */
-    private final Music[] musics;
 
     /**
      * Constructor.
      * 
      * @param title The displayed title.
-     * @param music The music type.
      */
-    WorldType(String title, Music... music)
+    WorldType(String title)
     {
         this.title = title;
-        musics = music;
     }
 
     /**
@@ -70,16 +66,6 @@ public enum WorldType
     public void save(FileWriting file) throws IOException
     {
         file.writeString(name());
-    }
-
-    /**
-     * Get the music type.
-     * 
-     * @return The music type.
-     */
-    public Music[] getMusics()
-    {
-        return musics;
     }
 
     /**

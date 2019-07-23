@@ -18,6 +18,9 @@ package com.b3dgs.warcraft;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.warcraft.constant.Extension;
@@ -26,13 +29,29 @@ import com.b3dgs.warcraft.constant.Folder;
 /**
  * List of available musics.
  * <p>
- * Music file name is enum name in lower case.
+ * Music file name is enum name in lower case in enum race name in lower case folder.
  * </p>
  */
 public enum Music
 {
-    /** Orc music. */
-    ORC;
+    /** Orc campaign 2. */
+    ORC_CAMPAIGN2(Race.ORC);
+
+    /** Associated race. */
+    private final Race race;
+
+    /**
+     * Create music.
+     * 
+     * @param race The associated race (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
+     */
+    Music(Race race)
+    {
+        Check.notNull(race);
+
+        this.race = race;
+    }
 
     /**
      * Get the music media.
@@ -41,6 +60,8 @@ public enum Music
      */
     public Media get()
     {
-        return Medias.create(Folder.MUSICS, name().toLowerCase(Locale.ENGLISH) + Extension.MUSIC);
+        final String folder = race.name().toLowerCase(Locale.ENGLISH);
+        final String file = name().toLowerCase(Locale.ENGLISH) + Extension.SFX;
+        return Medias.create(Folder.MUSICS, folder, file.substring(file.indexOf(Constant.UNDERSCORE) + 1));
     }
 }

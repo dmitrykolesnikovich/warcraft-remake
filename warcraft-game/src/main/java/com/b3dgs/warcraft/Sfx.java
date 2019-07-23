@@ -38,7 +38,7 @@ import com.b3dgs.warcraft.constant.Folder;
  */
 public enum Sfx
 {
-    /** Click */
+    /** Click. */
     NEUTRAL_CLICK(Race.NEUTRAL),
     /** Sword 1. */
     NEUTRAL_SWORD1(Race.NEUTRAL),
@@ -76,19 +76,19 @@ public enum Sfx
     /** Orcs die. */
     ORCS_DEAD(Race.ORC);
 
-    private static Sfx[] SWORD = new Sfx[]
+    private static final Sfx[] SWORD = new Sfx[]
     {
         NEUTRAL_SWORD1, NEUTRAL_SWORD2, NEUTRAL_SWORD3
     };
-    private static Sfx[] TREE = new Sfx[]
+    private static final Sfx[] TREE = new Sfx[]
     {
         NEUTRAL_TREE1, NEUTRAL_TREE2, NEUTRAL_TREE3, NEUTRAL_TREE4
     };
-    private static Sfx[] ORCS_WHAT = new Sfx[]
+    private static final Sfx[] ORCS_WHAT = new Sfx[]
     {
         ORCS_WHAT1, ORCS_WHAT2, ORCS_WHAT3, ORCS_WHAT4
     };
-    private static Sfx[] ORCS_YESSIR = new Sfx[]
+    private static final Sfx[] ORCS_YESSIR = new Sfx[]
     {
         ORCS_YESSIR1, ORCS_YESSIR2, ORCS_YESSIR3
     };
@@ -114,7 +114,7 @@ public enum Sfx
         for (final Sfx sfx : Sfx.values())
         {
             sfx.audio.stop();
-            sfx.audio.setVolume(50);
+            sfx.audio.setVolume(com.b3dgs.warcraft.constant.Constant.VOLUME_DEFAULT);
         }
     }
 

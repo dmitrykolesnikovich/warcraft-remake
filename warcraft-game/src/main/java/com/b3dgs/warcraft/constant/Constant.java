@@ -63,6 +63,8 @@ public final class Constant
     /** Tile number tree cut. */
     public static final int TILE_NUM_TREE_CUT = 124;
 
+    /** Default volume. */
+    public static final int VOLUME_DEFAULT = 50;
     /** Sound bank id. */
     public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
 

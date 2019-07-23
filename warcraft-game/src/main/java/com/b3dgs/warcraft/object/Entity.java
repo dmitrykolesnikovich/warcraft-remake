@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -92,7 +93,8 @@ public class Entity extends FeaturableModel
         addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
-        addFeatureAndGet(new AttackerModel(setup)).addListener(new AttackerListenerVoid()
+        final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
+        attacker.addListener(new AttackerListenerVoid()
         {
             @Override
             public void notifyAttackEnded(int damages, Transformable target)

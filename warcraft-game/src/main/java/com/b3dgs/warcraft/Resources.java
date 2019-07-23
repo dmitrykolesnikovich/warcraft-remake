@@ -30,6 +30,10 @@ public final class Resources implements Updatable
     public static final String TYPE_WOOD = "wood";
     /** Gold type. */
     public static final String TYPE_GOLD = "gold";
+    /** Curve speed. */
+    private static final double CURVE_SPEED = 15.0;
+    /** Curve round. */
+    private static final double CURVE_ROUND = 10.0;
 
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
@@ -56,7 +60,7 @@ public final class Resources implements Updatable
         {
             if (getWood() < wood.getCurrent())
             {
-                currentWood = (int) Math.ceil(UtilMath.curveValue(currentWood, wood.getCurrent(), 15) * 10) / 10.0;
+                currentWood = curve(currentWood, wood.getCurrent());
             }
             else
             {
@@ -69,7 +73,7 @@ public final class Resources implements Updatable
         {
             if (getGold() < gold.getCurrent())
             {
-                currentGold = (int) Math.ceil(UtilMath.curveValue(currentGold, gold.getCurrent(), 15) * 10) / 10.0;
+                currentGold = curve(currentGold, gold.getCurrent());
             }
             else
             {
@@ -209,6 +213,18 @@ public final class Resources implements Updatable
     public boolean isAvailableGold(int amount)
     {
         return gold.isEnough(amount);
+    }
+
+    /**
+     * Curve resource value.
+     * 
+     * @param current The current resource value.
+     * @param dest The destination resource value.
+     * @return The curved value.
+     */
+    private double curve(double current, int dest)
+    {
+        return (int) Math.ceil(UtilMath.curveValue(current, dest, CURVE_SPEED) * CURVE_ROUND) / CURVE_ROUND;
     }
 
     @Override

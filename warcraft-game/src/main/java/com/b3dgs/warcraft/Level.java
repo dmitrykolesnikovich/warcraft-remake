@@ -18,6 +18,8 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.warcraft.constant.Extension;
+import com.b3dgs.warcraft.constant.Folder;
 
 /**
  * List of levels with their file.
@@ -28,11 +30,6 @@ public enum Level
     FOREST(WorldType.FOREST, "forest"),
     /** Swamp level. */
     SWAMP(WorldType.SWAMP, "swamp");
-
-    /** Levels folder. */
-    public static final String DIR = "map";
-    /** Levels file extension. */
-    public static final String EXTENSION = ".wrl";
 
     /** Level file. */
     private final Media level;
@@ -47,8 +44,9 @@ public enum Level
      */
     Level(WorldType world, String level)
     {
-        this.level = Medias.create(DIR, world.getFolder(), level + EXTENSION);
-        rip = Medias.create(DIR, world.getFolder(), level + ".png");
+        final String folder = world.getFolder();
+        this.level = Medias.create(Folder.MAPS, folder, level + Extension.LEVEL);
+        rip = Medias.create(Folder.MAPS, folder, level + Extension.IMAGE);
     }
 
     /**
