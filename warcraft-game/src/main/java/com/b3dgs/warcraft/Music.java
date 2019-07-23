@@ -19,7 +19,6 @@ package com.b3dgs.warcraft;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -34,8 +33,12 @@ import com.b3dgs.warcraft.constant.Folder;
  */
 public enum Music
 {
+    /** Orc campaign 1. */
+    ORC_CAMPAIGN1(Race.ORC),
     /** Orc campaign 2. */
-    ORC_CAMPAIGN2(Race.ORC);
+    ORC_CAMPAIGN2(Race.ORC),
+    /** Orc campaign 3. */
+    ORC_CAMPAIGN3(Race.ORC);
 
     /** Associated race. */
     private final Race race;
@@ -61,7 +64,7 @@ public enum Music
     public Media get()
     {
         final String folder = race.name().toLowerCase(Locale.ENGLISH);
-        final String file = name().toLowerCase(Locale.ENGLISH) + Extension.SFX;
-        return Medias.create(Folder.MUSICS, folder, file.substring(file.indexOf(Constant.UNDERSCORE) + 1));
+        final String file = name().toLowerCase(Locale.ENGLISH) + Extension.MUSIC;
+        return Medias.create(Folder.MUSICS, folder, file.substring(race.name().length() + 1));
     }
 }

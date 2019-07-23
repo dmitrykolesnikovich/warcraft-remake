@@ -139,7 +139,7 @@ public class World extends WorldGame
         final int baseY = 10;
         createBase(baseX, baseY);
 
-        music = AudioFactory.loadAudio(Medias.create(Folder.MUSICS, "orc_campaign_2.xmi"));
+        music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
     }
 
