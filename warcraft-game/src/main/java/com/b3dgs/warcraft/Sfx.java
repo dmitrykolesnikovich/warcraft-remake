@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft;
 
+import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Check;
@@ -40,6 +41,14 @@ public enum Sfx
 {
     /** Click. */
     NEUTRAL_CLICK(Race.NEUTRAL),
+    /** Build. */
+    NEUTRAL_BUILD(Race.NEUTRAL),
+    /** Construct. */
+    NEUTRAL_CONSTRUCT(Race.NEUTRAL),
+    /** Explode 1. */
+    NEUTRAL_EXPLODE1(Race.NEUTRAL),
+    /** Explode 2. */
+    NEUTRAL_EXPLODE2(Race.NEUTRAL),
     /** Sword 1. */
     NEUTRAL_SWORD1(Race.NEUTRAL),
     /** Sword 2. */
@@ -55,43 +64,26 @@ public enum Sfx
     /** Tree 4. */
     NEUTRAL_TREE4(Race.NEUTRAL),
 
-    /** Orcs ready. */
-    ORCS_READY(Race.ORC),
-    /** Orcs work done. */
-    ORCS_WORKDONE(Race.ORC),
-    /** Orcs yes sir 1. */
-    ORCS_YESSIR1(Race.ORC),
-    /** Orcs yes sir 2. */
-    ORCS_YESSIR2(Race.ORC),
-    /** Orcs yes sir 3. */
-    ORCS_YESSIR3(Race.ORC),
-    /** Orcs what 1. */
-    ORCS_WHAT1(Race.ORC),
-    /** Orcs what 2. */
-    ORCS_WHAT2(Race.ORC),
-    /** Orcs what 3. */
-    ORCS_WHAT3(Race.ORC),
-    /** Orcs what 4. */
-    ORCS_WHAT4(Race.ORC),
-    /** Orcs die. */
-    ORCS_DEAD(Race.ORC);
-
-    private static final Sfx[] SWORD = new Sfx[]
-    {
-        NEUTRAL_SWORD1, NEUTRAL_SWORD2, NEUTRAL_SWORD3
-    };
-    private static final Sfx[] TREE = new Sfx[]
-    {
-        NEUTRAL_TREE1, NEUTRAL_TREE2, NEUTRAL_TREE3, NEUTRAL_TREE4
-    };
-    private static final Sfx[] ORCS_WHAT = new Sfx[]
-    {
-        ORCS_WHAT1, ORCS_WHAT2, ORCS_WHAT3, ORCS_WHAT4
-    };
-    private static final Sfx[] ORCS_YESSIR = new Sfx[]
-    {
-        ORCS_YESSIR1, ORCS_YESSIR2, ORCS_YESSIR3
-    };
+    /** Orc ready. */
+    ORC_READY(Race.ORC),
+    /** Orc work done. */
+    ORC_WORKDONE(Race.ORC),
+    /** Orc yes sir 1. */
+    ORC_YESSIR1(Race.ORC),
+    /** Orc yes sir 2. */
+    ORC_YESSIR2(Race.ORC),
+    /** Orc yes sir 3. */
+    ORC_YESSIR3(Race.ORC),
+    /** Orc what 1. */
+    ORC_WHAT1(Race.ORC),
+    /** Orc what 2. */
+    ORC_WHAT2(Race.ORC),
+    /** Orc what 3. */
+    ORC_WHAT3(Race.ORC),
+    /** Orc what 4. */
+    ORC_WHAT4(Race.ORC),
+    /** Orc die. */
+    ORC_DEAD(Race.ORC);
 
     /**
      * Cache sfx.
@@ -119,46 +111,17 @@ public enum Sfx
     }
 
     /**
-     * Play a random sword sound.
-     */
-    public static void playRandomSword()
-    {
-        playRandom(SWORD);
-    }
-
-    /**
-     * Play a random tree cut sound.
-     */
-    public static void playRandomTreeCut()
-    {
-        playRandom(TREE);
-    }
-
-    /**
-     * Play a random orc selection sound.
-     */
-    public static void playRandomOrcSelect()
-    {
-        playRandom(ORCS_WHAT);
-    }
-
-    /**
-     * Play a random orc confirm sound.
-     */
-    public static void playRandomOrcConfirm()
-    {
-        playRandom(ORCS_YESSIR);
-    }
-
-    /**
      * Play a random sound.
      * 
      * @param sfx The random sounds.
      */
-    private static void playRandom(Sfx[] sfx)
+    public static void playRandom(List<Sfx> sfx)
     {
-        final int id = UtilRandom.getRandomInteger(sfx.length - 1);
-        sfx[id].play();
+        if (!sfx.isEmpty())
+        {
+            final int id = UtilRandom.getRandomInteger(sfx.size() - 1);
+            sfx.get(id).play();
+        }
     }
 
     /** Associated race. */

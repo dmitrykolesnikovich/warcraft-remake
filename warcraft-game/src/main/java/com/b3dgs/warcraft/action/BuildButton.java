@@ -43,7 +43,9 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.object.EntityModel;
+import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
  * Build button action.
@@ -118,6 +120,7 @@ public class BuildButton extends ActionModel
                     pathfindable.clearPath();
                     featurable.getFeature(Pathfindable.class)
                               .setLocation(map.getInTileX(producible), map.getInTileY(producible));
+                    featurable.getFeature(EntitySfx.class).onStarted();
                     model.setVisible(false);
                 }
 
@@ -129,6 +132,7 @@ public class BuildButton extends ActionModel
                                                .getFreeTileAround(pathfindable,
                                                                   featurable.getFeature(Pathfindable.class));
                     pathfindable.setLocation(coord);
+                    featurable.getFeature(EntitySfx.class).onProduced();
                 }
             });
         }
@@ -136,6 +140,7 @@ public class BuildButton extends ActionModel
         cursor.setVisible(true);
         hud.clearMenus();
         hud.setCancelShortcut(() -> false);
+        Sfx.NEUTRAL_BUILD.play();
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
  * Move action.
@@ -47,6 +48,10 @@ public class Stop extends ActionModel
             {
                 selection.get(i).getFeature(Pathfindable.class).stopMoves();
                 selection.get(i).getFeature(Attacker.class).stopAttack();
+            }
+            if (n == 1)
+            {
+                selection.get(0).getFeature(EntitySfx.class).onOrdered();
             }
         });
     }

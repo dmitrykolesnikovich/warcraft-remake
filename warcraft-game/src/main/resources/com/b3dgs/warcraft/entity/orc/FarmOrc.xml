@@ -8,8 +8,10 @@
 	<lionengine:size width="32" height="32"/>
 	<lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
 	<lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
-    <lionengine:producible steps="3"/>
+    <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:producible steps="100"/>
+    <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
 	<attributes life="100" fov="3"/>
-	<production steps_per_second="1"/>
 	<cost steps="5" gold="250" wood="200"/>
 </lionengine:entity>

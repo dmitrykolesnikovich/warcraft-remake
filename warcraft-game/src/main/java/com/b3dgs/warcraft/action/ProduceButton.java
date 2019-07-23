@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.FoodConsumer;
 
 /**
@@ -114,6 +115,12 @@ public class ProduceButton extends ActionModel
         return new ProducibleListenerVoid()
         {
             @Override
+            public void notifyProductionStarted(Producer producer)
+            {
+                producible.getFeature(EntitySfx.class).onStarted();
+            }
+
+            @Override
             public void notifyProductionProgress(Producer producer)
             {
                 progress.setWidthPercent(producer.getProgressPercent());
@@ -124,6 +131,7 @@ public class ProduceButton extends ActionModel
             {
                 teleportOutside(producible, producer);
                 progress.setWidthPercent(0);
+                producible.getFeature(EntitySfx.class).onProduced();
             }
         };
     }

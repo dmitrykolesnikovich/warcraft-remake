@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
  * Attack action.
@@ -57,6 +58,10 @@ public class Attack extends ActionModel
                 selection.get(i).getFeature(Pathfindable.class).setDestination(transformable);
                 selection.get(i).getFeature(Attacker.class).attack(transformable);
             }
+        }
+        if (n == 1)
+        {
+            selection.get(0).getFeature(EntitySfx.class).onOrdered();
         }
     }
 }

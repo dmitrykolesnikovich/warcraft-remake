@@ -51,6 +51,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 import com.b3dgs.warcraft.object.state.StateIdle;
@@ -90,6 +91,7 @@ public class Entity extends FeaturableModel
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
+        addFeature(new EntitySfx(services, setup));
         addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));

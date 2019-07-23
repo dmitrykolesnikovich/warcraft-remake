@@ -35,6 +35,7 @@
         <lionengine:action path="action/orc/AttackAxe.xml"/>
     </lionengine:actions>
     <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="4" damages_max="6"/>
+    <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="ORC_DEAD"/>
 	<offsetDeath x="8" y="8"/>
 	<attributes life="100" fov="4"/>
 	<cost steps="5" gold="500" wood="100"/>
