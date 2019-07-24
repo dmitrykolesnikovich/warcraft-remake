@@ -16,6 +16,9 @@
  */
 package com.b3dgs.warcraft;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
@@ -34,6 +37,28 @@ public final class Resources implements Updatable
     private static final double CURVE_SPEED = 15.0;
     /** Curve round. */
     private static final double CURVE_ROUND = 10.0;
+
+    /**
+     * Check if type is wood.
+     * 
+     * @param type The type to check.
+     * @return <code>true</code> if wood, <code>false</code> else.
+     */
+    public static boolean isWood(AtomicReference<String> type)
+    {
+        return TYPE_WOOD.equals(type.get());
+    }
+
+    /**
+     * Check if type is gold.
+     * 
+     * @param type The type to check.
+     * @return <code>true</code> if gold, <code>false</code> else.
+     */
+    public static boolean isGold(AtomicReference<String> type)
+    {
+        return TYPE_GOLD.equals(type.get());
+    }
 
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
@@ -58,7 +83,7 @@ public final class Resources implements Updatable
 
         updateWood = extrp ->
         {
-            if (getWood() < wood.getCurrent())
+            if (!UtilMath.isBetween(getWood(), wood.getCurrent() - 4, wood.getCurrent() + 4))
             {
                 currentWood = curve(currentWood, wood.getCurrent());
             }
@@ -71,7 +96,7 @@ public final class Resources implements Updatable
 
         updateGold = extrp ->
         {
-            if (getGold() < gold.getCurrent())
+            if (!UtilMath.isBetween(getGold(), gold.getCurrent() - 4, gold.getCurrent() + 4))
             {
                 currentGold = curve(currentGold, gold.getCurrent());
             }
@@ -81,6 +106,12 @@ public final class Resources implements Updatable
                 updaterGold = UpdatableVoid.getInstance();
             }
         };
+
+        wood.set(Constant.THOUSAND);
+        gold.set(Constant.THOUSAND);
+
+        currentWood = wood.getCurrent();
+        currentGold = gold.getCurrent();
     }
 
     /**

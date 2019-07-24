@@ -36,12 +36,10 @@ public final class StateIdle extends State
     {
         super(model, animation);
 
-        addTransition(StateExtractWood.class, () -> Resources.TYPE_WOOD.equals(extractResource.get()));
-        addTransition(StateExtractGold.class, () -> Resources.TYPE_GOLD.equals(extractResource.get()));
-        addTransition(StateCarryWood.class,
-                      () -> Resources.TYPE_WOOD.equals(extractResource.get()) && carryResource.get());
-        addTransition(StateCarryGold.class,
-                      () -> Resources.TYPE_GOLD.equals(extractResource.get()) && carryResource.get());
+        addTransition(StateExtractWood.class, () -> Resources.isWood(extractResource));
+        addTransition(StateExtractGold.class, () -> Resources.isGold(extractResource));
+        addTransition(StateCarryWood.class, () -> Resources.isWood(carryResource));
+        addTransition(StateCarryGold.class, () -> Resources.isGold(carryResource));
         addTransition(StateWalk.class, moveStarted::get);
         addTransition(StateAttack.class, attackStarted::get);
         addTransition(StateDie.class, () -> stats.getLife() == 0);

@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object.state;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorFrameListener;
+import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -56,7 +57,7 @@ final class StateExtractWood extends State
             }
         };
 
-        addTransition(StateCarryWood.class, carryResource::get);
+        addTransition(StateCarryWood.class, () -> Resources.isWood(carryResource));
     }
 
     @Override

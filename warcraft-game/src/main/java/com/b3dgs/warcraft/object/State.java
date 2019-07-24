@@ -112,7 +112,7 @@ public abstract class State extends StateAbstract
     /** Extract resource flag. */
     protected final AtomicReference<String> extractResource = new AtomicReference<>();
     /** Carry resource flag. */
-    protected final AtomicBoolean carryResource = new AtomicBoolean();
+    protected final AtomicReference<String> carryResource = new AtomicReference<>();
 
     private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
     {
@@ -150,7 +150,7 @@ public abstract class State extends StateAbstract
         public void notifyStartGoToRessources(String type, Tiled resourceLocation)
         {
             pathfindable.setDestination(resourceLocation);
-            carryResource.set(false);
+            carryResource.set(null);
         }
 
         @Override
@@ -167,7 +167,7 @@ public abstract class State extends StateAbstract
         public void notifyStartCarry(String type, int totalQuantity)
         {
             pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
-            carryResource.set(true);
+            carryResource.set(type);
 
             if (Resources.TYPE_WOOD.equals(type))
             {
@@ -312,8 +312,8 @@ public abstract class State extends StateAbstract
         moveArrived.set(false);
         attackStarted.set(false);
         producibleEnded.set(false);
-        carryResource.set(false);
         extractResource.set(null);
+        carryResource.set(null);
     }
 
     /**
