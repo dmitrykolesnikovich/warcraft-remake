@@ -32,7 +32,7 @@
         <lionengine:path category="tree" block="true"/>
         <lionengine:path category="water" block="true"/>
     </lionengine:pathfindable>
-    <lionengine:producible steps="3"/>
+    <lionengine:producible steps="60"/>
     <lionengine:extractor extract="1.0" dropoff="1.0" capacity="100"/>
     <lionengine:actions>
         <lionengine:action path="action/orc/MoveOrc.xml"/>
@@ -46,9 +46,7 @@
     </lionengine:actions>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="ORC_DEAD"/>
 	<offsetDeath x="8" y="8"/>
-	<attributes life="100" fov="3"/>
-	<production steps_per_second="1"/>
-	<extraction extraction_speed="100" extraction_capacity="100" drop_off_speed="100"/>
-	<cost steps="5" gold="500" wood="100"/>
+	<stats health="100" fov="3"/>
+	<cost wood="100" gold="500"/>
 	<race>orc</race>
 </lionengine:entity>

@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -39,6 +40,7 @@ import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.FoodConsumer;
 
@@ -79,16 +81,22 @@ public class ProduceButton extends ActionModel
 
         final Media target = Medias.create(setup.getText("media").split(Constant.SLASH));
         final Factory factory = services.get(Factory.class);
-        final Resources food = services.get(Resources.class);
+        final Resources resources = services.get(Resources.class);
 
         actionable.setAction(() ->
         {
-            if (food.isAvailableFood())
+            final CostConfig config = CostConfig.imports(new Configurer(target));
+            if (resources.isAvailableFood()
+                && resources.isAvailableWood(config.getWood())
+                && resources.isAvailableGold(config.getGold()))
             {
+                resources.decreaseWood(config.getWood());
+                resources.decreaseGold(config.getGold());
+
                 final Featurable entity = factory.create(target);
                 if (entity.hasFeature(FoodConsumer.class))
                 {
-                    food.consumeFood();
+                    resources.consumeFood();
                 }
                 final Producible producible = entity.getFeature(Producible.class);
                 producible.addListener(createListener(producible));

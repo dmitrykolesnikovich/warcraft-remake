@@ -10,7 +10,7 @@
     <lionengine:animation name="idle" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:extractable type="gold" quantity="2000"/>
 	<lionengine:offset x="0" y="0"/>
-	<attributes life="1000" fov="3"/>
-	<cost steps="5" gold="500" wood="100"/>
+	<stats health="1000" fov="3"/>
+	<cost gold="500" wood="100"/>
 	<race>neutral</race>
 </lionengine:entity>

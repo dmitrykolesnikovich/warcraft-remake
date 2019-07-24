@@ -14,7 +14,7 @@
         <lionengine:action path="action/orc/ProduceGrunt.xml" unique="true"/>
     </lionengine:actions>
     <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
-	<attributes life="100" fov="3"/>
-	<cost steps="5" gold="500" wood="100"/>
+	<stats health="100" fov="3"/>
+	<cost gold="500" wood="100"/>
 	<race>orc</race>
 </lionengine:entity>

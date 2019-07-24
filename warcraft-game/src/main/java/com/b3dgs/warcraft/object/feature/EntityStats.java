@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.StatsConfig;
 
 /**
  * Icon renderer feature.
@@ -48,7 +49,7 @@ public class EntityStats extends FeatureModel implements Routine
     private static final int BAR_YELLOW_PERCENT = 50;
 
     private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
-    private final Alterable health = new Alterable(60);
+    private final Alterable health;
     private final Bar barHealth = new Bar(27, 3);
     private final String name;
     private final Image icon;
@@ -64,6 +65,9 @@ public class EntityStats extends FeatureModel implements Routine
     public EntityStats(Services services, Setup setup)
     {
         super();
+
+        final StatsConfig config = StatsConfig.imports(setup);
+        health = new Alterable(config.getHealth());
 
         text = services.get(Text.class);
 

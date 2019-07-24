@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
@@ -31,11 +32,9 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -43,7 +42,9 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.warcraft.Resources;
 import com.b3dgs.warcraft.Sfx;
+import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 
@@ -55,12 +56,11 @@ public class BuildButton extends ActionModel
     private final Media target;
     private Rectangle area;
 
-    private final Factory factory;
-    private final Viewer viewer;
-    private final Selector selector;
-    private final MapTile map;
-    private final InputDevicePointer pointer;
-    private final Hud hud;
+    private final Factory factory = services.get(Factory.class);
+    private final Viewer viewer = services.get(Viewer.class);
+    private final InputDevicePointer pointer = services.get(InputDevicePointer.class);
+    private final Hud hud = services.get(Hud.class);
+    private final Resources resources = services.get(Resources.class);
 
     /**
      * Create build button action.
@@ -71,13 +71,6 @@ public class BuildButton extends ActionModel
     public BuildButton(Services services, Setup setup)
     {
         super(services, setup);
-
-        factory = services.get(Factory.class);
-        viewer = services.get(Viewer.class);
-        selector = services.get(Selector.class);
-        map = services.get(MapTile.class);
-        pointer = services.get(InputDevicePointer.class);
-        hud = services.get(Hud.class);
 
         target = Medias.create(setup.getText("media").split("/"));
     }
@@ -96,45 +89,52 @@ public class BuildButton extends ActionModel
     {
         for (final Selectable selectable : selector.getSelection())
         {
-            final Featurable building = factory.create(target);
-            final Producible producible = building.getFeature(Producible.class);
-            producible.setLocation(area.getX(), area.getY());
-
-            final Producer producer = selectable.getFeature(Producer.class);
-            final Transformable transformable = producer.getFeature(Transformable.class);
-            producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
-                                                                   transformable) < map.getTileWidth());
-
-            producer.addToProductionQueue(building);
-
-            final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
-            pathfindable.setDestination(area);
-
-            final EntityModel model = producer.getFeature(EntityModel.class);
-            producer.addListener(new ProducerListenerVoid()
+            final CostConfig config = CostConfig.imports(new Configurer(target));
+            if (resources.isAvailableWood(config.getWood()) && resources.isAvailableGold(config.getGold()))
             {
-                @Override
-                public void notifyStartProduction(Featurable featurable)
-                {
-                    pathfindable.stopMoves();
-                    pathfindable.clearPath();
-                    featurable.getFeature(Pathfindable.class)
-                              .setLocation(map.getInTileX(producible), map.getInTileY(producible));
-                    featurable.getFeature(EntitySfx.class).onStarted();
-                    model.setVisible(false);
-                }
+                resources.decreaseWood(config.getWood());
+                resources.decreaseGold(config.getGold());
 
-                @Override
-                public void notifyProduced(Featurable featurable)
+                final Featurable building = factory.create(target);
+                final Producible producible = building.getFeature(Producible.class);
+                producible.setLocation(area.getX(), area.getY());
+
+                final Producer producer = selectable.getFeature(Producer.class);
+                final Transformable transformable = producer.getFeature(Transformable.class);
+                producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
+                                                                       transformable) < map.getTileWidth());
+
+                producer.addToProductionQueue(building);
+
+                final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
+                pathfindable.setDestination(area);
+
+                final EntityModel model = producer.getFeature(EntityModel.class);
+                producer.addListener(new ProducerListenerVoid()
                 {
-                    model.setVisible(true);
-                    final CoordTile coord = map.getFeature(MapTilePath.class)
-                                               .getFreeTileAround(pathfindable,
-                                                                  featurable.getFeature(Pathfindable.class));
-                    pathfindable.setLocation(coord);
-                    featurable.getFeature(EntitySfx.class).onProduced();
-                }
-            });
+                    @Override
+                    public void notifyStartProduction(Featurable featurable)
+                    {
+                        pathfindable.stopMoves();
+                        pathfindable.clearPath();
+                        featurable.getFeature(Pathfindable.class)
+                                  .setLocation(map.getInTileX(producible), map.getInTileY(producible));
+                        featurable.getFeature(EntitySfx.class).onStarted();
+                        model.setVisible(false);
+                    }
+
+                    @Override
+                    public void notifyProduced(Featurable featurable)
+                    {
+                        model.setVisible(true);
+                        final CoordTile coord = map.getFeature(MapTilePath.class)
+                                                   .getFreeTileAround(pathfindable,
+                                                                      featurable.getFeature(Pathfindable.class));
+                        pathfindable.setLocation(coord);
+                        featurable.getFeature(EntitySfx.class).onProduced();
+                    }
+                });
+            }
         }
         area = null;
         cursor.setVisible(true);
