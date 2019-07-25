@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
@@ -49,7 +48,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.warcraft.Resources;
@@ -173,9 +171,14 @@ public abstract class State extends StateAbstract
             {
                 final Tile tile = mapPath.getTile(extractor.getResourceLocation());
                 final Tile cut = map.createTile(tile.getSheet(), Constant.TILE_NUM_TREE_CUT, tile.getX(), tile.getY());
+                mapPath.loadTile(cut);
                 map.setTile(cut);
-                mapTransition.resolve(cut);
-                mapPath.loadPathfinding(Medias.create(map.getMedia().getParentPath(), PathfindingConfig.FILENAME));
+
+                for (final Tile updated : mapTransition.resolve(cut))
+                {
+                    mapPath.loadTile(updated);
+                    map.setTile(updated);
+                }
 
                 final Tile next = getClosestTree(cut);
                 if (next != null)
