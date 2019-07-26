@@ -17,10 +17,11 @@
 package com.b3dgs.warcraft;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
@@ -32,6 +33,8 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -45,7 +48,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
-import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
 import com.b3dgs.warcraft.world.WorldNavigator;
@@ -91,7 +94,7 @@ public class World extends WorldGame
 
         handler.addComponent(services.add(new ComponentCollision()));
 
-        hud = services.add(factory.create(Medias.create("Hud.xml")));
+        hud = services.add(factory.create(Medias.create("hud.xml")));
         handler.add(hud);
 
         navigator = new WorldNavigator(services);
@@ -101,6 +104,31 @@ public class World extends WorldGame
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(1);
+
+        final AtomicReference<Race> race = new AtomicReference<>();
+        selector.addListener(new SelectionListener()
+        {
+            @Override
+            public void notifySelectionStarted()
+            {
+                race.set(null);
+            }
+
+            @Override
+            public void notifySelected(List<Selectable> selection)
+            {
+                // Nothing to do
+            }
+        });
+        selector.setAccept((selected, selectable) ->
+        {
+            final Race current = selectable.getFeature(EntityStats.class).getRace();
+            if (race.compareAndSet(null, current) || current.equals(race.get()))
+            {
+                return true;
+            }
+            return false;
+        });
 
         hud.addListener(() ->
         {
@@ -135,9 +163,11 @@ public class World extends WorldGame
         cursor.setInputDevice(pointer);
         cursor.setViewer(camera);
 
-        final int baseX = 10;
+        spawn(Race.NEUTRAL, "goldmine", 27, 12);
+
+        final int baseX = 33;
         final int baseY = 10;
-        createBase(baseX, baseY);
+        createBase(Race.ORC, baseX, baseY);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
@@ -146,34 +176,39 @@ public class World extends WorldGame
     /**
      * Create base world.
      * 
+     * @param race The race reference.
      * @param tx The horizontal tile base.
      * @param ty The vertical tile base.
      */
-    private void createBase(int tx, int ty)
+    private void createBase(Race race, int tx, int ty)
     {
-        spawn(Medias.create(Folder.ORCS, "Peon.xml"), tx, ty);
-        spawn(Medias.create(Folder.ORCS, "TownHallOrc.xml"), tx + 6, ty - 5);
-        spawn(Medias.create(Folder.NEUTRAL, "GoldMine.xml"), tx + 4, ty);
+        spawn(race, Unit.WORKER.get(), tx, ty - 2);
+        spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
+        spawn(race, Unit.BARRACKS.get(), tx + 6, ty - 2);
+        spawn(race, "spearman", tx + 4, ty + 2);
+        resources.increaseFood();
 
-        final Transformable grunt = spawn(Medias.create(Folder.ORCS, "Grunt.xml"), tx + 2, ty + 1);
-        camera.teleport(grunt.getX() - camera.getWidth() / 2, grunt.getY() - camera.getHeight() / 2);
+        final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
+        camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
+                        townhall.getY() + (townhall.getHeight() - camera.getHeight()) / 2);
     }
 
     /**
      * Spawn a {@link Featurable} at specified location. Must have {@link Transformable} feature.
      * 
-     * @param media The featurable media.
+     * @param race The featurable race.
+     * @param file The featurable file.
      * @param tx The horizontal tile spawn location.
      * @param ty The vertical tile spawn location.
      * @return The spawned featurable.
      * @throws LionEngineException If invalid media or missing feature.
      */
-    private Transformable spawn(Media media, int tx, int ty)
+    private Transformable spawn(Race race, String file, int tx, int ty)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        final Featurable featurable = super.spawn(media, tx * tw, ty * th);
+        final Featurable featurable = super.spawn(race.get(file), tx * tw, ty * th);
         featurable.getFeature(Pathfindable.class).setLocation(tx, ty);
 
         return featurable.getFeature(Transformable.class);

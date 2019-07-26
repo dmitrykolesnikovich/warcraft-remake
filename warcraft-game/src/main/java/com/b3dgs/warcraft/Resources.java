@@ -107,8 +107,8 @@ public final class Resources implements Updatable
             }
         };
 
-        wood.set(Constant.THOUSAND);
-        gold.set(Constant.THOUSAND);
+        wood.set(Constant.THOUSAND * 2);
+        gold.set(Constant.THOUSAND * 2);
 
         currentWood = wood.getCurrent();
         currentGold = gold.getCurrent();

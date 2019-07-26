@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.ProduceButton</lionengine:class>
+    <lionengine:surface image="produce_spearman.png"/>
+    <lionengine:action name="Produce Spearman" description="Produce a Spearman" x="38" y="118" width="27" height="19"/>
+    <media>entity/orc/spearman.xml</media>
+</lionengine:featurable>

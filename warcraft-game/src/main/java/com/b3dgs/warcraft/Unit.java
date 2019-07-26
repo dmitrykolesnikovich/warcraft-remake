@@ -18,41 +18,29 @@ package com.b3dgs.warcraft;
 
 import java.util.Locale;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Medias;
-import com.b3dgs.lionengine.game.feature.Factory;
-import com.b3dgs.warcraft.constant.Folder;
-
 /**
- * List of available races.
+ * List of standard units.
  */
-public enum Race
+public enum Unit
 {
-    /** Orc race. */
-    ORC,
-    /** Human race. */
-    HUMAN,
-    /** Neutral. */
-    NEUTRAL;
+    /** Townhall. */
+    TOWNHALL,
+    /** Farm. */
+    FARM,
+    /** Barracks. */
+    BARRACKS,
+    /** Lumbermill. */
+    LUMBERMILL,
+    /** Worker. */
+    WORKER;
 
     /**
-     * Get the folder.
+     * Get the associated file without extension.
      * 
-     * @return The folder name.
+     * @return The associated file without extension.
      */
-    public String getFolder()
+    public String get()
     {
         return name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get an entity based on its race
-     * 
-     * @param file The entity filename (without its extension).
-     * @return The entity media.
-     */
-    public Media get(String file)
-    {
-        return Medias.create(Folder.ENTITIES, getFolder(), file + Factory.FILE_DATA_DOT_EXTENSION);
     }
 }

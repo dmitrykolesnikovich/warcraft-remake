@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:entity name="Town Hall" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Warehouse</lionengine:feature>
+    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
+    <lionengine:surface image="townhall.png" icon="townhall_icon.png"/>
+	<lionengine:frames horizontal="2" vertical="1"/>
+	<lionengine:size width="48" height="48"/>
+	<lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    <lionengine:producible steps="500"/>
+    <lionengine:actions>
+        <lionengine:action path="action/orc/produce_worker.xml" unique="true"/>
+    </lionengine:actions>
+    <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
+	<stats health="100" fov="3"/>
+	<cost steps="5" gold="500" wood="100"/>
+</lionengine:entity>

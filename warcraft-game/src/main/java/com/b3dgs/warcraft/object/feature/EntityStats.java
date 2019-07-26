@@ -16,6 +16,8 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Alterable;
@@ -30,6 +32,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.StatsConfig;
 
@@ -39,6 +42,8 @@ import com.b3dgs.warcraft.object.StatsConfig;
 @FeatureInterface
 public class EntityStats extends FeatureModel implements Routine
 {
+    private static final String ATT_NAME = "name";
+
     private static final ColorRgba COLOR_LIFE = new ColorRgba(0, 200, 0);
     private static final int ENTITY_INFO_MARGIN = 4;
     private static final int TEXT_X = 5;
@@ -52,6 +57,7 @@ public class EntityStats extends FeatureModel implements Routine
     private final Alterable health;
     private final Bar barHealth = new Bar(27, 3);
     private final String name;
+    private final Race race;
     private final Image icon;
 
     private final Text text;
@@ -66,6 +72,20 @@ public class EntityStats extends FeatureModel implements Routine
     {
         super();
 
+        final String path = setup.getMedia().getParentPath();
+        if (path.contains(Race.ORC.name().toLowerCase(Locale.ENGLISH)))
+        {
+            race = Race.ORC;
+        }
+        else if (path.contains(Race.HUMAN.name().toLowerCase(Locale.ENGLISH)))
+        {
+            race = Race.HUMAN;
+        }
+        else
+        {
+            race = Race.NEUTRAL;
+        }
+
         final StatsConfig config = StatsConfig.imports(setup);
         health = new Alterable(config.getHealth());
 
@@ -75,7 +95,7 @@ public class EntityStats extends FeatureModel implements Routine
         stats.prepare();
         stats.setLocation(Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
 
-        name = setup.getString("name");
+        name = setup.getString(ATT_NAME);
         final Media media = setup.getIconFile();
         if (media != null)
         {
@@ -113,6 +133,16 @@ public class EntityStats extends FeatureModel implements Routine
     public int getLife()
     {
         return health.getCurrent();
+    }
+
+    /**
+     * Get the race.
+     * 
+     * @return The race.
+     */
+    public Race getRace()
+    {
+        return race;
     }
 
     /**

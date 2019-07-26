@@ -4,7 +4,7 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickExtract</lionengine:feature>
     <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
-    <lionengine:surface image="Peon.png" icon="Peon_icon.png"/>
+    <lionengine:surface image="worker.png" icon="worker_icon.png"/>
 	<lionengine:frames horizontal="15" vertical="9" offsetX="8" offsetY="8"/>
 	<lionengine:size width="16" height="16"/>
 	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
@@ -35,18 +35,16 @@
     <lionengine:producible steps="60"/>
     <lionengine:extractor extract="1.0" dropoff="1.0" capacity="100"/>
     <lionengine:actions>
-        <lionengine:action path="action/orc/MoveOrc.xml"/>
-        <lionengine:action path="action/orc/StopOrc.xml"/>
-        <lionengine:action path="action/orc/ExtractOrc.xml"/>
-        <lionengine:action path="action/orc/BuildingStandardOrc.xml">
-            <lionengine:action path="action/orc/BuildFarmOrc.xml"/>
-            <lionengine:action path="action/orc/BuildBarracksOrc.xml"/>
-            <lionengine:action path="action/orc/CancelOrc.xml" cancel="true"/>
+        <lionengine:action path="action/orc/move.xml"/>
+        <lionengine:action path="action/orc/stop.xml"/>
+        <lionengine:action path="action/orc/extract.xml"/>
+        <lionengine:action path="action/orc/building_standard.xml">
+            <lionengine:action path="action/orc/build_farm.xml"/>
+            <lionengine:action path="action/orc/build_barracks.xml"/>
+            <lionengine:action path="action/orc/cancel.xml" cancel="true"/>
         </lionengine:action>
     </lionengine:actions>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="ORC_DEAD"/>
-	<offsetDeath x="8" y="8"/>
 	<stats health="100" fov="3"/>
 	<cost wood="100" gold="500"/>
-	<race>orc</race>
 </lionengine:entity>
