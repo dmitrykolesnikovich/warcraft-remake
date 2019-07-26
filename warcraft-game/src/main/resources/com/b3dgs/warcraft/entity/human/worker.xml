@@ -38,13 +38,13 @@
         <lionengine:action path="action/human/move.xml"/>
         <lionengine:action path="action/human/stop.xml"/>
         <lionengine:action path="action/human/extract.xml"/>
-        <lionengine:action path="action/human/buildingStandard.xml">
-            <lionengine:action path="action/human/buildFarm.xml"/>
-            <lionengine:action path="action/human/buildBarracks.xml"/>
+        <lionengine:action path="action/human/building_standard.xml">
+            <lionengine:action path="action/human/build_farm.xml"/>
+            <lionengine:action path="action/human/build_barracks.xml"/>
             <lionengine:action path="action/human/cancel.xml" cancel="true"/>
         </lionengine:action>
     </lionengine:actions>
-    <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2;HUMAN_YESSIR3" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="HUMAN_DEAD"/>
+    <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="HUMAN_DEAD"/>
     <offsetDeath x="8" y="8"/>
     <stats health="100" fov="3"/>
     <cost wood="100" gold="500"/>

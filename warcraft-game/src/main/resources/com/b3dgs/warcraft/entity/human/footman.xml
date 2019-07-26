@@ -5,12 +5,12 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:surface image="footman.png" icon="footman_icon.png"/>
-    <lionengine:frames horizontal="9" vertical="7" offsetX="8" offsetY="8"/>
+    <lionengine:frames horizontal="9" vertical="7" offsetX="16" offsetY="16"/>
     <lionengine:size width="16" height="16"/>
     <lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
     <lionengine:animation name="walk" start="6" end="10" speed="0.1875" reversed="true" repeat="true"/>
-    <lionengine:animation name="attack" start="31" end="35" speed="0.1875" reversed="true" repeat="false"/>
+    <lionengine:animation name="attack" start="31" end="35" speed="0.1875" reversed="false" repeat="false"/>
     <lionengine:animation name="die" start="47" end="49" speed="0.1375" reversed="false" repeat="false"/>
     <lionengine:animation name="dead" start="49" end="49" speed="0.1375" reversed="false" repeat="false"/>
     <lionengine:pathfindable>
@@ -35,7 +35,7 @@
         <lionengine:action path="action/human/attack_sword.xml"/>
     </lionengine:actions>
     <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="4" damages_max="6"/>
-    <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2;HUMAN_YESSIR3" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="HUMAN_DEAD"/>
+    <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="HUMAN_DEAD"/>
     <stats health="100" fov="4"/>
     <cost wood="0" gold="500"/>
 </lionengine:entity>

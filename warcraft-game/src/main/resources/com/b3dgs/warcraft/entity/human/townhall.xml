@@ -12,7 +12,7 @@
     <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:producible steps="500"/>
     <lionengine:actions>
-        <lionengine:action path="action/human/produce_peon.xml" unique="true"/>
+        <lionengine:action path="action/human/produce_worker.xml" unique="true"/>
     </lionengine:actions>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
     <stats health="100" fov="3"/>

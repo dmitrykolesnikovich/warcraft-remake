@@ -3,7 +3,7 @@
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="lumbermill.png" icon="lumbermill_icon.png"/>
-    <lionengine:frames horizontal="2" vertical="1" offsetX="8" offsetY="0"/>
+    <lionengine:frames horizontal="2" vertical="1"/>
     <lionengine:size width="32" height="32"/>
     <lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
