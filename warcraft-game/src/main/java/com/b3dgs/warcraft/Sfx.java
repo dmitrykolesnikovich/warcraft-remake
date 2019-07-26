@@ -55,6 +55,8 @@ public enum Sfx
     NEUTRAL_SWORD2(Race.NEUTRAL),
     /** Sword 3. */
     NEUTRAL_SWORD3(Race.NEUTRAL),
+    /** Bow fire. */
+    NEUTRAL_BOWFIRE(Race.NEUTRAL),
     /** Tree 1. */
     NEUTRAL_TREE1(Race.NEUTRAL),
     /** Tree 2. */
@@ -74,6 +76,8 @@ public enum Sfx
     ORC_YESSIR2(Race.ORC),
     /** Orc yes sir 3. */
     ORC_YESSIR3(Race.ORC),
+    /** Orc yes sir 4. */
+    ORC_YESSIR4(Race.ORC),
     /** Orc what 1. */
     ORC_WHAT1(Race.ORC),
     /** Orc what 2. */
