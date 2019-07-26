@@ -17,7 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -36,7 +36,7 @@ final class StateExtractGold extends State
     {
         super(model, animation);
 
-        addTransition(StateCarryGold.class, () -> Resources.isGold(carryResource));
+        addTransition(StateCarryGold.class, () -> Player.isGold(carryResource));
     }
 
     @Override

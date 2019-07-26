@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
-import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Constant;
 
 /**
@@ -75,7 +75,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
         final Tile tree = map.getTile(tx, ty);
         if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
         {
-            extractor.setResource(Resources.TYPE_WOOD, tree);
+            extractor.setResource(Player.TYPE_WOOD, tree);
             extractor.startExtraction();
         }
         else

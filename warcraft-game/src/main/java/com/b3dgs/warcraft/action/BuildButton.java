@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.io.InputDevicePointer;
-import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.EntityModel;
@@ -60,7 +60,7 @@ public class BuildButton extends ActionModel
     private final Viewer viewer = services.get(Viewer.class);
     private final InputDevicePointer pointer = services.get(InputDevicePointer.class);
     private final Hud hud = services.get(Hud.class);
-    private final Resources resources = services.get(Resources.class);
+    private final Player player = services.get(Player.class);
 
     /**
      * Create build button action.
@@ -90,10 +90,10 @@ public class BuildButton extends ActionModel
         for (final Selectable selectable : selector.getSelection())
         {
             final CostConfig config = CostConfig.imports(new Configurer(target));
-            if (resources.isAvailableWood(config.getWood()) && resources.isAvailableGold(config.getGold()))
+            if (player.isAvailableWood(config.getWood()) && player.isAvailableGold(config.getGold()))
             {
-                resources.decreaseWood(config.getWood());
-                resources.decreaseGold(config.getGold());
+                player.decreaseWood(config.getWood());
+                player.decreaseGold(config.getGold());
 
                 final Featurable building = factory.create(target);
                 final Producible producible = building.getFeature(Producible.class);

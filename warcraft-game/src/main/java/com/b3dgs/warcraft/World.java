@@ -73,7 +73,7 @@ public class World extends WorldGame
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
-    private final Resources resources = services.create(Resources.class);
+    private final Player player = services.add(new Player(Race.ORC));
     private final Hud hud;
     private final Selector selector;
     private final WorldNavigator navigator;
@@ -187,9 +187,8 @@ public class World extends WorldGame
 
         spawn(Race.NEUTRAL, "goldmine", 27, 12);
 
-        final int baseX = 33;
-        final int baseY = 10;
-        createBase(Race.ORC, baseX, baseY);
+        createBase(Race.ORC, 33, 10);
+        createBase(Race.HUMAN, 48, 55);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
@@ -207,8 +206,7 @@ public class World extends WorldGame
         spawn(race, Unit.WORKER.get(), tx, ty - 2);
         spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
         spawn(race, Unit.BARRACKS.get(), tx + 6, ty - 2);
-        spawn(race, "spearman", tx + 4, ty + 2);
-        resources.increaseFood();
+        player.increaseFood();
 
         final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
         camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
@@ -244,7 +242,7 @@ public class World extends WorldGame
         pointer.update(extrp);
         cursor.update(extrp);
         navigator.update(extrp);
-        resources.update(extrp);
+        player.update(extrp);
 
         super.update(extrp);
     }
@@ -256,8 +254,8 @@ public class World extends WorldGame
 
         minimap.render(g);
         text.render(g);
-        text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(resources.getWood()));
-        text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(resources.getGold()));
+        text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getWood()));
+        text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getGold()));
         if (!cursor.hasClicked(2))
         {
             cursor.render(g);

@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
 
 /**
- * Describes the resources.
+ * Describes the player stats.
  */
-public final class Resources implements Updatable
+public final class Player implements Updatable
 {
     /** Wood type. */
     public static final String TYPE_WOOD = "wood";
@@ -60,6 +60,7 @@ public final class Resources implements Updatable
         return TYPE_GOLD.equals(type.get());
     }
 
+    private final Race race;
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);
@@ -76,10 +77,14 @@ public final class Resources implements Updatable
 
     /**
      * Create resources data.
+     * 
+     * @param race The race reference.
      */
-    public Resources()
+    public Player(Race race)
     {
         super();
+
+        this.race = race;
 
         updateWood = extrp ->
         {
@@ -212,6 +217,16 @@ public final class Resources implements Updatable
     public int getGold()
     {
         return (int) Math.round(currentGold);
+    }
+
+    /**
+     * Get the player race.
+     * 
+     * @return The player race.
+     */
+    public Race getRace()
+    {
+        return race;
     }
 
     /**

@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListen
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
-import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
@@ -69,7 +69,7 @@ public abstract class State extends StateAbstract
     /** Map transition reference. */
     protected final MapTileTransition mapTransition;
     /** Resources reference. */
-    protected final Resources resources;
+    protected final Player resources;
 
     /** Identifiable reference. */
     protected final Identifiable identifiable;
@@ -155,7 +155,7 @@ public abstract class State extends StateAbstract
         public void notifyStartExtraction(String type, Tiled resourceLocation)
         {
             extractResource.set(type);
-            if (Resources.TYPE_WOOD.equals(type))
+            if (Player.TYPE_WOOD.equals(type))
             {
                 pathfindable.pointTo(resourceLocation);
             }
@@ -167,7 +167,7 @@ public abstract class State extends StateAbstract
             pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
             carryResource.set(type);
 
-            if (Resources.TYPE_WOOD.equals(type))
+            if (Player.TYPE_WOOD.equals(type))
             {
                 final Tile tile = mapPath.getTile(extractor.getResourceLocation());
                 final Tile cut = map.createTile(tile.getSheet(), Constant.TILE_NUM_TREE_CUT, tile.getX(), tile.getY());
@@ -192,11 +192,11 @@ public abstract class State extends StateAbstract
         public void notifyStartDropOff(String type, int totalQuantity)
         {
             model.setVisible(false);
-            if (Resources.TYPE_WOOD.equals(type))
+            if (Player.TYPE_WOOD.equals(type))
             {
                 resources.increaseWood(totalQuantity);
             }
-            else if (Resources.TYPE_GOLD.equals(type))
+            else if (Player.TYPE_GOLD.equals(type))
             {
                 resources.increaseGold(totalQuantity);
             }
@@ -230,7 +230,7 @@ public abstract class State extends StateAbstract
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
         mapTransition = map.getFeature(MapTileTransition.class);
-        resources = services.get(Resources.class);
+        resources = services.get(Player.class);
 
         identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);

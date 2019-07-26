@@ -17,7 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Resources;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
@@ -36,10 +36,10 @@ public final class StateIdle extends State
     {
         super(model, animation);
 
-        addTransition(StateExtractWood.class, () -> Resources.isWood(extractResource));
-        addTransition(StateExtractGold.class, () -> Resources.isGold(extractResource));
-        addTransition(StateCarryWood.class, () -> Resources.isWood(carryResource));
-        addTransition(StateCarryGold.class, () -> Resources.isGold(carryResource));
+        addTransition(StateExtractWood.class, () -> Player.isWood(extractResource));
+        addTransition(StateExtractGold.class, () -> Player.isGold(extractResource));
+        addTransition(StateCarryWood.class, () -> Player.isWood(carryResource));
+        addTransition(StateCarryGold.class, () -> Player.isGold(carryResource));
         addTransition(StateWalk.class, moveStarted::get);
         addTransition(StateAttack.class, attackStarted::get);
         addTransition(StateDie.class, () -> stats.getLife() == 0);
