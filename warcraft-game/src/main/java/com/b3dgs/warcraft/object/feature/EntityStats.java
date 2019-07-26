@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
@@ -58,6 +59,7 @@ public class EntityStats extends FeatureModel implements Routine
     private final Bar barHealth = new Bar(27, 3);
     private final String name;
     private final Race race;
+    private final boolean mover;
     private final Image icon;
 
     private final Text text;
@@ -85,6 +87,7 @@ public class EntityStats extends FeatureModel implements Routine
         {
             race = Race.NEUTRAL;
         }
+        mover = setup.hasNode(PathfindableConfig.NODE_PATHFINDABLE);
 
         final StatsConfig config = StatsConfig.imports(setup);
         health = new Alterable(config.getHealth());
@@ -143,6 +146,16 @@ public class EntityStats extends FeatureModel implements Routine
     public Race getRace()
     {
         return race;
+    }
+
+    /**
+     * Check if is mover.
+     * 
+     * @return <code>true</code> if mover, <code>false</code> else.
+     */
+    public boolean isMover()
+    {
+        return mover;
     }
 
     /**

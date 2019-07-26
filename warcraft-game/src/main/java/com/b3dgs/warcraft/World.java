@@ -18,6 +18,7 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Align;
@@ -106,12 +107,14 @@ public class World extends WorldGame
         selector.setClickSelection(1);
 
         final AtomicReference<Race> race = new AtomicReference<>();
+        final AtomicBoolean moving = new AtomicBoolean();
         selector.addListener(new SelectionListener()
         {
             @Override
             public void notifySelectionStarted()
             {
                 race.set(null);
+                moving.set(false);
             }
 
             @Override
@@ -122,12 +125,31 @@ public class World extends WorldGame
         });
         selector.setAccept((selected, selectable) ->
         {
-            final Race current = selectable.getFeature(EntityStats.class).getRace();
-            if (race.compareAndSet(null, current) || current.equals(race.get()))
+            final EntityStats stats = selectable.getFeature(EntityStats.class);
+            final Race current = stats.getRace();
+            final boolean mover = stats.isMover();
+
+            if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current) || !moving.get())
             {
-                return true;
+                for (final Selectable old : selected)
+                {
+                    old.onSelection(false);
+                }
+                selected.clear();
+                if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current))
+                {
+                    race.set(current);
+                }
             }
-            return false;
+            if (mover)
+            {
+                moving.set(true);
+            }
+            if (moving.get() && !mover)
+            {
+                return false;
+            }
+            return race.compareAndSet(null, current) || current.equals(race.get()) && !Race.NEUTRAL.equals(current);
         });
 
         hud.addListener(() ->
