@@ -83,7 +83,28 @@ public enum Sfx
     /** Orc what 4. */
     ORC_WHAT4(Race.ORC),
     /** Orc die. */
-    ORC_DEAD(Race.ORC);
+    ORC_DEAD(Race.ORC),
+
+    /** Human ready. */
+    HUMAN_READY(Race.HUMAN),
+    /** Human work done. */
+    HUMAN_WORKDONE(Race.HUMAN),
+    /** Human yes sir 1. */
+    HUMAN_YESSIR1(Race.HUMAN),
+    /** Human yes sir 2. */
+    HUMAN_YESSIR2(Race.HUMAN),
+    /** Human yes sir 3. */
+    HUMAN_YESSIR3(Race.HUMAN),
+    /** Human what 1. */
+    HUMAN_WHAT1(Race.HUMAN),
+    /** Human what 2. */
+    HUMAN_WHAT2(Race.HUMAN),
+    /** Human what 3. */
+    HUMAN_WHAT3(Race.HUMAN),
+    /** Human what 4. */
+    HUMAN_WHAT4(Race.HUMAN),
+    /** Human die. */
+    HUMAN_DEAD(Race.HUMAN);
 
     /**
      * Cache sfx.

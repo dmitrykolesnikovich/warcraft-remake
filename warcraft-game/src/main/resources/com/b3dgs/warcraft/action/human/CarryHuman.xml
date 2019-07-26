@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.human.CarryHuman</lionengine:class>
-	<icon>CarryHuman.png</icon>
-	<name>Carry</name>
-	<description>Carry resources</description>
-	<race>human</race>
-</lionengine:skill>

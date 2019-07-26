@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.ActionModel</lionengine:class>
+    <lionengine:surface image="building_standard.png"/>
+    <lionengine:action name="Building" description="Standard building" x="4" y="164" width="27" height="19"/>
+</lionengine:featurable>

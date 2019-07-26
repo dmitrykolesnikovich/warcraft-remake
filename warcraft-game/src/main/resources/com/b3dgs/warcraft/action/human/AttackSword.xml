@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.human.AttackSword</lionengine:class>
-	<icon>AttackSword.png</icon>
-	<name>Attack</name>
-	<description>Attack the target</description>
-	<race>human</race>
-</lionengine:skill>
