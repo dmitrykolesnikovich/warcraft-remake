@@ -120,7 +120,14 @@ public class World extends WorldGame
             @Override
             public void notifySelected(List<Selectable> selection)
             {
-                // Nothing to do
+                for (final Selectable current : selection)
+                {
+                    if (!player.getRace().equals(current.getFeature(EntityStats.class).getRace()))
+                    {
+                        hud.clearMenus();
+                        break;
+                    }
+                }
             }
         });
         selector.setAccept((selected, selectable) ->
@@ -145,7 +152,7 @@ public class World extends WorldGame
             {
                 moving.set(true);
             }
-            if (moving.get() && !mover)
+            if (moving.get() && !mover || !player.getRace().equals(current) && race.get() != null)
             {
                 return false;
             }

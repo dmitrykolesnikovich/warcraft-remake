@@ -44,10 +44,12 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     private final Handler handler;
     private final MapTile map;
     private final MapTilePath mapPath;
+    private final Player player;
 
     @FeatureGet private Extractor extractor;
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private EntitySfx sfx;
+    @FeatureGet private EntityStats stats;
 
     /**
      * Create action.
@@ -63,35 +65,44 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
         handler = services.get(Handler.class);
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
+        player = services.get(Player.class);
+    }
+
+    private void extractGoldmine(int tx, int ty)
+    {
+        for (final Integer id : mapPath.getObjectsId(tx, ty))
+        {
+            final Featurable featurable = handler.get(id);
+            if (featurable.hasFeature(Extractable.class))
+            {
+                final Extractable extractable = featurable.getFeature(Extractable.class);
+                extractor.setResource(extractable);
+                pathfindable.setDestination(extractable);
+                extractor.startExtraction();
+            }
+        }
     }
 
     @Override
     public void execute()
     {
-        final int tx = map.getInTileX(cursor);
-        final int ty = map.getInTileY(cursor);
-        pathfindable.setDestination(tx, ty);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            final int tx = map.getInTileX(cursor);
+            final int ty = map.getInTileY(cursor);
+            pathfindable.setDestination(tx, ty);
 
-        final Tile tree = map.getTile(tx, ty);
-        if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
-        {
-            extractor.setResource(Player.TYPE_WOOD, tree);
-            extractor.startExtraction();
-        }
-        else
-        {
-            for (final Integer id : mapPath.getObjectsId(tx, ty))
+            final Tile tree = map.getTile(tx, ty);
+            if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
             {
-                final Featurable featurable = handler.get(id);
-                if (featurable.hasFeature(Extractable.class))
-                {
-                    final Extractable extractable = featurable.getFeature(Extractable.class);
-                    extractor.setResource(extractable);
-                    pathfindable.setDestination(extractable);
-                    extractor.startExtraction();
-                }
+                extractor.setResource(Player.TYPE_WOOD, tree);
+                extractor.startExtraction();
             }
+            else
+            {
+                extractGoldmine(tx, ty);
+            }
+            sfx.onOrdered();
         }
-        sfx.onOrdered();
     }
 }

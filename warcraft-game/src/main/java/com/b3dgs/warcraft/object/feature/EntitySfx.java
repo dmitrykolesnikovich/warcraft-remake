@@ -21,10 +21,12 @@ import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.constant.Constant;
 
@@ -75,6 +77,10 @@ public class EntitySfx extends FeatureModel
     private final List<Sfx> attacked;
     private final List<Sfx> dead;
 
+    private final Player player;
+
+    @FeatureGet private EntityStats stats;
+
     /**
      * Create producing.
      * 
@@ -92,6 +98,8 @@ public class EntitySfx extends FeatureModel
         ordered = load(setup, ATT_ORDERED);
         attacked = load(setup, ATT_ATTACKED);
         dead = load(setup, ATT_DEAD);
+
+        player = services.get(Player.class);
     }
 
     /**
@@ -99,7 +107,10 @@ public class EntitySfx extends FeatureModel
      */
     public void onStarted()
     {
-        Sfx.playRandom(started);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            Sfx.playRandom(started);
+        }
     }
 
     /**
@@ -107,7 +118,10 @@ public class EntitySfx extends FeatureModel
      */
     public void onProduced()
     {
-        Sfx.playRandom(produced);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            Sfx.playRandom(produced);
+        }
     }
 
     /**
@@ -115,7 +129,10 @@ public class EntitySfx extends FeatureModel
      */
     public void onSelected()
     {
-        Sfx.playRandom(selected);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            Sfx.playRandom(selected);
+        }
     }
 
     /**
@@ -123,7 +140,10 @@ public class EntitySfx extends FeatureModel
      */
     public void onOrdered()
     {
-        Sfx.playRandom(ordered);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            Sfx.playRandom(ordered);
+        }
     }
 
     /**
@@ -139,6 +159,9 @@ public class EntitySfx extends FeatureModel
      */
     public void onDead()
     {
-        Sfx.playRandom(dead);
+        if (player.getRace().equals(stats.getRace()))
+        {
+            Sfx.playRandom(dead);
+        }
     }
 }

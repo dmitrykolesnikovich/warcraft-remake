@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.Player;
 
 /**
  * Right click move implementation.
@@ -31,9 +32,11 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 public class RightClickMove extends FeatureModel implements RightClickHandler
 {
     private final Cursor cursor;
+    private final Player player;
 
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private EntitySfx sfx;
+    @FeatureGet private EntityStats stats;
 
     /**
      * Create action.
@@ -46,12 +49,16 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
         super();
 
         cursor = services.get(Cursor.class);
+        player = services.get(Player.class);
     }
 
     @Override
     public void execute()
     {
-        pathfindable.setDestination(cursor);
-        sfx.onOrdered();
+        if (player.getRace().equals(stats.getRace()))
+        {
+            pathfindable.setDestination(cursor);
+            sfx.onOrdered();
+        }
     }
 }
