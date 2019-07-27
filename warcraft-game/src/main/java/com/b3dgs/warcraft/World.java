@@ -185,8 +185,9 @@ public class World extends WorldGame
 
         camera.setLimits(map);
 
-        cursor.addImage(0, Medias.create("cursor.png"));
-        cursor.addImage(1, Medias.create("cursor_order.png"));
+        cursor.addImage(Constant.CURSOR_ID, Medias.create("cursor.png"));
+        cursor.addImage(Constant.CURSOR_ID_ORDER, Medias.create("cursor_order.png"));
+        cursor.addImage(Constant.CURSOR_ID_OVER, Medias.create("cursor_over.png"));
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(pointer);
@@ -194,8 +195,8 @@ public class World extends WorldGame
 
         spawn(Race.NEUTRAL, "goldmine", 27, 12);
 
-        createBase(Race.ORC, 33, 10);
         createBase(Race.HUMAN, 48, 55);
+        createBase(Race.ORC, 33, 10);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
@@ -213,11 +214,14 @@ public class World extends WorldGame
         spawn(race, Unit.WORKER.get(), tx, ty - 2);
         spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
         spawn(race, Unit.BARRACKS.get(), tx + 6, ty - 2);
-        player.increaseFood();
-
         final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
-        camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
-                        townhall.getY() + (townhall.getHeight() - camera.getHeight()) / 2);
+
+        if (player.owns(race))
+        {
+            player.increaseFood();
+            camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
+                            townhall.getY() + (townhall.getHeight() - camera.getHeight()) / 2);
+        }
     }
 
     /**

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
@@ -39,6 +40,7 @@ public class WorldNavigator implements Updatable
     private final Camera camera;
     private final Cursor cursor;
     private final MapTile map;
+    private final MapTilePath mapPath;
     private final Selector selector;
     private final InputDevicePointer pointer;
     private final InputDeviceDirectional directional;
@@ -55,6 +57,7 @@ public class WorldNavigator implements Updatable
         camera = services.get(Camera.class);
         cursor = services.get(Cursor.class);
         map = services.get(MapTile.class);
+        mapPath = map.getFeature(MapTilePath.class);
         selector = services.get(Selector.class);
         pointer = services.get(InputDevicePointer.class);
         directional = services.get(InputDeviceDirectional.class);
@@ -160,10 +163,32 @@ public class WorldNavigator implements Updatable
     {
         updateNavigationDirectional(extrp);
         updateNavigationMinimap(extrp);
+        updateCursorOver();
 
         if (!updateNavigationPointer(extrp) && isCursorOverMap() && cursor.hasClickedOnce(3))
         {
             checkRightClick();
+        }
+    }
+
+    /**
+     * Update cursor if over entity.
+     */
+    private void updateCursorOver()
+    {
+        if (cursor.getSurfaceId().intValue() != Constant.CURSOR_ID_ORDER)
+        {
+            if (cursor.getClick() == 0
+                && !mapPath.getObjectsId(map.getInTileX(cursor), map.getInTileY(cursor)).isEmpty())
+            {
+                cursor.setRenderingOffset(-5, -5);
+                cursor.setSurfaceId(Constant.CURSOR_ID_OVER);
+            }
+            else
+            {
+                cursor.setRenderingOffset(0, 0);
+                cursor.setSurfaceId(Constant.CURSOR_ID);
+            }
         }
     }
 

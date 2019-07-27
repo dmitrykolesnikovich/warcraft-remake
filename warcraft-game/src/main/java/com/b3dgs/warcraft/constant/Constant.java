@@ -88,6 +88,13 @@ public final class Constant
     /** Color health alert. */
     public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(200, 0, 0);
 
+    /** Cursor id. */
+    public static final int CURSOR_ID = 0;
+    /** Cursor id order. */
+    public static final int CURSOR_ID_ORDER = 1;
+    /** Cursor id over. */
+    public static final int CURSOR_ID_OVER = 2;
+
     /**
      * Private constructor.
      */
