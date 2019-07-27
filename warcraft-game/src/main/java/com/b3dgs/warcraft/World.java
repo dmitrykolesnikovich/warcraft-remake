@@ -69,11 +69,11 @@ public class World extends WorldGame
     private static final int RESOURCES_Y = 2;
 
     private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
+    private final Player player = services.add(new Player(Race.ORC));
     private final WorldMap worldMap = new WorldMap(services);
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
-    private final Player player = services.add(new Player(Race.ORC));
     private final Hud hud;
     private final Selector selector;
     private final WorldNavigator navigator;
@@ -103,7 +103,7 @@ public class World extends WorldGame
         selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
-        selector.setSelectionColor(ColorRgba.GREEN);
+        selector.setSelectionColor(Constant.COLOR_SELECTION);
         selector.setClickSelection(1);
 
         final AtomicReference<Race> race = new AtomicReference<>();
@@ -122,7 +122,7 @@ public class World extends WorldGame
             {
                 for (final Selectable current : selection)
                 {
-                    if (!player.getRace().equals(current.getFeature(EntityStats.class).getRace()))
+                    if (!player.owns(current.getFeature(EntityStats.class).getRace()))
                     {
                         hud.clearMenus();
                         break;
@@ -152,7 +152,7 @@ public class World extends WorldGame
             {
                 moving.set(true);
             }
-            if (moving.get() && !mover || !player.getRace().equals(current) && race.get() != null)
+            if (moving.get() && !mover || !player.owns(current) && race.get() != null)
             {
                 return false;
             }

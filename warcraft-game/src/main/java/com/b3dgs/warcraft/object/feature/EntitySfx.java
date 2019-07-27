@@ -107,7 +107,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onStarted()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             Sfx.playRandom(started);
         }
@@ -118,7 +118,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onProduced()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             Sfx.playRandom(produced);
         }
@@ -129,7 +129,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onSelected()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             Sfx.playRandom(selected);
         }
@@ -140,7 +140,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onOrdered()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             Sfx.playRandom(ordered);
         }
@@ -151,7 +151,10 @@ public class EntitySfx extends FeatureModel
      */
     public void onAttacked()
     {
-        Sfx.playRandom(attacked);
+        if (player.owns(stats.getRace()))
+        {
+            Sfx.playRandom(attacked);
+        }
     }
 
     /**
@@ -159,7 +162,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onDead()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             Sfx.playRandom(dead);
         }

@@ -23,10 +23,11 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Handle world minimap data.
@@ -36,6 +37,7 @@ public class WorldMinimap implements Resource, Renderable
     private final Camera camera;
     private final MapTile map;
     private final Handler handler;
+    private final Player player;
     private final Minimap minimap;
 
     /**
@@ -50,6 +52,7 @@ public class WorldMinimap implements Resource, Renderable
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
         handler = services.get(Handler.class);
+        player = services.get(Player.class);
 
         minimap = new Minimap(map);
     }
@@ -61,17 +64,17 @@ public class WorldMinimap implements Resource, Renderable
      */
     private void drawFov(Graphic g)
     {
-        g.setColor(ColorRgba.GREEN);
-        camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
-
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
+            g.setColor(player.getColor(entity.getFeature(EntityStats.class).getRace()));
             g.drawRect(Constant.MINIMAP_X + entity.getInTileX(),
                        Constant.MINIMAP_Y - entity.getInTileY() - entity.getInTileHeight() + map.getInTileHeight(),
                        entity.getInTileWidth(),
                        entity.getInTileHeight(),
                        true);
         }
+        g.setColor(Constant.COLOR_VIEW);
+        camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
     }
 
     @Override

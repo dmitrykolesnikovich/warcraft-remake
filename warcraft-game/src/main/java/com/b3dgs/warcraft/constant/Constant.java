@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
  * Game constants.
@@ -69,6 +70,23 @@ public final class Constant
     public static final int VOLUME_DEFAULT = 50;
     /** Sound bank id. */
     public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
+
+    /** Color camera view. */
+    public static final ColorRgba COLOR_VIEW = new ColorRgba(200, 200, 200);
+    /** Color current selection. */
+    public static final ColorRgba COLOR_SELECTION = new ColorRgba(0, 200, 0);
+    /** Color allies. */
+    public static final ColorRgba COLOR_ALLIES = new ColorRgba(0, 200, 0);
+    /** Color neutral. */
+    public static final ColorRgba COLOR_NEUTRAL = new ColorRgba(200, 200, 200);
+    /** Color enemies. */
+    public static final ColorRgba COLOR_ENEMIES = new ColorRgba(200, 0, 0);
+    /** Color health good. */
+    public static final ColorRgba COLOR_HEALTH_GOOD = new ColorRgba(0, 200, 0);
+    /** Color health warning. */
+    public static final ColorRgba COLOR_HEALTH_WARN = new ColorRgba(200, 200, 0);
+    /** Color health alert. */
+    public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(200, 0, 0);
 
     /**
      * Private constructor.

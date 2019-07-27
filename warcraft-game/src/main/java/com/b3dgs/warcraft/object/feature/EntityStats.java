@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
@@ -45,7 +44,6 @@ public class EntityStats extends FeatureModel implements Routine
 {
     private static final String ATT_NAME = "name";
 
-    private static final ColorRgba COLOR_LIFE = new ColorRgba(0, 200, 0);
     private static final int ENTITY_INFO_MARGIN = 4;
     private static final int TEXT_X = 5;
     private static final int TEXT_Y = 98;
@@ -111,7 +109,7 @@ public class EntityStats extends FeatureModel implements Routine
             icon = null;
         }
         health.fill();
-        barHealth.setColorForeground(COLOR_LIFE);
+        barHealth.setColorForeground(Constant.COLOR_HEALTH_GOOD);
         barHealth.setLocation((int) (icon.getX() + BAR_LIFE_X), (int) (icon.getY() + BAR_LIFE_Y));
     }
 
@@ -167,11 +165,11 @@ public class EntityStats extends FeatureModel implements Routine
         barHealth.setWidthPercent(percent);
         if (percent < BAR_RED_PERCENT)
         {
-            barHealth.setColorForeground(ColorRgba.RED);
+            barHealth.setColorForeground(Constant.COLOR_HEALTH_ALERT);
         }
         else if (percent < BAR_YELLOW_PERCENT)
         {
-            barHealth.setColorForeground(ColorRgba.YELLOW);
+            barHealth.setColorForeground(Constant.COLOR_HEALTH_WARN);
         }
     }
 

@@ -77,7 +77,7 @@ public class FoodProduction extends FeatureModel implements Routine
     @Override
     public void render(Graphic g)
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             text.draw(g, TEXT_X, TEXT_Y, player.getConsumedFood() + " of " + player.getAvailableFood());
         }

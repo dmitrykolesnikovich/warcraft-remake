@@ -35,11 +35,9 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.Player;
-import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
@@ -86,14 +84,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
      */
     private void drawSelection(Graphic g)
     {
-        if (stats.getRace().equals(player.getRace()) || Race.NEUTRAL.equals(stats.getRace()))
-        {
-            g.setColor(ColorRgba.GREEN);
-        }
-        else
-        {
-            g.setColor(ColorRgba.RED);
-        }
+        g.setColor(player.getColor(stats.getRace()));
         g.drawRect(viewer, Origin.BOTTOM_LEFT, transformable, false);
     }
 

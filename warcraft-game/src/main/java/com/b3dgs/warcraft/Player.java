@@ -18,11 +18,12 @@ package com.b3dgs.warcraft;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Describes the player stats.
@@ -112,8 +113,8 @@ public final class Player implements Updatable
             }
         };
 
-        wood.set(Constant.THOUSAND * 2);
-        gold.set(Constant.THOUSAND * 2);
+        wood.set(com.b3dgs.lionengine.Constant.THOUSAND * 2);
+        gold.set(com.b3dgs.lionengine.Constant.THOUSAND * 2);
 
         currentWood = wood.getCurrent();
         currentGold = gold.getCurrent();
@@ -227,6 +228,41 @@ public final class Player implements Updatable
     public Race getRace()
     {
         return race;
+    }
+
+    /**
+     * Get the race color.
+     * 
+     * @param other The other race to compare.
+     * @return The race color.
+     */
+    public ColorRgba getColor(Race other)
+    {
+        final ColorRgba color;
+        if (owns(other))
+        {
+            color = Constant.COLOR_ALLIES;
+        }
+        else if (Race.NEUTRAL.equals(other))
+        {
+            color = Constant.COLOR_NEUTRAL;
+        }
+        else
+        {
+            color = Constant.COLOR_ENEMIES;
+        }
+        return color;
+    }
+
+    /**
+     * Check if player owns.
+     * 
+     * @param other The other reference.
+     * @return <code>true</code> if owns, <code>false</code> else.
+     */
+    public boolean owns(Race other)
+    {
+        return race.equals(other);
     }
 
     /**

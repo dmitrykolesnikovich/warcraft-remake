@@ -55,7 +55,7 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     @Override
     public void execute()
     {
-        if (player.getRace().equals(stats.getRace()))
+        if (player.owns(stats.getRace()))
         {
             pathfindable.setDestination(cursor);
             sfx.onOrdered();
