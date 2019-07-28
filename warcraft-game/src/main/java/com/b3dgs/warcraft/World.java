@@ -17,9 +17,6 @@
 package com.b3dgs.warcraft;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
@@ -34,8 +31,6 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -49,10 +44,10 @@ import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
-import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
 import com.b3dgs.warcraft.world.WorldNavigator;
+import com.b3dgs.warcraft.world.WorldSelection;
 
 /**
  * World game representation.
@@ -74,10 +69,10 @@ public class World extends WorldGame
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
-    private final Hud hud;
-    private final Selector selector;
     private final WorldNavigator navigator;
+    private final WorldSelection selection;
     private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
+
     private Audio music;
 
     /**
@@ -95,69 +90,17 @@ public class World extends WorldGame
 
         handler.addComponent(services.add(new ComponentCollision()));
 
-        hud = services.add(factory.create(Medias.create("hud.xml")));
+        final Hud hud = services.add(factory.create(Medias.create("hud.xml")));
         handler.add(hud);
 
-        navigator = new WorldNavigator(services);
-
-        selector = services.get(Selector.class);
+        final Selector selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(camera);
         selector.setSelectionColor(Constant.COLOR_SELECTION);
         selector.setClickSelection(1);
 
-        final AtomicReference<Race> race = new AtomicReference<>();
-        final AtomicBoolean moving = new AtomicBoolean();
-        selector.addListener(new SelectionListener()
-        {
-            @Override
-            public void notifySelectionStarted()
-            {
-                race.set(null);
-                moving.set(false);
-            }
-
-            @Override
-            public void notifySelected(List<Selectable> selection)
-            {
-                for (final Selectable current : selection)
-                {
-                    if (!player.owns(current.getFeature(EntityStats.class).getRace()))
-                    {
-                        hud.clearMenus();
-                        break;
-                    }
-                }
-            }
-        });
-        selector.setAccept((selected, selectable) ->
-        {
-            final EntityStats stats = selectable.getFeature(EntityStats.class);
-            final Race current = stats.getRace();
-            final boolean mover = stats.isMover();
-
-            if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current) || !moving.get())
-            {
-                for (final Selectable old : selected)
-                {
-                    old.onSelection(false);
-                }
-                selected.clear();
-                if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current))
-                {
-                    race.set(current);
-                }
-            }
-            if (mover)
-            {
-                moving.set(true);
-            }
-            if (moving.get() && !mover || !player.owns(current) && race.get() != null)
-            {
-                return false;
-            }
-            return race.compareAndSet(null, current) || current.equals(race.get()) && !Race.NEUTRAL.equals(current);
-        });
+        navigator = new WorldNavigator(services);
+        selection = new WorldSelection(services);
 
         hud.addListener(() ->
         {
@@ -182,6 +125,7 @@ public class World extends WorldGame
     {
         worldMap.load(file);
         minimap.load();
+        selection.reset();
 
         camera.setLimits(map);
 
@@ -193,10 +137,13 @@ public class World extends WorldGame
         cursor.setInputDevice(pointer);
         cursor.setViewer(camera);
 
-        spawn(Race.NEUTRAL, "goldmine", 27, 12);
+        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 42, 58);
+        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 27, 12);
 
         createBase(Race.HUMAN, 48, 55);
         createBase(Race.ORC, 33, 10);
+
+        spawn(Race.HUMAN, "archer", 42, 55);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();

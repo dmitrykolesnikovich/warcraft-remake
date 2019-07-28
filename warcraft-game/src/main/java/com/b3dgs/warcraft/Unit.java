@@ -23,6 +23,8 @@ import java.util.Locale;
  */
 public enum Unit
 {
+    /** Goldmine. */
+    GOLDMINE,
     /** Townhall. */
     TOWNHALL,
     /** Farm. */
