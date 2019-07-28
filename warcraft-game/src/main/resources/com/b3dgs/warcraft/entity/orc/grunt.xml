@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity name="Grunt" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable name="Grunt" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.CloseCombat</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickMove</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
@@ -38,4 +39,4 @@
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="ORC_DEAD"/>
 	<stats health="100" fov="4"/>
 	<cost wood="0" gold="500"/>
-</lionengine:entity>
+</lionengine:featurable>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodProduction</lionengine:feature>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
@@ -14,4 +14,4 @@
     <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
 	<stats health="100" fov="3"/>
     <cost gold="250" wood="200"/>
-</lionengine:entity>
+</lionengine:featurable>

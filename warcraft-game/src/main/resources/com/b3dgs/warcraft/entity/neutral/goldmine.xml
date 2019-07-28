@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity name="Gold Mine" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable name="Gold Mine" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractableModel</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.GoldQuantityRenderer</lionengine:feature>
@@ -10,4 +10,4 @@
     <lionengine:animation name="idle" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:extractable type="gold" quantity="25000"/>
 	<stats health="1000" fov="3"/>
-</lionengine:entity>
+</lionengine:featurable>

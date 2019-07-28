@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity name="Peon" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable name="Peon" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickExtract</lionengine:feature>
@@ -47,4 +47,4 @@
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="ORC_DEAD"/>
 	<stats health="100" fov="3"/>
 	<cost wood="100" gold="500"/>
-</lionengine:entity>
+</lionengine:featurable>
