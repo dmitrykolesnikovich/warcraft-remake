@@ -14,52 +14,51 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.b3dgs.warcraft.action;
+package com.b3dgs.warcraft.object.feature;
 
-import java.util.List;
-
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
+import com.b3dgs.lionengine.game.feature.FeatureInterface;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.warcraft.object.feature.EntitySfx;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 
 /**
- * Attack action.
+ * Represents ability fight with close combat.
  */
-public class Attack extends ActionModel
+@FeatureInterface
+public class CloseCombat extends FeatureModel
 {
+    @FeatureGet private Attacker attacker;
+    @FeatureGet private EntitySfx sfx;
+
     /**
-     * Create attack action.
+     * Create thrower.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Attack(Services services, Setup setup)
+    public CloseCombat(Services services, Setup setup)
     {
-        super(services, setup);
+        super();
     }
 
     @Override
-    protected void assign()
+    public void prepare(FeatureProvider provider)
     {
-        final List<Selectable> selection = selector.getSelection();
-        final int n = selection.size();
-        for (int i = 0; i < n; i++)
-        {
-            final int tx = map.getInTileX(cursor);
-            final int ty = map.getInTileY(cursor);
+        super.prepare(provider);
 
-            for (final Integer id : mapPath.getObjectsId(tx, ty))
-            {
-                final Transformable transformable = handler.get(id).getFeature(Transformable.class);
-                selection.get(i).getFeature(Attacker.class).attack(transformable);
-            }
-        }
-        if (n == 1)
+        attacker.addListener(new AttackerListenerVoid()
         {
-            selection.get(0).getFeature(EntitySfx.class).onOrdered();
-        }
+            @Override
+            public void notifyAttackEnded(int damages, Transformable target)
+            {
+                sfx.onAttacked();
+                target.getFeature(EntityStats.class).applyDamages(damages);
+            }
+        });
     }
 }

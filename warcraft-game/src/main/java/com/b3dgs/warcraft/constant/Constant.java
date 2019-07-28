@@ -37,8 +37,10 @@ public final class Constant
     public static final int LAYER_BUILDING = 1;
     /** Entity layer. */
     public static final int LAYER_ENTITY = LAYER_BUILDING + 1;
+    /** Projectile layer. */
+    public static final int LAYER_PROJECTILE = LAYER_ENTITY + 1;
     /** Hud layer. */
-    public static final int LAYER_HUD = LAYER_ENTITY + 1;
+    public static final int LAYER_HUD = LAYER_PROJECTILE + 1;
     /** Selection layer. */
     public static final int LAYER_SELECTION = LAYER_HUD + 1;
 

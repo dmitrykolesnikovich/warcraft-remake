@@ -57,6 +57,8 @@ public enum Sfx
     NEUTRAL_SWORD3(Race.NEUTRAL),
     /** Bow fire. */
     NEUTRAL_BOWFIRE(Race.NEUTRAL),
+    /** Arrow hit. */
+    NEUTRAL_ARROWHIT(Race.NEUTRAL),
     /** Tree 1. */
     NEUTRAL_TREE1(Race.NEUTRAL),
     /** Tree 2. */

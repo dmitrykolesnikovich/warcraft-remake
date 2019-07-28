@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.TransformableModel;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerConfig;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerModel;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
@@ -46,6 +48,7 @@ import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.state.State;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -96,14 +99,31 @@ public class Entity extends FeaturableModel
         addFeature(new ActionerModel(setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
-        attacker.addListener(new AttackerListenerVoid()
+
+        final MapTile map = services.get(MapTile.class);
+        if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
-            @Override
-            public void notifyAttackEnded(int damages, Transformable target)
+            final Range range = AttackerConfig.imports(setup).getDistance();
+            attacker.setAttackDistance(new Range(range.getMin() * map.getTileWidth(),
+                                                 range.getMax() * map.getTileHeight()));
+            attacker.addListener(new AttackerListenerVoid()
             {
-                target.getFeature(EntityStats.class).applyDamages(damages);
-            }
-        });
+                @Override
+                public void notifyReachingTarget(Transformable target)
+                {
+                    if (!pathfindable.isMoving())
+                    {
+                        pathfindable.setDestination(target);
+                    }
+                }
+
+                @Override
+                public void notifyAttackStarted(Transformable target)
+                {
+                    pathfindable.stopMoves();
+                }
+            });
+        }
 
         final Producer producer = addFeatureAndGet(new ProducerModel(services));
         producer.setStepsSpeed(1.0);
