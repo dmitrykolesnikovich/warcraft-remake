@@ -2,5 +2,5 @@
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.action.ActionModel</lionengine:class>
     <lionengine:surface image="cancel.png"/>
-    <lionengine:action name="Cancel" description="Back to menu" x="38" y="141" width="27" height="19"/>
+    <lionengine:action name="Cancel" description="Cancel" x="38" y="164" width="27" height="19"/>
 </lionengine:featurable>

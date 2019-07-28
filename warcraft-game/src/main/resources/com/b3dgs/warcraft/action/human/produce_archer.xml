@@ -2,6 +2,6 @@
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.action.ProduceButton</lionengine:class>
     <lionengine:surface image="produce_archer.png"/>
-    <lionengine:action name="Produce Archer" description="Produce an Archer" x="38" y="118" width="27" height="19"/>
+    <lionengine:action name="Produce Archer" description="Train Archer" x="38" y="118" width="27" height="19"/>
     <media>entity/human/archer.xml</media>
 </lionengine:featurable>

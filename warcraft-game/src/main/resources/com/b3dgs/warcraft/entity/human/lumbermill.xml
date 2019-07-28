@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:featurable name="Mill" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="lumbermill.png" icon="lumbermill_icon.png"/>
     <lionengine:frames horizontal="2" vertical="1"/>
-    <lionengine:size width="32" height="32"/>
+    <lionengine:size width="48" height="48"/>
     <lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
@@ -12,5 +12,5 @@
     <lionengine:producible steps="100"/>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
     <stats health="100" fov="3"/>
-    <cost gold="250" wood="200"/>
+    <cost gold="500" wood="200"/>
 </lionengine:featurable>

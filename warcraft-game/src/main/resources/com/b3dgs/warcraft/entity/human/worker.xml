@@ -37,10 +37,12 @@
     <lionengine:actions>
         <lionengine:action path="action/human/move.xml"/>
         <lionengine:action path="action/human/stop.xml"/>
+        <lionengine:action path="action/human/repair.xml"/>
         <lionengine:action path="action/human/extract.xml"/>
         <lionengine:action path="action/human/building_standard.xml">
             <lionengine:action path="action/human/build_farm.xml"/>
             <lionengine:action path="action/human/build_barracks.xml"/>
+            <lionengine:action path="action/human/build_lumbermill.xml"/>
             <lionengine:action path="action/human/cancel.xml" cancel="true"/>
         </lionengine:action>
     </lionengine:actions>
