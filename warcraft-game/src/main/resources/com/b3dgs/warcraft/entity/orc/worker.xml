@@ -41,6 +41,7 @@
         <lionengine:action path="action/orc/building_standard.xml">
             <lionengine:action path="action/orc/build_farm.xml"/>
             <lionengine:action path="action/orc/build_barracks.xml"/>
+            <lionengine:action path="action/orc/build_lumbermill.xml"/>
             <lionengine:action path="action/orc/cancel.xml" cancel="true"/>
         </lionengine:action>
     </lionengine:actions>
