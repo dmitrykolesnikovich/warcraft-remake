@@ -2,5 +2,5 @@
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.action.Attack</lionengine:class>
     <lionengine:surface image="attack_bow.png"/>
-    <lionengine:action name="Attack target" description="Attack a target" x="4" y="141" width="27" height="19"/>
+    <lionengine:action name="Attack target" description="Attack" x="4" y="141" width="27" height="19"/>
 </lionengine:featurable>
