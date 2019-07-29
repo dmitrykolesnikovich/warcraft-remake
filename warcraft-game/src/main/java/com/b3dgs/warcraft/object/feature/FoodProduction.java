@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.warcraft.Player;
 
 /**
@@ -38,8 +39,9 @@ public class FoodProduction extends FeatureModel implements Routine
 {
     private static final int TEXT_X = 5;
     private static final int TEXT_Y = 115;
+    private static final String OF = " OF ";
 
-    private final Text text;
+    private final SpriteFont text;
     private final Player player;
 
     @FeatureGet private Producible producible;
@@ -55,7 +57,7 @@ public class FoodProduction extends FeatureModel implements Routine
     {
         super();
 
-        text = services.get(Text.class);
+        text = services.get(SpriteFont.class);
         player = services.get(Player.class);
     }
 
@@ -79,7 +81,7 @@ public class FoodProduction extends FeatureModel implements Routine
     {
         if (player.owns(stats.getRace()))
         {
-            text.draw(g, TEXT_X, TEXT_Y, player.getConsumedFood() + " of " + player.getAvailableFood());
+            text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, player.getConsumedFood() + OF + player.getAvailableFood());
         }
     }
 }

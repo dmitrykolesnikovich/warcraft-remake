@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft.action;
 
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.b3dgs.lionengine.Medias;
@@ -37,9 +38,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
-import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.warcraft.constant.Constant;
 
@@ -70,7 +71,9 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     /** Handler reference. */
     protected final Handler handler;
     /** Text reference. */
-    protected final Text text;
+    protected final SpriteFont text;
+
+    private final String description;
 
     /**
      * Create move action.
@@ -88,7 +91,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         cursor = services.get(Cursor.class);
         selector = services.get(Selector.class);
         handler = services.get(Handler.class);
-        text = services.get(Text.class);
+        text = services.get(SpriteFont.class);
 
         final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
         background.load();
@@ -120,6 +123,8 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
                 ActionModel.this.render(g);
             }
         }));
+
+        description = actionable.getDescription().toUpperCase(Locale.ENGLISH);
     }
 
     /**
@@ -173,7 +178,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         {
             if (actionable.isOver())
             {
-                text.setText(actionable.getDescription());
+                text.setText(description);
             }
             state.get().update(extrp);
             ActionModel.this.update(extrp);

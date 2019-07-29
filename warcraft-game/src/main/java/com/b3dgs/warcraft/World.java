@@ -34,11 +34,9 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Graphics;
-import com.b3dgs.lionengine.graphic.Text;
-import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
@@ -56,19 +54,18 @@ public class World extends WorldGame
 {
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
-    private static final ColorRgba TEXT_COLOR = new ColorRgba(240, 255, 220);
     private static final int TEXT_X = 74;
     private static final int TEXT_Y = 192;
     private static final int RESOURCES_WOOD_X = 170;
     private static final int RESOURCES_GOLD_X = 270;
     private static final int RESOURCES_Y = 2;
 
-    private final Text text = services.add(Graphics.createText("Verdana", 9, TextStyle.NORMAL));
     private final Player player = services.add(new Player(Race.ORC));
     private final WorldMap worldMap = new WorldMap(services);
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
+    private final SpriteFont text;
     private final WorldNavigator navigator;
     private final WorldSelection selection;
     private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
@@ -90,6 +87,11 @@ public class World extends WorldGame
 
         handler.addComponent(services.add(new ComponentCollision()));
 
+        text = services.add(Drawable.loadSpriteFont(Medias.create("font.png"), Medias.create("font.xml"), 6, 6));
+        text.load();
+        text.prepare();
+        text.setLocation(TEXT_X, TEXT_Y);
+
         final Hud hud = services.add(factory.create(Medias.create("hud.xml")));
         handler.add(hud);
 
@@ -109,9 +111,6 @@ public class World extends WorldGame
             selector.setEnabled(true);
             hud.setCancelShortcut(() -> false);
         });
-
-        text.setLocation(TEXT_X, TEXT_Y);
-        text.setColor(TEXT_COLOR);
     }
 
     @Override

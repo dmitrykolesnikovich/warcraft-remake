@@ -16,6 +16,9 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import java.util.Locale;
+
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -24,7 +27,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractable;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 
 /**
  * Display current gold quantity.
@@ -32,13 +35,13 @@ import com.b3dgs.lionengine.graphic.Text;
 @FeatureInterface
 public class GoldQuantityRenderer extends FeatureModel implements Routine
 {
-    private static final String GOLD_LEFT = "Gold Left";
+    private static final String GOLD_LEFT = "GOLD LEFT";
     private static final int GOLD_LEFT_TEXT_X = 5;
     private static final int GOLD_LEFT_TEXT_Y = 118;
     private static final int AMOUNT_TEXT_X = 10;
     private static final int AMOUNT_TEXT_Y = 128;
 
-    private final Text text;
+    private final SpriteFont text;
 
     @FeatureGet private Extractable extractable;
 
@@ -52,13 +55,17 @@ public class GoldQuantityRenderer extends FeatureModel implements Routine
     {
         super();
 
-        text = services.get(Text.class);
+        text = services.get(SpriteFont.class);
     }
 
     @Override
     public void render(Graphic g)
     {
-        text.draw(g, GOLD_LEFT_TEXT_X, GOLD_LEFT_TEXT_Y, GOLD_LEFT);
-        text.draw(g, AMOUNT_TEXT_X, AMOUNT_TEXT_Y, String.valueOf(extractable.getResourceQuantity()));
+        text.draw(g, GOLD_LEFT_TEXT_X, GOLD_LEFT_TEXT_Y, Align.LEFT, GOLD_LEFT);
+        text.draw(g,
+                  AMOUNT_TEXT_X,
+                  AMOUNT_TEXT_Y,
+                  Align.LEFT,
+                  String.valueOf(extractable.getResourceQuantity()).toUpperCase(Locale.ENGLISH));
     }
 }
