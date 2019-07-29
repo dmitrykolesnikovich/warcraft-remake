@@ -37,9 +37,12 @@ import com.b3dgs.warcraft.Player;
 @FeatureInterface
 public class FoodProduction extends FeatureModel implements Routine
 {
-    private static final int TEXT_X = 5;
-    private static final int TEXT_Y = 115;
-    private static final String OF = " OF ";
+    private static final int TEXT_X = 3;
+    private static final int TEXT_Y = 124;
+    private static final int TEXT_OFFSET_X = 38;
+    private static final String FOOD_USAGE = "FOOD USAGE:";
+    private static final String FOOD_GROWN = "GROWN ";
+    private static final String FOOD_USED = "USED ";
 
     private final SpriteFont text;
     private final Player player;
@@ -81,7 +84,11 @@ public class FoodProduction extends FeatureModel implements Routine
     {
         if (player.owns(stats.getRace()))
         {
-            text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, player.getConsumedFood() + OF + player.getAvailableFood());
+            text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, FOOD_USAGE);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.RIGHT, FOOD_GROWN);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.RIGHT, FOOD_USED);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.LEFT, String.valueOf(player.getAvailableFood()));
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.LEFT, String.valueOf(player.getConsumedFood()));
         }
     }
 }
