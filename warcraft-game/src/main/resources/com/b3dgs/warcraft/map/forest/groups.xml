@@ -160,13 +160,13 @@
         <lionengine:tile number="138" sheet="0"/>
         <lionengine:tile number="139" sheet="0"/>
         <lionengine:tile number="140" sheet="0"/>
-    </lionengine:group>
-    <lionengine:group name="tree" type="PLAIN">
-        <lionengine:tile number="141" sheet="0"/>
-        <lionengine:tile number="142" sheet="0"/>
+		<lionengine:tile number="142" sheet="0"/>
         <lionengine:tile number="143" sheet="0"/>
         <lionengine:tile number="144" sheet="0"/>
         <lionengine:tile number="145" sheet="0"/>
+    </lionengine:group>
+    <lionengine:group name="tree" type="PLAIN">
+        <lionengine:tile number="141" sheet="0"/>
     </lionengine:group>
     <lionengine:group name="border" type="TRANSITION">
         <lionengine:tile number="146" sheet="0"/>
