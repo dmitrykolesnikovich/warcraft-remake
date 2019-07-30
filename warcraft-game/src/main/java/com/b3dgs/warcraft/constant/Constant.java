@@ -86,9 +86,9 @@ public final class Constant
     /** Color health good. */
     public static final ColorRgba COLOR_HEALTH_GOOD = new ColorRgba(0, 200, 0);
     /** Color health warning. */
-    public static final ColorRgba COLOR_HEALTH_WARN = new ColorRgba(200, 200, 0);
+    public static final ColorRgba COLOR_HEALTH_WARN = new ColorRgba(255, 255, 0);
     /** Color health alert. */
-    public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(200, 0, 0);
+    public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(255, 0, 0);
 
     /** Cursor id. */
     public static final int CURSOR_ID = 0;
