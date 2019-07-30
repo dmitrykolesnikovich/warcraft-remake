@@ -32,7 +32,7 @@
         <lionengine:path category="tree" block="true"/>
         <lionengine:path category="water" block="true"/>
     </lionengine:pathfindable>
-    <lionengine:producible steps="60"/>
+    <lionengine:producible steps="1250"/>
     <lionengine:extractor extract="1.0" dropoff="1.0" capacity="100"/>
     <lionengine:actions>
         <lionengine:action path="action/human/move.xml"/>
@@ -48,6 +48,6 @@
     </lionengine:actions>
     <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="HUMAN_DEAD"/>
     <offsetDeath x="8" y="8"/>
-    <stats health="100" fov="3"/>
+    <stats health="40" fov="4"/>
     <cost wood="0" gold="400"/>
 </lionengine:featurable>

@@ -29,14 +29,14 @@
         <lionengine:path category="tree" block="true"/>
         <lionengine:path category="water" block="true"/>
     </lionengine:pathfindable>
-    <lionengine:producible steps="80"/>
+    <lionengine:producible steps="1000"/>
     <lionengine:actions>
         <lionengine:action path="action/orc/move.xml"/>
         <lionengine:action path="action/orc/stop.xml"/>
         <lionengine:action path="action/orc/attack_axe.xml"/>
     </lionengine:actions>
-    <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="4" damages_max="6"/>
+    <lionengine:attacker delay="60" distance_min="0" distance_max="1" damages_min="1" damages_max="9"/>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="ORC_DEAD"/>
-	<stats health="100" fov="4"/>
+	<stats health="60" fov="4"/>
 	<cost wood="0" gold="400"/>
 </lionengine:featurable>

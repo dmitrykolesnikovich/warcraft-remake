@@ -30,19 +30,19 @@
         <lionengine:path category="tree" block="true"/>
         <lionengine:path category="water" block="true"/>
     </lionengine:pathfindable>
-    <lionengine:producible steps="80"/>
+    <lionengine:producible steps="1166"/>
     <lionengine:actions>
         <lionengine:action path="action/orc/move.xml"/>
         <lionengine:action path="action/orc/stop.xml"/>
         <lionengine:action path="action/orc/attack_spear.xml"/>
     </lionengine:actions>
-    <lionengine:attacker delay="60" distance_min="0" distance_max="6" damages_min="4" damages_max="6"/>
+    <lionengine:attacker delay="60" distance_min="0" distance_max="4" damages_min="5" damages_max="5"/>
     <lionengine:launcher>
         <lionengine:launchable media="projectile/arrow.xml" ox="16" oy="8">
             <lionengine:force velocity="10" sensibility="0" vx="5" vy="5"/>
         </lionengine:launchable>
     </lionengine:launcher>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_BOWFIRE" dead="ORC_DEAD"/>
-    <stats health="100" fov="4"/>
+    <stats health="60" fov="5"/>
     <cost wood="50" gold="450"/>
 </lionengine:featurable>
