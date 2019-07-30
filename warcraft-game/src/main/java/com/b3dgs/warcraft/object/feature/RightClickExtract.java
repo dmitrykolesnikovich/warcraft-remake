@@ -86,6 +86,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     @Override
     public void execute()
     {
+        extractor.stopExtraction();
         if (player.owns(stats.getRace()))
         {
             final int tx = map.getInTileX(cursor);

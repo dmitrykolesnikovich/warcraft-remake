@@ -58,6 +58,9 @@ final class StateExtractWood extends State
         };
 
         addTransition(StateCarryWood.class, () -> Player.isWood(carryResource));
+        addTransition(StateIdle.class, () -> !moveStarted.get() && !gotoResource.get());
+        addTransition(StateWalk.class,
+                      () -> moveStarted.get() && extractResource.get() == null && carryResource.get() == null);
     }
 
     @Override
@@ -65,6 +68,7 @@ final class StateExtractWood extends State
     {
         super.enter();
 
+        gotoResource.set(true);
         animator.addListener(listener);
     }
 

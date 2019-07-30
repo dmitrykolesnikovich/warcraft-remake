@@ -107,6 +107,8 @@ public abstract class State extends StateAbstract
     /** Producible ended flag. */
     protected final AtomicBoolean producibleEnded = new AtomicBoolean();
 
+    /** Goto resource flag. */
+    protected final AtomicBoolean gotoResource = new AtomicBoolean();
     /** Extract resource flag. */
     protected final AtomicReference<String> extractResource = new AtomicReference<>();
     /** Carry resource flag. */
@@ -148,6 +150,7 @@ public abstract class State extends StateAbstract
         public void notifyStartGoToRessources(String type, Tiled resourceLocation)
         {
             pathfindable.setDestination(resourceLocation);
+            gotoResource.set(true);
             carryResource.set(null);
         }
 
@@ -209,6 +212,14 @@ public abstract class State extends StateAbstract
             {
                 model.setVisible(true);
             }
+        }
+
+        @Override
+        public void notifyStopped()
+        {
+            gotoResource.set(false);
+            extractResource.set(null);
+            carryResource.set(null);
         }
     };
 
