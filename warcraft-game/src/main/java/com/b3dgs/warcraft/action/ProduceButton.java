@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -37,8 +36,6 @@ import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.geom.Area;
-import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
@@ -52,35 +49,40 @@ import com.b3dgs.warcraft.object.feature.FoodConsumer;
  */
 public class ProduceButton extends ActionModel
 {
+    private static final int PROGRESS_X = 2;
+    private static final int PROGRESS_Y = 107;
+    private static final int PROGRESS_WIDTH = 62;
+    private static final int PROGRESS_HEIGHT = 5;
+    private static final int PROGRESS_OFFSET = 2;
     private static final int TEXT_WOOD_X = 220;
     private static final int TEXT_GOLD_X = 265;
     private static final int TEXT_Y = 193;
     private static final int TEXT_OFFSET_X = 17;
     private static final String ATT_MEDIA = "media";
 
-    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
-    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
-
     /**
      * Create progress bar.
      * 
-     * @param actionable The actionable reference.
      * @return The created progress bar.
      */
-    private static Bar createBar(Actionable actionable)
+    private static Bar createBar()
     {
-        final Area area = actionable.getButton();
-        final Bar bar = new Bar(area.getWidth(), area.getHeight());
-        bar.setLocation((int) area.getX(), (int) area.getY());
+        final Bar bar = new Bar(PROGRESS_WIDTH, PROGRESS_HEIGHT);
+        bar.setLocation(PROGRESS_X + PROGRESS_OFFSET, PROGRESS_Y + PROGRESS_OFFSET);
         bar.setWidthPercent(0);
         bar.setHeightPercent(100);
-        bar.setColorForeground(ColorRgba.GREEN);
+        bar.setColorForeground(com.b3dgs.warcraft.constant.Constant.COLOR_HEALTH_GOOD);
         return bar;
     }
 
-    /** Production progress bar. */
-    private final Bar progress = createBar(actionable);
+    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
+    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
+    private final Bar progressBar = createBar();
+    private final Image progressBackground = Drawable.loadImage(Medias.create("progress.png"));
+    private final Image progressPercent = Drawable.loadImage(Medias.create("progress_percent.png"));
     private final CostConfig config;
+
+    private boolean producing;
 
     /**
      * Create build button action.
@@ -125,6 +127,14 @@ public class ProduceButton extends ActionModel
             }
         });
 
+        progressBackground.setLocation(PROGRESS_X, PROGRESS_Y);
+        progressBackground.load();
+        progressBackground.prepare();
+
+        progressPercent.setLocation(PROGRESS_X, PROGRESS_Y);
+        progressPercent.load();
+        progressPercent.prepare();
+
         wood.load();
         gold.load();
 
@@ -149,20 +159,22 @@ public class ProduceButton extends ActionModel
             public void notifyProductionStarted(Producer producer)
             {
                 producible.getFeature(EntitySfx.class).onStarted();
+                producing = true;
             }
 
             @Override
             public void notifyProductionProgress(Producer producer)
             {
-                progress.setWidthPercent(producer.getProgressPercent());
+                progressBar.setWidthPercent(producer.getProgressPercent());
             }
 
             @Override
             public void notifyProductionEnded(Producer producer)
             {
                 teleportOutside(producible, producer);
-                progress.setWidthPercent(0);
+                progressBar.setWidthPercent(0);
                 producible.getFeature(EntitySfx.class).onProduced();
+                producing = false;
             }
         };
     }
@@ -184,7 +196,13 @@ public class ProduceButton extends ActionModel
     @Override
     public void render(Graphic g)
     {
-        progress.render(g);
+        if (producing)
+        {
+            progressBackground.render(g);
+            progressBar.render(g);
+            progressPercent.render(g);
+        }
+
         if (actionable.isOver())
         {
             text.draw(g, TEXT_WOOD_X + TEXT_OFFSET_X, TEXT_Y, Align.LEFT, String.valueOf(config.getWood()));
