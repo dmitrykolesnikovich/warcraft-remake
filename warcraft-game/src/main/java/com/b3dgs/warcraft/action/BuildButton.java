@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
@@ -95,6 +96,16 @@ public class BuildButton extends ActionModel
 
         wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
         gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
+
+        hud.addListener(new HudListener()
+        {
+            @Override
+            public void notifyCanceled()
+            {
+                state.set(actionable);
+                area = null;
+            }
+        });
     }
 
     @Override
@@ -102,8 +113,8 @@ public class BuildButton extends ActionModel
     {
         final SizeConfig size = SizeConfig.imports(new Xml(target));
         area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
-        cursor.setVisible(false);
         hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
+        cursor.setSurfaceId(Constant.CURSOR_ID);
     }
 
     @Override
@@ -111,7 +122,6 @@ public class BuildButton extends ActionModel
     {
         for (final Selectable selectable : selector.getSelection())
         {
-            final CostConfig config = CostConfig.imports(new Configurer(target));
             if (player.isAvailableWood(config.getWood()) && player.isAvailableGold(config.getGold()))
             {
                 player.decreaseWood(config.getWood());
@@ -159,7 +169,6 @@ public class BuildButton extends ActionModel
             }
         }
         area = null;
-        cursor.setVisible(true);
         hud.clearMenus();
         hud.setCancelShortcut(() -> false);
         Sfx.NEUTRAL_BUILD.play();
@@ -182,7 +191,7 @@ public class BuildButton extends ActionModel
     {
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
-            g.setColor(Constant.COLOR_HEALTH_GOOD);
+            g.setColor(Constant.COLOR_SELECTION);
             g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
         }
         if (actionable.isOver())

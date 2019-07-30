@@ -93,10 +93,6 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         handler = services.get(Handler.class);
         text = services.get(SpriteFont.class);
 
-        final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
-        background.load();
-        background.prepare();
-
         addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
@@ -109,22 +105,16 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         assignable.setAssign(this::onAssignMap);
         assignable.setClickAssign(1);
 
+        final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);
-        surface.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
-        background.setLocation(actionable.getButton().getX() - 2, actionable.getButton().getY() - 2);
 
-        addFeature(new RefreshableModel(this::refresh));
-        addFeature(new DisplayableModel(g ->
-        {
-            if (actionable.isEnabled())
-            {
-                background.render(g);
-                surface.render(g);
-                ActionModel.this.render(g);
-            }
-        }));
+        addFeature(new RefreshableModel(extrp -> refresh(extrp, surface, background)));
+        addFeature(new DisplayableModel(g -> display(g, surface, background)));
 
         description = actionable.getDescription().toUpperCase(Locale.ENGLISH);
+
+        background.load();
+        background.prepare();
     }
 
     /**
@@ -148,7 +138,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     private void onClickButton()
     {
-        cursor.setSurfaceId(1);
+        cursor.setSurfaceId(Constant.CURSOR_ID_ORDER);
         cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
         selector.setEnabled(false);
         state.set(assignable);
@@ -161,7 +151,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     private void onAssignMap()
     {
         ActionModel.this.assign();
-        cursor.setSurfaceId(0);
+        cursor.setSurfaceId(Constant.CURSOR_ID);
         cursor.setRenderingOffset(0, 0);
         selector.setEnabled(true);
         state.set(actionable);
@@ -171,17 +161,50 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      * Refresh loop.
      * 
      * @param extrp The extrapolation value.
+     * @param surface The action surface.
+     * @param background The action background.
      */
-    private void refresh(double extrp)
+    private void refresh(double extrp, SpriteTiled surface, SpriteAnimated background)
     {
         if (actionable.isEnabled())
         {
+            final int clickOffsetY;
+            if (cursor.getClick() > 0 && actionable.isOver())
+            {
+                clickOffsetY = 1;
+            }
+            else
+            {
+                clickOffsetY = 0;
+            }
+            final double x = actionable.getButton().getX();
+            final double y = actionable.getButton().getY();
+            surface.setLocation(x, y + clickOffsetY);
+            background.setLocation(x - 2, y - 2 + clickOffsetY);
+
             if (actionable.isOver())
             {
                 text.setText(description);
             }
             state.get().update(extrp);
             ActionModel.this.update(extrp);
+        }
+    }
+
+    /**
+     * Refresh loop.
+     * 
+     * @param g The graphic output.
+     * @param surface The action surface.
+     * @param background The action background.
+     */
+    private void display(Graphic g, SpriteTiled surface, SpriteAnimated background)
+    {
+        if (actionable.isEnabled())
+        {
+            background.render(g);
+            surface.render(g);
+            ActionModel.this.render(g);
         }
     }
 
