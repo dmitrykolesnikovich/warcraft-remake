@@ -18,6 +18,7 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -39,6 +40,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -49,6 +52,15 @@ import com.b3dgs.warcraft.object.feature.FoodConsumer;
  */
 public class ProduceButton extends ActionModel
 {
+    private static final int TEXT_WOOD_X = 220;
+    private static final int TEXT_GOLD_X = 265;
+    private static final int TEXT_Y = 193;
+    private static final int TEXT_OFFSET_X = 17;
+    private static final String ATT_MEDIA = "media";
+
+    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
+    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
+
     /**
      * Create progress bar.
      * 
@@ -68,6 +80,7 @@ public class ProduceButton extends ActionModel
 
     /** Production progress bar. */
     private final Bar progress = createBar(actionable);
+    private final CostConfig config;
 
     /**
      * Create build button action.
@@ -79,13 +92,14 @@ public class ProduceButton extends ActionModel
     {
         super(services, setup);
 
-        final Media target = Medias.create(setup.getText("media").split(Constant.SLASH));
+        final Media target = Medias.create(setup.getText(ATT_MEDIA).split(Constant.SLASH));
         final Factory factory = services.get(Factory.class);
         final Player player = services.get(Player.class);
 
+        config = CostConfig.imports(new Configurer(target));
+
         actionable.setAction(() ->
         {
-            final CostConfig config = CostConfig.imports(new Configurer(target));
             if (player.isAvailableFood()
                 && player.isAvailableWood(config.getWood())
                 && player.isAvailableGold(config.getGold()))
@@ -110,6 +124,15 @@ public class ProduceButton extends ActionModel
                 }
             }
         });
+
+        wood.load();
+        gold.load();
+
+        wood.prepare();
+        gold.prepare();
+
+        wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
+        gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
     }
 
     /**
@@ -162,5 +185,12 @@ public class ProduceButton extends ActionModel
     public void render(Graphic g)
     {
         progress.render(g);
+        if (actionable.isOver())
+        {
+            text.draw(g, TEXT_WOOD_X + TEXT_OFFSET_X, TEXT_Y, Align.LEFT, String.valueOf(config.getWood()));
+            text.draw(g, TEXT_GOLD_X + TEXT_OFFSET_X, TEXT_Y, Align.LEFT, String.valueOf(config.getGold()));
+            wood.render(g);
+            gold.render(g);
+        }
     }
 }

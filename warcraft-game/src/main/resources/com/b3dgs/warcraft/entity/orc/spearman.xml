@@ -44,5 +44,5 @@
     </lionengine:launcher>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_BOWFIRE" dead="ORC_DEAD"/>
     <stats health="100" fov="4"/>
-    <cost wood="0" gold="500"/>
+    <cost wood="50" gold="450"/>
 </lionengine:featurable>

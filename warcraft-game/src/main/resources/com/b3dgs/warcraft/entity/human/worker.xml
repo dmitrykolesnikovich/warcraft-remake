@@ -49,5 +49,5 @@
     <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="HUMAN_DEAD"/>
     <offsetDeath x="8" y="8"/>
     <stats health="100" fov="3"/>
-    <cost wood="100" gold="500"/>
+    <cost wood="0" gold="400"/>
 </lionengine:featurable>

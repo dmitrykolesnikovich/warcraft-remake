@@ -16,5 +16,5 @@
     </lionengine:actions>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
     <stats health="100" fov="3"/>
-    <cost gold="500" wood="100"/>
+    <cost wood="500" gold="600"/>
 </lionengine:featurable>

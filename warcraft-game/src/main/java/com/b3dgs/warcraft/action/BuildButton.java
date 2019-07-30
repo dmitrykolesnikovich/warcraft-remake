@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft.action;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -41,6 +42,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
@@ -53,7 +56,16 @@ import com.b3dgs.warcraft.object.feature.EntitySfx;
  */
 public class BuildButton extends ActionModel
 {
+    private static final int TEXT_WOOD_X = 220;
+    private static final int TEXT_GOLD_X = 265;
+    private static final int TEXT_Y = 193;
+    private static final int TEXT_OFFSET_X = 17;
+
+    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
+    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
+
     private final Media target;
+    private final CostConfig config;
     private Rectangle area;
 
     private final Factory factory = services.get(Factory.class);
@@ -73,6 +85,16 @@ public class BuildButton extends ActionModel
         super(services, setup);
 
         target = Medias.create(setup.getText("media").split("/"));
+        config = CostConfig.imports(new Configurer(target));
+
+        wood.load();
+        gold.load();
+
+        wood.prepare();
+        gold.prepare();
+
+        wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
+        gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
     }
 
     @Override
@@ -162,6 +184,13 @@ public class BuildButton extends ActionModel
         {
             g.setColor(ColorRgba.GREEN);
             g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
+        }
+        if (actionable.isOver())
+        {
+            text.draw(g, TEXT_WOOD_X + TEXT_OFFSET_X, TEXT_Y, Align.LEFT, String.valueOf(config.getWood()));
+            text.draw(g, TEXT_GOLD_X + TEXT_OFFSET_X, TEXT_Y, Align.LEFT, String.valueOf(config.getGold()));
+            wood.render(g);
+            gold.render(g);
         }
     }
 }

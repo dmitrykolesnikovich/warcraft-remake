@@ -12,5 +12,5 @@
     <lionengine:producible steps="100"/>
     <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
     <stats health="100" fov="3"/>
-    <cost gold="500" wood="200"/>
+    <cost wood="500" gold="600"/>
 </lionengine:featurable>

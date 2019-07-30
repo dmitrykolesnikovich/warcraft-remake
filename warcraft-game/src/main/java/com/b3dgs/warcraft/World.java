@@ -55,7 +55,7 @@ public class World extends WorldGame
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
     private static final int TEXT_X = 74;
-    private static final int TEXT_Y = 192;
+    private static final int TEXT_Y = 193;
     private static final int RESOURCES_WOOD_X = 170;
     private static final int RESOURCES_GOLD_X = 270;
     private static final int RESOURCES_Y = 2;
