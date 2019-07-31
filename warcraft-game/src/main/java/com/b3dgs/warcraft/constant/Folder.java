@@ -27,6 +27,8 @@ public final class Folder
 {
     /** Entities folder. */
     public static final String ENTITIES = "entity";
+    /** Effects folder. */
+    public static final String EFFECTS = "effect";
     /** Items folder. */
     public static final String ACTIONS = "action";
     /** Monsters folder. */

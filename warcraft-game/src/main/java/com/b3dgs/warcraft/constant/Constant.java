@@ -73,6 +73,11 @@ public final class Constant
     /** Sound bank id. */
     public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
 
+    /** Health percent warning value. */
+    public static final int HEALTH_PERCENT_WARN = 50;
+    /** Health percent alert value. */
+    public static final int HEALTH_PERCENT_ALERT = 25;
+
     /** Color camera view. */
     public static final ColorRgba COLOR_VIEW = new ColorRgba(200, 200, 200);
     /** Color current selection. */

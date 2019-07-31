@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:effect xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.effect.Burning</lionengine:class>
-    <lionengine:surface image="Burning.png"/>
-	<lionengine:frames horizontal="4" vertical="2"/>
-</lionengine:effect>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:featurable name="Mill" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="lumbermill.png" icon="lumbermill_icon.png"/>
     <lionengine:frames horizontal="2" vertical="1"/>

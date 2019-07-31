@@ -50,8 +50,6 @@ public class EntityStats extends FeatureModel implements Routine
     private static final int TEXT_Y = 98;
     private static final int BAR_LIFE_X = 31;
     private static final int BAR_LIFE_Y = 16;
-    private static final int BAR_RED_PERCENT = 25;
-    private static final int BAR_YELLOW_PERCENT = 50;
 
     private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
     private final Alterable health;
@@ -164,11 +162,11 @@ public class EntityStats extends FeatureModel implements Routine
     {
         final int percent = health.getPercent();
         barHealth.setWidthPercent(percent);
-        if (percent < BAR_RED_PERCENT)
+        if (percent < Constant.HEALTH_PERCENT_ALERT)
         {
             barHealth.setColorForeground(Constant.COLOR_HEALTH_ALERT);
         }
-        else if (percent < BAR_YELLOW_PERCENT)
+        else if (percent < Constant.HEALTH_PERCENT_WARN)
         {
             barHealth.setColorForeground(Constant.COLOR_HEALTH_WARN);
         }
