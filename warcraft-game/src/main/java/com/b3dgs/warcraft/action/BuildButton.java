@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
@@ -97,14 +96,10 @@ public class BuildButton extends ActionModel
         wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
         gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
 
-        hud.addListener(new HudListener()
+        hud.addListener(() ->
         {
-            @Override
-            public void notifyCanceled()
-            {
-                state.set(actionable);
-                area = null;
-            }
+            state.set(actionable);
+            area = null;
         });
     }
 

@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.feature.launchable.LaunchableListener;
 import com.b3dgs.lionengine.game.feature.launchable.Launcher;
 import com.b3dgs.lionengine.game.feature.tile.map.Orientable;
@@ -72,22 +71,18 @@ public class Thrower extends FeatureModel implements Routine
                 launcher.fire(attacker.getTarget());
             }
         });
-        launcher.addListener(new LaunchableListener()
+        launcher.addListener((LaunchableListener) launchable ->
         {
-            @Override
-            public void notifyFired(Launchable launchable)
+            launchable.getFeature(Orientable.class).setOrientation(pathfindable.getOrientation());
+            launchable.getFeature(Collidable.class).addListener((other, w, b) ->
             {
-                launchable.getFeature(Orientable.class).setOrientation(pathfindable.getOrientation());
-                launchable.getFeature(Collidable.class).addListener((other, w, b) ->
+                if (other != collidable)
                 {
-                    if (other != collidable)
-                    {
-                        Sfx.NEUTRAL_ARROWHIT.play();
-                        other.getFeature(EntityStats.class).applyDamages(attacker.getAttackDamages());
-                        launchable.getFeature(Identifiable.class).destroy();
-                    }
-                });
-            }
+                    Sfx.NEUTRAL_ARROWHIT.play();
+                    other.getFeature(EntityStats.class).applyDamages(attacker.getAttackDamages());
+                    launchable.getFeature(Identifiable.class).destroy();
+                }
+            });
         });
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Projectile</lionengine:class>
-    <lionengine:layerable layerRefresh="3" layerDisplay="3"/>
+    <lionengine:layerable layerRefresh="4" layerDisplay="4"/>
     <lionengine:surface image="arrow.png"/>
     <lionengine:size width="10" height="10"/>
     <lionengine:collision name="default" offsetX="0" offsetY="0" width="1" height="1" mirror="false"/>
