@@ -16,11 +16,12 @@
  */
 package com.b3dgs.warcraft;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
@@ -28,6 +29,8 @@ import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
+import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Extension;
 import com.b3dgs.warcraft.constant.Folder;
 
@@ -112,6 +115,11 @@ public enum Sfx
     /** Human die. */
     HUMAN_DEAD(Race.HUMAN);
 
+    /** Node sfx name. */
+    public static final String NODE_SFX = "sfx";
+    /** Dead attribute name. */
+    public static final String ATT_DEAD = "dead";
+
     /**
      * Cache sfx.
      */
@@ -124,7 +132,7 @@ public enum Sfx
         }
         try
         {
-            Thread.sleep(Constant.HUNDRED / 2);
+            Thread.sleep(com.b3dgs.lionengine.Constant.HUNDRED / 2);
         }
         catch (final InterruptedException exception)
         {
@@ -133,8 +141,34 @@ public enum Sfx
         for (final Sfx sfx : Sfx.values())
         {
             sfx.audio.stop();
-            sfx.audio.setVolume(com.b3dgs.warcraft.constant.Constant.VOLUME_DEFAULT);
+            sfx.audio.setVolume(Constant.VOLUME_DEFAULT);
         }
+    }
+
+    /**
+     * Load sfx.
+     * 
+     * @param setup The setup reference.
+     * @param attribute The attribute name.
+     * @return The loaded sfx, <code>null</code> if none.
+     * @throws LionEngineException If invalid configuration.
+     */
+    public static List<Sfx> load(Setup setup, String attribute)
+    {
+        if (setup.hasNode(NODE_SFX))
+        {
+            if (setup.getRoot().getChild(NODE_SFX).hasAttribute(attribute))
+            {
+                final String[] attributes = setup.getString(attribute, NODE_SFX).split(Constant.SFX_SEPARATOR);
+                final List<Sfx> sfx = new ArrayList<>();
+                for (final String current : attributes)
+                {
+                    sfx.add(Sfx.valueOf(current));
+                }
+                return sfx;
+            }
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -179,7 +213,9 @@ public enum Sfx
     {
         final String folder = race.name().toLowerCase(Locale.ENGLISH);
         final String file = name().toLowerCase(Locale.ENGLISH) + Extension.SFX;
-        return Medias.create(Folder.SOUNDS, folder, file.substring(file.indexOf(Constant.UNDERSCORE) + 1));
+        return Medias.create(Folder.SOUNDS,
+                             folder,
+                             file.substring(file.indexOf(com.b3dgs.lionengine.Constant.UNDERSCORE) + 1));
     }
 
     /**

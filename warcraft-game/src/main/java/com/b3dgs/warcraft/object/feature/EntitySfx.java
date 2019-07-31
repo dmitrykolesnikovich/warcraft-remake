@@ -16,8 +16,6 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -28,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
-import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Represents sound handler.
@@ -36,39 +33,11 @@ import com.b3dgs.warcraft.constant.Constant;
 @FeatureInterface
 public class EntitySfx extends FeatureModel
 {
-    /**
-     * Load sfx.
-     * 
-     * @param setup The setup reference.
-     * @param attribute The attribute name.
-     * @return The loaded sfx, <code>null</code> if none.
-     * @throws LionEngineException If invalid configuration.
-     */
-    private static List<Sfx> load(Setup setup, String attribute)
-    {
-        if (setup.hasNode(NODE_SFX))
-        {
-            if (setup.getRoot().getChild(NODE_SFX).hasAttribute(attribute))
-            {
-                final String[] attributes = setup.getString(attribute, NODE_SFX).split(Constant.SFX_SEPARATOR);
-                final List<Sfx> sfx = new ArrayList<>();
-                for (final String current : attributes)
-                {
-                    sfx.add(Sfx.valueOf(current));
-                }
-                return sfx;
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    private static final String NODE_SFX = "sfx";
     private static final String ATT_STARTED = "started";
     private static final String ATT_PRODUCED = "produced";
     private static final String ATT_SELECTED = "selected";
     private static final String ATT_ORDERED = "ordered";
     private static final String ATT_ATTACKED = "attacked";
-    private static final String ATT_DEAD = "dead";
 
     private final List<Sfx> started;
     private final List<Sfx> produced;
@@ -92,12 +61,12 @@ public class EntitySfx extends FeatureModel
     {
         super();
 
-        started = load(setup, ATT_STARTED);
-        produced = load(setup, ATT_PRODUCED);
-        selected = load(setup, ATT_SELECTED);
-        ordered = load(setup, ATT_ORDERED);
-        attacked = load(setup, ATT_ATTACKED);
-        dead = load(setup, ATT_DEAD);
+        started = Sfx.load(setup, ATT_STARTED);
+        produced = Sfx.load(setup, ATT_PRODUCED);
+        selected = Sfx.load(setup, ATT_SELECTED);
+        ordered = Sfx.load(setup, ATT_ORDERED);
+        attacked = Sfx.load(setup, ATT_ATTACKED);
+        dead = Sfx.load(setup, Sfx.ATT_DEAD);
 
         player = services.get(Player.class);
     }

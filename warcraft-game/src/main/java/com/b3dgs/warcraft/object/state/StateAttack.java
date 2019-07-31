@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Attack state implementation.
@@ -47,5 +48,14 @@ final class StateAttack extends State
 
         pathfindable.pointTo(attacker.getTarget().getFeature(Pathfindable.class));
         attacker.setAttackFrame(animation.getLast());
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        if (attacker.getTarget().getFeature(EntityStats.class).getLife() == 0)
+        {
+            attacker.stopAttack();
+        }
     }
 }

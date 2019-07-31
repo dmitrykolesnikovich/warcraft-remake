@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -40,15 +41,15 @@ import com.b3dgs.warcraft.constant.Folder;
  * Represents something that can burn.
  */
 @FeatureInterface
-public class Burnable extends FeatureModel implements Routine
+public class Burnable extends FeatureModel implements Routine, Recyclable
 {
-    private final SpriteAnimated burn;
     private final Animation light = new Animation("light", 1, 4, 0.2, false, true);
     private final Animation strong = new Animation("strong", 5, 8, 0.2, false, true);
+    private final SpriteAnimated burn;
 
     private final Viewer viewer;
     private final Renderable effect;
-    private Renderable renderable;
+    private Renderable renderable = RenderableVoid.getInstance();
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private EntityStats stats;
@@ -93,7 +94,11 @@ public class Burnable extends FeatureModel implements Routine
         final int current = stats.getLife();
         if (current != oldLife)
         {
-            if (current < Constant.HEALTH_PERCENT_ALERT)
+            if (current == 0)
+            {
+                renderable = RenderableVoid.getInstance();
+            }
+            else if (current < Constant.HEALTH_PERCENT_ALERT)
             {
                 burn.play(strong);
                 renderable = effect;
@@ -120,5 +125,13 @@ public class Burnable extends FeatureModel implements Routine
     public void render(Graphic g)
     {
         renderable.render(g);
+    }
+
+    @Override
+    public void recycle()
+    {
+        burn.stop();
+        renderable = RenderableVoid.getInstance();
+        oldLife = 0;
     }
 }
