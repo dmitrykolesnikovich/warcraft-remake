@@ -4,7 +4,8 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.CloseCombat</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickMove</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
-    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Decayable</lionengine:feature>
+    <lionengine:layerable layerRefresh="3" layerDisplay="3"/>
     <lionengine:surface image="grunt.png" icon="grunt_icon.png"/>
 	<lionengine:frames horizontal="8" vertical="7" offsetX="8" offsetY="8"/>
 	<lionengine:size width="16" height="16"/>
@@ -12,8 +13,8 @@
 	<lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<lionengine:animation name="walk" start="6" end="10" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="attack" start="31" end="34" speed="0.1875" reversed="true" repeat="false"/>
-	<lionengine:animation name="die" start="51" end="53" speed="0.1375" reversed="false" repeat="false"/>
-	<lionengine:animation name="dead" start="53" end="53" speed="0.1375" reversed="false" repeat="false"/>
+	<lionengine:animation name="die" start="51" end="52" speed="0.1375" reversed="false" repeat="false"/>
+	<lionengine:animation name="dead" start="55" end="55" speed="0.1375" reversed="false" repeat="false"/>
 	<lionengine:pathfindable>
         <lionengine:path category="ground" cost="1" block="false">
             <lionengine:movement>UP</lionengine:movement>
@@ -39,4 +40,5 @@
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="ORC_DEAD"/>
 	<stats health="60" fov="4"/>
 	<cost wood="0" gold="400"/>
+    <decay corpse="effect/corpse_orc.xml" delay="200"/>
 </lionengine:featurable>

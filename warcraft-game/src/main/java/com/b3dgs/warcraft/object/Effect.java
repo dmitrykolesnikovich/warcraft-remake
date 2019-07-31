@@ -20,12 +20,14 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.DisplayableModel;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.RefreshableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -41,11 +43,15 @@ import com.b3dgs.warcraft.Sfx;
  */
 public final class Effect extends FeaturableModel
 {
+    private static final String NODE_EFFECT = "effect";
+    private static final String ATT_DELAY = "delay";
     private static final String ANIM_IDLE = "idle";
 
+    private final Tick tick = new Tick();
     private final List<Sfx> sfx;
     private final SpriteAnimated surface;
     private final Animation animation;
+    private final int delay;
 
     /**
      * Constructor.
@@ -59,18 +65,28 @@ public final class Effect extends FeaturableModel
 
         sfx = Sfx.load(setup, Sfx.ATT_DEAD);
         animation = AnimationConfig.imports(setup).getAnimation(ANIM_IDLE);
+        delay = setup.getIntegerDefault(-1, ATT_DELAY, NODE_EFFECT);
 
         addFeature(new LayerableModel(services, setup));
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
 
         final FramesConfig config = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
-        surface.setOrigin(Origin.MIDDLE);
+        surface.setOrigin(Origin.CENTER_BOTTOM);
         addFeature(new AnimatableModel(surface));
 
         final Viewer viewer = services.get(Viewer.class);
 
-        addFeature(new RefreshableModel(surface::update));
+        final Identifiable identifiable = getFeature(Identifiable.class);
+        addFeature(new RefreshableModel(extrp ->
+        {
+            surface.update(extrp);
+            tick.update(extrp);
+            if (delay > -1 && tick.elapsed(delay))
+            {
+                identifiable.destroy();
+            }
+        }));
         addFeature(new DisplayableModel(g ->
         {
             surface.setLocation(viewer, transformable);
@@ -86,8 +102,9 @@ public final class Effect extends FeaturableModel
      */
     public void start(int width, int height)
     {
-        surface.setFrameOffsets(-width / 2, -height / 2);
+        surface.setFrameOffsets(-width / 2, height / 2);
         surface.play(animation);
         Sfx.playRandom(sfx);
+        tick.start();
     }
 }

@@ -16,4 +16,5 @@
     <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
 	<stats health="100" fov="3"/>
     <cost wood="300" gold="500"/>
+    <decay corpse="effect/corpse_building.xml"/>
 </lionengine:featurable>

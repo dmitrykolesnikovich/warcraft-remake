@@ -101,7 +101,7 @@ public class WorldSelection
             {
                 moving.set(true);
             }
-            if (moving.get() && !mover || !player.owns(current) && race.get() != null)
+            if (stats.getLife() == 0 || moving.get() && !mover || !player.owns(current) && race.get() != null)
             {
                 return false;
             }

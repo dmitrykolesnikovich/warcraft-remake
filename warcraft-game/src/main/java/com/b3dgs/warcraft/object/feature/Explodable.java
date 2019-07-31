@@ -61,8 +61,9 @@ public class Explodable extends FeatureModel implements Routine
         if (stats.getLife() == 0)
         {
             ((com.b3dgs.warcraft.object.Effect) spawner.spawn(Medias.create(Folder.EFFECTS, "explode.xml"),
-                                                              transformable)).start(transformable.getWidth(),
-                                                                                    transformable.getHeight());
+                                                              transformable)).start(transformable.getWidth(), 0);
+            ((com.b3dgs.warcraft.object.Effect) spawner.spawn(Medias.create(Folder.EFFECTS, "corpse_building.xml"),
+                                                              transformable)).start(transformable.getWidth(), 0);
             pathfindable.clearPath();
             identifiable.destroy();
         }

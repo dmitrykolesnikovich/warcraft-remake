@@ -33,14 +33,18 @@ public final class Constant
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Buildings layer. */
+    /** Corpse layer. */
     public static final int LAYER_BUILDING = 1;
+    /** Buildings layer. */
+    public static final int LAYER_CORPSE = LAYER_BUILDING + 1;
     /** Entity layer. */
-    public static final int LAYER_ENTITY = LAYER_BUILDING + 1;
+    public static final int LAYER_ENTITY = LAYER_CORPSE + 1;
     /** Projectile layer. */
     public static final int LAYER_PROJECTILE = LAYER_ENTITY + 1;
+    /** Explode layer. */
+    public static final int LAYER_EXPLODE = LAYER_PROJECTILE + 1;
     /** Hud layer. */
-    public static final int LAYER_HUD = LAYER_PROJECTILE + 1;
+    public static final int LAYER_HUD = LAYER_EXPLODE + 1;
     /** Selection layer. */
     public static final int LAYER_SELECTION = LAYER_HUD + 1;
 

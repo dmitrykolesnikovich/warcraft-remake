@@ -18,6 +18,7 @@ package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -46,5 +47,8 @@ final class StateDie extends State
         super.enter();
 
         model.getFeature(EntitySfx.class).onDead();
+        model.getFeature(Selectable.class).onSelection(false);
+        collidable.setEnabled(false);
+        pathfindable.clearPath();
     }
 }

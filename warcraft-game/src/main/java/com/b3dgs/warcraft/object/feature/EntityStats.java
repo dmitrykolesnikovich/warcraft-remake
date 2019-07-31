@@ -23,8 +23,12 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Layerable;
+import com.b3dgs.lionengine.game.feature.LayerableConfig;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -41,7 +45,7 @@ import com.b3dgs.warcraft.object.StatsConfig;
  * Icon renderer feature.
  */
 @FeatureInterface
-public class EntityStats extends FeatureModel implements Routine
+public class EntityStats extends FeatureModel implements Routine, Recyclable
 {
     private static final String ATT_NAME = "name";
 
@@ -58,8 +62,12 @@ public class EntityStats extends FeatureModel implements Routine
     private final Race race;
     private final boolean mover;
     private final Image icon;
+    private final Integer layerRefresh;
+    private final Integer layerDisplay;
 
     private final SpriteFont text;
+
+    @FeatureGet private Layerable layerable;
 
     /**
      * Create icon provider.
@@ -86,6 +94,10 @@ public class EntityStats extends FeatureModel implements Routine
         }
         mover = setup.hasNode(PathfindableConfig.NODE_PATHFINDABLE);
 
+        final LayerableConfig layerableConfig = LayerableConfig.imports(setup);
+        layerRefresh = Integer.valueOf(layerableConfig.getLayerRefresh());
+        layerDisplay = Integer.valueOf(layerableConfig.getLayerDisplay());
+
         final StatsConfig config = StatsConfig.imports(setup);
         health = new Alterable(config.getHealth());
 
@@ -95,19 +107,13 @@ public class EntityStats extends FeatureModel implements Routine
         stats.prepare();
         stats.setLocation(Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
 
-        name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
         final Media media = setup.getIconFile();
-        if (media != null)
-        {
-            icon = Drawable.loadImage(media);
-            icon.load();
-            icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
-        }
-        else
-        {
-            icon = null;
-        }
-        health.fill();
+        icon = Drawable.loadImage(media);
+        icon.load();
+        icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
+
+        name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
+
         barHealth.setColorForeground(Constant.COLOR_HEALTH_GOOD);
         barHealth.setLocation((int) (icon.getX() + BAR_LIFE_X), (int) (icon.getY() + BAR_LIFE_Y));
     }
@@ -126,13 +132,13 @@ public class EntityStats extends FeatureModel implements Routine
     }
 
     /**
-     * Get current life.
+     * Get current life percent.
      * 
-     * @return The current life.
+     * @return The current life percent.
      */
     public int getLife()
     {
-        return health.getCurrent();
+        return health.getPercent();
     }
 
     /**
@@ -170,6 +176,10 @@ public class EntityStats extends FeatureModel implements Routine
         {
             barHealth.setColorForeground(Constant.COLOR_HEALTH_WARN);
         }
+        else
+        {
+            barHealth.setColorForeground(Constant.COLOR_HEALTH_GOOD);
+        }
     }
 
     @Override
@@ -184,5 +194,13 @@ public class EntityStats extends FeatureModel implements Routine
         {
             icon.render(g);
         }
+    }
+
+    @Override
+    public void recycle()
+    {
+        health.fill();
+        updateHealthBar();
+        layerable.setLayer(layerRefresh, layerDisplay);
     }
 }

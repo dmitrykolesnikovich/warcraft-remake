@@ -17,13 +17,15 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.Layerable;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
 /**
  * Dead state implementation.
  */
-final class StateDead extends State
+public final class StateDead extends State
 {
     /**
      * Create the state.
@@ -34,5 +36,14 @@ final class StateDead extends State
     StateDead(EntityModel model, Animation animation)
     {
         super(model, animation);
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        model.getFeature(Layerable.class)
+             .setLayer(Integer.valueOf(Constant.LAYER_CORPSE), Integer.valueOf(Constant.LAYER_CORPSE));
     }
 }
