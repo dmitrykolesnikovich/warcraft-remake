@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Idle state implementation.
@@ -36,12 +37,14 @@ public final class StateIdle extends State
     {
         super(model, animation);
 
-        addTransition(StateExtractWood.class, () -> Player.isWood(extractResource));
-        addTransition(StateExtractGold.class, () -> Player.isGold(extractResource));
-        addTransition(StateCarryWood.class, () -> Player.isWood(carryResource));
-        addTransition(StateCarryGold.class, () -> Player.isGold(carryResource));
-        addTransition(StateWalk.class, moveStarted::get);
-        addTransition(StateAttack.class, attackStarted::get);
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
+        addTransition(StateExtractWood.class, () -> Player.isWood(model.getExtractResource()));
+        addTransition(StateExtractGold.class, () -> Player.isGold(model.getExtractResource()));
+        addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
+        addTransition(StateCarryGold.class, () -> Player.isGold(model.getCarryResource()));
+        addTransition(StateWalk.class, model::isMoveStarted);
+        addTransition(StateAttack.class, model::isAttackStarted);
         addTransition(StateDie.class, () -> stats.getLife() == 0);
     }
 }

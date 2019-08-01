@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object.state;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorFrameListener;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
@@ -44,6 +45,7 @@ final class StateExtractWood extends State
     {
         super(model, animation);
 
+        final Animatable animatable = model.getFeature(Animatable.class);
         listener = frame ->
         {
             if (!cut && animatable.getFrame() == animation.getLast())
@@ -57,10 +59,12 @@ final class StateExtractWood extends State
             }
         };
 
-        addTransition(StateCarryWood.class, () -> Player.isWood(carryResource));
-        addTransition(StateIdle.class, () -> !moveStarted.get() && !gotoResource.get());
+        addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
+        addTransition(StateIdle.class, () -> !model.isMoveStarted() && !model.isGotoResource());
         addTransition(StateWalk.class,
-                      () -> moveStarted.get() && extractResource.get() == null && carryResource.get() == null);
+                      () -> model.isMoveStarted()
+                            && model.getExtractResource() == null
+                            && model.getCarryResource() == null);
     }
 
     @Override
@@ -68,7 +72,6 @@ final class StateExtractWood extends State
     {
         super.enter();
 
-        gotoResource.set(true);
         animator.addListener(listener);
     }
 

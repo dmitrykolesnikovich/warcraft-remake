@@ -16,219 +16,24 @@
  */
 package com.b3dgs.warcraft.object;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Animatable;
-import com.b3dgs.lionengine.game.feature.Handler;
-import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Mirrorable;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.attackable.Attacker;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
-import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
-import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
-import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.state.StateAbstract;
-import com.b3dgs.lionengine.game.feature.tile.Tile;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
-import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
-import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
-import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerVoid;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
-import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
-import com.b3dgs.warcraft.Player;
-import com.b3dgs.warcraft.Util;
-import com.b3dgs.warcraft.constant.Constant;
-import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Base state with animation implementation.
  */
 public abstract class State extends StateAbstract
 {
-    /** Handler reference. */
-    protected final Handler handler;
-    /** Map reference. */
-    protected final MapTile map;
-    /** Map path reference. */
-    protected final MapTilePath mapPath;
-    /** Map transition reference. */
-    protected final MapTileTransition mapTransition;
-    /** Resources reference. */
-    protected final Player player;
-    /** Selector reference. */
-    protected final Selector selector;
-    /** Hud reference. */
-    protected final Hud hud;
-
-    /** Identifiable reference. */
-    protected final Identifiable identifiable;
     /** Model reference. */
     protected final EntityModel model;
-    /** Animatable reference. */
-    protected final Animatable animatable;
-    /** Transformable reference. */
-    protected final Transformable transformable;
-    /** Pathfindable reference. */
-    protected final Pathfindable pathfindable;
-    /** Attacker reference. */
-    protected final Attacker attacker;
-    /** Producible reference. */
-    protected final Producible producible;
-    /** Extractor reference. */
-    protected final Extractor extractor;
-    /** Mirrorable reference. */
-    protected final Mirrorable mirrorable;
-    /** Collidable reference. */
-    protected final Collidable collidable;
-    /** State animation data. */
-    protected final Animation animation;
-    /** Stats reference. */
-    protected final EntityStats stats;
 
-    /** Move started flag. */
-    protected final AtomicBoolean moveStarted = new AtomicBoolean();
-    /** Move arrived flag. */
-    protected final AtomicBoolean moveArrived = new AtomicBoolean();
-
-    /** Attack started flag. */
-    protected final AtomicBoolean attackStarted = new AtomicBoolean();
-
-    /** Producible ended flag. */
-    protected final AtomicBoolean producibleEnded = new AtomicBoolean();
-
-    /** Goto resource flag. */
-    protected final AtomicBoolean gotoResource = new AtomicBoolean();
-    /** Extract resource flag. */
-    protected final AtomicReference<String> extractResource = new AtomicReference<>();
-    /** Carry resource flag. */
-    protected final AtomicReference<String> carryResource = new AtomicReference<>();
-
-    private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
-    {
-        @Override
-        public void notifyStartMove()
-        {
-            moveStarted.set(true);
-        }
-
-        @Override
-        public void notifyArrived()
-        {
-            moveArrived.set(true);
-        }
-    };
-    private final AttackerListener attackerListener = new AttackerListenerVoid()
-    {
-        @Override
-        public void notifyAttackStarted(Transformable target)
-        {
-            attackStarted.set(true);
-        }
-    };
-    private final ProducibleListener producibleListener = new ProducibleListenerVoid()
-    {
-        @Override
-        public void notifyProductionEnded(Producer producer)
-        {
-            producibleEnded.set(true);
-        }
-    };
-    private final ExtractorListener extractorListener = new ExtractorListenerVoid()
-    {
-        @Override
-        public void notifyStartGoToRessources(String type, Tiled resourceLocation)
-        {
-            pathfindable.setDestination(resourceLocation);
-            gotoResource.set(true);
-            carryResource.set(null);
-        }
-
-        @Override
-        public void notifyStartExtraction(String type, Tiled resourceLocation)
-        {
-            extractResource.set(type);
-            if (Player.TYPE_WOOD.equals(type))
-            {
-                pathfindable.pointTo(resourceLocation);
-            }
-        }
-
-        @Override
-        public void notifyStartCarry(String type, int totalQuantity)
-        {
-            final Tiled warehouse = Util.getWarehouse(model.getServices());
-            pathfindable.setDestination(warehouse);
-            carryResource.set(type);
-
-            if (Player.TYPE_WOOD.equals(type))
-            {
-                final Tile tile = mapPath.getTile(extractor.getResourceLocation());
-                final Tile cut = map.createTile(tile.getSheet(), Constant.TILE_NUM_TREE_CUT, tile.getX(), tile.getY());
-                mapPath.loadTile(cut);
-                map.setTile(cut);
-
-                for (final Tile updated : mapTransition.resolve(cut))
-                {
-                    mapPath.loadTile(updated);
-                    map.setTile(updated);
-                }
-
-                final Tile next = getClosestTree(cut);
-                if (next != null)
-                {
-                    extractor.setResource(type, next);
-                }
-            }
-        }
-
-        @Override
-        public void notifyStartDropOff(String type, int totalQuantity)
-        {
-            model.setVisible(false);
-            if (Player.TYPE_WOOD.equals(type))
-            {
-                player.increaseWood(totalQuantity);
-            }
-            else if (Player.TYPE_GOLD.equals(type))
-            {
-                player.increaseGold(totalQuantity);
-            }
-        }
-
-        @Override
-        public void notifyDroppedOff(String type, int droppedQuantity)
-        {
-            if (droppedQuantity == 0)
-            {
-                model.setVisible(true);
-            }
-        }
-
-        @Override
-        public void notifyStopped()
-        {
-            gotoResource.set(false);
-            extractResource.set(null);
-            carryResource.set(null);
-        }
-    };
+    private final Animation animation;
+    private final Mirrorable mirrorable;
+    private final Animatable animatable;
 
     /**
      * Create the state.
@@ -243,25 +48,8 @@ public abstract class State extends StateAbstract
         this.model = model;
         this.animation = animation;
 
-        final Services services = model.getServices();
-        handler = services.get(Handler.class);
-        map = services.get(MapTile.class);
-        mapPath = map.getFeature(MapTilePath.class);
-        mapTransition = map.getFeature(MapTileTransition.class);
-        player = services.get(Player.class);
-        selector = services.get(Selector.class);
-        hud = services.get(Hud.class);
-
-        identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);
-        transformable = model.getFeature(Transformable.class);
-        pathfindable = model.getFeature(Pathfindable.class);
-        attacker = model.getFeature(Attacker.class);
-        producible = model.getFeature(Producible.class);
-        extractor = model.getFeature(Extractor.class);
         mirrorable = model.getFeature(Mirrorable.class);
-        collidable = model.getFeature(Collidable.class);
-        stats = model.getFeature(EntityStats.class);
     }
 
     /**
@@ -286,57 +74,18 @@ public abstract class State extends StateAbstract
         return mirrorable.is(mirror);
     }
 
-    private Tile getClosestTree(Tile cut)
-    {
-        double dist = Double.MAX_VALUE;
-        Tile next = null;
-        for (int tx = -1; tx < 2; tx++)
-        {
-            for (int ty = -1; ty < 2; ty++)
-            {
-                if (tx == 0 && ty == 0)
-                {
-                    continue;
-                }
-                final Tile tree = map.getTile(cut.getInTileX() + tx, cut.getInTileY() + ty);
-                if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
-                {
-                    final double cur = UtilMath.getDistance(tree, transformable);
-                    if (cur < dist)
-                    {
-                        dist = cur;
-                        next = tree;
-                    }
-                }
-            }
-        }
-        return next;
-    }
-
     @Override
     public void enter()
     {
         animatable.play(animation);
-        pathfindable.addListener(pathfindableListener);
-        attacker.addListener(attackerListener);
-        producible.addListener(producibleListener);
-        extractor.addListener(extractorListener);
     }
 
     @Override
     public void exit()
     {
-        pathfindable.removeListener(pathfindableListener);
-        attacker.removeListener(attackerListener);
-        producible.removeListener(producibleListener);
-        extractor.removeListener(extractorListener);
+        super.exit();
 
-        moveStarted.set(false);
-        moveArrived.set(false);
-        attackStarted.set(false);
-        producibleEnded.set(false);
-        extractResource.set(null);
-        carryResource.set(null);
+        model.resetFlags();
     }
 
     /**

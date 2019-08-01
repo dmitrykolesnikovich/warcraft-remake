@@ -18,11 +18,17 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -67,6 +73,41 @@ public final class Util
             }
         }
         return null;
+    }
+
+    /**
+     * Get the closest next tree around cut.
+     * 
+     * @param map The map tile reference.
+     * @param cut The cut tree.
+     * @param transformable The transformable reference.
+     * @return The next tree to cut.
+     */
+    public static Tile getClosestTree(MapTile map, Tile cut, Transformable transformable)
+    {
+        double dist = Double.MAX_VALUE;
+        Tile next = null;
+        for (int tx = -1; tx < 2; tx++)
+        {
+            for (int ty = -1; ty < 2; ty++)
+            {
+                if (tx == 0 && ty == 0)
+                {
+                    continue;
+                }
+                final Tile tree = map.getTile(cut.getInTileX() + tx, cut.getInTileY() + ty);
+                if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
+                {
+                    final double cur = UtilMath.getDistance(tree, transformable);
+                    if (cur < dist)
+                    {
+                        dist = cur;
+                        next = tree;
+                    }
+                }
+            }
+        }
+        return next;
     }
 
     /**

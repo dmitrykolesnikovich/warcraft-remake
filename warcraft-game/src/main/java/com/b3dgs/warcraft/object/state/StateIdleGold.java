@@ -17,13 +17,14 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 
 /**
- * Carry gold state implementation.
+ * Idle with gold state implementation.
  */
-final class StateCarryGold extends State
+public final class StateIdleGold extends State
 {
     /**
      * Create the state.
@@ -31,19 +32,12 @@ final class StateCarryGold extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    StateCarryGold(EntityModel model, Animation animation)
+    StateIdleGold(EntityModel model, Animation animation)
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
-        addTransition(StateIdleGold.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
-    }
-
-    @Override
-    public void enter()
-    {
-        super.enter();
-
-        model.setVisible(true);
+        addTransition(StateIdle.class, () -> !model.isMoveStarted() && model.getCarryResource() == null);
+        addTransition(StateWalk.class, () -> model.isMoveStarted() && model.getCarryResource() == null);
+        addTransition(StateCarryGold.class, () -> model.isMoveStarted() && Player.isGold(model.getCarryResource()));
     }
 }

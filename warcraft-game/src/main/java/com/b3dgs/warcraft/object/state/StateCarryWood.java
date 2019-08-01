@@ -35,6 +35,7 @@ final class StateCarryWood extends State
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, moveArrived::get);
+        addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
+        addTransition(StateIdleWood.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
     }
 }

@@ -17,18 +17,41 @@
 package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
+import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
+import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
+import com.b3dgs.lionengine.game.feature.tile.Tile;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerVoid;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
+import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.Util;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Entity model implementation.
@@ -36,13 +59,143 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 @FeatureInterface
 public final class EntityModel extends FeatureModel
 {
+    private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
+    {
+        @Override
+        public void notifyStartMove()
+        {
+            moveStarted = true;
+        }
+
+        @Override
+        public void notifyArrived()
+        {
+            moveArrived = true;
+        }
+    };
+    private final AttackerListener attackerListener = new AttackerListenerVoid()
+    {
+        @Override
+        public void notifyAttackStarted(Transformable target)
+        {
+            attackStarted = true;
+        }
+    };
+    private final ProducibleListener producibleListener = new ProducibleListenerVoid()
+    {
+        @Override
+        public void notifyProductionEnded(Producer producer)
+        {
+            producibleEnded = true;
+        }
+    };
+    private final ExtractorListener extractorListener = new ExtractorListenerVoid()
+    {
+        @Override
+        public void notifyStartGoToRessources(String type, Tiled resourceLocation)
+        {
+            if (carryResource == null)
+            {
+                pathfindable.setDestination(resourceLocation);
+                gotoResource = true;
+            }
+        }
+
+        @Override
+        public void notifyStartExtraction(String type, Tiled resourceLocation)
+        {
+            extractResource = type;
+            if (Player.TYPE_WOOD.equals(type))
+            {
+                pathfindable.pointTo(resourceLocation);
+            }
+        }
+
+        @Override
+        public void notifyStartCarry(String type, int totalQuantity)
+        {
+            final Tiled warehouse = Util.getWarehouse(services);
+            pathfindable.setDestination(warehouse);
+            extractResource = null;
+            carryResource = type;
+
+            if (Player.TYPE_WOOD.equals(type))
+            {
+                final Tile tile = mapPath.getTile(extractor.getResourceLocation());
+                final Tile cut = map.createTile(tile.getSheet(), Constant.TILE_NUM_TREE_CUT, tile.getX(), tile.getY());
+                mapPath.loadTile(cut);
+                map.setTile(cut);
+
+                for (final Tile updated : mapTransition.resolve(cut))
+                {
+                    mapPath.loadTile(updated);
+                    map.setTile(updated);
+                }
+
+                final Tile next = Util.getClosestTree(map, cut, transformable);
+                if (next != null)
+                {
+                    extractor.setResource(type, next);
+                }
+            }
+        }
+
+        @Override
+        public void notifyStartDropOff(String type, int totalQuantity)
+        {
+            setVisible(false);
+            if (Player.TYPE_WOOD.equals(type))
+            {
+                player.increaseWood(totalQuantity);
+            }
+            else if (Player.TYPE_GOLD.equals(type))
+            {
+                player.increaseGold(totalQuantity);
+            }
+        }
+
+        @Override
+        public void notifyDroppedOff(String type, int droppedQuantity)
+        {
+            if (droppedQuantity == 0)
+            {
+                setVisible(true);
+                carryResource = null;
+            }
+        }
+
+        @Override
+        public void notifyStopped()
+        {
+            gotoResource = false;
+            extractResource = null;
+        }
+    };
+
     private final SpriteAnimated surface;
+    private final Player player;
     private final Hud hud;
     private final Selector selector;
     private final Services services;
+    private final MapTile map;
+    private final MapTilePath mapPath;
+    private final MapTileTransition mapTransition;
 
+    @FeatureGet private Transformable transformable;
     @FeatureGet private Collidable collidable;
     @FeatureGet private Selectable selectable;
+    @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Extractor extractor;
+    @FeatureGet private Attacker attacker;
+    @FeatureGet private Producible producible;
+
+    private boolean moveStarted;
+    private boolean moveArrived;
+    private boolean attackStarted;
+    private boolean producibleEnded;
+    private boolean gotoResource;
+    private String extractResource;
+    private String carryResource;
 
     private boolean visible = true;
 
@@ -65,6 +218,21 @@ public final class EntityModel extends FeatureModel
 
         hud = services.get(Hud.class);
         selector = services.get(Selector.class);
+        map = services.get(MapTile.class);
+        mapPath = map.getFeature(MapTilePath.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
+        player = services.get(Player.class);
+    }
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        pathfindable.addListener(pathfindableListener);
+        attacker.addListener(attackerListener);
+        producible.addListener(producibleListener);
+        extractor.addListener(extractorListener);
     }
 
     /**
@@ -111,5 +279,87 @@ public final class EntityModel extends FeatureModel
     public Services getServices()
     {
         return services;
+    }
+
+    /**
+     * Check if move started.
+     * 
+     * @return <code>true</code> if move started, <code>false</code> else.
+     */
+    public boolean isMoveStarted()
+    {
+        return moveStarted;
+    }
+
+    /**
+     * Check if move arrived.
+     * 
+     * @return <code>true</code> if move arrived, <code>false</code> else.
+     */
+    public boolean isMoveArrived()
+    {
+        return moveArrived;
+    }
+
+    /**
+     * Check if attack started.
+     * 
+     * @return <code>true</code> if attack started, <code>false</code> else.
+     */
+    public boolean isAttackStarted()
+    {
+        return attackStarted;
+    }
+
+    /**
+     * Check if production ended.
+     * 
+     * @return <code>true</code> if production ended, <code>false</code> else.
+     */
+    public boolean isProduced()
+    {
+        return producibleEnded;
+    }
+
+    /**
+     * Check if going to resource.
+     * 
+     * @return <code>true</code> if going to resource, <code>false</code> else.
+     */
+    public boolean isGotoResource()
+    {
+        return gotoResource;
+    }
+
+    /**
+     * Get the extracting resource type.
+     * 
+     * @return The extracting resource type, <code>null</code> if none.
+     */
+    public String getExtractResource()
+    {
+        return extractResource;
+    }
+
+    /**
+     * Get the carrying resource type.
+     * 
+     * @return The carrying resource type, <code>null</code> if none.
+     */
+    public String getCarryResource()
+    {
+        return carryResource;
+    }
+
+    /**
+     * Reset states flag.
+     */
+    public void resetFlags()
+    {
+        moveStarted = false;
+        moveArrived = false;
+        attackStarted = false;
+        producibleEnded = false;
+        extractResource = null;
     }
 }

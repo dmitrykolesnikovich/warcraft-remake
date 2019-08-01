@@ -36,7 +36,7 @@ final class StateExtractGold extends State
     {
         super(model, animation);
 
-        addTransition(StateCarryGold.class, () -> Player.isGold(carryResource));
+        addTransition(StateCarryGold.class, () -> Player.isGold(model.getCarryResource()));
     }
 
     @Override

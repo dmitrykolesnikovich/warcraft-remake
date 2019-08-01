@@ -16,8 +16,6 @@
  */
 package com.b3dgs.warcraft;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
@@ -45,9 +43,9 @@ public final class Player implements Updatable
      * @param type The type to check.
      * @return <code>true</code> if wood, <code>false</code> else.
      */
-    public static boolean isWood(AtomicReference<String> type)
+    public static boolean isWood(String type)
     {
-        return TYPE_WOOD.equals(type.get());
+        return TYPE_WOOD.equals(type);
     }
 
     /**
@@ -56,9 +54,9 @@ public final class Player implements Updatable
      * @param type The type to check.
      * @return <code>true</code> if gold, <code>false</code> else.
      */
-    public static boolean isGold(AtomicReference<String> type)
+    public static boolean isGold(String type)
     {
-        return TYPE_GOLD.equals(type.get());
+        return TYPE_GOLD.equals(type);
     }
 
     private final Race race;

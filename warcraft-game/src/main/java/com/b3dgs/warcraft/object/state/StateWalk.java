@@ -36,10 +36,10 @@ final class StateWalk extends State
     {
         super(model, animation);
 
-        addTransition(StateExtractWood.class, () -> moveArrived.get() && Player.isWood(extractResource));
-        addTransition(StateExtractGold.class, () -> moveArrived.get() && Player.isGold(extractResource));
+        addTransition(StateExtractWood.class, () -> model.isMoveArrived() && Player.isWood(model.getExtractResource()));
+        addTransition(StateExtractGold.class, () -> model.isMoveArrived() && Player.isGold(model.getExtractResource()));
         addTransition(StateIdle.class,
-                      () -> moveArrived.get() && !attackStarted.get() && extractResource.get() == null);
-        addTransition(StateAttack.class, () -> moveArrived.get() && attackStarted.get());
+                      () -> model.isMoveArrived() && !model.isAttackStarted() && model.getExtractResource() == null);
+        addTransition(StateAttack.class, () -> model.isMoveArrived() && model.isAttackStarted());
     }
 }
