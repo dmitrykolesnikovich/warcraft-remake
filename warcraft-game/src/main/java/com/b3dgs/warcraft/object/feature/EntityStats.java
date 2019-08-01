@@ -20,7 +20,6 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -38,6 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.StatsConfig;
 
@@ -52,12 +52,14 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private static final int ENTITY_INFO_MARGIN = 4;
     private static final int TEXT_X = 6;
     private static final int TEXT_Y = 98;
+    private static final int BAR_LIFE_WIDTH = 27;
+    private static final int BAR_LIFE_HEIGHT = 3;
     private static final int BAR_LIFE_X = 31;
     private static final int BAR_LIFE_Y = 16;
 
-    private final Image stats = Drawable.loadImage(Medias.create("entity_stats.png"));
+    private final Image stats = Util.getImage("entity_stats.png", Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
+    private final Bar barHealth = new Bar(BAR_LIFE_WIDTH, BAR_LIFE_HEIGHT);
     private final Alterable health;
-    private final Bar barHealth = new Bar(27, 3);
     private final String name;
     private final Race race;
     private final boolean mover;
@@ -103,13 +105,10 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
 
         text = services.get(SpriteFont.class);
 
-        stats.load();
-        stats.prepare();
-        stats.setLocation(Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
-
         final Media media = setup.getIconFile();
         icon = Drawable.loadImage(media);
         icon.load();
+        icon.prepare();
         icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
 
         name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
@@ -187,13 +186,9 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     {
         stats.render(g);
         barHealth.render(g);
+        icon.render(g);
 
         text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, name);
-
-        if (icon != null)
-        {
-            icon.render(g);
-        }
     }
 
     @Override

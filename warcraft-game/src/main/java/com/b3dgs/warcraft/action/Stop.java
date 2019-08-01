@@ -27,12 +27,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
- * Move action.
+ * Stop action.
  */
 public class Stop extends ActionModel
 {
     /**
-     * Create move action.
+     * Create action.
      * 
      * @param services The services reference.
      * @param setup The setup reference.

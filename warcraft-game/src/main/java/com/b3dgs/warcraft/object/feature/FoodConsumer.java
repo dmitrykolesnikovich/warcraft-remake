@@ -16,10 +16,16 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import com.b3dgs.lionengine.game.FeatureProvider;
+import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
+import com.b3dgs.warcraft.Player;
 
 /**
  * Represents food consumption.
@@ -27,8 +33,12 @@ import com.b3dgs.lionengine.game.feature.Setup;
 @FeatureInterface
 public class FoodConsumer extends FeatureModel
 {
+    private final Player player;
+
+    @FeatureGet private Producible producible;
+
     /**
-     * Create food.
+     * Create consumer.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
@@ -36,5 +46,22 @@ public class FoodConsumer extends FeatureModel
     public FoodConsumer(Services services, Setup setup)
     {
         super();
+
+        player = services.get(Player.class);
+    }
+
+    @Override
+    public void prepare(FeatureProvider provider)
+    {
+        super.prepare(provider);
+
+        producible.addListener(new ProducibleListenerVoid()
+        {
+            @Override
+            public void notifyProductionEnded(Producer producer)
+            {
+                player.consumeFood();
+            }
+        });
     }
 }

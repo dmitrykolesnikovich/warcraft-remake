@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
-import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Effect feature implementation.
@@ -34,16 +33,6 @@ public final class Effect extends FeatureModel
 {
     @FeatureGet private Identifiable identifiable;
     @FeatureGet private Animatable animatable;
-
-    /**
-     * Create effect.
-     * 
-     * @param setup The setup reference.
-     */
-    public Effect(Setup setup)
-    {
-        super();
-    }
 
     @Override
     public void prepare(FeatureProvider provider)

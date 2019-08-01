@@ -41,11 +41,11 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
+import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.EntityModel;
@@ -61,8 +61,8 @@ public class BuildButton extends ActionModel
     private static final int TEXT_Y = 193;
     private static final int TEXT_OFFSET_X = 17;
 
-    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
-    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
+    private final Image wood = Util.getImage("wood.png", TEXT_WOOD_X, TEXT_Y - 2);
+    private final Image gold = Util.getImage("gold.png", TEXT_GOLD_X, TEXT_Y - 1);
 
     private final Media target;
     private final CostConfig config;
@@ -86,15 +86,6 @@ public class BuildButton extends ActionModel
 
         target = Medias.create(setup.getText("media").split("/"));
         config = CostConfig.imports(new Configurer(target));
-
-        wood.load();
-        gold.load();
-
-        wood.prepare();
-        gold.prepare();
-
-        wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
-        gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
 
         hud.addListener(() ->
         {

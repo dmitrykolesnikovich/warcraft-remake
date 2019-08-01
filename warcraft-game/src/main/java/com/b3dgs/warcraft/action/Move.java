@@ -18,7 +18,6 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -30,10 +29,8 @@ import com.b3dgs.warcraft.object.feature.EntitySfx;
  */
 public class Move extends ActionModel
 {
-    private final Cursor cursor;
-
     /**
-     * Create move action.
+     * Create action.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
@@ -41,8 +38,6 @@ public class Move extends ActionModel
     public Move(Services services, Setup setup)
     {
         super(services, setup);
-
-        cursor = services.get(Cursor.class);
     }
 
     @Override

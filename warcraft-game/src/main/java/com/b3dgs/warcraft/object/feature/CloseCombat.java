@@ -20,8 +20,6 @@ import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Services;
-import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
@@ -34,17 +32,6 @@ public class CloseCombat extends FeatureModel
 {
     @FeatureGet private Attacker attacker;
     @FeatureGet private EntitySfx sfx;
-
-    /**
-     * Create thrower.
-     * 
-     * @param services The services reference.
-     * @param setup The setup reference.
-     */
-    public CloseCombat(Services services, Setup setup)
-    {
-        super();
-    }
 
     @Override
     public void prepare(FeatureProvider provider)

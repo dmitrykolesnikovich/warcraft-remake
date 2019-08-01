@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.action;
 import java.util.List;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Bar;
@@ -37,12 +36,12 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.Util;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
-import com.b3dgs.warcraft.object.feature.FoodConsumer;
 
 /**
  * Produce button action.
@@ -70,16 +69,16 @@ public class ProduceButton extends ActionModel
         final Bar bar = new Bar(PROGRESS_WIDTH, PROGRESS_HEIGHT);
         bar.setLocation(PROGRESS_X + PROGRESS_OFFSET, PROGRESS_Y + PROGRESS_OFFSET);
         bar.setWidthPercent(0);
-        bar.setHeightPercent(100);
-        bar.setColorForeground(com.b3dgs.warcraft.constant.Constant.COLOR_HEALTH_GOOD);
+        bar.setHeightPercent(com.b3dgs.lionengine.Constant.HUNDRED);
+        bar.setColorForeground(Constant.COLOR_HEALTH_GOOD);
         return bar;
     }
 
-    private final Image wood = Drawable.loadImage(Medias.create("wood.png"));
-    private final Image gold = Drawable.loadImage(Medias.create("gold.png"));
+    private final Image wood = Util.getImage("wood.png", TEXT_WOOD_X, TEXT_Y - 2);
+    private final Image gold = Util.getImage("gold.png", TEXT_GOLD_X, TEXT_Y - 1);
+    private final Image progressBackground = Util.getImage("progress.png", PROGRESS_X, PROGRESS_Y);
+    private final Image progressPercent = Util.getImage("progress_percent.png", PROGRESS_X, PROGRESS_Y);
     private final Bar progressBar = createBar();
-    private final Image progressBackground = Drawable.loadImage(Medias.create("progress.png"));
-    private final Image progressPercent = Drawable.loadImage(Medias.create("progress_percent.png"));
     private final CostConfig config;
 
     private boolean producing;
@@ -94,7 +93,7 @@ public class ProduceButton extends ActionModel
     {
         super(services, setup);
 
-        final Media target = Medias.create(setup.getText(ATT_MEDIA).split(Constant.SLASH));
+        final Media target = Medias.create(setup.getText(ATT_MEDIA));
         final Factory factory = services.get(Factory.class);
         final Player player = services.get(Player.class);
 
@@ -110,11 +109,8 @@ public class ProduceButton extends ActionModel
                 player.decreaseGold(config.getGold());
 
                 final Featurable entity = factory.create(target);
-                if (entity.hasFeature(FoodConsumer.class))
-                {
-                    player.consumeFood();
-                }
                 final Producible producible = entity.getFeature(Producible.class);
+                // TODO clear listener once production done
                 producible.addListener(createListener(producible));
 
                 final List<Selectable> selection = selector.getSelection();
@@ -126,23 +122,6 @@ public class ProduceButton extends ActionModel
                 }
             }
         });
-
-        progressBackground.setLocation(PROGRESS_X, PROGRESS_Y);
-        progressBackground.load();
-        progressBackground.prepare();
-
-        progressPercent.setLocation(PROGRESS_X, PROGRESS_Y);
-        progressPercent.load();
-        progressPercent.prepare();
-
-        wood.load();
-        gold.load();
-
-        wood.prepare();
-        gold.prepare();
-
-        wood.setLocation(TEXT_WOOD_X, TEXT_Y - 2);
-        gold.setLocation(TEXT_GOLD_X, TEXT_Y - 1);
     }
 
     /**
