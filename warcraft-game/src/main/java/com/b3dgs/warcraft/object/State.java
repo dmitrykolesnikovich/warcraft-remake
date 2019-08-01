@@ -51,9 +51,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListen
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
-import com.b3dgs.warcraft.object.feature.Warehouse;
 
 /**
  * Base state with animation implementation.
@@ -167,7 +167,8 @@ public abstract class State extends StateAbstract
         @Override
         public void notifyStartCarry(String type, int totalQuantity)
         {
-            pathfindable.setDestination(handler.get(Warehouse.class).iterator().next());
+            final Tiled warehouse = Util.getWarehouse(model.getServices());
+            pathfindable.setDestination(warehouse);
             carryResource.set(type);
 
             if (Player.TYPE_WOOD.equals(type))

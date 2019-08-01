@@ -18,8 +18,13 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
+import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.feature.Warehouse;
 
 /**
  * Utility functions.
@@ -41,6 +46,27 @@ public final class Util
         image.prepare();
         image.setLocation(x, y);
         return image;
+    }
+
+    /**
+     * Get player warehouse.
+     * 
+     * @param services The services reference.
+     * @return The player warehouse, <code>null</code> if none.
+     */
+    public static Tiled getWarehouse(Services services)
+    {
+        final Handler handler = services.get(Handler.class);
+        final Player player = services.get(Player.class);
+
+        for (final Warehouse warehouse : handler.get(Warehouse.class))
+        {
+            if (player.owns(warehouse.getFeature(EntityStats.class).getRace()))
+            {
+                return warehouse;
+            }
+        }
+        return null;
     }
 
     /**

@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.MirrorableModel;
 import com.b3dgs.lionengine.game.feature.Routines;
@@ -53,10 +52,10 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
+import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.EntityStats;
-import com.b3dgs.warcraft.object.feature.Warehouse;
 import com.b3dgs.warcraft.object.state.StateIdle;
 import com.b3dgs.warcraft.object.state.StateProducing;
 
@@ -140,7 +139,6 @@ public class Entity extends FeaturableModel
             }
         });
 
-        final Handler handler = services.get(Handler.class);
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()
         {
@@ -157,7 +155,7 @@ public class Entity extends FeaturableModel
             @Override
             public boolean canCarry()
             {
-                final Tiled warehouse = handler.get(Warehouse.class).iterator().next();
+                final Tiled warehouse = Util.getWarehouse(services);
                 return UtilMath.getDistance(pathfindable.getInTileX(),
                                             pathfindable.getInTileY(),
                                             warehouse.getInTileX(),
