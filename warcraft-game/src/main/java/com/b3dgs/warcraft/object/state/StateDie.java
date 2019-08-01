@@ -47,7 +47,12 @@ final class StateDie extends State
         super.enter();
 
         model.getFeature(EntitySfx.class).onDead();
-        model.getFeature(Selectable.class).onSelection(false);
+        final Selectable selectable = model.getFeature(Selectable.class);
+        selectable.onSelection(false);
+        if (selector.getSelection().remove(selectable))
+        {
+            hud.clearMenus();
+        }
         collidable.setEnabled(false);
         pathfindable.clearPath();
     }

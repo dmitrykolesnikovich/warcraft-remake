@@ -34,6 +34,8 @@ import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
@@ -69,7 +71,11 @@ public abstract class State extends StateAbstract
     /** Map transition reference. */
     protected final MapTileTransition mapTransition;
     /** Resources reference. */
-    protected final Player resources;
+    protected final Player player;
+    /** Selector reference. */
+    protected final Selector selector;
+    /** Hud reference. */
+    protected final Hud hud;
 
     /** Identifiable reference. */
     protected final Identifiable identifiable;
@@ -198,11 +204,11 @@ public abstract class State extends StateAbstract
             model.setVisible(false);
             if (Player.TYPE_WOOD.equals(type))
             {
-                resources.increaseWood(totalQuantity);
+                player.increaseWood(totalQuantity);
             }
             else if (Player.TYPE_GOLD.equals(type))
             {
-                resources.increaseGold(totalQuantity);
+                player.increaseGold(totalQuantity);
             }
         }
 
@@ -242,7 +248,9 @@ public abstract class State extends StateAbstract
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
         mapTransition = map.getFeature(MapTileTransition.class);
-        resources = services.get(Player.class);
+        player = services.get(Player.class);
+        selector = services.get(Selector.class);
+        hud = services.get(Hud.class);
 
         identifiable = model.getFeature(Identifiable.class);
         animatable = model.getFeature(Animatable.class);
