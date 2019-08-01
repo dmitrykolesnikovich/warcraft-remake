@@ -33,6 +33,9 @@ public final class Constant
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
 
+    /** Debug flag. */
+    public static final boolean DEBUG = true;
+
     /** Corpse layer. */
     public static final int LAYER_BUILDING = 1;
     /** Buildings layer. */

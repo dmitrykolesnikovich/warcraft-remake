@@ -127,6 +127,10 @@ public class Entity extends FeaturableModel
 
         final Producer producer = addFeatureAndGet(new ProducerModel(services));
         producer.setStepsSpeed(1.0);
+        if (Constant.DEBUG)
+        {
+            producer.setStepsSpeed(50);
+        }
         producer.addListener(new ProducerListenerVoid()
         {
             @Override

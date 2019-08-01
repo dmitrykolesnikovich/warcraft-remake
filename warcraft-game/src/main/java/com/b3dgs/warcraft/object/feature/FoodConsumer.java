@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.constant.Constant;
 
 /**
  * Represents food consumption.
@@ -55,13 +56,16 @@ public class FoodConsumer extends FeatureModel
     {
         super.prepare(provider);
 
-        producible.addListener(new ProducibleListenerVoid()
+        if (!Constant.DEBUG)
         {
-            @Override
-            public void notifyProductionEnded(Producer producer)
+            producible.addListener(new ProducibleListenerVoid()
             {
-                player.consumeFood();
-            }
-        });
+                @Override
+                public void notifyProductionEnded(Producer producer)
+                {
+                    player.consumeFood();
+                }
+            });
+        }
     }
 }

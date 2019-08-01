@@ -102,6 +102,10 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
 
         final StatsConfig config = StatsConfig.imports(setup);
         health = new Alterable(config.getHealth());
+        if (Constant.DEBUG)
+        {
+            health.setMax(10);
+        }
 
         text = services.get(SpriteFont.class);
 

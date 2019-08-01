@@ -113,8 +113,13 @@ public final class Player implements Updatable
             }
         };
 
-        wood.set(com.b3dgs.lionengine.Constant.THOUSAND * 2);
-        gold.set(com.b3dgs.lionengine.Constant.THOUSAND * 2);
+        wood.set(com.b3dgs.lionengine.Constant.THOUSAND);
+        gold.set(com.b3dgs.lionengine.Constant.THOUSAND);
+        if (Constant.DEBUG)
+        {
+            wood.set(com.b3dgs.lionengine.Constant.THOUSAND * com.b3dgs.lionengine.Constant.THOUSAND);
+            gold.set(com.b3dgs.lionengine.Constant.THOUSAND * com.b3dgs.lionengine.Constant.THOUSAND);
+        }
 
         currentWood = wood.getCurrent();
         currentGold = gold.getCurrent();
