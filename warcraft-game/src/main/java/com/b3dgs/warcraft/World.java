@@ -136,13 +136,11 @@ public class World extends WorldGame
         cursor.setInputDevice(pointer);
         cursor.setViewer(camera);
 
-        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 42, 58);
-        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 27, 12);
+        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 3, 48);
+        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 40, 8);
 
-        createBase(Race.HUMAN, 48, 55);
-        createBase(Race.ORC, 33, 10);
-
-        spawn(Race.HUMAN, "archer", 42, 55);
+        createBase(Race.HUMAN, 8, 56);
+        createBase(Race.ORC, 46, 14);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
@@ -164,6 +162,8 @@ public class World extends WorldGame
 
         if (player.owns(race))
         {
+            player.increaseFood();
+            player.increaseFood();
             player.increaseFood();
             camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
                             townhall.getY() + (townhall.getHeight() - camera.getHeight()) / 2);
