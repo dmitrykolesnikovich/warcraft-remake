@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.EntityModel;
 
 /**
  * Right click extraction implementation.
@@ -48,6 +49,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
 
     @FeatureGet private Extractor extractor;
     @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private EntityModel model;
     @FeatureGet private EntitySfx sfx;
     @FeatureGet private EntityStats stats;
 
@@ -86,22 +88,26 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     @Override
     public void execute()
     {
-        extractor.stopExtraction();
         if (player.owns(stats.getRace()))
         {
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);
+
             pathfindable.setDestination(tx, ty);
 
-            final Tile tree = map.getTile(tx, ty);
-            if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
+            if (model.getCarryResource() == null)
             {
-                extractor.setResource(Player.TYPE_WOOD, tree);
-                extractor.startExtraction();
-            }
-            else
-            {
-                extractGoldmine(tx, ty);
+                extractor.stopExtraction();
+                final Tile tree = map.getTile(tx, ty);
+                if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
+                {
+                    extractor.setResource(Player.TYPE_WOOD, tree);
+                    extractor.startExtraction();
+                }
+                else
+                {
+                    extractGoldmine(tx, ty);
+                }
             }
             sfx.onOrdered();
         }
