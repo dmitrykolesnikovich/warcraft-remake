@@ -16,16 +16,14 @@
  */
 package com.b3dgs.warcraft.object.state;
 
+import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.game.feature.Layerable;
-import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
-import com.b3dgs.warcraft.object.State;
 
 /**
- * Dead state implementation.
+ * Die with gold state implementation.
  */
-public class StateDead extends State
+final class StateDieWood extends StateDie
 {
     /**
      * Create the state.
@@ -33,17 +31,10 @@ public class StateDead extends State
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    StateDead(EntityModel model, Animation animation)
+    StateDieWood(EntityModel model, Animation animation)
     {
         super(model, animation);
-    }
 
-    @Override
-    public void enter()
-    {
-        super.enter();
-
-        model.getFeature(Layerable.class)
-             .setLayer(Integer.valueOf(Constant.LAYER_CORPSE), Integer.valueOf(Constant.LAYER_CORPSE));
+        addTransition(StateDeadWood.class, () -> is(AnimState.FINISHED));
     }
 }

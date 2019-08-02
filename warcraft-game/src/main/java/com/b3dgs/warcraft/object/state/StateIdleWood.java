@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Idle with wood state implementation.
@@ -36,8 +37,13 @@ public final class StateIdleWood extends State
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, () -> !model.isMoveStarted() && model.getCarryResource() == null);
-        addTransition(StateWalk.class, () -> model.isMoveStarted() && model.getCarryResource() == null);
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
+        addTransition(StateIdle.class,
+                      () -> stats.getLife() > 0 && model.isMoveStarted() && model.getCarryResource() == null);
+        addTransition(StateWalk.class,
+                      () -> stats.getLife() > 0 && model.isMoveStarted() && model.getCarryResource() == null);
         addTransition(StateCarryWood.class, () -> model.isMoveStarted() && Player.isWood(model.getCarryResource()));
+        addTransition(StateDieWood.class, () -> stats.getLife() == 0);
     }
 }

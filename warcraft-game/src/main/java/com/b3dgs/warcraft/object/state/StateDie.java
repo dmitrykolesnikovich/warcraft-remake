@@ -18,25 +18,13 @@ package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.game.feature.collidable.Collidable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.EntityModel;
-import com.b3dgs.warcraft.object.State;
-import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
- * Die state implementation.
+ * Die base state implementation.
  */
-final class StateDie extends State
+class StateDie extends StateDieBase
 {
-    private final Collidable collidable = model.getFeature(Collidable.class);
-    private final Pathfindable pathfindable = model.getFeature(Pathfindable.class);
-    private final Selector selector = model.getServices().get(Selector.class);
-    private final Hud hud = model.getServices().get(Hud.class);
-
     /**
      * Create the state.
      * 
@@ -48,21 +36,5 @@ final class StateDie extends State
         super(model, animation);
 
         addTransition(StateDead.class, () -> is(AnimState.FINISHED));
-    }
-
-    @Override
-    public void enter()
-    {
-        super.enter();
-
-        model.getFeature(EntitySfx.class).onDead();
-        final Selectable selectable = model.getFeature(Selectable.class);
-        selectable.onSelection(false);
-        if (selector.getSelection().remove(selectable))
-        {
-            hud.clearMenus();
-        }
-        collidable.setEnabled(false);
-        pathfindable.clearPath();
     }
 }

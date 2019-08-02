@@ -35,6 +35,8 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.state.StateDead;
+import com.b3dgs.warcraft.object.state.StateDeadGold;
+import com.b3dgs.warcraft.object.state.StateDeadWood;
 
 /**
  * Represents something that can decay.
@@ -89,7 +91,9 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
         checkDead = extrp ->
         {
             if (stats.getLife() == 0
-                && stateHandler.isState(StateDead.class)
+                && (stateHandler.isState(StateDead.class)
+                    || stateHandler.isState(StateDeadGold.class)
+                    || stateHandler.isState(StateDeadWood.class))
                 && animatable.is(AnimState.FINISHED)
                 && !tick.isStarted())
             {

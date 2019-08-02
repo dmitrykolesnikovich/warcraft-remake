@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object.state;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Carry wood state implementation.
@@ -35,7 +36,10 @@ final class StateCarryWood extends State
     {
         super(model, animation);
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
         addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
         addTransition(StateIdleWood.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
+        addTransition(StateDieWood.class, () -> stats.getLife() == 0);
     }
 }

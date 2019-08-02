@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -37,6 +38,7 @@ import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
+import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
@@ -52,12 +54,13 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
  * Entity model implementation.
  */
 @FeatureInterface
-public final class EntityModel extends FeatureModel
+public final class EntityModel extends FeatureModel implements Recyclable
 {
     private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
     {
@@ -188,6 +191,7 @@ public final class EntityModel extends FeatureModel
     @FeatureGet private Extractor extractor;
     @FeatureGet private Attacker attacker;
     @FeatureGet private Producible producible;
+    @FeatureGet private StateHandler stateHandler;
 
     private boolean moveStarted;
     private boolean moveArrived;
@@ -361,5 +365,19 @@ public final class EntityModel extends FeatureModel
         attackStarted = false;
         producibleEnded = false;
         extractResource = null;
+    }
+
+    @Override
+    public void recycle()
+    {
+        attacker.stopAttack();
+        pathfindable.stopMoves();
+        extractor.stopExtraction();
+        collidable.setEnabled(true);
+        selectable.onSelection(false);
+        resetFlags();
+        carryResource = null;
+        visible = true;
+        stateHandler.changeState(StateIdle.class);
     }
 }

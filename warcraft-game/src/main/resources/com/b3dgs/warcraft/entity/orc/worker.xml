@@ -19,7 +19,11 @@
 	<lionengine:animation name="carrygold" start="41" end="45" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="carrywood" start="66" end="70" speed="0.1875" reversed="true" repeat="true"/>
 	<lionengine:animation name="die" start="116" end="117" speed="0.1375" reversed="false" repeat="false"/>
+    <lionengine:animation name="diegold" start="120" end="121" speed="0.1375" reversed="false" repeat="false"/>
+    <lionengine:animation name="diewood" start="124" end="125" speed="0.1375" reversed="false" repeat="false"/>
 	<lionengine:animation name="dead" start="128" end="128" speed="0.1375" reversed="false" repeat="false"/>
+    <lionengine:animation name="deadgold" start="130" end="130" speed="0.1375" reversed="false" repeat="false"/>
+    <lionengine:animation name="deadwood" start="132" end="132" speed="0.1375" reversed="false" repeat="false"/>
     <lionengine:pathfindable>
         <lionengine:path category="ground" cost="1" block="false">
             <lionengine:movement>UP</lionengine:movement>
