@@ -47,11 +47,13 @@ public class Move extends ActionModel
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
-            selection.get(i).getFeature(Pathfindable.class).setDestination(cursor);
-        }
-        if (n == 1)
-        {
-            selection.get(0).getFeature(EntitySfx.class).onOrdered();
+            final Selectable selectable = selection.get(i);
+            selectable.getFeature(Pathfindable.class).setDestination(cursor);
+
+            if (i == 0)
+            {
+                selection.get(0).getFeature(EntitySfx.class).onOrdered();
+            }
         }
     }
 }

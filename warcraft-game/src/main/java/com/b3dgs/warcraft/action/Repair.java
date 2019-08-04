@@ -44,9 +44,14 @@ public class Repair extends ActionModel
     {
         final List<Selectable> selection = selector.getSelection();
         final int n = selection.size();
-        if (n == 1)
+        for (int i = 0; i < n; i++)
         {
-            selection.get(0).getFeature(EntitySfx.class).onOrdered();
+            final Selectable selectable = selection.get(i);
+
+            if (i == 0)
+            {
+                selectable.getFeature(EntitySfx.class).onOrdered();
+            }
         }
     }
 }

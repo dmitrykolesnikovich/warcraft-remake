@@ -50,16 +50,18 @@ public class Attack extends ActionModel
         {
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);
+            final Selectable selectable = selection.get(i);
 
             for (final Integer id : mapPath.getObjectsId(tx, ty))
             {
                 final Transformable transformable = handler.get(id).getFeature(Transformable.class);
-                selection.get(i).getFeature(Attacker.class).attack(transformable);
+                selectable.getFeature(Attacker.class).attack(transformable);
             }
-        }
-        if (n == 1)
-        {
-            selection.get(0).getFeature(EntitySfx.class).onOrdered();
+
+            if (i == 0)
+            {
+                selectable.getFeature(EntitySfx.class).onOrdered();
+            }
         }
     }
 }

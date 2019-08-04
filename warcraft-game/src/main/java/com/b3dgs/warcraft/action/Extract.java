@@ -47,11 +47,13 @@ public class Extract extends ActionModel
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
-            selection.get(i).getFeature(RightClickExtract.class).execute();
-        }
-        if (n == 1)
-        {
-            selection.get(0).getFeature(EntitySfx.class).onOrdered();
+            final Selectable selectable = selection.get(i);
+            selectable.getFeature(RightClickExtract.class).execute();
+
+            if (i == 0)
+            {
+                selectable.getFeature(EntitySfx.class).onOrdered();
+            }
         }
     }
 }
