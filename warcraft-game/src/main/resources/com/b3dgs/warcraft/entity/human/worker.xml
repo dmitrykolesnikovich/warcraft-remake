@@ -46,6 +46,7 @@
         <lionengine:action path="action/human/stop.xml"/>
         <lionengine:action path="action/human/repair.xml"/>
         <lionengine:action path="action/human/extract.xml"/>
+        <lionengine:action path="action/human/carry.xml"/>
         <lionengine:action path="action/human/building_standard.xml">
             <lionengine:action path="action/human/build_farm.xml"/>
             <lionengine:action path="action/human/build_barracks.xml"/>

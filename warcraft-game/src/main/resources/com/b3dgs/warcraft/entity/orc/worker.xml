@@ -46,6 +46,7 @@
         <lionengine:action path="action/orc/stop.xml"/>
         <lionengine:action path="action/orc/repair.xml"/>
         <lionengine:action path="action/orc/extract.xml"/>
+        <lionengine:action path="action/orc/carry.xml"/>
         <lionengine:action path="action/orc/building_standard.xml">
             <lionengine:action path="action/orc/build_farm.xml"/>
             <lionengine:action path="action/orc/build_barracks.xml"/>

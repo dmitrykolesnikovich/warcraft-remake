@@ -16,6 +16,8 @@
  */
 package com.b3dgs.warcraft.action;
 
+import java.util.List;
+
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -26,12 +28,14 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
@@ -87,10 +91,20 @@ public class BuildButton extends ActionModel
         target = Medias.create(setup.getText("media").split("/"));
         config = CostConfig.imports(new Configurer(target));
 
-        hud.addListener(() ->
+        hud.addListener(new HudListener()
         {
-            state.set(actionable);
-            area = null;
+            @Override
+            public void notifyCreated(List<Selectable> selection, Actionable actionable)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void notifyCanceled()
+            {
+                state.set(actionable);
+                area = null;
+            }
         });
     }
 
