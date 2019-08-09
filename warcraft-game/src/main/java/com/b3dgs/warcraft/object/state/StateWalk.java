@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.Repairer;
 
 /**
  * Walk state implementation.
@@ -36,10 +37,13 @@ final class StateWalk extends State
     {
         super(model, animation);
 
+        final boolean repairer = model.hasFeature(Repairer.class);
+
         addTransition(StateExtractWood.class, () -> model.isMoveArrived() && Player.isWood(model.getExtractResource()));
         addTransition(StateExtractGold.class, () -> model.isMoveArrived() && Player.isGold(model.getExtractResource()));
         addTransition(StateIdle.class,
                       () -> model.isMoveArrived() && !model.isAttackStarted() && model.getExtractResource() == null);
-        addTransition(StateAttack.class, () -> model.isMoveArrived() && model.isAttackStarted());
+        addTransition(StateAttack.class, () -> model.isMoveArrived() && model.isAttackStarted() && !repairer);
+        addTransition(StateRepair.class, () -> model.isMoveArrived() && model.isAttackStarted() && repairer);
     }
 }

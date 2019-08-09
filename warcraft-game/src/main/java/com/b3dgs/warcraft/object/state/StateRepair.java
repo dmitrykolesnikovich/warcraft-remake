@@ -16,38 +16,53 @@
  */
 package com.b3dgs.warcraft.object.state;
 
+import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Player;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntityStats;
-import com.b3dgs.warcraft.object.feature.Repairer;
 
 /**
- * Idle state implementation.
+ * Repair state implementation.
  */
-public final class StateIdle extends State
+final class StateRepair extends State
 {
+    private final Attacker attacker = model.getFeature(Attacker.class);
+    private final Pathfindable pathfindable = model.getFeature(Pathfindable.class);
+    private final Animation animation;
+
     /**
      * Create the state.
      * 
      * @param model The model reference.
      * @param animation The animation reference.
      */
-    StateIdle(EntityModel model, Animation animation)
+    StateRepair(EntityModel model, Animation animation)
     {
         super(model, animation);
 
-        final EntityStats stats = model.getFeature(EntityStats.class);
-        final boolean repairer = model.hasFeature(Repairer.class);
+        this.animation = animation;
 
-        addTransition(StateExtractWood.class, () -> Player.isWood(model.getExtractResource()));
-        addTransition(StateExtractGold.class, () -> Player.isGold(model.getExtractResource()));
-        addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
-        addTransition(StateCarryGold.class, () -> Player.isGold(model.getCarryResource()));
-        addTransition(StateWalk.class, model::isMoveStarted);
-        addTransition(StateAttack.class, () -> model.isAttackStarted() && !repairer);
-        addTransition(StateRepair.class, () -> model.isAttackStarted() && repairer);
-        addTransition(StateDie.class, () -> stats.getLife() == 0);
+        addTransition(StateIdle.class, () -> is(AnimState.FINISHED));
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        pathfindable.pointTo(attacker.getTarget().getFeature(Pathfindable.class));
+        attacker.setAttackFrame(animation.getLast());
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        if (attacker.getTarget().getFeature(EntityStats.class).isFullHealth())
+        {
+            attacker.stopAttack();
+        }
     }
 }

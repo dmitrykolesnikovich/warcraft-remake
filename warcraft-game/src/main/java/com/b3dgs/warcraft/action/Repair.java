@@ -18,10 +18,14 @@ package com.b3dgs.warcraft.action;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
+import com.b3dgs.warcraft.object.feature.Reparable;
 
 /**
  * Repair action.
@@ -46,7 +50,19 @@ public class Repair extends ActionModel
         final int n = selection.size();
         for (int i = 0; i < n; i++)
         {
+            final int tx = map.getInTileX(cursor);
+            final int ty = map.getInTileY(cursor);
             final Selectable selectable = selection.get(i);
+
+            for (final Integer id : mapPath.getObjectsId(tx, ty))
+            {
+                final Featurable featurable = handler.get(id);
+                if (featurable.hasFeature(Reparable.class))
+                {
+                    final Transformable transformable = featurable.getFeature(Transformable.class);
+                    selectable.getFeature(Attacker.class).attack(transformable);
+                }
+            }
 
             if (i == 0)
             {

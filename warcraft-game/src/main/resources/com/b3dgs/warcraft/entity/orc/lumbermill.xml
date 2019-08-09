@@ -3,6 +3,7 @@
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Reparable</lionengine:feature>
     <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
     <lionengine:surface image="lumbermill.png" icon="lumbermill_icon.png"/>
     <lionengine:frames horizontal="2" vertical="1"/>

@@ -135,6 +135,19 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     }
 
     /**
+     * Restore health.
+     * 
+     * @param value The health to restore.
+     * @return <code>true</code> if full health, <code>false</code> else.
+     */
+    public boolean heal(int value)
+    {
+        health.increase(value);
+        updateHealthBar();
+        return health.isFull();
+    }
+
+    /**
      * Get current life percent.
      * 
      * @return The current life percent.
@@ -142,6 +155,16 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     public int getLife()
     {
         return health.getPercent();
+    }
+
+    /**
+     * Check if full health.
+     * 
+     * @return <code>true</code> if full health, <code>false</code> else.
+     */
+    public boolean isFullHealth()
+    {
+        return health.isFull();
     }
 
     /**
