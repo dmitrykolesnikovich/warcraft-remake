@@ -54,7 +54,7 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
     @FeatureGet private Transformable transformable;
     @FeatureGet private EntityStats stats;
 
-    private int oldLife;
+    private int oldHealth;
 
     /**
      * Create feature.
@@ -91,8 +91,8 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
     @Override
     public void update(double extrp)
     {
-        final int current = stats.getLife();
-        if (current != oldLife)
+        final int current = stats.getHealthPercent();
+        if (current != oldHealth)
         {
             if (current == 0)
             {
@@ -113,7 +113,7 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
                 burn.stop();
                 renderable = RenderableVoid.getInstance();
             }
-            oldLife = current;
+            oldHealth = current;
         }
         if (current < Constant.HEALTH_PERCENT_WARN)
         {
@@ -132,6 +132,6 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
     {
         burn.stop();
         renderable = RenderableVoid.getInstance();
-        oldLife = 0;
+        oldHealth = 0;
     }
 }

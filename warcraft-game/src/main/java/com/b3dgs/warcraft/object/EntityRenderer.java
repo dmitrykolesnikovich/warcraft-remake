@@ -101,7 +101,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
             orientation = pathfindable.getOrientation();
         }
         int frameOffset = orientation.ordinal();
-        if (stats.getLife() == 0)
+        if (stats.getHealthPercent() == 0)
         {
             frameOffset /= Orientation.ORIENTATIONS_NUMBER_HALF;
         }

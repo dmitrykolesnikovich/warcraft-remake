@@ -52,13 +52,13 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private static final int ENTITY_INFO_MARGIN = 4;
     private static final int TEXT_X = 6;
     private static final int TEXT_Y = 98;
-    private static final int BAR_LIFE_WIDTH = 27;
-    private static final int BAR_LIFE_HEIGHT = 3;
-    private static final int BAR_LIFE_X = 31;
-    private static final int BAR_LIFE_Y = 16;
+    private static final int BAR_HEALTH_WIDTH = 27;
+    private static final int BAR_HEALTH_HEIGHT = 3;
+    private static final int BAR_HEALTH_X = 31;
+    private static final int BAR_HEALTH_Y = 16;
 
     private final Image stats = Util.getImage("entity_stats.png", Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
-    private final Bar barHealth = new Bar(BAR_LIFE_WIDTH, BAR_LIFE_HEIGHT);
+    private final Bar barHealth = new Bar(BAR_HEALTH_WIDTH, BAR_HEALTH_HEIGHT);
     private final Alterable health;
     private final String name;
     private final Race race;
@@ -118,7 +118,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
 
         barHealth.setColorForeground(Constant.COLOR_HEALTH_GOOD);
-        barHealth.setLocation((int) (icon.getX() + BAR_LIFE_X), (int) (icon.getY() + BAR_LIFE_Y));
+        barHealth.setLocation((int) (icon.getX() + BAR_HEALTH_X), (int) (icon.getY() + BAR_HEALTH_Y));
     }
 
     /**
@@ -148,11 +148,11 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     }
 
     /**
-     * Get current life percent.
+     * Get current health percent.
      * 
-     * @return The current life percent.
+     * @return The current health percent.
      */
-    public int getLife()
+    public int getHealthPercent()
     {
         return health.getPercent();
     }

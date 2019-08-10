@@ -40,6 +40,6 @@ final class StateCarryWood extends State
 
         addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
         addTransition(StateIdleWood.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
-        addTransition(StateDieWood.class, () -> stats.getLife() == 0);
+        addTransition(StateDieWood.class, () -> stats.getHealthPercent() == 0);
     }
 }

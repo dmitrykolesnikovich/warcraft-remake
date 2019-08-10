@@ -58,7 +58,7 @@ public class Explodable extends FeatureModel implements Routine
     @Override
     public void update(double extrp)
     {
-        if (stats.getLife() == 0)
+        if (stats.getHealthPercent() == 0)
         {
             ((com.b3dgs.warcraft.object.Effect) spawner.spawn(Medias.create(Folder.EFFECTS, "explode.xml"),
                                                               transformable)).start(transformable.getWidth(), 0);

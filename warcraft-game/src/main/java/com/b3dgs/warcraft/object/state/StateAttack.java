@@ -60,7 +60,7 @@ final class StateAttack extends State
     @Override
     public void update(double extrp)
     {
-        if (attacker.getTarget().getFeature(EntityStats.class).getLife() == 0)
+        if (attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0)
         {
             attacker.stopAttack();
         }

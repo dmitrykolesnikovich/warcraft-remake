@@ -90,7 +90,7 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
         };
         checkDead = extrp ->
         {
-            if (stats.getLife() == 0
+            if (stats.getHealthPercent() == 0
                 && (stateHandler.isState(StateDead.class)
                     || stateHandler.isState(StateDeadGold.class)
                     || stateHandler.isState(StateDeadWood.class))

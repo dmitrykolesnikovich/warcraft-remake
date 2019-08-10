@@ -40,7 +40,7 @@ final class StateCarryGold extends State
 
         addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
         addTransition(StateIdleGold.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
-        addTransition(StateDieGold.class, () -> stats.getLife() == 0);
+        addTransition(StateDieGold.class, () -> stats.getHealthPercent() == 0);
     }
 
     @Override

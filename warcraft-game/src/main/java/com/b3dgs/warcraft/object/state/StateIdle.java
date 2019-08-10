@@ -48,6 +48,6 @@ public final class StateIdle extends State
         addTransition(StateWalk.class, model::isMoveStarted);
         addTransition(StateAttack.class, () -> model.isAttackStarted() && !repairer);
         addTransition(StateRepair.class, () -> model.isAttackStarted() && repairer);
-        addTransition(StateDie.class, () -> stats.getLife() == 0);
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 }
