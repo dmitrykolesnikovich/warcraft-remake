@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.Player;
@@ -49,6 +50,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     private final Viewer viewer;
     private final SpriteAnimated surface;
     private final Player player;
+    private final FogOfWar fogOfWar;
 
     @FeatureGet private EntityModel model;
     @FeatureGet private Transformable transformable;
@@ -74,6 +76,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
 
         viewer = services.get(Viewer.class);
         player = services.get(Player.class);
+        fogOfWar = services.get(FogOfWar.class);
         surface = model.getSurface();
     }
 
@@ -136,7 +139,7 @@ public class EntityRenderer extends FeatureModel implements Displayable
     @Override
     public void render(Graphic g)
     {
-        if (model.isVisible())
+        if (model.isVisible() && fogOfWar.isVisible(pathfindable))
         {
             updateFrameOffset();
             surface.setLocation(viewer, transformable);

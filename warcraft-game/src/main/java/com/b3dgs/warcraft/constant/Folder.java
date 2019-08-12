@@ -39,6 +39,8 @@ public final class Folder
     public static final String NEUTRAL = UtilFolder.getPathSeparator(Medias.getSeparator(), ENTITIES, "neutral");
     /** Effects folder. */
     public static final String MAPS = "map";
+    /** Fog of war folder. */
+    public static final String FOG = "fog";
     /** Levels folder. */
     public static final String MENU = "menu";
     /** Musics folder. */

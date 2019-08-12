@@ -20,7 +20,9 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.game.Persistable;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
+import com.b3dgs.lionengine.game.feature.HandlerListener;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
@@ -29,6 +31,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
@@ -38,9 +43,17 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.CircuitsConfig;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
+import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.feature.tile.map.viewer.MapTileViewerModel;
+import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
+import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Handle world map data.
@@ -53,6 +66,17 @@ public class WorldMap implements Persistable
     private final MapTilePath mapPath;
     private final MapTileTransition mapTransition;
     private final MapTileCircuit mapCircuit;
+    private final FogOfWar fogOfWar;
+    private final Handler handler;
+    private final Player player;
+    private final PathfindableListener listener = new PathfindableListenerVoid()
+    {
+        @Override
+        public void notifyMoving(Pathfindable pathfindable)
+        {
+            fogOfWar.updateHidden(pathfindable.getFeature(Fovable.class));
+        }
+    };
 
     /**
      * Create the world.
@@ -69,10 +93,79 @@ public class WorldMap implements Persistable
         mapPath = services.add(map.addFeatureAndGet(new MapTilePathModel(services)));
         mapTransition = map.addFeatureAndGet(new MapTileTransitionModel(services));
         mapCircuit = map.addFeatureAndGet(new MapTileCircuitModel(services));
+        fogOfWar = services.add(map.addFeatureAndGet(new FogOfWar()));
+        player = services.get(Player.class);
 
-        map.addFeature(new MapTileViewerModel(services));
+        final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
+        mapViewer.addRenderer(fogOfWar);
 
-        services.get(Handler.class).add(map);
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create(Folder.FOG, "hide.png"), 16, 16);
+        hide.load();
+        hide.prepare();
+
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create(Folder.FOG, "fog.png"), 16, 16);
+        fog.load();
+        fog.prepare();
+
+        fogOfWar.setTilesheet(hide, fog);
+        fogOfWar.setEnabled(true, false);
+
+        handler = services.get(Handler.class);
+        handler.add(map);
+        handler.addListener(new HandlerListener()
+        {
+            @Override
+            public void notifyHandlableAdded(Featurable featurable)
+            {
+                handleAdded(featurable);
+            }
+
+            @Override
+            public void notifyHandlableRemoved(Featurable featurable)
+            {
+                handleRemoved(featurable);
+            }
+        });
+    }
+
+    /**
+     * Handle added featurable.
+     * 
+     * @param featurable The added featurable.
+     */
+    private void handleAdded(Featurable featurable)
+    {
+        if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
+        {
+            featurable.getFeature(Pathfindable.class).addListener(listener);
+        }
+    }
+
+    /**
+     * Handle removed featurable.
+     * 
+     * @param featurable The removed featurable.
+     */
+    private void handleRemoved(Featurable featurable)
+    {
+        if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
+        {
+            featurable.getFeature(Pathfindable.class).removeListener(listener);
+        }
+    }
+
+    /**
+     * Force fog update.
+     */
+    public void updateFog()
+    {
+        for (final Fovable fovable : handler.get(Fovable.class))
+        {
+            if (player.owns(fovable.getFeature(EntityStats.class).getRace()))
+            {
+                fogOfWar.updateHidden(fovable);
+            }
+        }
     }
 
     @Override
@@ -91,5 +184,6 @@ public class WorldMap implements Persistable
         mapPath.loadPathfinding(Medias.create(parent, PathfindingConfig.FILENAME));
         mapTransition.loadTransitions(Medias.create(parent, TransitionsConfig.FILENAME));
         mapCircuit.loadCircuits(Medias.create(parent, CircuitsConfig.FILENAME));
+        fogOfWar.create(map, Medias.create(Folder.FOG, "fog.xml"));
     }
 }

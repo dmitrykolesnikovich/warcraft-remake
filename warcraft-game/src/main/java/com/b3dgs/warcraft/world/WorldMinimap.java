@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.Minimap;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.warcraft.Player;
@@ -39,6 +41,7 @@ public class WorldMinimap implements Resource, Renderable
     private final Handler handler;
     private final Player player;
     private final Minimap minimap;
+    private final FogOfWar fogOfWar;
 
     /**
      * Create the world.
@@ -53,6 +56,7 @@ public class WorldMinimap implements Resource, Renderable
         map = services.get(MapTile.class);
         handler = services.get(Handler.class);
         player = services.get(Player.class);
+        fogOfWar = services.get(FogOfWar.class);
 
         minimap = new Minimap(map);
     }
@@ -67,14 +71,50 @@ public class WorldMinimap implements Resource, Renderable
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
             g.setColor(player.getColor(entity.getFeature(EntityStats.class).getRace()));
-            g.drawRect(Constant.MINIMAP_X + entity.getInTileX(),
-                       Constant.MINIMAP_Y - entity.getInTileY() - entity.getInTileHeight() + map.getInTileHeight(),
+            g.drawRect(getX(entity.getInTileX()),
+                       getY(entity.getInTileY(), entity.getInTileHeight()),
                        entity.getInTileWidth(),
                        entity.getInTileHeight(),
                        true);
         }
+
+        for (int tx = 0; tx < map.getInTileWidth() - 1; tx++)
+        {
+            for (int ty = 0; ty < map.getInTileHeight() - 1; ty++)
+            {
+                if (!fogOfWar.isVisited(tx, ty))
+                {
+                    g.setColor(ColorRgba.BLACK);
+                    g.drawRect(getX(tx), getY(ty, 1) - 1, 1, 1, false);
+                }
+            }
+        }
+
         g.setColor(Constant.COLOR_VIEW);
         camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
+    }
+
+    /**
+     * Get horizontal on minimap.
+     * 
+     * @param tx The location in tile to get.
+     * @return The location on minimap.
+     */
+    private int getX(int tx)
+    {
+        return Constant.MINIMAP_X + tx;
+    }
+
+    /**
+     * Get vertical on minimap.
+     * 
+     * @param ty The location in tile to get.
+     * @param th The height.
+     * @return The location on minimap.
+     */
+    private int getY(int ty, int th)
+    {
+        return Constant.MINIMAP_Y - ty + map.getInTileHeight() - th;
     }
 
     @Override

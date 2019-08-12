@@ -52,6 +52,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -96,6 +97,7 @@ public class Entity extends FeaturableModel
         addFeature(new EntitySfx(services, setup));
         addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
+        addFeatureAndGet(new FovableModel(services)).setFov(4);
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
 
