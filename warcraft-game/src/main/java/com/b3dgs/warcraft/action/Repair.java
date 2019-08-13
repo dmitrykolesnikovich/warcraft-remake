@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Reparable;
 
 /**
@@ -43,6 +44,23 @@ public class Repair extends ActionModel
         super(services, setup);
     }
 
+    /**
+     * Assign repair.
+     * 
+     * @param featurable The featurable reference.
+     * @param selectable The selectable reference.
+     */
+    private void assign(Featurable featurable, Selectable selectable)
+    {
+        final Transformable transformable = featurable.getFeature(Transformable.class);
+        if (selectable.getFeature(EntityStats.class)
+                      .getRace()
+                      .equals(featurable.getFeature(EntityStats.class).getRace()))
+        {
+            selectable.getFeature(Attacker.class).attack(transformable);
+        }
+    }
+
     @Override
     protected void assign()
     {
@@ -59,8 +77,7 @@ public class Repair extends ActionModel
                 final Featurable featurable = handler.get(id);
                 if (featurable.hasFeature(Reparable.class))
                 {
-                    final Transformable transformable = featurable.getFeature(Transformable.class);
-                    selectable.getFeature(Attacker.class).attack(transformable);
+                    assign(featurable, selectable);
                 }
             }
 
