@@ -168,6 +168,9 @@ public class World extends WorldGame
         createBase(Race.HUMAN, 8, 56);
         createBase(Race.ORC, 46, 14);
 
+        handler.updateAdd();
+        worldMap.updateFog();
+
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.play();
     }
