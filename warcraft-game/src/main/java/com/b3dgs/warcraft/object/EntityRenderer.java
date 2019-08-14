@@ -145,9 +145,11 @@ public class EntityRenderer extends FeatureModel implements Displayable
             surface.setLocation(viewer, transformable);
             surface.setMirror(mirrorable.getMirror());
 
-            surface.render(g);
+            if (model.isDisplay())
+            {
+                surface.render(g);
+            }
             collidable.render(g);
-
             if (selectable.isSelected())
             {
                 drawSelection(g);

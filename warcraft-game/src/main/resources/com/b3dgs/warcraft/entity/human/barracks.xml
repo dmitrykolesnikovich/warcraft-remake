@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:featurable name="Barracks" xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Buildable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Reparable</lionengine:feature>

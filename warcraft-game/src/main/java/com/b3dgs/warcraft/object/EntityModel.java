@@ -195,6 +195,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
     private String carryResource;
 
     private boolean visible = true;
+    private boolean display = true;
 
     /**
      * Create model.
@@ -249,6 +250,16 @@ public final class EntityModel extends FeatureModel implements Recyclable
     }
 
     /**
+     * Set display flag.
+     * 
+     * @param display The display flag.
+     */
+    public void setDisplay(boolean display)
+    {
+        this.display = display;
+    }
+
+    /**
      * Check visible flag.
      * 
      * @return <code>true</code> if visible, <code>false</code> else.
@@ -256,6 +267,16 @@ public final class EntityModel extends FeatureModel implements Recyclable
     public boolean isVisible()
     {
         return visible;
+    }
+
+    /**
+     * Check display flag.
+     * 
+     * @return The display flag.
+     */
+    public boolean isDisplay()
+    {
+        return display;
     }
 
     /**
@@ -371,6 +392,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
         resetFlags();
         carryResource = null;
         visible = true;
+        display = true;
         stateHandler.changeState(StateIdle.class);
     }
 }

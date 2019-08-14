@@ -85,6 +85,11 @@ public final class Constant
     /** Health percent alert value. */
     public static final int HEALTH_PERCENT_ALERT = 25;
 
+    /** Construct phase 1 percent. */
+    public static final int CONSTRUCT_PERCENT_PHASE1 = 25;
+    /** Construct phase 2 percent. */
+    public static final int CONSTRUCT_PERCENT_PHASE2 = 50;
+
     /** Color camera view. */
     public static final ColorRgba COLOR_VIEW = new ColorRgba(200, 200, 200);
     /** Color current selection. */
