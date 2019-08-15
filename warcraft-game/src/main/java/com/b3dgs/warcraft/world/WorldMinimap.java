@@ -28,8 +28,10 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntityStats;
+import com.b3dgs.warcraft.object.feature.Warehouse;
 
 /**
  * Handle world minimap data.
@@ -70,7 +72,15 @@ public class WorldMinimap implements Resource, Renderable
     {
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
-            g.setColor(player.getColor(entity.getFeature(EntityStats.class).getRace()));
+            final Race race = entity.getFeature(EntityStats.class).getRace();
+            if (player.owns(race) && entity.hasFeature(Warehouse.class))
+            {
+                g.setColor(Constant.COLOR_WAREHOUSE);
+            }
+            else
+            {
+                g.setColor(player.getColor(race));
+            }
             g.drawRect(getX(entity.getInTileX()),
                        getY(entity.getInTileY(), entity.getInTileHeight()),
                        entity.getInTileWidth(),

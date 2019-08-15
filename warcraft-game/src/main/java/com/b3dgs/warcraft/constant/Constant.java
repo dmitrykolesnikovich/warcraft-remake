@@ -96,6 +96,8 @@ public final class Constant
     public static final ColorRgba COLOR_SELECTION = new ColorRgba(0, 200, 0);
     /** Color allies. */
     public static final ColorRgba COLOR_ALLIES = new ColorRgba(0, 200, 0);
+    /** Color warehouse. */
+    public static final ColorRgba COLOR_WAREHOUSE = new ColorRgba(200, 200, 0);
     /** Color neutral. */
     public static final ColorRgba COLOR_NEUTRAL = new ColorRgba(200, 200, 200);
     /** Color enemies. */
