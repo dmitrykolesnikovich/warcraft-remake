@@ -52,6 +52,7 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
     private final Spawner spawner;
     private final Updatable checkDead;
     private final Updatable checkCorpse;
+
     private Updatable check;
 
     @FeatureGet private Identifiable identifiable;

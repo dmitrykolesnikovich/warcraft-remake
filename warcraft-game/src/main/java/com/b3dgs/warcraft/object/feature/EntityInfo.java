@@ -22,6 +22,7 @@ import java.util.List;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
  * Handle the selected entities information on Hud.
  */
 @FeatureInterface
-public class EntityInfo extends FeatureModel implements Renderable, SelectionListener
+public class EntityInfo extends FeatureModel implements Renderable, SelectionListener, Recyclable
 {
     private static final int COUNT_X = 5;
     private static final int COUNT_Y = 88;
@@ -45,8 +46,9 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
     private final SpriteFont text;
     private final Renderable infoSingle;
     private final Renderable infoArmy;
-    private Renderable info = RenderableVoid.getInstance();
-    private List<Selectable> selection = Collections.emptyList();
+
+    private Renderable info;
+    private List<Selectable> selection;
     private int selectionCount;
 
     /**
@@ -101,5 +103,13 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
         {
             info = RenderableVoid.getInstance();
         }
+    }
+
+    @Override
+    public void recycle()
+    {
+        info = RenderableVoid.getInstance();
+        selection = Collections.emptyList();
+        selectionCount = 0;
     }
 }

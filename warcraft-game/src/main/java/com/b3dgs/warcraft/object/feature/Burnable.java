@@ -43,18 +43,19 @@ import com.b3dgs.warcraft.constant.Folder;
 @FeatureInterface
 public class Burnable extends FeatureModel implements Routine, Recyclable
 {
-    private final Animation light = new Animation("light", 1, 4, 0.2, false, true);
-    private final Animation strong = new Animation("strong", 5, 8, 0.2, false, true);
+    private static final Animation LIGHT = new Animation("light", 1, 4, 0.2, false, true);
+    private static final Animation STRONG = new Animation("strong", 5, 8, 0.2, false, true);
+
     private final SpriteAnimated burn;
 
     private final Viewer viewer;
     private final Renderable effect;
-    private Renderable renderable = RenderableVoid.getInstance();
+
+    private Renderable renderable;
+    private int oldHealth;
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private EntityStats stats;
-
-    private int oldHealth;
 
     /**
      * Create feature.
@@ -100,12 +101,12 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
             }
             else if (current < Constant.HEALTH_PERCENT_ALERT)
             {
-                burn.play(strong);
+                burn.play(STRONG);
                 renderable = effect;
             }
             else if (current < Constant.HEALTH_PERCENT_WARN)
             {
-                burn.play(light);
+                burn.play(LIGHT);
                 renderable = effect;
             }
             else
