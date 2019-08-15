@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -40,6 +42,7 @@ public class WorldSelection
 
     private final Player player;
     private final Hud hud;
+    private final FogOfWar fogOfWar;
 
     /**
      * Create the world.
@@ -52,6 +55,7 @@ public class WorldSelection
 
         player = services.get(Player.class);
         hud = services.get(Hud.class);
+        fogOfWar = services.get(FogOfWar.class);
 
         final Selector selector = services.get(Selector.class);
         selector.addListener(new SelectionListener()
@@ -101,7 +105,10 @@ public class WorldSelection
             {
                 moving.set(true);
             }
-            if (stats.getHealthPercent() == 0 || moving.get() && !mover || !player.owns(current) && race.get() != null)
+            if (stats.getHealthPercent() == 0
+                || moving.get() && !mover
+                || !player.owns(current) && race.get() != null
+                || !fogOfWar.isVisible(selectable.getFeature(Pathfindable.class)))
             {
                 return false;
             }

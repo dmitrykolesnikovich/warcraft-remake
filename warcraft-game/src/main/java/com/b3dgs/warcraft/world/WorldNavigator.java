@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
@@ -41,6 +42,7 @@ public class WorldNavigator implements Updatable
     private final Cursor cursor;
     private final MapTile map;
     private final MapTilePath mapPath;
+    private final FogOfWar fogOfWar;
     private final Selector selector;
     private final InputDevicePointer pointer;
     private final InputDeviceDirectional directional;
@@ -58,6 +60,7 @@ public class WorldNavigator implements Updatable
         cursor = services.get(Cursor.class);
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
+        fogOfWar = map.getFeature(FogOfWar.class);
         selector = services.get(Selector.class);
         pointer = services.get(InputDevicePointer.class);
         directional = services.get(InputDeviceDirectional.class);
@@ -178,8 +181,13 @@ public class WorldNavigator implements Updatable
     {
         if (cursor.getSurfaceId().intValue() != Constant.CURSOR_ID_ORDER)
         {
+            final int tx = map.getInTileX(cursor);
+            final int ty = map.getInTileY(cursor);
+
             if (cursor.getClick() == 0
-                && !mapPath.getObjectsId(map.getInTileX(cursor), map.getInTileY(cursor)).isEmpty())
+                && fogOfWar.isVisited(tx, ty)
+                && !fogOfWar.isFogged(tx, ty)
+                && !mapPath.getObjectsId(tx, ty).isEmpty())
             {
                 cursor.setRenderingOffset(-5, -5);
                 cursor.setSurfaceId(Constant.CURSOR_ID_OVER);
