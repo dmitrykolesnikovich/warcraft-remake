@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.editor.project.ProjectFactory;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.feature.tile.TileRef;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppender;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
@@ -124,14 +123,14 @@ public class ApplicationConfiguration
 
                         final GeneratorParameter parameters = new GeneratorParameter();
                         parameters.add(new PrefMapSize(16, 16, 64, 64))
-                                  .add(new PrefMapFill(new TileRef(0, 0)))
-                                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 0, 8, 64), 4, 60))
-                                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(56, 0, 64, 64), 4, 60))
-                                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 0, 64, 8), 4, 60))
-                                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(0, 56, 64, 64), 4, 60))
-                                  .add(new PrefMapRegion(new TileRef(0, 29), new TileArea(12, 12, 56, 56), 2, 250))
-                                  .add(new PrefMapRegion(new TileRef(0, 12), new TileArea(24, 24, 40, 40), 2, 80))
-                                  .add(new PrefMapRegion(new TileRef(0, 0), new TileArea(4, 4, 60, 60), 1, 100));
+                                  .add(new PrefMapFill(0))
+                                  .add(new PrefMapRegion(12, new TileArea(0, 0, 8, 64), 4, 60))
+                                  .add(new PrefMapRegion(12, new TileArea(56, 0, 64, 64), 4, 60))
+                                  .add(new PrefMapRegion(12, new TileArea(0, 0, 64, 8), 4, 60))
+                                  .add(new PrefMapRegion(12, new TileArea(0, 56, 64, 64), 4, 60))
+                                  .add(new PrefMapRegion(29, new TileArea(12, 12, 56, 56), 2, 250))
+                                  .add(new PrefMapRegion(12, new TileArea(24, 24, 40, 40), 2, 80))
+                                  .add(new PrefMapRegion(0, new TileArea(4, 4, 60, 60), 1, 100));
 
                         final MapGenerator generator = new MapGeneratorImpl();
                         final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(WorldModel.INSTANCE.getServices()));

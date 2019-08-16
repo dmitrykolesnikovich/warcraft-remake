@@ -125,7 +125,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
             if (Player.TYPE_WOOD.equals(type))
             {
                 final Tile tile = mapPath.getTile(extractor.getResourceLocation());
-                map.setTile(tile.getInTileX(), tile.getInTileY(), tile.getSheet(), Constant.TILE_NUM_TREE_CUT);
+                map.setTile(tile.getInTileX(), tile.getInTileY(), Constant.TILE_NUM_TREE_CUT);
                 mapTransition.resolve(map.getTile(tile.getInTileX(), tile.getInTileY()));
 
                 final Tile next = Util.getClosestTree(map, tile, transformable);
