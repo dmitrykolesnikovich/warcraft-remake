@@ -118,21 +118,28 @@ public final class EntityModel extends FeatureModel implements Recyclable
         public void notifyStartCarry(String type, int totalQuantity)
         {
             final Tiled warehouse = Util.getWarehouse(services);
-            pathfindable.setDestination(warehouse);
-            extractResource = null;
-            carryResource = type;
-
-            if (Player.TYPE_WOOD.equals(type))
+            if (warehouse != null)
             {
-                final Tile tile = mapPath.getTile(extractor.getResourceLocation());
-                map.setTile(tile.getInTileX(), tile.getInTileY(), Constant.TILE_NUM_TREE_CUT);
-                mapTransition.resolve(map.getTile(tile.getInTileX(), tile.getInTileY()));
+                pathfindable.setDestination(warehouse);
+                extractResource = null;
+                carryResource = type;
 
-                final Tile next = Util.getClosestTree(map, tile, transformable);
-                if (next != null)
+                if (Player.TYPE_WOOD.equals(type))
                 {
-                    extractor.setResource(type, next);
+                    final Tile tile = mapPath.getTile(extractor.getResourceLocation());
+                    map.setTile(tile.getInTileX(), tile.getInTileY(), Constant.TILE_NUM_TREE_CUT);
+                    mapTransition.resolve(map.getTile(tile.getInTileX(), tile.getInTileY()));
+
+                    final Tile next = Util.getClosestTree(map, tile, transformable);
+                    if (next != null)
+                    {
+                        extractor.setResource(type, next);
+                    }
                 }
+            }
+            else
+            {
+                extractor.stopExtraction();
             }
         }
 
