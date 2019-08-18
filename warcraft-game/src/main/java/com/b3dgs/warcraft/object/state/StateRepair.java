@@ -45,7 +45,10 @@ final class StateRepair extends State
 
         this.animation = animation;
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
         addTransition(StateIdle.class, () -> is(AnimState.FINISHED));
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 
     @Override

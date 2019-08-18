@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Repairer;
 
 /**
@@ -37,6 +38,7 @@ final class StateWalk extends State
     {
         super(model, animation);
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
         final boolean repairer = model.hasFeature(Repairer.class);
 
         addTransition(StateExtractWood.class, () -> model.isMoveArrived() && Player.isWood(model.getExtractResource()));
@@ -45,5 +47,6 @@ final class StateWalk extends State
                       () -> model.isMoveArrived() && !model.isAttackStarted() && model.getExtractResource() == null);
         addTransition(StateAttack.class, () -> model.isMoveArrived() && model.isAttackStarted() && !repairer);
         addTransition(StateRepair.class, () -> model.isMoveArrived() && model.isAttackStarted() && repairer);
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 }

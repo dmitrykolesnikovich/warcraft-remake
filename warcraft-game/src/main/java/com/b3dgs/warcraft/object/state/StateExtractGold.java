@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Animation;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Extract gold state implementation.
@@ -36,7 +37,10 @@ final class StateExtractGold extends State
     {
         super(model, animation);
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
         addTransition(StateCarryGold.class, () -> Player.isGold(model.getCarryResource()));
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 
     @Override

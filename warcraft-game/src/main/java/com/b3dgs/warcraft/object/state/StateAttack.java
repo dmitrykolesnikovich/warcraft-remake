@@ -43,9 +43,11 @@ final class StateAttack extends State
     {
         super(model, animation);
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
         this.animation = animation;
 
         addTransition(StateIdle.class, () -> is(AnimState.FINISHED));
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 
     @Override

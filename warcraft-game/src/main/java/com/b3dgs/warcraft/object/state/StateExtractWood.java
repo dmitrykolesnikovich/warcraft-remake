@@ -24,6 +24,7 @@ import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Extract wood state implementation.
@@ -59,7 +60,10 @@ final class StateExtractWood extends State
             }
         };
 
+        final EntityStats stats = model.getFeature(EntityStats.class);
+
         addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
+        addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
         addTransition(StateIdle.class, () -> !model.isMoveStarted() && !model.isGotoResource());
         addTransition(StateWalk.class,
                       () -> model.isMoveStarted()
