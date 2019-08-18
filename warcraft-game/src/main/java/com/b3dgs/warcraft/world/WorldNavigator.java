@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
+import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
@@ -31,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.RightClickHandler;
 
 /**
@@ -40,6 +42,7 @@ public class WorldNavigator implements Updatable
 {
     private final Camera camera;
     private final Cursor cursor;
+    private final Handler handler;
     private final MapTile map;
     private final MapTilePath mapPath;
     private final FogOfWar fogOfWar;
@@ -58,6 +61,7 @@ public class WorldNavigator implements Updatable
 
         camera = services.get(Camera.class);
         cursor = services.get(Cursor.class);
+        handler = services.get(Handler.class);
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
         fogOfWar = map.getFeature(FogOfWar.class);
@@ -187,7 +191,7 @@ public class WorldNavigator implements Updatable
             if (cursor.getClick() == 0
                 && fogOfWar.isVisited(tx, ty)
                 && !fogOfWar.isFogged(tx, ty)
-                && !mapPath.getObjectsId(tx, ty).isEmpty())
+                && isValidEntity(tx, ty))
             {
                 cursor.setRenderingOffset(-5, -5);
                 cursor.setSurfaceId(Constant.CURSOR_ID_OVER);
@@ -198,6 +202,25 @@ public class WorldNavigator implements Updatable
                 cursor.setSurfaceId(Constant.CURSOR_ID);
             }
         }
+    }
+
+    /**
+     * Check if pointing valid entity.
+     * 
+     * @param tx The horizontal tile pointed.
+     * @param ty The vertical tile pointed.
+     * @return <code>true</code> if valid over, <code>false</code> else.
+     */
+    private boolean isValidEntity(int tx, int ty)
+    {
+        for (final Integer id : mapPath.getObjectsId(tx, ty))
+        {
+            if (handler.get(id).getFeature(EntityStats.class).getHealthPercent() > 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
