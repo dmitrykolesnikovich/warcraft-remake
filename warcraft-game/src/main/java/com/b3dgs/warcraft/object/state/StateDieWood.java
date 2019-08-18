@@ -23,7 +23,7 @@ import com.b3dgs.warcraft.object.EntityModel;
 /**
  * Die with gold state implementation.
  */
-final class StateDieWood extends StateDie
+final class StateDieWood extends StateDieBase
 {
     /**
      * Create the state.
