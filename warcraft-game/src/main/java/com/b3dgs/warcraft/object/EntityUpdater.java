@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Entity updating implementation.
@@ -48,6 +49,7 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     @FeatureGet private Producer producer;
     @FeatureGet private Selectable selectable;
     @FeatureGet private Attacker attacker;
+    @FeatureGet private EntityStats stats;
     @FeatureGet private Routines routines;
 
     /**
@@ -87,10 +89,13 @@ public class EntityUpdater extends FeatureModel implements Refreshable
     {
         routines.update(extrp);
         stateHandler.update(extrp);
-        pathfindable.update(extrp);
-        attacker.update(extrp);
-        producer.update(extrp);
-        extractor.update(extrp);
+        if (stats.getHealthPercent() > 0)
+        {
+            pathfindable.update(extrp);
+            attacker.update(extrp);
+            producer.update(extrp);
+            extractor.update(extrp);
+        }
         stateHandler.postUpdate();
         updateMirror();
         mirrorable.update(extrp);
