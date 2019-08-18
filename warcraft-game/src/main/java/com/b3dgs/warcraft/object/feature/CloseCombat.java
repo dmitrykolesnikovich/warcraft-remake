@@ -44,7 +44,10 @@ public class CloseCombat extends FeatureModel
             public void notifyAttackEnded(int damages, Transformable target)
             {
                 sfx.onAttacked();
-                target.getFeature(EntityStats.class).applyDamages(damages);
+                if (target.getFeature(EntityStats.class).applyDamages(damages))
+                {
+                    attacker.stopAttack();
+                }
             }
         });
     }
