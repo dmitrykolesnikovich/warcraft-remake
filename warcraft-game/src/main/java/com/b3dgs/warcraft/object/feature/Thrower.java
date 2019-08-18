@@ -79,7 +79,10 @@ public class Thrower extends FeatureModel implements Routine
                 if (other != collidable)
                 {
                     Sfx.NEUTRAL_ARROWHIT.play();
-                    other.getFeature(EntityStats.class).applyDamages(attacker.getAttackDamages());
+                    if (other.getFeature(EntityStats.class).applyDamages(attacker.getAttackDamages()))
+                    {
+                        attacker.stopAttack();
+                    }
                     launchable.getFeature(Identifiable.class).destroy();
                 }
             });
