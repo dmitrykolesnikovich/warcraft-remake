@@ -20,7 +20,9 @@ import java.util.List;
 
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 
@@ -48,6 +50,8 @@ public class Move extends ActionModel
         for (int i = 0; i < n; i++)
         {
             final Selectable selectable = selection.get(i);
+            selectable.getFeature(Attacker.class).stopAttack();
+            selectable.getFeature(Extractor.class).stopExtraction();
             selectable.getFeature(Pathfindable.class).setDestination(cursor);
 
             if (i == 0)

@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.Player;
 
@@ -35,6 +36,7 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     private final Player player;
 
     @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Attacker attacker;
     @FeatureGet private EntitySfx sfx;
     @FeatureGet private EntityStats stats;
 
@@ -57,6 +59,7 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     {
         if (player.owns(stats.getRace()))
         {
+            attacker.stopAttack();
             pathfindable.setDestination(cursor);
             sfx.onOrdered();
         }
