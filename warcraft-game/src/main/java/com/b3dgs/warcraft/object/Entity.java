@@ -97,7 +97,7 @@ public class Entity extends FeaturableModel
         addFeature(new EntitySfx(services, setup));
         addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
-        addFeatureAndGet(new FovableModel(services)).setFov(4);
+        addFeature(new FovableModel(services, setup));
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
 

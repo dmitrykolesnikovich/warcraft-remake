@@ -37,8 +37,9 @@
         <lionengine:action path="action/human/attack_sword.xml"/>
     </lionengine:actions>
     <lionengine:attacker delay="60" distance_min="0" distance_max="0" damages_min="1" damages_max="9"/>
+    <lionengine:fovable fov="4"/>
     <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_SWORD1;NEUTRAL_SWORD2;NEUTRAL_SWORD3" dead="HUMAN_DEAD"/>
-    <stats health="60" fov="4"/>
+    <stats health="60"/>
     <cost wood="0" gold="400"/>
     <decay corpse="effect/corpse_human.xml" delay="200"/>
 </lionengine:featurable>

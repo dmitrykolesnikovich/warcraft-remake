@@ -18,7 +18,8 @@
         <lionengine:action path="action/human/produce_footman.xml" unique="true"/>
         <lionengine:action path="action/human/produce_archer.xml" unique="true"/>
     </lionengine:actions>
+    <lionengine:fovable fov="3"/>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
-    <stats health="100" fov="3"/>
+    <stats health="100"/>
     <cost wood="500" gold="600"/>
 </lionengine:featurable>

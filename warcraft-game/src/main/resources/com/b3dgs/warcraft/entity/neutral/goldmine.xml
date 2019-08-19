@@ -12,5 +12,5 @@
     <lionengine:animation name="idle" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="die" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:extractable type="gold" quantity="25000"/>
-	<stats health="1000" fov="3"/>
+	<stats health="1000"/>
 </lionengine:featurable>

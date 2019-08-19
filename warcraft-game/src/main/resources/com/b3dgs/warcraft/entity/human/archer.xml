@@ -43,9 +43,10 @@
             <lionengine:force velocity="10" sensibility="0" vx="5" vy="5"/>
         </lionengine:launchable>
     </lionengine:launcher>
+    <lionengine:fovable fov="5"/>
     <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_BOWFIRE" dead="HUMAN_DEAD"/>
     <offsetDeath x="8" y="8"/>
-    <stats health="60" fov="5"/>
+    <stats health="60"/>
     <cost wood="50" gold="450"/>
     <decay corpse="effect/corpse_human.xml" delay="200"/>
 </lionengine:featurable>

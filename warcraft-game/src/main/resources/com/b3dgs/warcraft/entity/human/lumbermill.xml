@@ -14,7 +14,8 @@
     <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
     <lionengine:producible steps="100"/>
+    <lionengine:fovable fov="3"/>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
-    <stats health="100" fov="3"/>
+    <stats health="100"/>
     <cost wood="500" gold="600"/>
 </lionengine:featurable>

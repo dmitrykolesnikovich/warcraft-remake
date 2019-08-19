@@ -33,8 +33,6 @@ public final class StatsConfig
     public static final String NODE_STATS = "stats";
     /** Health attribute name. */
     public static final String ATT_HEALTH = "health";
-    /** Fov attribute name. */
-    public static final String ATT_FOV = "fov";
     /** Minimum to string length. */
     private static final int MIN_LENGTH = 29;
 
@@ -65,9 +63,8 @@ public final class StatsConfig
 
         final Xml node = root.getChild(NODE_STATS);
         final int health = node.readInteger(ATT_HEALTH);
-        final int fov = node.readInteger(ATT_FOV);
 
-        return new StatsConfig(health, fov);
+        return new StatsConfig(health);
     }
 
     /**
@@ -83,28 +80,23 @@ public final class StatsConfig
 
         final Xml node = new Xml(NODE_STATS);
         node.writeInteger(ATT_HEALTH, config.getHealth());
-        node.writeInteger(ATT_FOV, config.getFov());
 
         return node;
     }
 
     /** The health value. */
     private final int health;
-    /** The fov value. */
-    private final int fov;
 
     /**
      * Create configuration.
      * 
      * @param health The health value.
-     * @param fov The fov attribute.
      */
-    public StatsConfig(int health, int fov)
+    public StatsConfig(int health)
     {
         super();
 
         this.health = health;
-        this.fov = fov;
     }
 
     /**
@@ -117,16 +109,6 @@ public final class StatsConfig
         return health;
     }
 
-    /**
-     * Get the fov value.
-     * 
-     * @return The fov value.
-     */
-    public int getFov()
-    {
-        return fov;
-    }
-
     /*
      * Object
      */
@@ -137,7 +119,6 @@ public final class StatsConfig
         final int prime = 31;
         int result = 1;
         result = prime * result + health;
-        result = prime * result + fov;
         return result;
     }
 
@@ -153,7 +134,7 @@ public final class StatsConfig
             return false;
         }
         final StatsConfig other = (StatsConfig) object;
-        return other.health == health && other.fov == fov;
+        return other.health == health;
     }
 
     @Override
@@ -162,8 +143,6 @@ public final class StatsConfig
         return new StringBuilder(MIN_LENGTH).append(getClass().getSimpleName())
                                             .append(" [health=")
                                             .append(health)
-                                            .append(", fov=")
-                                            .append(fov)
                                             .append("]")
                                             .toString();
     }

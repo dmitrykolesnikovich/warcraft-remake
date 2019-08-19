@@ -43,8 +43,9 @@
             <lionengine:force velocity="10" sensibility="0" vx="5" vy="5"/>
         </lionengine:launchable>
     </lionengine:launcher>
+    <lionengine:fovable fov="5"/>
     <sfx started="NEUTRAL_CLICK" produced="ORC_READY" selected="ORC_WHAT1;ORC_WHAT2;ORC_WHAT3;ORC_WHAT4" ordered="ORC_YESSIR1;ORC_YESSIR2;ORC_YESSIR3;ORC_YESSIR4" attacked="NEUTRAL_BOWFIRE" dead="ORC_DEAD"/>
-    <stats health="60" fov="5"/>
+    <stats health="60"/>
     <cost wood="50" gold="450"/>
     <decay corpse="effect/corpse_orc.xml" delay="200"/>
 </lionengine:featurable>
