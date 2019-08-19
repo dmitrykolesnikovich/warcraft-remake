@@ -44,15 +44,21 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.SelectableModel;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.ProducerModel;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.feature.producible.ProducibleListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.feature.state.State;
 import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
+import com.b3dgs.warcraft.ProduceProgress;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -79,6 +85,56 @@ public class Entity extends FeaturableModel
     }
 
     /**
+     * Create production listener.
+     * 
+     * @param map The map tile reference.
+     * @param progress The progress bar.
+     * @param producible The producible in production.
+     * @return The created listener.
+     */
+    private static ProducibleListener createListener(MapTile map, ProduceProgress progress, Producible producible)
+    {
+        return new ProducibleListenerVoid()
+        {
+            @Override
+            public void notifyProductionStarted(Producer producer)
+            {
+                producible.getFeature(EntitySfx.class).onStarted();
+                progress.start();
+            }
+
+            @Override
+            public void notifyProductionProgress(Producer producer)
+            {
+                progress.update(producer.getProgressPercent());
+            }
+
+            @Override
+            public void notifyProductionEnded(Producer producer)
+            {
+                teleportOutside(map, producible, producer);
+                producible.getFeature(EntitySfx.class).onProduced();
+                progress.stop();
+            }
+        };
+    }
+
+    /**
+     * Teleport producer outside producible area.
+     * 
+     * @param map The map tile reference.
+     * @param producible The producible reference.
+     * @param producer The producer to teleport.
+     */
+    private static void teleportOutside(MapTile map, Producible producible, Producer producer)
+    {
+        final Pathfindable pathfindable = producible.getFeature(Pathfindable.class);
+        final CoordTile coord = map.getFeature(MapTilePath.class)
+                                   .getFreeTileAround(pathfindable, producer.getFeature(Pathfindable.class));
+        pathfindable.setLocation(coord);
+    }
+
+    /**
      * Create entity.
      * 
      * @param services The services reference.
@@ -95,9 +151,9 @@ public class Entity extends FeaturableModel
         addFeature(new AnimatableModel());
         addFeature(new EntityStats(services, setup));
         addFeature(new EntitySfx(services, setup));
-        addFeature(new ProducibleModel(setup));
         addFeature(new ActionerModel(setup));
         addFeature(new FovableModel(services, setup));
+
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
 
@@ -140,6 +196,10 @@ public class Entity extends FeaturableModel
                 featurable.getFeature(StateHandler.class).changeState(StateProducing.class);
             }
         });
+
+        final ProduceProgress progress = services.get(ProduceProgress.class);
+        final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
+        producible.addListener(createListener(map, progress, producible));
 
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()
