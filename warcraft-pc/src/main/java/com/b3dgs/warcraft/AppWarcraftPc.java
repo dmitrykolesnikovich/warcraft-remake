@@ -37,7 +37,7 @@ public final class AppWarcraftPc
      */
     public static void main(String[] args) // CHECKSTYLE IGNORE LINE: TrailingComment|UncommentedMain
     {
-        EngineAwt.start(Constant.NAME, Constant.VERSION, AppWarcraftPc.class);
+        EngineAwt.start(Constant.PROGRAM_NAME, Constant.PROGRAM_VERSION, AppWarcraftPc.class);
         Loader.start(Config.windowed(Constant.NATIVE.get2x()), Loading.class);
         AudioFactory.addFormat(new WavFormat());
         AudioFactory.addFormat(new AdlMidiFormat());

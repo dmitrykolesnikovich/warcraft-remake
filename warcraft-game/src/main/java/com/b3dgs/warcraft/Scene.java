@@ -18,6 +18,7 @@ package com.b3dgs.warcraft;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.feature.Factory;
@@ -29,6 +30,10 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersisterModel;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.warcraft.constant.Constant;
 
@@ -38,6 +43,29 @@ import com.b3dgs.warcraft.constant.Constant;
 public class Scene extends SequenceGame
 {
     private static final String ERROR_SAVING_MAP = "Error on saving map !";
+    private static final String NAME = Constant.PROGRAM_NAME
+                                       + com.b3dgs.lionengine.Constant.SPACE
+                                       + Constant.PROGRAM_VERSION;
+    private static final String ENGINE = com.b3dgs.lionengine.Constant.ENGINE_NAME
+                                         + com.b3dgs.lionengine.Constant.SPACE
+                                         + com.b3dgs.lionengine.Constant.ENGINE_VERSION;
+
+    /**
+     * Set text data.
+     * 
+     * @param text The text object.
+     * @param value The text value.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param align The align used.
+     */
+    private static void setText(Text text, String value, int x, int y, Align align)
+    {
+        text.setLocation(x, y);
+        text.setAlign(align);
+        text.setText(value);
+        text.setColor(ColorRgba.GRAY_LIGHT);
+    }
 
     /**
      * Import the level and save it.
@@ -66,6 +94,8 @@ public class Scene extends SequenceGame
         }
     }
 
+    private final Text textName = Graphics.createText(9);
+    private final Text textEngine = Graphics.createText(9);
     private final Level level;
 
     /**
@@ -78,6 +108,9 @@ public class Scene extends SequenceGame
         super(context, Constant.NATIVE, World::new);
 
         level = Level.FOREST;
+
+        setText(textEngine, ENGINE, 72, getHeight() - textEngine.getSize() - 11, Align.LEFT);
+        setText(textName, NAME, getWidth() - 8, getHeight() - textName.getSize() - 11, Align.RIGHT);
     }
 
     @Override
@@ -88,5 +121,14 @@ public class Scene extends SequenceGame
             importLevelAndSave(level);
         }
         world.loadFromFile(level.getFile());
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        super.render(g);
+
+        textEngine.render(g);
+        textName.render(g);
     }
 }

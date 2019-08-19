@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 public final class Constant
 {
     /** Application name. */
-    public static final String NAME = "Warcraft Remake";
+    public static final String PROGRAM_NAME = "Warcraft Remake";
     /** Application version. */
-    public static final Version VERSION = Version.create(0, 0, 5);
+    public static final Version PROGRAM_VERSION = Version.create(0, 0, 5);
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 200, 60);
 
