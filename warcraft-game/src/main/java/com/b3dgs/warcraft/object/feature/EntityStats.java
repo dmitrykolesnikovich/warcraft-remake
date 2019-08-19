@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.object.feature;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -109,10 +108,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
 
         text = services.get(SpriteFont.class);
 
-        final Media media = setup.getIconFile();
-        icon = Drawable.loadImage(media);
-        icon.load();
-        icon.prepare();
+        icon = Drawable.loadImage(setup.getIcon());
         icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
 
         name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
