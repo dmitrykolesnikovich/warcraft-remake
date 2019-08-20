@@ -19,12 +19,14 @@ package com.b3dgs.warcraft;
 import com.b3dgs.lionengine.Context;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.ResourceLoader;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.engine.Sequence;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.constant.Gfx;
 
 /**
  * Loading screen.
@@ -34,6 +36,7 @@ public final class Loading extends Sequence
     private static final String IMG_LOADING = "blizzard.png";
 
     private final Image background = Drawable.loadImage(Medias.create(Folder.MENU, IMG_LOADING));
+    private final ResourceLoader<Gfx> loader = new ResourceLoader<>();
 
     private boolean loaded;
 
@@ -47,6 +50,11 @@ public final class Loading extends Sequence
         super(context, Constant.NATIVE);
 
         setSystemCursorVisible(false);
+
+        for (final Gfx gfx : Gfx.values())
+        {
+            loader.add(gfx, gfx.get());
+        }
     }
 
     @Override
@@ -56,6 +64,7 @@ public final class Loading extends Sequence
         background.prepare();
         background.setOrigin(Origin.MIDDLE);
         background.setLocation(getWidth() / 2.0, getHeight() / 2.0);
+        loader.start();
     }
 
     @Override
@@ -77,6 +86,7 @@ public final class Loading extends Sequence
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
+        loader.await();
         background.dispose();
         loaded = false;
     }

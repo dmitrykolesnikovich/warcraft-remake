@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.StatsConfig;
 
 /**
@@ -56,7 +57,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private static final int BAR_HEALTH_X = 31;
     private static final int BAR_HEALTH_Y = 16;
 
-    private final Image stats = Util.getImage("entity_stats.png", Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
+    private final Image stats = Util.getImage(Gfx.HUD_STATS, Constant.ENTITY_INFO_X, Constant.ENTITY_INFO_Y);
     private final Bar barHealth = new Bar(BAR_HEALTH_WIDTH, BAR_HEALTH_HEIGHT);
     private final Alterable health;
     private final String name;

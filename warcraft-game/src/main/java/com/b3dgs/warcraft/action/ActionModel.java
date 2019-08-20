@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.action;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Actionable;
@@ -43,6 +42,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 
 /**
  * Action model implementation.
@@ -105,16 +105,13 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         assignable.setAssign(this::onAssignMap);
         assignable.setClickAssign(1);
 
-        final SpriteAnimated background = Drawable.loadSpriteAnimated(Medias.create("action_background.png"), 2, 1);
+        final SpriteAnimated background = Drawable.loadSpriteAnimated(Gfx.HUD_ACTION_BACKGROUND.getSurface(), 2, 1);
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);
 
         addFeature(new RefreshableModel(extrp -> refresh(extrp, surface, background)));
         addFeature(new DisplayableModel(g -> display(g, surface, background)));
 
         description = actionable.getDescription().toUpperCase(Locale.ENGLISH);
-
-        background.load();
-        background.prepare();
     }
 
     /**

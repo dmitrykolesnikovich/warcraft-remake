@@ -218,6 +218,10 @@ public class Entity extends FeaturableModel
             public boolean canCarry()
             {
                 final Tiled warehouse = Util.getWarehouse(services);
+                if (warehouse == null)
+                {
+                    return false;
+                }
                 return UtilMath.getDistance(pathfindable.getInTileX(),
                                             pathfindable.getInTileY(),
                                             warehouse.getInTileX(),

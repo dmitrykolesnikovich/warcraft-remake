@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 
 /**
  * Progress bar handler for production progress.
@@ -48,8 +49,8 @@ public class ProduceProgress implements Renderable
         return bar;
     }
 
-    private final Image progressBackground = Util.getImage("progress.png", PROGRESS_X, PROGRESS_Y);
-    private final Image progressPercent = Util.getImage("progress_percent.png", PROGRESS_X, PROGRESS_Y);
+    private final Image progressBackground = Util.getImage(Gfx.HUD_PROGRESS, PROGRESS_X, PROGRESS_Y);
+    private final Image progressPercent = Util.getImage(Gfx.HUD_PROGRESS_PERCENT, PROGRESS_X, PROGRESS_Y);
     private final Bar progressBar = createBar();
 
     private boolean producing;

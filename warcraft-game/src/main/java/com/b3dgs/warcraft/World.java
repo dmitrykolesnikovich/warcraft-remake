@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
@@ -93,9 +94,7 @@ public class World extends WorldGame
 
         handler.addComponent(services.add(new ComponentCollision()));
 
-        text = services.add(Drawable.loadSpriteFont(Medias.create("font.png"), Medias.create("font.xml"), 6, 6));
-        text.load();
-        text.prepare();
+        text = services.add(Drawable.loadSpriteFont(Gfx.GAME_FONT.getSurface(), Medias.create("font.xml"), 6, 6));
         text.setLocation(TEXT_X, TEXT_Y);
 
         final Hud hud = services.add(factory.create(Medias.create("hud.xml")));

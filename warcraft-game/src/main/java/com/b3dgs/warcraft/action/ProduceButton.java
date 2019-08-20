@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Util;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.CostConfig;
 
 /**
@@ -45,8 +46,8 @@ public class ProduceButton extends ActionModel
     private static final int TEXT_OFFSET_X = 17;
     private static final String ATT_MEDIA = "media";
 
-    private final Image wood = Util.getImage("wood.png", TEXT_WOOD_X, TEXT_Y - 2);
-    private final Image gold = Util.getImage("gold.png", TEXT_GOLD_X, TEXT_Y - 1);
+    private final Image wood = Util.getImage(Gfx.HUD_WOOD, TEXT_WOOD_X, TEXT_Y - 2);
+    private final Image gold = Util.getImage(Gfx.HUD_GOLD, TEXT_GOLD_X, TEXT_Y - 1);
     private final CostConfig config;
 
     /**

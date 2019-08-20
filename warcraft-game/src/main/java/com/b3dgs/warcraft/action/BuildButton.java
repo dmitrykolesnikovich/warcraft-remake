@@ -51,6 +51,7 @@ import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.CostConfig;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -65,8 +66,8 @@ public class BuildButton extends ActionModel
     private static final int TEXT_Y = 193;
     private static final int TEXT_OFFSET_X = 17;
 
-    private final Image wood = Util.getImage("wood.png", TEXT_WOOD_X, TEXT_Y - 2);
-    private final Image gold = Util.getImage("gold.png", TEXT_GOLD_X, TEXT_Y - 1);
+    private final Image wood = Util.getImage(Gfx.HUD_WOOD, TEXT_WOOD_X, TEXT_Y - 2);
+    private final Image gold = Util.getImage(Gfx.HUD_GOLD, TEXT_GOLD_X, TEXT_Y - 1);
 
     private final Media target;
     private final CostConfig config;

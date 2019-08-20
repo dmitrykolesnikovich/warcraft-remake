@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Handler;
@@ -29,6 +28,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -40,16 +40,14 @@ public final class Util
     /**
      * Get image from path and set location.
      * 
-     * @param path The image path.
+     * @param gfx The image gfx.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The loaded image.
      */
-    public static Image getImage(String path, int x, int y)
+    public static Image getImage(Gfx gfx, int x, int y)
     {
-        final Image image = Drawable.loadImage(Medias.create(path));
-        image.load();
-        image.prepare();
+        final Image image = Drawable.loadImage(gfx.getSurface());
         image.setLocation(x, y);
         return image;
     }
