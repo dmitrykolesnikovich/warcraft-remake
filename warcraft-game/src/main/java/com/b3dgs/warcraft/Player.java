@@ -16,6 +16,9 @@
  */
 package com.b3dgs.warcraft;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
@@ -64,6 +67,7 @@ public final class Player implements Updatable
     private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);
     private final Alterable consumed = new Alterable(99);
+    private final Set<String> unlocked = new HashSet<>();
 
     private final Updatable updateWood;
     private final Updatable updateGold;
@@ -121,6 +125,16 @@ public final class Player implements Updatable
 
         currentWood = wood.getCurrent();
         currentGold = gold.getCurrent();
+    }
+
+    /**
+     * Unlock thrower.
+     * 
+     * @param unlock The elements to unlock.
+     */
+    public void unlock(Set<String> unlock)
+    {
+        unlocked.addAll(unlock);
     }
 
     /**
@@ -298,6 +312,17 @@ public final class Player implements Updatable
     public boolean isAvailableGold(int amount)
     {
         return gold.isEnough(amount);
+    }
+
+    /**
+     * Check if is unlocked.
+     * 
+     * @param value The value to check.
+     * @return <code>true</code> if unlocked, <code>false</code> else.
+     */
+    public boolean isUnlocked(String value)
+    {
+        return unlocked.contains(value);
     }
 
     /**

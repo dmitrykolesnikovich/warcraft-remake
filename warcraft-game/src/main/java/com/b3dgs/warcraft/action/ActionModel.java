@@ -94,6 +94,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         text = services.get(SpriteFont.class);
 
         addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
+        addFeature(new Locker(services, setup));
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setAction(this::onClickButton);

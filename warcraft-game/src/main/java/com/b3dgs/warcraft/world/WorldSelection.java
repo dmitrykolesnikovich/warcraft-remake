@@ -21,8 +21,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
 
+import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
+import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.SelectionListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
@@ -30,6 +33,9 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.action.Locker;
+import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
@@ -74,6 +80,43 @@ public class WorldSelection
             }
         });
         selector.setAccept(createFilter());
+
+        final Cursor cursor = services.get(Cursor.class);
+        hud.addListener(new HudListener()
+        {
+            @Override
+            public void notifyCreated(List<Selectable> selection, Actionable actionable)
+            {
+                if (actionable.getFeature(Locker.class).isLocked(player))
+                {
+                    actionable.setEnabled(false);
+                }
+                else
+                {
+                    for (final Selectable selectable : selection)
+                    {
+                        final boolean carry = selectable.getFeature(EntityModel.class).getCarryResource() != null;
+                        if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+                        {
+                            actionable.setEnabled(carry);
+                        }
+                        else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
+                        {
+                            actionable.setEnabled(!carry);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void notifyCanceled()
+            {
+                cursor.setVisible(true);
+                cursor.setSurfaceId(0);
+                selector.setEnabled(true);
+                hud.setCancelShortcut(() -> false);
+            }
+        });
     }
 
     /**

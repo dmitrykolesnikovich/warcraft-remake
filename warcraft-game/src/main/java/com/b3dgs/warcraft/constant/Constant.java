@@ -109,6 +109,11 @@ public final class Constant
     /** Color health alert. */
     public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(255, 0, 0);
 
+    /** Extract resource description prefix. */
+    public static final String HUD_ACTION_EXTRACT = "Harvest";
+    /** Carry resource description prefix. */
+    public static final String HUD_ACTION_CARRY = "Return";
+
     /** Cursor id. */
     public static final int CURSOR_ID = 0;
     /** Cursor id order. */

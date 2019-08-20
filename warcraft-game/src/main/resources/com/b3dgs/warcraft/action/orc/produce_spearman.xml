@@ -4,4 +4,5 @@
     <lionengine:surface image="produce_spearman.png"/>
     <lionengine:action name="Produce Spearman" description="Train Spearman" x="38" y="118" width="27" height="19"/>
     <media>entity/orc/spearman.xml</media>
+    <lock values="THROWER"/>
 </lionengine:featurable>

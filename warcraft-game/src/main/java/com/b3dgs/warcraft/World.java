@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
@@ -25,7 +24,6 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
@@ -33,8 +31,6 @@ import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
-import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
-import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
@@ -47,7 +43,6 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
-import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
 import com.b3dgs.warcraft.world.WorldNavigator;
@@ -108,35 +103,6 @@ public class World extends WorldGame
 
         navigator = new WorldNavigator(services);
         selection = new WorldSelection(services);
-
-        hud.addListener(new HudListener()
-        {
-            @Override
-            public void notifyCreated(List<Selectable> selection, Actionable actionable)
-            {
-                for (final Selectable selectable : selection)
-                {
-                    final boolean carry = selectable.getFeature(EntityModel.class).getCarryResource() != null;
-                    if (actionable.getDescription().contains("Return"))
-                    {
-                        actionable.setEnabled(carry);
-                    }
-                    else if (actionable.getDescription().contains("Harvest"))
-                    {
-                        actionable.setEnabled(!carry);
-                    }
-                }
-            }
-
-            @Override
-            public void notifyCanceled()
-            {
-                cursor.setVisible(true);
-                cursor.setSurfaceId(0);
-                selector.setEnabled(true);
-                hud.setCancelShortcut(() -> false);
-            }
-        });
     }
 
     @Override
@@ -186,7 +152,6 @@ public class World extends WorldGame
     {
         spawn(race, Unit.WORKER.get(), tx, ty - 2);
         spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
-        spawn(race, Unit.BARRACKS.get(), tx + 6, ty - 2);
         final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
 
         if (player.owns(race))

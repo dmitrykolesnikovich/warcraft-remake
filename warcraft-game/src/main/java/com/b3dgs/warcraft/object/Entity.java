@@ -16,11 +16,17 @@
  */
 package com.b3dgs.warcraft.object;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
@@ -58,6 +64,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.ProduceProgress;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
@@ -72,6 +79,8 @@ import com.b3dgs.warcraft.object.state.StateProducing;
 public class Entity extends FeaturableModel
 {
     private static final int PREFIX = State.class.getSimpleName().length();
+    private static final String NODE_UNLOCK = "unlock";
+    private static final String ATT_VALUES = "values";
 
     /**
      * Get animation name from state class.
@@ -87,13 +96,21 @@ public class Entity extends FeaturableModel
     /**
      * Create production listener.
      * 
-     * @param map The map tile reference.
+     * @param services The services reference.
+     * @param setup The setup reference.
      * @param progress The progress bar.
      * @param producible The producible in production.
      * @return The created listener.
      */
-    private static ProducibleListener createListener(MapTile map, ProduceProgress progress, Producible producible)
+    private static ProducibleListener createListener(Services services,
+                                                     Setup setup,
+                                                     ProduceProgress progress,
+                                                     Producible producible)
     {
+        final MapTile map = services.get(MapTile.class);
+        final Player player = services.get(Player.class);
+        final Set<String> unlocks = loadUnlocks(producible);
+
         return new ProducibleListenerVoid()
         {
             @Override
@@ -115,8 +132,30 @@ public class Entity extends FeaturableModel
                 teleportOutside(map, producible, producer);
                 producible.getFeature(EntitySfx.class).onProduced();
                 progress.stop();
+                player.unlock(unlocks);
             }
         };
+    }
+
+    /**
+     * Load defined unlocks.
+     * 
+     * @param producible The producible reference.
+     * @return The loaded unlocks.
+     */
+    private static Set<String> loadUnlocks(Producible producible)
+    {
+        final Media media = producible.getMedia();
+        if (media != null)
+        {
+            final Configurer configurer = new Configurer(media);
+            if (configurer.hasNode(NODE_UNLOCK))
+            {
+                return new HashSet<>(Arrays.asList(configurer.getString(ATT_VALUES, NODE_UNLOCK)
+                                                             .split(Constant.SFX_SEPARATOR)));
+            }
+        }
+        return Collections.emptySet();
     }
 
     /**
@@ -199,7 +238,7 @@ public class Entity extends FeaturableModel
 
         final ProduceProgress progress = services.get(ProduceProgress.class);
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
-        producible.addListener(createListener(map, progress, producible));
+        producible.addListener(createListener(services, setup, progress, producible));
 
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()

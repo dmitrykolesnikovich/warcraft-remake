@@ -4,4 +4,5 @@
     <lionengine:surface image="build_lumbermill.png"/>
     <lionengine:action name="Build Lumbermill" description="Build Lumbermill" x="38" y="118" width="27" height="19"/>
     <media>entity/orc/lumbermill.xml</media>
+    <lock values="LUMBERMILL"/>
 </lionengine:featurable>

@@ -22,4 +22,5 @@
     <sfx started="NEUTRAL_CONSTRUCT" produced="ORC_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
 	<stats health="100"/>
 	<cost wood="500" gold="600"/>
+    <unlock values="LUMBERMILL"/>
 </lionengine:featurable>

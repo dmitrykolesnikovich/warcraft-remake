@@ -20,6 +20,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.FramesConfig;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -136,6 +137,8 @@ public final class EntityModel extends FeatureModel implements Recyclable
                         extractor.setResource(type, next);
                     }
                 }
+
+                switchActionExtractCarry();
             }
             else
             {
@@ -386,6 +389,25 @@ public final class EntityModel extends FeatureModel implements Recyclable
         attackStarted = false;
         producibleEnded = false;
         extractResource = null;
+    }
+
+    /**
+     * Switch action between extract or carry when needed.
+     */
+    private void switchActionExtractCarry()
+    {
+        for (final Actionable actionable : hud.getActive())
+        {
+            final boolean carry = carryResource != null;
+            if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+            {
+                actionable.setEnabled(carry);
+            }
+            else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
+            {
+                actionable.setEnabled(!carry);
+            }
+        }
     }
 
     @Override
