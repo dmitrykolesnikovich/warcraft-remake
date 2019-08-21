@@ -38,10 +38,7 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.HudListener;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
-import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -53,8 +50,6 @@ import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.CostConfig;
-import com.b3dgs.warcraft.object.EntityModel;
-import com.b3dgs.warcraft.object.feature.EntitySfx;
 
 /**
  * Build button action.
@@ -133,40 +128,14 @@ public class BuildButton extends ActionModel
                 producible.setLocation(area.getX(), area.getY());
 
                 final Producer producer = selectable.getFeature(Producer.class);
+                final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
                 final Transformable transformable = producer.getFeature(Transformable.class);
                 producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
                                                                        transformable) < map.getTileWidth());
 
-                producer.addToProductionQueue(building);
-
-                final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
                 pathfindable.setDestination(area);
 
-                final EntityModel model = producer.getFeature(EntityModel.class);
-                producer.addListener(new ProducerListenerVoid()
-                {
-                    @Override
-                    public void notifyStartProduction(Featurable featurable)
-                    {
-                        pathfindable.stopMoves();
-                        pathfindable.clearPath();
-                        featurable.getFeature(Pathfindable.class)
-                                  .setLocation(map.getInTileX(producible), map.getInTileY(producible));
-                        featurable.getFeature(EntitySfx.class).onStarted();
-                        model.setVisible(false);
-                    }
-
-                    @Override
-                    public void notifyProduced(Featurable featurable)
-                    {
-                        model.setVisible(true);
-                        final CoordTile coord = map.getFeature(MapTilePath.class)
-                                                   .getFreeTileAround(pathfindable,
-                                                                      featurable.getFeature(Pathfindable.class));
-                        pathfindable.setLocation(coord);
-                        featurable.getFeature(EntitySfx.class).onProduced();
-                    }
-                });
+                producer.addToProductionQueue(building);
             }
         }
         area = null;

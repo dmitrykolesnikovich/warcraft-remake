@@ -26,14 +26,17 @@ import com.b3dgs.lionengine.game.feature.Factory;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.CostConfig;
+import com.b3dgs.warcraft.object.EntityModel;
 
 /**
  * Produce button action.
@@ -76,11 +79,17 @@ public class ProduceButton extends ActionModel
                 player.decreaseGold(config.getGold());
 
                 final Featurable entity = factory.create(target);
+                entity.getFeature(EntityModel.class).setVisible(false);
+
                 final List<Selectable> selection = selector.getSelection();
                 final int n = selection.size();
                 for (int i = 0; i < n; i++)
                 {
                     final Producer producer = selection.get(i).getFeature(Producer.class);
+                    final Transformable transformable = producer.getFeature(Transformable.class);
+                    entity.getFeature(Producible.class)
+                          .setLocation(transformable.getX() + transformable.getWidth() / 2,
+                                       transformable.getY() + transformable.getHeight() / 2);
                     producer.addToProductionQueue(entity);
                 }
             }

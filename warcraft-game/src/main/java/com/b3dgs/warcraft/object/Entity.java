@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
@@ -68,6 +69,7 @@ import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.ProduceProgress;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.Buildable;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.state.StateIdle;
@@ -100,12 +102,14 @@ public class Entity extends FeaturableModel
      * @param setup The setup reference.
      * @param progress The progress bar.
      * @param producible The producible in production.
+     * @param pathfindable The producer pathfindable.
      * @return The created listener.
      */
     private static ProducibleListener createListener(Services services,
                                                      Setup setup,
                                                      ProduceProgress progress,
-                                                     Producible producible)
+                                                     Producible producible,
+                                                     Pathfindable pathfindable)
     {
         final MapTile map = services.get(MapTile.class);
         final Player player = services.get(Player.class);
@@ -116,15 +120,33 @@ public class Entity extends FeaturableModel
             @Override
             public void notifyProductionStarted(Producer producer)
             {
+                final Pathfindable pathfindableProducer = producer.getFeature(Pathfindable.class);
+                pathfindableProducer.stopMoves();
+                pathfindable.setLocation((int) (producible.getX() / 16), (int) (producible.getY() / 16));
                 producible.getFeature(EntitySfx.class).onStarted();
+
+                if (!producer.hasFeature(Buildable.class))
+                {
+                    producer.getFeature(EntityModel.class).setVisible(false);
+                }
             }
 
             @Override
             public void notifyProductionEnded(Producer producer)
             {
-                teleportOutside(map, producible, producer);
                 producible.getFeature(EntitySfx.class).onProduced();
                 player.unlock(unlocks);
+
+                if (!producer.hasFeature(Buildable.class))
+                {
+                    producer.getFeature(EntityModel.class).setVisible(true);
+                    teleportOutside(map, producer);
+                }
+                if (!producible.hasFeature(Buildable.class))
+                {
+                    producible.getFeature(EntityModel.class).setVisible(true);
+                    teleportOutside(map, producible);
+                }
             }
         };
     }
@@ -154,14 +176,13 @@ public class Entity extends FeaturableModel
      * Teleport producer outside producible area.
      * 
      * @param map The map tile reference.
-     * @param producible The producible reference.
-     * @param producer The producer to teleport.
+     * @param mover The mover reference.
      */
-    private static void teleportOutside(MapTile map, Producible producible, Producer producer)
+    private static void teleportOutside(MapTile map, FeatureProvider mover)
     {
-        final Pathfindable pathfindable = producible.getFeature(Pathfindable.class);
+        final Pathfindable pathfindable = mover.getFeature(Pathfindable.class);
         final CoordTile coord = map.getFeature(MapTilePath.class)
-                                   .getFreeTileAround(pathfindable, producer.getFeature(Pathfindable.class));
+                                   .getClosestAvailableTile(pathfindable, pathfindable, 16);
         pathfindable.setLocation(coord);
     }
 
@@ -180,8 +201,6 @@ public class Entity extends FeaturableModel
         addFeature(new TransformableModel(setup));
         addFeature(new SelectableModel());
         addFeature(new AnimatableModel());
-        addFeature(new EntityStats(services, setup));
-        addFeature(new EntitySfx(services, setup));
         addFeature(new ActionerModel(setup));
         addFeature(new FovableModel(services, setup));
 
@@ -230,7 +249,7 @@ public class Entity extends FeaturableModel
 
         final ProduceProgress progress = services.get(ProduceProgress.class);
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
-        producible.addListener(createListener(services, setup, progress, producible));
+        producible.addListener(createListener(services, setup, progress, producible, pathfindable));
 
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()
@@ -242,7 +261,7 @@ public class Entity extends FeaturableModel
                                             pathfindable.getInTileY(),
                                             extractor.getResourceLocation().getInTileX(),
                                             extractor.getResourceLocation().getInTileY()) < 2
-                       && !pathfindable.isMoving();
+                       && pathfindable.isDestinationReached();
             }
 
             @Override
@@ -269,6 +288,8 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
+        addFeature(new EntityStats(services, setup));
+        addFeature(new EntitySfx(services, setup));
         addFeature(new EntityModel(services, setup));
     }
 
