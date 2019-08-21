@@ -53,43 +53,21 @@ public class ProduceProgress implements Renderable
     private final Image progressPercent = Util.getImage(Gfx.HUD_PROGRESS_PERCENT, PROGRESS_X, PROGRESS_Y);
     private final Bar progressBar = createBar();
 
-    private boolean producing;
-
-    /**
-     * Start progress.
-     */
-    public void start()
-    {
-        producing = true;
-        progressBar.setWidthPercent(0);
-    }
-
     /**
      * Update progress.
      * 
      * @param percent The progress percent.
      */
-    public void update(int percent)
+    public void setProgress(int percent)
     {
         progressBar.setWidthPercent(percent);
-    }
-
-    /**
-     * Stop progress.
-     */
-    public void stop()
-    {
-        producing = false;
     }
 
     @Override
     public void render(Graphic g)
     {
-        if (producing)
-        {
-            progressBackground.render(g);
-            progressBar.render(g);
-            progressPercent.render(g);
-        }
+        progressBackground.render(g);
+        progressBar.render(g);
+        progressPercent.render(g);
     }
 }

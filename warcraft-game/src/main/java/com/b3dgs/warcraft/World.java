@@ -66,7 +66,6 @@ public class World extends WorldGame
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
-    private final ProduceProgress progress = services.create(ProduceProgress.class);
     private final SpriteFont text;
     private final WorldNavigator navigator;
     private final WorldSelection selection;
@@ -203,7 +202,6 @@ public class World extends WorldGame
     {
         super.render(g);
 
-        progress.render(g);
         minimap.render(g);
         text.render(g);
         text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getWood()));

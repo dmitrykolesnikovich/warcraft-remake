@@ -30,11 +30,13 @@ import com.b3dgs.lionengine.game.feature.Recyclable;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
+import com.b3dgs.warcraft.ProduceProgress;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
@@ -68,8 +70,10 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private final Integer layerDisplay;
 
     private final SpriteFont text;
+    private final ProduceProgress progress;
 
     @FeatureGet private Layerable layerable;
+    @FeatureGet private Producer producer;
 
     /**
      * Create icon provider.
@@ -108,6 +112,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         }
 
         text = services.get(SpriteFont.class);
+        progress = services.get(ProduceProgress.class);
 
         icon = Drawable.loadImage(setup.getIcon());
         icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
@@ -211,8 +216,13 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         stats.render(g);
         barHealth.render(g);
         icon.render(g);
-
         text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, name);
+
+        if (producer.getProgress() > -1)
+        {
+            progress.setProgress(producer.getProgressPercent());
+            progress.render(g);
+        }
     }
 
     @Override

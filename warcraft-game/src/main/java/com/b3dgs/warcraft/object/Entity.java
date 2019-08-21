@@ -117,13 +117,6 @@ public class Entity extends FeaturableModel
             public void notifyProductionStarted(Producer producer)
             {
                 producible.getFeature(EntitySfx.class).onStarted();
-                progress.start();
-            }
-
-            @Override
-            public void notifyProductionProgress(Producer producer)
-            {
-                progress.update(producer.getProgressPercent());
             }
 
             @Override
@@ -131,7 +124,6 @@ public class Entity extends FeaturableModel
             {
                 teleportOutside(map, producible, producer);
                 producible.getFeature(EntitySfx.class).onProduced();
-                progress.stop();
                 player.unlock(unlocks);
             }
         };
