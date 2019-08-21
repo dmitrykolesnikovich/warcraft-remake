@@ -41,7 +41,7 @@ public class Extract extends ActionModel
     }
 
     @Override
-    protected void assign()
+    protected boolean assign()
     {
         final List<Selectable> selection = selector.getSelection();
         final int n = selection.size();
@@ -55,5 +55,6 @@ public class Extract extends ActionModel
                 selectable.getFeature(EntitySfx.class).onOrdered();
             }
         }
+        return true;
     }
 }

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.Xml;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Factory;
@@ -67,9 +68,12 @@ public class BuildButton extends ActionModel
     private final Media target;
     private final CostConfig config;
     private Rectangle area;
+    private boolean valid;
+    private Pathfindable mover;
 
     private final Factory factory = services.get(Factory.class);
     private final Viewer viewer = services.get(Viewer.class);
+    private final Cursor cursor = services.get(Cursor.class);
     private final InputDevicePointer pointer = services.get(InputDevicePointer.class);
     private final Hud hud = services.get(Hud.class);
     private final Player player = services.get(Player.class);
@@ -92,7 +96,12 @@ public class BuildButton extends ActionModel
             @Override
             public void notifyCreated(List<Selectable> selection, Actionable actionable)
             {
-                // Nothing to do
+                mover = null;
+                for (final Selectable selectable : selection)
+                {
+                    mover = selectable.getFeature(Pathfindable.class);
+                    break;
+                }
             }
 
             @Override
@@ -100,6 +109,8 @@ public class BuildButton extends ActionModel
             {
                 state.set(actionable);
                 area = null;
+                valid = false;
+                mover = null;
             }
         });
     }
@@ -111,11 +122,16 @@ public class BuildButton extends ActionModel
         area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
         hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
         cursor.setSurfaceId(Constant.CURSOR_ID);
+        cursor.setVisible(false);
     }
 
     @Override
-    protected void assign()
+    protected boolean assign()
     {
+        if (!valid)
+        {
+            return false;
+        }
         for (final Selectable selectable : selector.getSelection())
         {
             if (player.isAvailableWood(config.getWood()) && player.isAvailableGold(config.getGold()))
@@ -131,7 +147,8 @@ public class BuildButton extends ActionModel
                 final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
                 final Transformable transformable = producer.getFeature(Transformable.class);
                 producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
-                                                                       transformable) < map.getTileWidth());
+                                                                       transformable) < map.getTileWidth()
+                                                  && pathfindable.isDestinationReached());
 
                 pathfindable.setDestination(area);
 
@@ -142,6 +159,8 @@ public class BuildButton extends ActionModel
         hud.clearMenus();
         hud.setCancelShortcut(() -> false);
         Sfx.NEUTRAL_BUILD.play();
+        cursor.setVisible(true);
+        return true;
     }
 
     @Override
@@ -153,6 +172,7 @@ public class BuildButton extends ActionModel
                      UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                      area.getWidthReal(),
                      area.getHeightReal());
+            valid = mapPath.isAreaAvailable(area, mover);
         }
     }
 
@@ -161,7 +181,14 @@ public class BuildButton extends ActionModel
     {
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
-            g.setColor(Constant.COLOR_SELECTION);
+            if (valid)
+            {
+                g.setColor(Constant.COLOR_SELECTION);
+            }
+            else
+            {
+                g.setColor(Constant.COLOR_ENEMIES);
+            }
             g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
         }
         if (actionable.isOver())

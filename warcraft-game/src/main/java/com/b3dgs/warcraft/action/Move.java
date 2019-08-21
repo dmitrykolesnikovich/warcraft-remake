@@ -43,7 +43,7 @@ public class Move extends ActionModel
     }
 
     @Override
-    protected void assign()
+    protected boolean assign()
     {
         final List<Selectable> selection = selector.getSelection();
         final int n = selection.size();
@@ -59,5 +59,6 @@ public class Move extends ActionModel
                 selection.get(0).getFeature(EntitySfx.class).onOrdered();
             }
         }
+        return true;
     }
 }

@@ -125,10 +125,12 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
     /**
      * Executed assign. Does nothing by default.
+     * 
+     * @return <code>true</code> if assigned, <code>false</code> else.
      */
-    protected void assign()
+    protected boolean assign()
     {
-        // Nothing by default
+        return false;
     }
 
     /**
@@ -148,11 +150,13 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     private void onAssignMap()
     {
-        ActionModel.this.assign();
-        cursor.setSurfaceId(Constant.CURSOR_ID);
-        cursor.setRenderingOffset(0, 0);
-        selector.setEnabled(true);
-        state.set(actionable);
+        if (ActionModel.this.assign())
+        {
+            cursor.setSurfaceId(Constant.CURSOR_ID);
+            cursor.setRenderingOffset(0, 0);
+            selector.setEnabled(true);
+            state.set(actionable);
+        }
     }
 
     /**
