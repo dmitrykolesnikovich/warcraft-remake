@@ -55,7 +55,8 @@ public class Repair extends ActionModel
         final Transformable transformable = featurable.getFeature(Transformable.class);
         if (selectable.getFeature(EntityStats.class)
                       .getRace()
-                      .equals(featurable.getFeature(EntityStats.class).getRace()))
+                      .equals(featurable.getFeature(EntityStats.class).getRace())
+            && featurable.getFeature(EntityStats.class).getHealthPercent() < 100)
         {
             selectable.getFeature(Attacker.class).attack(transformable);
         }
