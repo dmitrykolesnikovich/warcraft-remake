@@ -64,11 +64,11 @@ public class WorldMinimap implements Resource, Renderable
     }
 
     /**
-     * Draw field of view.
+     * Draw entities.
      * 
      * @param g The graphic output.
      */
-    private void drawFov(Graphic g)
+    private void drawEntities(Graphic g)
     {
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
@@ -87,19 +87,38 @@ public class WorldMinimap implements Resource, Renderable
                        entity.getInTileHeight(),
                        true);
         }
+    }
 
-        for (int tx = 0; tx < map.getInTileWidth() - 1; tx++)
+    /**
+     * Draw fog of war.
+     * 
+     * @param g The graphic output.
+     */
+    private void drawFog(Graphic g)
+    {
+        final int v = map.getInTileHeight();
+        final int h = map.getInTileWidth();
+        g.setColor(ColorRgba.BLACK);
+
+        for (int tx = 0; tx < h; tx++)
         {
-            for (int ty = 0; ty < map.getInTileHeight() - 1; ty++)
+            for (int ty = 0; ty < v; ty++)
             {
                 if (!fogOfWar.isVisited(tx, ty))
                 {
-                    g.setColor(ColorRgba.BLACK);
-                    g.drawRect(getX(tx), getY(ty, 1) - 1, 1, 1, false);
+                    g.drawRect(getX(tx), getY(ty, 0), 0, 0, false);
                 }
             }
         }
+    }
 
+    /**
+     * Draw field of view.
+     * 
+     * @param g The graphic output.
+     */
+    private void drawFov(Graphic g)
+    {
         g.setColor(Constant.COLOR_VIEW);
         camera.drawFov(g, Constant.MINIMAP_X, Constant.MINIMAP_Y, map.getTileWidth(), map.getTileHeight(), minimap);
     }
@@ -124,13 +143,15 @@ public class WorldMinimap implements Resource, Renderable
      */
     private int getY(int ty, int th)
     {
-        return Constant.MINIMAP_Y - ty + map.getInTileHeight() - th;
+        return Constant.MINIMAP_Y - ty + map.getInTileHeight() - th - 1;
     }
 
     @Override
     public void render(Graphic g)
     {
         minimap.render(g);
+        drawEntities(g);
+        drawFog(g);
         drawFov(g);
     }
 
