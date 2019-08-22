@@ -55,7 +55,10 @@ public class Attack extends ActionModel
             for (final Integer id : mapPath.getObjectsId(tx, ty))
             {
                 final Transformable transformable = handler.get(id).getFeature(Transformable.class);
-                selectable.getFeature(Attacker.class).attack(transformable);
+                if (selectable.getFeature(Transformable.class) != transformable)
+                {
+                    selectable.getFeature(Attacker.class).attack(transformable);
+                }
             }
 
             if (i == 0)
