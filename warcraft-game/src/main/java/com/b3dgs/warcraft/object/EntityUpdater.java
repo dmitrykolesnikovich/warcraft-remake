@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
@@ -67,14 +66,8 @@ public class EntityUpdater extends FeatureModel implements Refreshable
      */
     private void updateMirror()
     {
-        final int sx = UtilMath.getSign(pathfindable.getMoveX());
-        final int sy = UtilMath.getSign(pathfindable.getMoveY());
-        Orientation orientation = Orientation.get(sx, sy);
-        if (orientation == null)
-        {
-            orientation = pathfindable.getOrientation();
-        }
-        if (orientation.ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF)
+        final int orientation = pathfindable.getOrientation().ordinal();
+        if (orientation > Orientation.ORIENTATIONS_NUMBER_HALF)
         {
             mirrorable.mirror(Mirror.HORIZONTAL);
         }

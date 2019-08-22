@@ -19,7 +19,6 @@ package com.b3dgs.warcraft.object;
 import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Orientation;
@@ -96,21 +95,14 @@ public class EntityRenderer extends FeatureModel implements Displayable
      */
     private void updateFrameOffset()
     {
-        final int sx = UtilMath.getSign(pathfindable.getMoveX());
-        final int sy = UtilMath.getSign(pathfindable.getMoveY());
-        Orientation orientation = Orientation.get(sx, sy);
-        if (orientation == null)
-        {
-            orientation = pathfindable.getOrientation();
-        }
-        int frameOffset = orientation.ordinal();
+        int frameOffset = pathfindable.getOrientation().ordinal();
         if (stats.getHealthPercent() == 0)
         {
             frameOffset /= Orientation.ORIENTATIONS_NUMBER_HALF;
         }
         else if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
         {
-            frameOffset = Orientation.ORIENTATIONS_NUMBER - orientation.ordinal();
+            frameOffset = Orientation.ORIENTATIONS_NUMBER - frameOffset;
         }
         surface.setFrame(frameOffset * animFrames + animatable.getFrame());
     }
