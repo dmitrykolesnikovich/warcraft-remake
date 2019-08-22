@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
@@ -47,8 +48,12 @@ public class WorldNavigator implements Updatable
     private final MapTilePath mapPath;
     private final FogOfWar fogOfWar;
     private final Selector selector;
+    private final SelectorModel selectorModel;
     private final InputDevicePointer pointer;
     private final InputDeviceDirectional directional;
+
+    private boolean selectorEnabled;
+    private boolean selectorBackup;
 
     /**
      * Create the navigator.
@@ -68,6 +73,9 @@ public class WorldNavigator implements Updatable
         selector = services.get(Selector.class);
         pointer = services.get(InputDevicePointer.class);
         directional = services.get(InputDeviceDirectional.class);
+
+        selectorModel = selector.getFeature(SelectorModel.class);
+        selectorEnabled = selectorModel.isEnabled();
     }
 
     /**
@@ -144,13 +152,27 @@ public class WorldNavigator implements Updatable
      */
     private void updateNavigationMinimap(double extrp)
     {
-        if (pointer.getClick() > 0
+        if (!selectorModel.isSelecting()
+            && pointer.getClick() > 0
             && UtilMath.isBetween(pointer.getX(), Constant.MINIMAP_X, Constant.MINIMAP_X + map.getInTileWidth())
             && UtilMath.isBetween(pointer.getY(), Constant.MINIMAP_Y, Constant.MINIMAP_Y + map.getInTileHeight()))
         {
             final int x = (pointer.getX() - Constant.MINIMAP_X) * map.getTileWidth();
             final int y = (map.getInTileHeight() + Constant.MINIMAP_Y - pointer.getY()) * map.getTileHeight();
-            camera.setLocation(x - camera.getWidth() / 2.0, y - camera.getHeight() / 2.0);
+            camera.setLocation(UtilMath.getRounded(x - camera.getWidth() / 2.0, map.getTileWidth()),
+                               UtilMath.getRounded(y - camera.getHeight() / 2.0, map.getTileHeight()));
+
+            if (!selectorBackup)
+            {
+                selectorBackup = true;
+                selectorEnabled = selectorModel.isEnabled();
+                selectorModel.setEnabled(false);
+            }
+        }
+        else if (selectorBackup)
+        {
+            selectorBackup = false;
+            selectorModel.setEnabled(selectorEnabled);
         }
     }
 

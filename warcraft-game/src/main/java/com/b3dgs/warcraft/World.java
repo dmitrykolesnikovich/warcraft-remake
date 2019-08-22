@@ -34,6 +34,8 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.geom.Area;
+import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
@@ -60,6 +62,7 @@ public class World extends WorldGame
     private static final int RESOURCES_WOOD_X = 170;
     private static final int RESOURCES_GOLD_X = 270;
     private static final int RESOURCES_Y = 2;
+    private static final Area AREA = Geom.createArea(VIEW_X, VIEW_Y + 12, 239, 175);
 
     private final Player player = services.add(new Player(Race.ORC));
     private final WorldMap worldMap = new WorldMap(services);
@@ -83,8 +86,9 @@ public class World extends WorldGame
         super(services);
 
         services.add(getInputDevice(InputDeviceDirectional.class));
+        services.add(new ProduceProgress());
 
-        camera.setView(VIEW_X, VIEW_Y, source.getWidth() - VIEW_X, source.getHeight() - VIEW_Y, source.getHeight());
+        camera.setView(VIEW_X, VIEW_Y, AREA.getWidth(), AREA.getHeight(), source.getHeight());
 
         handler.addComponent(services.add(new ComponentCollision()));
 
@@ -96,7 +100,7 @@ public class World extends WorldGame
 
         final Selector selector = services.get(Selector.class);
         selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
-        selector.setClickableArea(camera);
+        selector.setClickableArea(AREA);
         selector.setSelectionColor(Constant.COLOR_SELECTION);
         selector.setClickSelection(1);
 
