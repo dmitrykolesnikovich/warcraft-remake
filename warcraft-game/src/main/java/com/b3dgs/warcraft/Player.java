@@ -62,6 +62,18 @@ public final class Player implements Updatable
         return TYPE_GOLD.equals(type);
     }
 
+    /**
+     * Curve resource value.
+     * 
+     * @param current The current resource value.
+     * @param dest The destination resource value.
+     * @return The curved value.
+     */
+    private static double curve(double current, int dest)
+    {
+        return (int) Math.ceil(UtilMath.curveValue(current, dest, CURVE_SPEED) * CURVE_ROUND) / CURVE_ROUND;
+    }
+
     private final Race race;
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
@@ -323,18 +335,6 @@ public final class Player implements Updatable
     public boolean isUnlocked(String value)
     {
         return unlocked.contains(value);
-    }
-
-    /**
-     * Curve resource value.
-     * 
-     * @param current The current resource value.
-     * @param dest The destination resource value.
-     * @return The curved value.
-     */
-    private double curve(double current, int dest)
-    {
-        return (int) Math.ceil(UtilMath.curveValue(current, dest, CURVE_SPEED) * CURVE_ROUND) / CURVE_ROUND;
     }
 
     @Override

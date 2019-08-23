@@ -42,13 +42,13 @@ import com.b3dgs.warcraft.constant.Constant;
  */
 public class Scene extends SequenceGame
 {
-    private static final String ERROR_SAVING_MAP = "Error on saving map !";
     private static final String NAME = Constant.PROGRAM_NAME
                                        + com.b3dgs.lionengine.Constant.SPACE
                                        + Constant.PROGRAM_VERSION;
     private static final String ENGINE = com.b3dgs.lionengine.Constant.ENGINE_NAME
                                          + com.b3dgs.lionengine.Constant.SPACE
                                          + com.b3dgs.lionengine.Constant.ENGINE_VERSION;
+    private static final String ERROR_SAVING_MAP = "Error on saving map !";
 
     /**
      * Set text data.
