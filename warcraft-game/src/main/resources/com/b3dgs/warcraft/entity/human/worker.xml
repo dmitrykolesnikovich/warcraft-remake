@@ -56,7 +56,7 @@
             <lionengine:action path="action/human/cancel.xml" cancel="true"/>
         </lionengine:action>
     </lionengine:actions>
-    <lionengine:attacker distance_min="0" distance_max="0" damages_min="1" damages_max="3"/>
+    <lionengine:attacker distance_min="1" distance_max="1" damages_min="1" damages_max="3"/>
     <lionengine:fovable fov="3"/>
     <sfx started="NEUTRAL_CLICK" produced="HUMAN_READY" selected="HUMAN_WHAT1;HUMAN_WHAT2;HUMAN_WHAT3;HUMAN_WHAT4" ordered="HUMAN_YESSIR1;HUMAN_YESSIR2" attacked="NEUTRAL_TREE1;NEUTRAL_TREE2;NEUTRAL_TREE3;NEUTRAL_TREE4" dead="HUMAN_DEAD"/>
     <offsetDeath x="8" y="8"/>

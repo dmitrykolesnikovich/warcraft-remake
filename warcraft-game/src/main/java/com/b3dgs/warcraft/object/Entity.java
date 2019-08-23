@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -204,23 +203,30 @@ public class Entity extends FeaturableModel
         addFeature(new ActionerModel(setup));
         addFeature(new FovableModel(services, setup));
 
+        final MapTile map = services.get(MapTile.class);
+
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
+        attacker.setAttackDistanceComputer((s,
+                                            t) -> Math.floor(UtilMath.getDistance(map.getInTileX(s),
+                                                                                  map.getInTileY(s),
+                                                                                  map.getInTileWidth(s),
+                                                                                  map.getInTileHeight(s),
+                                                                                  map.getInTileX(t),
+                                                                                  map.getInTileY(t),
+                                                                                  map.getInTileWidth(t),
+                                                                                  map.getInTileHeight(t))));
 
-        final MapTile map = services.get(MapTile.class);
         if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
-            final Range range = AttackerConfig.imports(setup).getDistance();
-            attacker.setAttackDistance(new Range(range.getMin() * map.getTileWidth(),
-                                                 range.getMax() * map.getTileHeight()));
             attacker.addListener(new AttackerListenerVoid()
             {
                 @Override
                 public void notifyReachingTarget(Transformable target)
                 {
-                    if (!pathfindable.isMoving())
+                    if (!pathfindable.isMoving() && !pathfindable.setDestination(target))
                     {
-                        pathfindable.setDestination(target);
+                        attacker.stopAttack();
                     }
                 }
 
@@ -257,11 +263,11 @@ public class Entity extends FeaturableModel
             @Override
             public boolean canExtract()
             {
-                return UtilMath.getDistance(pathfindable.getInTileX(),
-                                            pathfindable.getInTileY(),
-                                            extractor.getResourceLocation().getInTileX(),
-                                            extractor.getResourceLocation().getInTileY()) < 2
-                       && pathfindable.isDestinationReached();
+                return pathfindable.isDestinationReached()
+                       && UtilMath.getDistance(pathfindable.getInTileX(),
+                                               pathfindable.getInTileY(),
+                                               extractor.getResourceLocation().getInTileX(),
+                                               extractor.getResourceLocation().getInTileY()) < 1.5;
             }
 
             @Override
@@ -275,7 +281,7 @@ public class Entity extends FeaturableModel
                 return UtilMath.getDistance(pathfindable.getInTileX(),
                                             pathfindable.getInTileY(),
                                             warehouse.getInTileX(),
-                                            warehouse.getInTileY()) < 2;
+                                            warehouse.getInTileY()) < 1.5;
             }
         });
 
