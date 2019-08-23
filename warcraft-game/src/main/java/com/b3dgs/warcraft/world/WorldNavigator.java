@@ -18,6 +18,7 @@ package com.b3dgs.warcraft.world;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Cursor;
@@ -41,6 +42,10 @@ import com.b3dgs.warcraft.object.feature.RightClickHandler;
  */
 public class WorldNavigator implements Updatable
 {
+    private static final int NAVIGATION_TICK = 3;
+
+    private final Tick navigationDelay = new Tick();
+
     private final Camera camera;
     private final Cursor cursor;
     private final Handler handler;
@@ -76,6 +81,7 @@ public class WorldNavigator implements Updatable
 
         selectorModel = selector.getFeature(SelectorModel.class);
         selectorEnabled = selectorModel.isEnabled();
+        navigationDelay.start();
     }
 
     /**
@@ -107,42 +113,35 @@ public class WorldNavigator implements Updatable
      * Update map navigation with pointer device.
      * 
      * @param extrp The extrapolation value.
-     * @return <code>true</code> if map moved, <code>false</code> else.
      */
-    private boolean updateNavigationPointer(double extrp)
+    private void updateNavigationPointer(double extrp)
     {
-        boolean updated = false;
         if (pointer.getClick() > 1)
         {
-            final int h = camera.getViewY() + camera.getHeight() - map.getTileHeight();
+            final int h = camera.getViewY() + camera.getHeight();
             final int marginY = map.getTileHeight() / 2;
 
-            if (UtilMath.isBetween(pointer.getY(), h, h + marginY))
+            if (UtilMath.isBetween(pointer.getY(), h - marginY, h))
             {
                 camera.moveLocation(extrp, 0, -map.getTileHeight());
-                updated = true;
             }
             else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + marginY))
             {
                 camera.moveLocation(extrp, 0, map.getTileHeight());
-                updated = true;
             }
 
-            final int w = camera.getViewX() + camera.getWidth() - map.getTileWidth();
+            final int w = camera.getViewX() + camera.getWidth();
             final int marginX = map.getTileWidth() / 2;
 
             if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + marginX))
             {
                 camera.moveLocation(extrp, -map.getTileWidth(), 0);
-                updated = true;
             }
-            else if (UtilMath.isBetween(pointer.getX(), w, w + marginX))
+            else if (UtilMath.isBetween(pointer.getX(), w - marginX, w))
             {
                 camera.moveLocation(extrp, map.getTileWidth(), 0);
-                updated = true;
             }
         }
-        return updated;
     }
 
     /**
@@ -190,13 +189,30 @@ public class WorldNavigator implements Updatable
     @Override
     public void update(double extrp)
     {
-        updateNavigationDirectional(extrp);
+        navigationDelay.update(extrp);
+
+        if (navigationDelay.elapsed(NAVIGATION_TICK))
+        {
+            updateNavigationDirectional(extrp);
+            updateNavigationPointer(extrp);
+            navigationDelay.restart();
+        }
         updateNavigationMinimap(extrp);
         updateCursorOver();
 
-        if (!updateNavigationPointer(extrp) && isCursorOverMap() && cursor.hasClickedOnce(3))
+        if (isCursorOverMap() && cursor.hasClickedOnce(3))
         {
-            checkRightClick();
+            final int marginX = map.getTileWidth() / 2;
+            final int marginY = map.getTileHeight() / 2;
+            if (UtilMath.isBetween(pointer.getX(),
+                                   camera.getViewX() + marginX,
+                                   camera.getViewX() + camera.getWidth() - marginX)
+                && UtilMath.isBetween(pointer.getY(),
+                                      camera.getViewY() + marginX,
+                                      camera.getViewY() + camera.getHeight() - marginY))
+            {
+                checkRightClick();
+            }
         }
     }
 
