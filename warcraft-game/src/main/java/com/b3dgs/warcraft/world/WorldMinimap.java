@@ -106,7 +106,7 @@ public class WorldMinimap implements Resource, Renderable
             {
                 if (!fogOfWar.isVisited(tx, ty))
                 {
-                    g.drawRect(getX(tx), getY(ty, 0), 0, 0, false);
+                    g.drawRect(getX(tx), getY(ty, 1), 0, 0, false);
                 }
             }
         }
@@ -143,7 +143,7 @@ public class WorldMinimap implements Resource, Renderable
      */
     private int getY(int ty, int th)
     {
-        return Constant.MINIMAP_Y - ty + map.getInTileHeight() - th - 1;
+        return Constant.MINIMAP_Y - ty + map.getInTileHeight() - th;
     }
 
     @Override
