@@ -21,7 +21,6 @@ import java.util.List;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
-import com.b3dgs.warcraft.object.feature.EntitySfx;
 import com.b3dgs.warcraft.object.feature.RightClickExtract;
 
 /**
@@ -49,11 +48,6 @@ public class Extract extends ActionModel
         {
             final Selectable selectable = selection.get(i);
             selectable.getFeature(RightClickExtract.class).execute();
-
-            if (i == 0)
-            {
-                selectable.getFeature(EntitySfx.class).onOrdered();
-            }
         }
         return true;
     }

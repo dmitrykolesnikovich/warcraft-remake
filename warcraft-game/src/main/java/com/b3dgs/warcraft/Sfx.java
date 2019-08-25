@@ -102,8 +102,6 @@ public enum Sfx
     HUMAN_YESSIR1(Race.HUMAN),
     /** Human yes sir 2. */
     HUMAN_YESSIR2(Race.HUMAN),
-    /** Human yes sir 3. */
-    HUMAN_YESSIR3(Race.HUMAN),
     /** Human what 1. */
     HUMAN_WHAT1(Race.HUMAN),
     /** Human what 2. */
