@@ -31,7 +31,7 @@ public final class Constant
     /** Application version. */
     public static final Version PROGRAM_VERSION = Version.create(0, 0, 6);
     /** Native resolution. */
-    public static final Resolution NATIVE = new Resolution(320, 200, 60);
+    public static final Resolution NATIVE = new Resolution(384, 216, 60);
 
     /** Debug flag. */
     public static final boolean DEBUG = true;

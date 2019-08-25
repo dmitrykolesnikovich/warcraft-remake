@@ -43,9 +43,9 @@ import com.b3dgs.warcraft.object.EntityModel;
  */
 public class ProduceButton extends ActionModel
 {
-    private static final int TEXT_WOOD_X = 220;
-    private static final int TEXT_GOLD_X = 265;
-    private static final int TEXT_Y = 193;
+    private static final int TEXT_WOOD_X = 280;
+    private static final int TEXT_GOLD_X = 325;
+    private static final int TEXT_Y = 209;
     private static final int TEXT_OFFSET_X = 17;
     private static final String ATT_MEDIA = "media";
 

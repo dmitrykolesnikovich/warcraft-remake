@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
+import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
@@ -58,17 +59,21 @@ public class World extends WorldGame
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
     private static final int TEXT_X = 74;
-    private static final int TEXT_Y = 193;
-    private static final int RESOURCES_WOOD_X = 170;
-    private static final int RESOURCES_GOLD_X = 270;
+    private static final int TEXT_Y = 209;
+    private static final String RESOURCE_WOOD = "LUMBER:";
+    private static final String RESOURCE_GOLD = "GOLD:";
+    private static final int RESOURCES_WOOD_X = 180;
+    private static final int RESOURCES_GOLD_X = 290;
     private static final int RESOURCES_Y = 2;
-    private static final Area AREA = Geom.createArea(VIEW_X, VIEW_Y + 12, 239, 175);
+    private static final Area AREA = Geom.createArea(VIEW_X, VIEW_Y, 304, 192);
 
     private final Player player = services.add(new Player(Race.ORC));
     private final WorldMap worldMap = new WorldMap(services);
     private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
+    private final Image wood = Util.getImage(Gfx.HUD_WOOD, RESOURCES_WOOD_X + 10, RESOURCES_Y - 2);
+    private final Image gold = Util.getImage(Gfx.HUD_GOLD, RESOURCES_GOLD_X + 10, RESOURCES_Y - 1);
     private final SpriteFont text;
     private final WorldNavigator navigator;
     private final WorldSelection selection;
@@ -88,7 +93,7 @@ public class World extends WorldGame
         services.add(getInputDevice(InputDeviceDirectional.class));
         services.add(new ProduceProgress());
 
-        camera.setView(VIEW_X, VIEW_Y, AREA.getWidth(), AREA.getHeight(), source.getHeight());
+        camera.setView(VIEW_X, VIEW_Y, AREA.getWidth(), AREA.getHeight(), AREA.getHeight());
 
         handler.addComponent(services.add(new ComponentCollision()));
 
@@ -210,6 +215,12 @@ public class World extends WorldGame
         text.render(g);
         text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getWood()));
         text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getGold()));
+
+        text.draw(g, RESOURCES_WOOD_X - 35, RESOURCES_Y, Align.RIGHT, RESOURCE_WOOD);
+        text.draw(g, RESOURCES_GOLD_X - 35, RESOURCES_Y, Align.RIGHT, RESOURCE_GOLD);
+        wood.render(g);
+        gold.render(g);
+
         if (!cursor.hasClicked(2))
         {
             cursor.render(g);

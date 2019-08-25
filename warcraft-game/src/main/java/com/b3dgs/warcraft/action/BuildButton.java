@@ -57,9 +57,9 @@ import com.b3dgs.warcraft.object.CostConfig;
  */
 public class BuildButton extends ActionModel
 {
-    private static final int TEXT_WOOD_X = 220;
-    private static final int TEXT_GOLD_X = 265;
-    private static final int TEXT_Y = 193;
+    private static final int TEXT_WOOD_X = 280;
+    private static final int TEXT_GOLD_X = 325;
+    private static final int TEXT_Y = 209;
     private static final int TEXT_OFFSET_X = 17;
 
     private final Image wood = Util.getImage(Gfx.HUD_WOOD, TEXT_WOOD_X, TEXT_Y - 2);
@@ -181,13 +181,19 @@ public class BuildButton extends ActionModel
     {
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
-            if (valid)
+            g.setColor(Constant.COLOR_NEUTRAL);
+            if (!valid)
             {
-                g.setColor(Constant.COLOR_SELECTION);
-            }
-            else
-            {
-                g.setColor(Constant.COLOR_ENEMIES);
+                g.drawLine(viewer,
+                           (int) area.getX(),
+                           (int) area.getY() + 1,
+                           (int) area.getX() + area.getWidth() - 1,
+                           (int) area.getY() + area.getHeight());
+                g.drawLine(viewer,
+                           (int) area.getX(),
+                           (int) area.getY() + area.getHeight(),
+                           (int) area.getX() + area.getWidth() - 1,
+                           (int) area.getY() + 1);
             }
             g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
         }

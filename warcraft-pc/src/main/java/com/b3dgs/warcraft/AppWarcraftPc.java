@@ -18,6 +18,7 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.audio.adlmidi.AdlMidiFormat;
 import com.b3dgs.lionengine.audio.wav.WavFormat;
@@ -30,6 +31,9 @@ import com.b3dgs.warcraft.constant.Constant;
  */
 public final class AppWarcraftPc
 {
+    /** Default display. */
+    private static final Resolution DEFAULT_RESOLUTION = new Resolution(1280, 720, 60);
+
     /**
      * Main function.
      * 
@@ -38,7 +42,7 @@ public final class AppWarcraftPc
     public static void main(String[] args) // CHECKSTYLE IGNORE LINE: TrailingComment|UncommentedMain
     {
         EngineAwt.start(Constant.PROGRAM_NAME, Constant.PROGRAM_VERSION, AppWarcraftPc.class);
-        Loader.start(Config.windowed(Constant.NATIVE.get2x()), Loading.class);
+        Loader.start(Config.windowed(DEFAULT_RESOLUTION), Loading.class);
         AudioFactory.addFormat(new WavFormat());
         AudioFactory.addFormat(new AdlMidiFormat());
         AdlMidiFormat.setDefaultBank(Constant.SOUND_BANK_ID);
