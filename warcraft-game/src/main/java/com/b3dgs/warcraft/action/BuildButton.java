@@ -41,7 +41,9 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.io.InputDevicePointer;
@@ -61,6 +63,22 @@ public class BuildButton extends ActionModel
     private static final int TEXT_GOLD_X = 325;
     private static final int TEXT_Y = 209;
     private static final int TEXT_OFFSET_X = 17;
+    private static final int COLORS_MAX = 10;
+    private static final int COLORS_START = 64;
+    private static final int COLORS_END = 224;
+    private static final ColorRgba[] COLORS_VALID = new ColorRgba[COLORS_MAX];
+    private static final ColorRgba[] COLORS_INVALID = new ColorRgba[COLORS_MAX];
+
+    static
+    {
+        final int factor = (COLORS_END - COLORS_START) / COLORS_VALID.length;
+        for (int i = 0; i < COLORS_VALID.length; i++)
+        {
+            final int c = COLORS_START + i * factor;
+            COLORS_VALID[i] = new ColorRgba(c, c, c);
+            COLORS_INVALID[i] = new ColorRgba(c, c / 5, c / 5);
+        }
+    }
 
     private final Image wood = Util.getImage(Gfx.HUD_WOOD, TEXT_WOOD_X, TEXT_Y - 2);
     private final Image gold = Util.getImage(Gfx.HUD_GOLD, TEXT_GOLD_X, TEXT_Y - 1);
@@ -70,6 +88,8 @@ public class BuildButton extends ActionModel
     private Rectangle area;
     private boolean valid;
     private Pathfindable mover;
+    private int colorSide = 1;
+    private int color;
 
     private final Factory factory = services.get(Factory.class);
     private final Viewer viewer = services.get(Viewer.class);
@@ -77,6 +97,7 @@ public class BuildButton extends ActionModel
     private final InputDevicePointer pointer = services.get(InputDevicePointer.class);
     private final Hud hud = services.get(Hud.class);
     private final Player player = services.get(Player.class);
+    private final FogOfWar fogOfWar = services.get(FogOfWar.class);
 
     /**
      * Create build button action.
@@ -113,6 +134,24 @@ public class BuildButton extends ActionModel
                 mover = null;
             }
         });
+    }
+
+    /**
+     * Update area color.
+     */
+    private void updateColor()
+    {
+        color += colorSide;
+        if (color > COLORS_MAX - 1)
+        {
+            color = COLORS_MAX - 2;
+            colorSide = -colorSide;
+        }
+        else if (color < 0)
+        {
+            color = 1;
+            colorSide = -colorSide;
+        }
     }
 
     @Override
@@ -172,7 +211,9 @@ public class BuildButton extends ActionModel
                      UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                      area.getWidthReal(),
                      area.getHeightReal());
-            valid = mapPath.isAreaAvailable(area, mover);
+            valid = mapPath.isAreaAvailable(area, mover) && fogOfWar.isVisited(area);
+
+            updateColor();
         }
     }
 
@@ -181,9 +222,9 @@ public class BuildButton extends ActionModel
     {
         if (area != null && viewer.isViewable((Localizable) cursor, 0, 0))
         {
-            g.setColor(Constant.COLOR_NEUTRAL);
             if (!valid)
             {
+                g.setColor(COLORS_INVALID[color]);
                 g.drawLine(viewer,
                            (int) area.getX(),
                            (int) area.getY() + 1,
@@ -194,8 +235,13 @@ public class BuildButton extends ActionModel
                            (int) area.getY() + area.getHeight(),
                            (int) area.getX() + area.getWidth() - 1,
                            (int) area.getY() + 1);
+                g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
             }
-            g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
+            else
+            {
+                g.setColor(COLORS_VALID[color]);
+                g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
+            }
         }
         if (actionable.isOver())
         {
