@@ -35,6 +35,7 @@ public final class StateProducing extends State
     {
         super(model, animation);
 
-        addTransition(StateIdle.class, model::isProduced);
+        addTransition(StateIdle.class, () -> model.isProduced() && !model.isMoveStarted());
+        addTransition(StateWalk.class, () -> model.isProduced() && model.isMoveStarted());
     }
 }
