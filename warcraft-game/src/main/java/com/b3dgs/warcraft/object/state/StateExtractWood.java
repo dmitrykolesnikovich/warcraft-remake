@@ -77,6 +77,7 @@ final class StateExtractWood extends State
         super.enter();
 
         animator.addListener(listener);
+        cut = false;
     }
 
     @Override
