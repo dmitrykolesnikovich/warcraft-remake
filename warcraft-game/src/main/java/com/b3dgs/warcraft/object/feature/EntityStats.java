@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
+import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.ProduceProgress;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.Util;
@@ -70,6 +71,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private final Integer layerDisplay;
 
     private final SpriteFont text;
+    private final Player player;
     private final ProduceProgress progress;
 
     @FeatureGet private Layerable layerable;
@@ -112,6 +114,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         }
 
         text = services.get(SpriteFont.class);
+        player = services.get(Player.class);
         progress = services.get(ProduceProgress.class);
 
         icon = Drawable.loadImage(setup.getIcon());
@@ -218,7 +221,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         icon.render(g);
         text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, name);
 
-        if (producer.getProgress() > -1)
+        if (producer.getProgress() > -1 && player.owns(race))
         {
             progress.setProgress(producer.getProgressPercent());
             progress.render(g);
