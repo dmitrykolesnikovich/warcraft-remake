@@ -55,6 +55,7 @@ import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
@@ -118,7 +119,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
         @Override
         public void notifyStartCarry(String type, int totalQuantity)
         {
-            final Tiled warehouse = Util.getWarehouse(services);
+            final Tiled warehouse = Util.getWarehouse(services, stats.getRace());
             if (warehouse != null)
             {
                 pathfindable.setDestination(warehouse);
@@ -135,6 +136,10 @@ public final class EntityModel extends FeatureModel implements Recyclable
                     if (next != null)
                     {
                         extractor.setResource(type, next);
+                    }
+                    else
+                    {
+                        extractor.stopExtraction();
                     }
                 }
 
@@ -195,6 +200,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
     @FeatureGet private Attacker attacker;
     @FeatureGet private Producible producible;
     @FeatureGet private StateHandler stateHandler;
+    @FeatureGet private EntityStats stats;
 
     private boolean moveStarted;
     private boolean moveArrived;
@@ -396,16 +402,19 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     private void switchActionExtractCarry()
     {
-        for (final Actionable actionable : hud.getActive())
+        if (player.owns(stats.getRace()))
         {
-            final boolean carry = carryResource != null;
-            if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+            for (final Actionable actionable : hud.getActive())
             {
-                actionable.setEnabled(carry);
-            }
-            else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
-            {
-                actionable.setEnabled(!carry);
+                final boolean carry = carryResource != null;
+                if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+                {
+                    actionable.setEnabled(carry);
+                }
+                else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
+                {
+                    actionable.setEnabled(!carry);
+                }
             }
         }
     }

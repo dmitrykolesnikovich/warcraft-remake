@@ -257,6 +257,8 @@ public class Entity extends FeaturableModel
         final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
         producible.addListener(createListener(services, setup, progress, producible, pathfindable));
 
+        final EntityStats stats = addFeatureAndGet(new EntityStats(services, setup));
+
         final ExtractorModel extractor = addFeatureAndGet(new ExtractorModel(services, setup));
         extractor.setChecker(new ExtractorChecker()
         {
@@ -273,7 +275,7 @@ public class Entity extends FeaturableModel
             @Override
             public boolean canCarry()
             {
-                final Tiled warehouse = Util.getWarehouse(services);
+                final Tiled warehouse = Util.getWarehouse(services, stats.getRace());
                 if (warehouse == null)
                 {
                     return false;
@@ -294,7 +296,6 @@ public class Entity extends FeaturableModel
         collidable.setCollisionVisibility(false);
         collidable.setOrigin(Origin.BOTTOM_LEFT);
 
-        addFeature(new EntityStats(services, setup));
         addFeature(new EntitySfx(services, setup));
         addFeature(new EntityModel(services, setup));
     }

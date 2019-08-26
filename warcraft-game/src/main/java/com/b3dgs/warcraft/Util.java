@@ -18,7 +18,6 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -53,19 +52,19 @@ public final class Util
     }
 
     /**
-     * Get player warehouse.
+     * Get owner warehouse.
      * 
      * @param services The services reference.
-     * @return The player warehouse, <code>null</code> if none.
+     * @param race The owner race.
+     * @return The owner warehouse, <code>null</code> if none.
      */
-    public static Tiled getWarehouse(Services services)
+    public static Warehouse getWarehouse(Services services, Race race)
     {
         final Handler handler = services.get(Handler.class);
-        final Player player = services.get(Player.class);
 
         for (final Warehouse warehouse : handler.get(Warehouse.class))
         {
-            if (player.owns(warehouse.getFeature(EntityStats.class).getRace()))
+            if (race.equals(warehouse.getFeature(EntityStats.class).getRace()))
             {
                 return warehouse;
             }

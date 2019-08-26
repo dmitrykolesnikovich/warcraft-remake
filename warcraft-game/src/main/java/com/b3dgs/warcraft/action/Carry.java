@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Carry action.
@@ -43,14 +44,14 @@ public class Carry extends ActionModel
 
         actionable.setAction(() ->
         {
-            final Tiled warehouse = Util.getWarehouse(services);
-            if (warehouse != null)
+            final List<Selectable> selection = selector.getSelection();
+            final int n = selection.size();
+            for (int i = 0; i < n; i++)
             {
-                final List<Selectable> selection = selector.getSelection();
-                final int n = selection.size();
-                for (int i = 0; i < n; i++)
+                final Selectable selectable = selection.get(i);
+                final Tiled warehouse = Util.getWarehouse(services, selectable.getFeature(EntityStats.class).getRace());
+                if (warehouse != null)
                 {
-                    final Selectable selectable = selection.get(i);
                     selectable.getFeature(Pathfindable.class).setDestination(warehouse);
                     if (i == 0)
                     {
