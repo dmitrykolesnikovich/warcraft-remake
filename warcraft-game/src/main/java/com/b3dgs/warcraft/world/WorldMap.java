@@ -74,7 +74,7 @@ public class WorldMap implements Persistable
         @Override
         public void notifyMoving(Pathfindable pathfindable)
         {
-            fogOfWar.updateHidden(pathfindable.getFeature(Fovable.class));
+            fogOfWar.update(pathfindable.getFeature(Fovable.class));
         }
     };
 
@@ -163,7 +163,7 @@ public class WorldMap implements Persistable
         {
             if (player.owns(fovable.getFeature(EntityStats.class).getRace()))
             {
-                fogOfWar.updateHidden(fovable);
+                fogOfWar.update(fovable);
             }
         }
     }
