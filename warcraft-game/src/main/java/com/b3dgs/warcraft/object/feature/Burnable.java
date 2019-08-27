@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -35,7 +34,7 @@ import com.b3dgs.lionengine.graphic.RenderableVoid;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.constant.Constant;
-import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.constant.Gfx;
 
 /**
  * Represents something that can burn.
@@ -69,10 +68,8 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
 
         viewer = services.get(Viewer.class);
 
-        burn = Drawable.loadSpriteAnimated(Medias.create(Folder.EFFECTS, "burning.png"), 4, 2);
+        burn = Drawable.loadSpriteAnimated(Gfx.BUILDING_BURNING.getSurface(), 4, 2);
         burn.setOrigin(Origin.CENTER_BOTTOM);
-        burn.load();
-        burn.prepare();
 
         effect = g ->
         {

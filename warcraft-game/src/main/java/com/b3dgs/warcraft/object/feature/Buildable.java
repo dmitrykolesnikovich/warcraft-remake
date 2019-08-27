@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
@@ -38,7 +37,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.constant.Constant;
-import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.EntityModel;
 
 /**
@@ -73,10 +72,8 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
 
         viewer = services.get(Viewer.class);
 
-        building = Drawable.loadSpriteAnimated(Medias.create(Folder.EFFECTS, "construction.png"), 3, 1);
+        building = Drawable.loadSpriteAnimated(Gfx.BUILDING_CONSTRUCTION.getSurface(), 3, 1);
         building.setOrigin(Origin.CENTER_BOTTOM);
-        building.load();
-        building.prepare();
 
         effect = g ->
         {
