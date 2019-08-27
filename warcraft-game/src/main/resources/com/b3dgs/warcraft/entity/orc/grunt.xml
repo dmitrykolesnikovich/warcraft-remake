@@ -5,6 +5,7 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickMove</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Decayable</lionengine:feature>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.AutoAttack</lionengine:feature>
     <lionengine:layerable layerRefresh="3" layerDisplay="3"/>
     <lionengine:surface image="grunt.png" icon="grunt_icon.png"/>
 	<lionengine:frames horizontal="8" vertical="7" offsetX="8" offsetY="8"/>

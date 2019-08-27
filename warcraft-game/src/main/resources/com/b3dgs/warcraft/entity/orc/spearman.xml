@@ -6,6 +6,7 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.RightClickMove</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodConsumer</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Decayable</lionengine:feature>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.AutoAttack</lionengine:feature>
     <lionengine:layerable layerRefresh="3" layerDisplay="3"/>
     <lionengine:surface image="spearman.png" icon="spearman_icon.png"/>
     <lionengine:frames horizontal="9" vertical="6" offsetX="8" offsetY="8"/>
