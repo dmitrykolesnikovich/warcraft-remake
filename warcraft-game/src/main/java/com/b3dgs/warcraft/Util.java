@@ -18,6 +18,7 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
@@ -105,6 +106,38 @@ public final class Util
             }
         }
         return next;
+    }
+
+    /**
+     * Get distance in tile.
+     * 
+     * @param map The map tile reference.
+     * @param source The transformable source.
+     * @param target The transformable target.
+     * @return The distance in tile between transformable.
+     */
+    public static double getDistanceInTile(MapTile map, Transformable source, Transformable target)
+    {
+        return Math.floor(UtilMath.getDistance(map.getInTileX(source),
+                                               map.getInTileY(source),
+                                               map.getInTileWidth(source),
+                                               map.getInTileHeight(source),
+                                               map.getInTileX(target),
+                                               map.getInTileY(target),
+                                               map.getInTileWidth(target),
+                                               map.getInTileHeight(target)));
+    }
+
+    /**
+     * Get distance in tile.
+     * 
+     * @param source The pathfindable source.
+     * @param target The pathfindable target.
+     * @return The distance in tile between transformable.
+     */
+    public static double getDistanceInTile(Tiled source, Tiled target)
+    {
+        return UtilMath.getDistance(source.getInTileX(), source.getInTileY(), target.getInTileX(), target.getInTileY());
     }
 
     /**

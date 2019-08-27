@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
@@ -207,15 +206,7 @@ public class Entity extends FeaturableModel
 
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
-        attacker.setAttackDistanceComputer((s,
-                                            t) -> Math.floor(UtilMath.getDistance(map.getInTileX(s),
-                                                                                  map.getInTileY(s),
-                                                                                  map.getInTileWidth(s),
-                                                                                  map.getInTileHeight(s),
-                                                                                  map.getInTileX(t),
-                                                                                  map.getInTileY(t),
-                                                                                  map.getInTileWidth(t),
-                                                                                  map.getInTileHeight(t))));
+        attacker.setAttackDistanceComputer((source, target) -> Util.getDistanceInTile(map, source, target));
 
         if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
@@ -266,10 +257,7 @@ public class Entity extends FeaturableModel
             public boolean canExtract()
             {
                 return pathfindable.isDestinationReached()
-                       && UtilMath.getDistance(pathfindable.getInTileX(),
-                                               pathfindable.getInTileY(),
-                                               extractor.getResourceLocation().getInTileX(),
-                                               extractor.getResourceLocation().getInTileY()) < 1.5;
+                       && Util.getDistanceInTile(pathfindable, extractor.getResourceLocation()) < 1.5;
             }
 
             @Override
@@ -280,10 +268,7 @@ public class Entity extends FeaturableModel
                 {
                     return false;
                 }
-                return UtilMath.getDistance(pathfindable.getInTileX(),
-                                            pathfindable.getInTileY(),
-                                            warehouse.getInTileX(),
-                                            warehouse.getInTileY()) < 1.5;
+                return Util.getDistanceInTile(pathfindable, warehouse) < 1.5;
             }
         });
 
