@@ -215,7 +215,8 @@ public class Entity extends FeaturableModel
                 @Override
                 public void notifyReachingTarget(Transformable target)
                 {
-                    if (!pathfindable.isMoving() && !pathfindable.setDestination(target))
+                    if (!pathfindable.isMoving() && !pathfindable.setDestination(target)
+                        || target.getFeature(EntityStats.class).getHealthPercent() == 0)
                     {
                         attacker.stopAttack();
                     }
