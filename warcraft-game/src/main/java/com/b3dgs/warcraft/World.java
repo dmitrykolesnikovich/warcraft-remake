@@ -21,6 +21,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.audio.Audio;
 import com.b3dgs.lionengine.audio.AudioFactory;
 import com.b3dgs.lionengine.game.Cursor;
@@ -29,10 +30,14 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
@@ -46,6 +51,7 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
+import com.b3dgs.warcraft.object.feature.Warehouse;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
 import com.b3dgs.warcraft.world.WorldNavigator;
@@ -78,6 +84,7 @@ public class World extends WorldGame
     private final WorldNavigator navigator;
     private final WorldSelection selection;
     private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
+    private final Tick tick = new Tick();
 
     private Audio music;
 
@@ -136,11 +143,8 @@ public class World extends WorldGame
         cursor.setInputDevice(pointer);
         cursor.setViewer(camera);
 
-        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 3, 48);
-        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), 40, 8);
-
-        createBase(Race.HUMAN, 8, 56);
-        createBase(Race.ORC, 46, 14);
+        createAi(Race.HUMAN, 8, 56);
+        createPlayer(Race.ORC, 46, 14);
 
         handler.updateAdd();
         worldMap.updateFog();
@@ -150,26 +154,79 @@ public class World extends WorldGame
     }
 
     /**
-     * Create base world.
+     * Create player base.
      * 
      * @param race The race reference.
      * @param tx The horizontal tile base.
      * @param ty The vertical tile base.
      */
-    private void createBase(Race race, int tx, int ty)
+    private void createPlayer(Race race, int tx, int ty)
     {
+        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), tx - 6, ty - 8);
         spawn(race, Unit.WORKER.get(), tx, ty - 2);
         spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
-        final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
 
-        if (player.owns(race))
+        final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
+        camera.center(townhall);
+        camera.round(map);
+        player.increaseFood();
+        player.increaseFood();
+    }
+
+    /**
+     * Create AI base.
+     * 
+     * @param race The race reference.
+     * @param tx The horizontal tile base.
+     * @param ty The vertical tile base.
+     */
+    private void createAi(Race race, int tx, int ty)
+    {
+        final Pathfindable goldmine = spawn(Race.NEUTRAL,
+                                            Unit.GOLDMINE.get(),
+                                            tx - 6,
+                                            ty - 8).getFeature(Pathfindable.class);
+        spawn(race, Unit.TOWNHALL.get(), tx, ty);
+
+        final Extractor extractorWood = spawn(race, Unit.WORKER.get(), tx, ty - 2).getFeature(Extractor.class);
+        extractorWood.setResource(Player.TYPE_WOOD, tx - 2, ty + 5, 1, 1);
+        extractorWood.startExtraction();
+
+        final Extractor extractorGold = spawn(race, Unit.WORKER.get(), tx, ty - 2).getFeature(Extractor.class);
+        extractorGold.setResource(Player.TYPE_GOLD, goldmine);
+        extractorGold.startExtraction();
+
+        spawn(race, Unit.FARM.get(), tx - 4, ty - 1);
+        spawn(race, Unit.FARM.get(), tx - 6, ty - 1);
+        spawn(race, Unit.LUMBERMILL.get(), tx + 6, ty - 4);
+        final Producer barracks = spawn(race, Unit.BARRACKS.get(), tx + 6, ty + 1).getFeature(Producer.class);
+        barracks.addListener(new ProducerListenerVoid()
         {
-            player.increaseFood();
-            player.increaseFood();
-            player.increaseFood();
-            camera.teleport(townhall.getX() + (townhall.getWidth() - camera.getWidth()) / 2,
-                            townhall.getY() + (townhall.getHeight() - camera.getHeight()) / 2);
-        }
+            @Override
+            public void notifyProduced(Featurable featurable)
+            {
+                final Warehouse warehouse = Util.getWarehouse(services, player.getRace());
+                if (warehouse != null)
+                {
+                    featurable.getFeature(Pathfindable.class).setDestination(warehouse);
+                    featurable.getFeature(Attacker.class).attack(warehouse.getFeature(Transformable.class));
+                }
+            }
+        });
+        tick.addAction(() -> aiProduceAndAttack(race, barracks), 300);
+        tick.start();
+    }
+
+    /**
+     * Produce unit and attack.
+     * 
+     * @param race The AI race.
+     * @param barracks The barracks reference.
+     */
+    private void aiProduceAndAttack(Race race, Producer barracks)
+    {
+        barracks.addToProductionQueue(factory.create(race.get("footman")));
+        tick.addAction(() -> aiProduceAndAttack(race, barracks), 300);
     }
 
     /**
@@ -202,6 +259,7 @@ public class World extends WorldGame
         cursor.update(extrp);
         navigator.update(extrp);
         player.update(extrp);
+        tick.update(extrp);
 
         super.update(extrp);
     }
