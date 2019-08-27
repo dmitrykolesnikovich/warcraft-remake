@@ -75,8 +75,7 @@ public class ProduceButton extends ActionModel
                 && player.isAvailableWood(config.getWood())
                 && player.isAvailableGold(config.getGold()))
             {
-                player.decreaseWood(config.getWood());
-                player.decreaseGold(config.getGold());
+                player.decreaseResource(config.getWood(), config.getGold());
 
                 final Featurable entity = factory.create(target);
                 entity.getFeature(EntityModel.class).setVisible(false);

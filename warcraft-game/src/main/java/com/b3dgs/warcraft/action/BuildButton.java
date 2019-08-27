@@ -175,8 +175,7 @@ public class BuildButton extends ActionModel
         {
             if (player.isAvailableWood(config.getWood()) && player.isAvailableGold(config.getGold()))
             {
-                player.decreaseWood(config.getWood());
-                player.decreaseGold(config.getGold());
+                player.decreaseResource(config.getWood(), config.getGold());
 
                 final Featurable building = factory.create(target);
                 final Producible producible = building.getFeature(Producible.class);

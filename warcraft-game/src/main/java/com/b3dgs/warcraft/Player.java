@@ -150,46 +150,37 @@ public final class Player implements Updatable
     }
 
     /**
-     * Increase wood resource.
+     * Increase resource.
      * 
-     * @param amount The amount of wood.
+     * @param type The resource type.
+     * @param amount The amount of resource.
      */
-    public void increaseWood(int amount)
+    public void increaseResource(String type, int amount)
     {
-        wood.increase(amount);
-        updaterWood = updateWood;
+        if (Player.TYPE_WOOD.equals(type))
+        {
+            wood.increase(amount);
+            updaterWood = updateWood;
+        }
+        else if (Player.TYPE_GOLD.equals(type))
+        {
+            gold.increase(amount);
+            updaterGold = updateGold;
+        }
     }
 
     /**
      * Decrease wood resource.
      * 
-     * @param amount The amount of wood.
+     * @param amountWood The amount of wood.
+     * @param amountGold The amount of gold.
      */
-    public void decreaseWood(int amount)
+    public void decreaseResource(int amountWood, int amountGold)
     {
-        wood.decrease(amount);
+        wood.decrease(amountWood);
         updaterWood = updateWood;
-    }
 
-    /**
-     * Increase gold resource.
-     * 
-     * @param amount The amount of gold.
-     */
-    public void increaseGold(int amount)
-    {
-        gold.increase(amount);
-        updaterGold = updateGold;
-    }
-
-    /**
-     * Decrease gold resource.
-     * 
-     * @param amount The amount of gold.
-     */
-    public void decreaseGold(int amount)
-    {
-        gold.decrease(amount);
+        gold.decrease(amountGold);
         updaterGold = updateGold;
     }
 

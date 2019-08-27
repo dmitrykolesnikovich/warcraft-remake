@@ -128,19 +128,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
 
                 if (Player.TYPE_WOOD.equals(type))
                 {
-                    final Tile tile = mapPath.getTile(extractor.getResourceLocation());
-                    map.setTile(tile.getInTileX(), tile.getInTileY(), Constant.TILE_NUM_TREE_CUT);
-                    mapTransition.resolve(map.getTile(tile.getInTileX(), tile.getInTileY()));
-
-                    final Tile next = Util.getClosestTree(map, tile, transformable);
-                    if (next != null)
-                    {
-                        extractor.setResource(type, next);
-                    }
-                    else
-                    {
-                        extractor.stopExtraction();
-                    }
+                    cutWood();
                 }
 
                 switchActionExtractCarry();
@@ -155,13 +143,9 @@ public final class EntityModel extends FeatureModel implements Recyclable
         public void notifyStartDropOff(String type, int totalQuantity)
         {
             setVisible(false);
-            if (Player.TYPE_WOOD.equals(type))
+            if (player.owns(stats.getRace()))
             {
-                player.increaseWood(totalQuantity);
-            }
-            else if (Player.TYPE_GOLD.equals(type))
-            {
-                player.increaseGold(totalQuantity);
+                player.increaseResource(type, totalQuantity);
             }
         }
 
@@ -395,6 +379,26 @@ public final class EntityModel extends FeatureModel implements Recyclable
         attackStarted = false;
         producibleEnded = false;
         extractResource = null;
+    }
+
+    /**
+     * Cut wood tile and search next tree.
+     */
+    private void cutWood()
+    {
+        final Tile tile = mapPath.getTile(extractor.getResourceLocation());
+        map.setTile(tile.getInTileX(), tile.getInTileY(), Constant.TILE_NUM_TREE_CUT);
+        mapTransition.resolve(map.getTile(tile.getInTileX(), tile.getInTileY()));
+
+        final Tile next = Util.getClosestTree(map, tile, transformable);
+        if (next != null)
+        {
+            extractor.setResource(Player.TYPE_WOOD, next);
+        }
+        else
+        {
+            extractor.stopExtraction();
+        }
     }
 
     /**
