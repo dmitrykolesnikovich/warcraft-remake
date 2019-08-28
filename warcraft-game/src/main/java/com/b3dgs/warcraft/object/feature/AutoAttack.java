@@ -18,8 +18,6 @@ package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UpdatableVoid;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -31,7 +29,6 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
@@ -42,7 +39,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
 @FeatureInterface
 public class AutoAttack extends FeatureModel implements Routine, Recyclable
 {
-    private static final int CHECK_DELAY = 60;
+    private static final int CHECK_DELAY = 30;
 
     private final Tick tick = new Tick();
     private final Updatable checker;
@@ -50,11 +47,10 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     private final MapTilePath mapPath;
     private final Handler handler;
 
-    private Updatable current;
-
     @FeatureGet private Fovable fovable;
     @FeatureGet private Attacker attacker;
     @FeatureGet private Pathfindable pathfindable;
+    @FeatureGet private Transformable transformable;
     @FeatureGet private EntityStats stats;
 
     /**
@@ -73,34 +69,26 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
         checker = extrp ->
         {
             tick.update(extrp);
-            if (tick.elapsed(CHECK_DELAY))
+            if (tick.elapsed(CHECK_DELAY)
+                && stats.getHealthPercent() > 0
+                && (attacker.getTarget() == null
+                    || attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0))
             {
                 final Transformable target = findTarget();
                 if (target != null && pathfindable.setDestination(target))
                 {
                     attacker.attack(target);
-                    current = UpdatableVoid.getInstance();
                 }
                 tick.restart();
             }
         };
     }
 
-    @Override
-    public void prepare(FeatureProvider provider)
-    {
-        super.prepare(provider);
-
-        attacker.addListener(new AttackerListenerVoid()
-        {
-            @Override
-            public void notifyAttackEnded(int damages, Transformable target)
-            {
-                current = checker;
-            }
-        });
-    }
-
+    /**
+     * Find closest target on sight.
+     * 
+     * @return The target found, <code>null</code> if none.
+     */
     private Transformable findTarget()
     {
         int ray = 1;
@@ -117,7 +105,8 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
                         for (final Integer id : mapPath.getObjectsId(tx + x, ty + y))
                         {
                             final Featurable featurable = handler.get(id);
-                            if (!stats.getRace().equals(featurable.getFeature(EntityStats.class).getRace()))
+                            final EntityStats statsTarget = featurable.getFeature(EntityStats.class);
+                            if (!stats.getRace().equals(statsTarget.getRace()) && statsTarget.getHealthPercent() > 0)
                             {
                                 return featurable.getFeature(Transformable.class);
                             }
@@ -133,13 +122,12 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     @Override
     public void update(double extrp)
     {
-        current.update(extrp);
+        checker.update(extrp);
     }
 
     @Override
     public void recycle()
     {
         tick.restart();
-        current = checker;
     }
 }
