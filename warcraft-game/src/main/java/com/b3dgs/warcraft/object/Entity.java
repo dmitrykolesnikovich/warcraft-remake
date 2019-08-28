@@ -25,7 +25,6 @@ import java.util.Set;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.ActionerModel;
 import com.b3dgs.lionengine.game.feature.AnimatableModel;
@@ -58,8 +57,6 @@ import com.b3dgs.lionengine.game.feature.state.StateHandler;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorChecker;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorModel;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FovableModel;
@@ -138,12 +135,12 @@ public class Entity extends FeaturableModel
                 if (!producer.hasFeature(Buildable.class))
                 {
                     producer.getFeature(EntityModel.class).setVisible(true);
-                    teleportOutside(map, producer);
+                    Util.teleportOutside(map, producer, producible.getFeature(Pathfindable.class));
                 }
                 if (!producible.hasFeature(Buildable.class))
                 {
                     producible.getFeature(EntityModel.class).setVisible(true);
-                    teleportOutside(map, producible);
+                    Util.teleportOutside(map, producible, producer.getFeature(Pathfindable.class));
                 }
             }
         };
@@ -168,20 +165,6 @@ public class Entity extends FeaturableModel
             }
         }
         return Collections.emptySet();
-    }
-
-    /**
-     * Teleport producer outside producible area.
-     * 
-     * @param map The map tile reference.
-     * @param mover The mover reference.
-     */
-    private static void teleportOutside(MapTile map, FeatureProvider mover)
-    {
-        final Pathfindable pathfindable = mover.getFeature(Pathfindable.class);
-        final CoordTile coord = map.getFeature(MapTilePath.class)
-                                   .getClosestAvailableTile(pathfindable, pathfindable, 16);
-        pathfindable.setLocation(coord);
     }
 
     /**

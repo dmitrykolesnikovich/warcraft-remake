@@ -18,12 +18,16 @@ package com.b3dgs.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
@@ -138,6 +142,20 @@ public final class Util
     public static double getDistanceInTile(Tiled source, Tiled target)
     {
         return UtilMath.getDistance(source.getInTileX(), source.getInTileY(), target.getInTileX(), target.getInTileY());
+    }
+
+    /**
+     * Teleport mover outside source.
+     * 
+     * @param map The map tile reference.
+     * @param mover The mover reference.
+     * @param source The source building.
+     */
+    public static void teleportOutside(MapTile map, FeatureProvider mover, Tiled source)
+    {
+        final Pathfindable pathfindable = mover.getFeature(Pathfindable.class);
+        final CoordTile coord = map.getFeature(MapTilePath.class).getFreeTileAround(pathfindable, source);
+        pathfindable.setLocation(coord);
     }
 
     /**
