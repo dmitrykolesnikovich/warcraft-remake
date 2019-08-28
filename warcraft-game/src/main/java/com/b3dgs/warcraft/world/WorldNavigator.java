@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.feature.Camera;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.RightClickHandler;
 
@@ -253,7 +255,9 @@ public class WorldNavigator implements Updatable
     {
         for (final Integer id : mapPath.getObjectsId(tx, ty))
         {
-            if (handler.get(id).getFeature(EntityStats.class).getHealthPercent() > 0)
+            final Featurable featurable = handler.get(id);
+            if (featurable.getFeature(EntityStats.class).getHealthPercent() > 0
+                && featurable.getFeature(EntityModel.class).isVisible())
             {
                 return true;
             }

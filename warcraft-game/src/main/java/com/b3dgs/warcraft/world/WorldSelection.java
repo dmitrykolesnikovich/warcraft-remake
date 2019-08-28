@@ -151,6 +151,7 @@ public class WorldSelection
             if (stats.getHealthPercent() == 0
                 || moving.get() && !mover
                 || !player.owns(current) && race.get() != null
+                || !selectable.getFeature(EntityModel.class).isVisible()
                 || !fogOfWar.isVisible(selectable.getFeature(Pathfindable.class)))
             {
                 return false;
