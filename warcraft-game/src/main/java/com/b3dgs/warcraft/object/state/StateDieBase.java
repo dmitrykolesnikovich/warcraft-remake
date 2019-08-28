@@ -17,6 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -37,6 +38,7 @@ class StateDieBase extends State
     private final Pathfindable pathfindable = model.getFeature(Pathfindable.class);
     private final Extractor extractor = model.getFeature(Extractor.class);
     private final Producer producer = model.getFeature(Producer.class);
+    private final Attacker attacker = model.getFeature(Attacker.class);
     private final Selector selector = model.getServices().get(Selector.class);
     private final Hud hud = model.getServices().get(Hud.class);
 
@@ -67,6 +69,7 @@ class StateDieBase extends State
         pathfindable.stopMoves();
         extractor.stopExtraction();
         producer.stopProduction();
+        attacker.stopAttack();
         pathfindable.clearPath();
     }
 }
