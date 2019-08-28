@@ -72,20 +72,24 @@ public class WorldMinimap implements Resource, Renderable
     {
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
-            final Race race = entity.getFeature(EntityStats.class).getRace();
-            if (player.owns(race) && entity.hasFeature(Warehouse.class))
+            final EntityStats stats = entity.getFeature(EntityStats.class);
+            if (stats.getHealthPercent() > 0)
             {
-                g.setColor(Constant.COLOR_WAREHOUSE);
+                final Race race = stats.getRace();
+                if (player.owns(race) && entity.hasFeature(Warehouse.class))
+                {
+                    g.setColor(Constant.COLOR_WAREHOUSE);
+                }
+                else
+                {
+                    g.setColor(player.getColor(race));
+                }
+                g.drawRect(getX(entity.getInTileX()),
+                           getY(entity.getInTileY(), entity.getInTileHeight()),
+                           entity.getInTileWidth(),
+                           entity.getInTileHeight(),
+                           true);
             }
-            else
-            {
-                g.setColor(player.getColor(race));
-            }
-            g.drawRect(getX(entity.getInTileX()),
-                       getY(entity.getInTileY(), entity.getInTileHeight()),
-                       entity.getInTileWidth(),
-                       entity.getInTileHeight(),
-                       true);
         }
     }
 
