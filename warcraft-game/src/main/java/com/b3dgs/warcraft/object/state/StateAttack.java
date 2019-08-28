@@ -58,13 +58,4 @@ final class StateAttack extends State
         pathfindable.pointTo(attacker.getTarget().getFeature(Pathfindable.class));
         attacker.setAttackFrame(animation.getLast());
     }
-
-    @Override
-    public void update(double extrp)
-    {
-        if (attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0)
-        {
-            attacker.stopAttack();
-        }
-    }
 }

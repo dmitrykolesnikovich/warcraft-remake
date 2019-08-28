@@ -85,6 +85,12 @@ public final class EntityModel extends FeatureModel implements Recyclable
         {
             attackStarted = true;
         }
+
+        @Override
+        public void notifyAttackStopped()
+        {
+            attackStarted = false;
+        }
     };
     private final ProducibleListener producibleListener = new ProducibleListenerVoid()
     {

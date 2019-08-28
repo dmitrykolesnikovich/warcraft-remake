@@ -208,7 +208,20 @@ public class Entity extends FeaturableModel
                 @Override
                 public void notifyAttackStarted(Transformable target)
                 {
+                    if (target.getFeature(EntityStats.class).getHealthPercent() == 0)
+                    {
+                        attacker.stopAttack();
+                    }
                     pathfindable.stopMoves();
+                }
+
+                @Override
+                public void notifyAttackEnded(int damages, Transformable target)
+                {
+                    if (target.getFeature(EntityStats.class).getHealthPercent() == 0)
+                    {
+                        attacker.stopAttack();
+                    }
                 }
             });
         }
