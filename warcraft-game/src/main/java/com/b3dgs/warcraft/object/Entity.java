@@ -188,6 +188,8 @@ public class Entity extends FeaturableModel
         final MapTile map = services.get(MapTile.class);
 
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
+        pathfindable.setSpeed(0.8, 0.8);
+
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
         attacker.setAttackDistanceComputer((source, target) -> Util.getDistanceInTile(map, source, target));
 
