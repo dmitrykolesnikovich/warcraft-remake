@@ -100,7 +100,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
         {
             renderable = effect;
         }
-        if (phase > 0)
+        if (phase > 0 && viewer.isViewable(transformable, 0, 0))
         {
             Sfx.NEUTRAL_CONSTRUCT.play();
         }

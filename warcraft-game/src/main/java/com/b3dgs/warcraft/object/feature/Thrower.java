@@ -16,6 +16,7 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
@@ -40,6 +41,8 @@ import com.b3dgs.warcraft.Sfx;
 @FeatureInterface
 public class Thrower extends FeatureModel implements Routine
 {
+    private final Viewer viewer;
+
     @FeatureGet private Attacker attacker;
     @FeatureGet private Launcher launcher;
     @FeatureGet private Collidable collidable;
@@ -55,6 +58,8 @@ public class Thrower extends FeatureModel implements Routine
     public Thrower(Services services, Setup setup)
     {
         super();
+
+        viewer = services.get(Viewer.class);
     }
 
     @Override
@@ -78,7 +83,10 @@ public class Thrower extends FeatureModel implements Routine
             {
                 if (other != collidable)
                 {
-                    Sfx.NEUTRAL_ARROWHIT.play();
+                    if (viewer.isViewable(other.getFeature(Transformable.class), 0, 0))
+                    {
+                        Sfx.NEUTRAL_ARROWHIT.play();
+                    }
                     if (other.getFeature(EntityStats.class).applyDamages(attacker.getAttackDamages()))
                     {
                         attacker.stopAttack();

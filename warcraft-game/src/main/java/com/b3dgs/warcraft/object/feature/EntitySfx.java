@@ -19,11 +19,15 @@ package com.b3dgs.warcraft.object.feature;
 import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
 
@@ -46,8 +50,12 @@ public class EntitySfx extends FeatureModel
     private final List<Sfx> attacked;
     private final List<Sfx> dead;
 
+    private final Viewer viewer;
     private final Player player;
+    private final FogOfWar fogOfWar;
 
+    @FeatureGet private Transformable transformable;
+    @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private EntityStats stats;
 
     /**
@@ -68,7 +76,9 @@ public class EntitySfx extends FeatureModel
         attacked = Sfx.load(setup, ATT_ATTACKED);
         dead = Sfx.load(setup, Sfx.ATT_DEAD);
 
+        viewer = services.get(Viewer.class);
         player = services.get(Player.class);
+        fogOfWar = services.get(FogOfWar.class);
     }
 
     /**
@@ -76,7 +86,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onStarted()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible())
         {
             Sfx.playRandom(started);
         }
@@ -87,7 +97,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onProduced()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible() && player.owns(stats.getRace()))
         {
             Sfx.playRandom(produced);
         }
@@ -98,7 +108,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onSelected()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible() && player.owns(stats.getRace()))
         {
             Sfx.playRandom(selected);
         }
@@ -109,7 +119,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onOrdered()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible())
         {
             Sfx.playRandom(ordered);
         }
@@ -120,7 +130,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onAttacked()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible())
         {
             Sfx.playRandom(attacked);
         }
@@ -131,9 +141,19 @@ public class EntitySfx extends FeatureModel
      */
     public void onDead()
     {
-        if (player.owns(stats.getRace()))
+        if (isVisible())
         {
             Sfx.playRandom(dead);
         }
+    }
+
+    /**
+     * Check if visible on camera and not fogged.
+     * 
+     * @return <code>true</code> if truly visible, <code>false</code> else.
+     */
+    private boolean isVisible()
+    {
+        return viewer.isViewable(transformable, 0, 0) && fogOfWar.isVisible(pathfindable);
     }
 }
