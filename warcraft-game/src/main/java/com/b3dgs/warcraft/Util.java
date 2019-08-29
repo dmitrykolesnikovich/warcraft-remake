@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.TilePath;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
@@ -81,11 +80,12 @@ public final class Util
      * Get the closest next tree around cut.
      * 
      * @param map The map tile reference.
+     * @param mapPath The map path reference.
      * @param cut The cut tree.
      * @param transformable The transformable reference.
-     * @return The next tree to cut.
+     * @return The next tree to cut, <code>null</code> if none.
      */
-    public static Tile getClosestTree(MapTile map, Tile cut, Transformable transformable)
+    public static Tile getClosestTree(MapTile map, MapTilePath mapPath, Tile cut, Transformable transformable)
     {
         double dist = Double.MAX_VALUE;
         Tile next = null;
@@ -98,7 +98,7 @@ public final class Util
                     continue;
                 }
                 final Tile tree = map.getTile(cut.getInTileX() + tx, cut.getInTileY() + ty);
-                if (Constant.CATEGORY_TREE.equals(tree.getFeature(TilePath.class).getCategory()))
+                if (tree != null && Constant.CATEGORY_TREE.equals(mapPath.getCategory(tree)))
                 {
                     final double cur = UtilMath.getDistance(tree, transformable);
                     if (cur < dist)
