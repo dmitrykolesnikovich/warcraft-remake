@@ -70,12 +70,14 @@ public final class EntityModel extends FeatureModel implements Recyclable
         public void notifyStartMove(Pathfindable pathfindable)
         {
             moveStarted = true;
+            moveArrived = false;
         }
 
         @Override
         public void notifyArrived(Pathfindable pathfindable)
         {
             moveArrived = true;
+            moveStarted = false;
         }
     };
     private final AttackerListener attackerListener = new AttackerListenerVoid()
