@@ -167,6 +167,8 @@ public class World extends WorldGame
         spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
 
         final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
+        camera.center(townhall);
+        camera.round(map);
         player.increaseFood();
         player.increaseFood();
     }
