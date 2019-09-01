@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -73,7 +74,7 @@ public class WorldMinimap implements Resource, Renderable
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
             final EntityStats stats = entity.getFeature(EntityStats.class);
-            if (stats.getHealthPercent() > 0)
+            if (stats.getHealthPercent() > 0 && entity.getFeature(EntityModel.class).isVisible())
             {
                 final Race race = stats.getRace();
                 if (player.owns(race) && entity.hasFeature(Warehouse.class))
