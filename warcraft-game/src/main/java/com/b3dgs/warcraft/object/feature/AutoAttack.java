@@ -29,12 +29,17 @@ import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.state.StateHandler;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
+import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.Util;
+import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
- * Check around to attack automatically on sight.
+ * Check around to attack automatically on sight when idle.
  */
 @FeatureInterface
 public class AutoAttack extends FeatureModel implements Routine, Recyclable
@@ -44,6 +49,7 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     private final Tick tick = new Tick();
     private final Updatable checker;
 
+    private final MapTile map;
     private final MapTilePath mapPath;
     private final Handler handler;
 
@@ -51,6 +57,7 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     @FeatureGet private Attacker attacker;
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private Transformable transformable;
+    @FeatureGet private StateHandler state;
     @FeatureGet private EntityStats stats;
 
     /**
@@ -63,25 +70,39 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     {
         super();
 
+        map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);
         handler = services.get(Handler.class);
 
         checker = extrp ->
         {
             tick.update(extrp);
-            if (tick.elapsed(CHECK_DELAY)
-                && stats.getHealthPercent() > 0
-                && (attacker.getTarget() == null
-                    || attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0))
+            if (canAutoAttack())
             {
                 final Transformable target = findTarget();
-                if (target != null && pathfindable.setDestination(target))
+                if (target != null
+                    && (Util.getDistanceInTile(map, transformable, target) < 1.5
+                        || pathfindable.setDestination(target)))
                 {
                     attacker.attack(target);
                 }
                 tick.restart();
             }
         };
+    }
+
+    /**
+     * Check if can auto attack.
+     * 
+     * @return <code>true</code> if can auto attack, <code>false</code> else.
+     */
+    private boolean canAutoAttack()
+    {
+        return state.isState(StateIdle.class)
+               && tick.elapsed(CHECK_DELAY)
+               && stats.getHealthPercent() > 0
+               && (attacker.getTarget() == null
+                   || attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0);
     }
 
     /**
@@ -106,7 +127,10 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
                         {
                             final Featurable featurable = handler.get(id);
                             final EntityStats statsTarget = featurable.getFeature(EntityStats.class);
-                            if (!stats.getRace().equals(statsTarget.getRace()) && statsTarget.getHealthPercent() > 0)
+                            final Race race = statsTarget.getRace();
+                            if (!race.equals(Race.NEUTRAL)
+                                && !stats.getRace().equals(race)
+                                && statsTarget.getHealthPercent() > 0)
                             {
                                 return featurable.getFeature(Transformable.class);
                             }
