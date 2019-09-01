@@ -117,10 +117,14 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
     /**
      * Executed action. Does nothing by default.
+     * 
+     * @return <code>true</code> if action, <code>false</code> else.
      */
-    protected void action()
+    protected boolean action()
     {
-        // Nothing by default
+        cursor.setSurfaceId(Constant.CURSOR_ID_ORDER);
+        cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
+        return true;
     }
 
     /**
@@ -138,11 +142,11 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     private void onClickButton()
     {
-        cursor.setSurfaceId(Constant.CURSOR_ID_ORDER);
-        cursor.setRenderingOffset(CURSOR_OFFSET, CURSOR_OFFSET);
-        selector.setEnabled(false);
-        state.set(assignable);
-        ActionModel.this.action();
+        if (ActionModel.this.action())
+        {
+            selector.setEnabled(false);
+            state.set(assignable);
+        }
     }
 
     /**

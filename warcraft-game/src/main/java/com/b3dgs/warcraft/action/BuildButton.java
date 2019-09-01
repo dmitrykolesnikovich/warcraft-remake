@@ -155,13 +155,19 @@ public class BuildButton extends ActionModel
     }
 
     @Override
-    protected void action()
+    protected boolean action()
     {
+        if (!player.isAvailableWood(config.getWood()) || !player.isAvailableGold(config.getGold()))
+        {
+            return false;
+        }
+
         final SizeConfig size = SizeConfig.imports(new Xml(target));
         area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
         hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
-        cursor.setSurfaceId(Constant.CURSOR_ID);
         cursor.setVisible(false);
+
+        return true;
     }
 
     @Override
@@ -171,33 +177,34 @@ public class BuildButton extends ActionModel
         {
             return false;
         }
+
         for (final Selectable selectable : selector.getSelection())
         {
-            if (player.isAvailableWood(config.getWood()) && player.isAvailableGold(config.getGold()))
-            {
-                player.decreaseResource(config.getWood(), config.getGold());
+            player.decreaseResource(config.getWood(), config.getGold());
 
-                final Featurable building = factory.create(target);
-                final Producible producible = building.getFeature(Producible.class);
-                producible.setLocation(area.getX(), area.getY());
+            final Featurable building = factory.create(target);
+            final Producible producible = building.getFeature(Producible.class);
+            producible.setLocation(area.getX(), area.getY());
 
-                final Producer producer = selectable.getFeature(Producer.class);
-                final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
-                final Transformable transformable = producer.getFeature(Transformable.class);
-                producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
-                                                                       transformable) < map.getTileWidth()
-                                                  && pathfindable.isDestinationReached());
+            final Producer producer = selectable.getFeature(Producer.class);
+            final Pathfindable pathfindable = producer.getFeature(Pathfindable.class);
+            final Transformable transformable = producer.getFeature(Transformable.class);
+            producer.setChecker(featurable -> UtilMath.getDistance(featurable.getFeature(Producible.class),
+                                                                   transformable) < map.getTileWidth()
+                                              && pathfindable.isDestinationReached());
 
-                pathfindable.setDestination(area);
-
-                producer.addToProductionQueue(building);
-            }
+            pathfindable.setDestination(area);
+            producer.addToProductionQueue(building);
         }
         area = null;
         hud.clearMenus();
         hud.setCancelShortcut(() -> false);
         Sfx.NEUTRAL_BUILD.play();
+
+        cursor.setSurfaceId(Constant.CURSOR_ID);
+        cursor.setRenderingOffset(0, 0);
         cursor.setVisible(true);
+
         return true;
     }
 
