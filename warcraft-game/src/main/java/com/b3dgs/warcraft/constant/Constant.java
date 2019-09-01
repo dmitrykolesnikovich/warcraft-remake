@@ -34,7 +34,7 @@ public final class Constant
     public static final Resolution NATIVE = new Resolution(384, 216, 60);
 
     /** Debug flag. */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /** Corpse layer. */
     public static final int LAYER_CORPSE = 1;
