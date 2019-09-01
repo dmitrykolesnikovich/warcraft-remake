@@ -47,8 +47,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListener;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractorListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListener;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableListenerVoid;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
@@ -64,22 +62,6 @@ import com.b3dgs.warcraft.object.state.StateIdle;
 @FeatureInterface
 public final class EntityModel extends FeatureModel implements Recyclable
 {
-    private final PathfindableListener pathfindableListener = new PathfindableListenerVoid()
-    {
-        @Override
-        public void notifyStartMove(Pathfindable pathfindable)
-        {
-            moveStarted = true;
-            moveArrived = false;
-        }
-
-        @Override
-        public void notifyArrived(Pathfindable pathfindable)
-        {
-            moveArrived = true;
-            moveStarted = false;
-        }
-    };
     private final AttackerListener attackerListener = new AttackerListenerVoid()
     {
         @Override
@@ -194,8 +176,6 @@ public final class EntityModel extends FeatureModel implements Recyclable
     @FeatureGet private StateHandler stateHandler;
     @FeatureGet private EntityStats stats;
 
-    private boolean moveStarted;
-    private boolean moveArrived;
     private boolean attackStarted;
     private boolean producibleEnded;
     private boolean gotoResource;
@@ -235,7 +215,6 @@ public final class EntityModel extends FeatureModel implements Recyclable
     {
         super.prepare(provider);
 
-        pathfindable.addListener(pathfindableListener);
         attacker.addListener(attackerListener);
         producible.addListener(producibleListener);
         extractor.addListener(extractorListener);
@@ -314,7 +293,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     public boolean isMoveStarted()
     {
-        return moveStarted;
+        return pathfindable.isMoving();
     }
 
     /**
@@ -324,7 +303,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     public boolean isMoveArrived()
     {
-        return moveArrived || !pathfindable.isMoving();
+        return !pathfindable.isMoving();
     }
 
     /**
@@ -382,8 +361,6 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     public void resetFlags()
     {
-        moveStarted = false;
-        moveArrived = false;
         attackStarted = false;
         producibleEnded = false;
         extractResource = null;
