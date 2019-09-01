@@ -37,11 +37,11 @@ public final class Constant
     public static final boolean DEBUG = true;
 
     /** Corpse layer. */
-    public static final int LAYER_BUILDING = 1;
+    public static final int LAYER_CORPSE = 1;
     /** Buildings layer. */
-    public static final int LAYER_CORPSE = LAYER_BUILDING + 1;
+    public static final int LAYER_BUILDING = LAYER_CORPSE + 1;
     /** Entity layer. */
-    public static final int LAYER_ENTITY = LAYER_CORPSE + 1;
+    public static final int LAYER_ENTITY = LAYER_BUILDING + 1;
     /** Projectile layer. */
     public static final int LAYER_PROJECTILE = LAYER_ENTITY + 1;
     /** Explode layer. */
@@ -76,7 +76,7 @@ public final class Constant
     /** Sfx attribute separator. */
     public static final String SFX_SEPARATOR = ";";
     /** Default volume. */
-    public static final int VOLUME_DEFAULT = 50;
+    public static final int VOLUME_DEFAULT = 0;
     /** Sound bank id. */
     public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
 

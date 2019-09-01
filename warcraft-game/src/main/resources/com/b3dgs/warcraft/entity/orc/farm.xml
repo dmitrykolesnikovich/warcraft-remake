@@ -6,7 +6,7 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Reparable</lionengine:feature>
-    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
+    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:surface image="farm.png" icon="farm_icon.png"/>
 	<lionengine:frames horizontal="2" vertical="1" offsetX="8"/>
 	<lionengine:size width="32" height="32"/>

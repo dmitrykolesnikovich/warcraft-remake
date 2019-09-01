@@ -5,7 +5,7 @@
     <lionengine:feature>com.b3dgs.warcraft.object.feature.GoldQuantityRenderer</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
     <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
-    <lionengine:layerable layerRefresh="1" layerDisplay="1"/>
+    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:surface image="goldmine.png" icon="goldmine_icon.png"/>
 	<lionengine:frames horizontal="1" vertical="1"/>
 	<lionengine:size width="48" height="48"/>
