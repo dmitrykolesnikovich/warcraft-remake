@@ -41,7 +41,7 @@ public class Repairer extends FeatureModel
         attacker.addListener(new AttackerListenerVoid()
         {
             @Override
-            public void notifyAttackEnded(int heal, Transformable target)
+            public void notifyAttackEnded(Transformable target, int heal)
             {
                 target.getFeature(EntityStats.class).heal(heal);
             }

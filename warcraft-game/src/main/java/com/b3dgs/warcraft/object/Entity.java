@@ -192,6 +192,7 @@ public class Entity extends FeaturableModel
 
         final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
         attacker.setAttackDistanceComputer((source, target) -> Util.getDistanceInTile(map, source, target));
+        attacker.setAttackChecker(target -> target.getFeature(EntityStats.class).getHealthPercent() > 0);
 
         if (setup.hasNode(AttackerConfig.NODE_ATTACKER))
         {
@@ -210,15 +211,11 @@ public class Entity extends FeaturableModel
                 @Override
                 public void notifyAttackStarted(Transformable target)
                 {
-                    if (target.getFeature(EntityStats.class).getHealthPercent() == 0)
-                    {
-                        attacker.stopAttack();
-                    }
                     pathfindable.stopMoves();
                 }
 
                 @Override
-                public void notifyAttackEnded(int damages, Transformable target)
+                public void notifyAttackEnded(Transformable target, int damages)
                 {
                     if (target.getFeature(EntityStats.class).getHealthPercent() == 0)
                     {

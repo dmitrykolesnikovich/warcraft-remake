@@ -70,7 +70,7 @@ public class Thrower extends FeatureModel implements Routine
         attacker.addListener(new AttackerListenerVoid()
         {
             @Override
-            public void notifyAttackEnded(int damages, Transformable target)
+            public void notifyAttackEnded(Transformable target, int damages)
             {
                 sfx.onAttacked();
                 launcher.fire(attacker.getTarget());
