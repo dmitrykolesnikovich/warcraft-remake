@@ -186,10 +186,12 @@ public final class Player implements Updatable
 
     /**
      * Increase available food.
+     * 
+     * @param count The food count to increase.
      */
-    public void increaseFood()
+    public void increaseFood(int count)
     {
-        available.increase(1);
+        available.increase(count);
     }
 
     /**

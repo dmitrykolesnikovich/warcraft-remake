@@ -171,8 +171,8 @@ public class World extends WorldGame
         camera.center(townhall);
         camera.round(map);
 
-        player.increaseFood();
-        player.increaseFood();
+        player.increaseFood(1);
+        player.consumeFood();
     }
 
     /**
@@ -205,10 +205,11 @@ public class World extends WorldGame
             @Override
             public void notifyProduced(Featurable featurable)
             {
+                featurable.getFeature(AutoAttack.class).setForce(true);
+
                 final Warehouse warehouse = Util.getWarehouse(services, player.getRace());
                 if (warehouse != null)
                 {
-                    featurable.getFeature(AutoAttack.class).setForce(true);
                     featurable.getFeature(Pathfindable.class).setDestination(warehouse);
                 }
             }
