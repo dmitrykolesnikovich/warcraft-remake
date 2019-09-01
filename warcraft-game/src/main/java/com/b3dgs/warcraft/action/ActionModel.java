@@ -175,7 +175,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         if (actionable.isEnabled())
         {
             final int clickOffsetY;
-            if (cursor.getClick() > 0 && actionable.isOver())
+            if (cursor.getClick() == 1 && actionable.isOver())
             {
                 clickOffsetY = 1;
             }
