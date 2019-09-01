@@ -48,11 +48,11 @@ public enum Race
     /**
      * Get an entity based on its race
      * 
-     * @param file The entity filename (without its extension).
+     * @param unit The unit reference.
      * @return The entity media.
      */
-    public Media get(String file)
+    public Media get(Unit unit)
     {
-        return Medias.create(Folder.ENTITIES, getFolder(), file + Factory.FILE_DATA_DOT_EXTENSION);
+        return Medias.create(Folder.ENTITIES, getFolder(), unit.get() + Factory.FILE_DATA_DOT_EXTENSION);
     }
 }

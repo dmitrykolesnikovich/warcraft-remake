@@ -34,7 +34,16 @@ public enum Unit
     /** Lumbermill. */
     LUMBERMILL,
     /** Worker. */
-    WORKER;
+    WORKER,
+
+    /** Footman. */
+    FOOTMAN,
+    /** Archer. */
+    ARCHER,
+    /** Grunt. */
+    GRUNT,
+    /** Spearman. */
+    SPEARMAN;
 
     /**
      * Get the associated file without extension.

@@ -72,6 +72,7 @@ public class World extends WorldGame
     private static final int RESOURCES_GOLD_X = 290;
     private static final int RESOURCES_Y = 2;
     private static final Area AREA = Geom.createArea(VIEW_X, VIEW_Y, 304, 192);
+    private static final int DELAY_ATTACK = 6000;
 
     private final Player player = services.add(new Player(Race.ORC));
     private final WorldMap worldMap = new WorldMap(services);
@@ -162,13 +163,13 @@ public class World extends WorldGame
      */
     private void createPlayer(Race race, int tx, int ty)
     {
-        spawn(Race.NEUTRAL, Unit.GOLDMINE.get(), tx - 6, ty - 8);
-        spawn(race, Unit.WORKER.get(), tx, ty - 2);
-        spawn(race, Unit.FARM.get(), tx + 3, ty - 5);
+        spawn(Race.NEUTRAL, Unit.GOLDMINE, tx - 6, ty - 8);
+        spawn(race, Unit.WORKER, tx, ty - 2);
 
-        final Transformable townhall = spawn(race, Unit.TOWNHALL.get(), tx, ty);
+        final Transformable townhall = spawn(race, Unit.TOWNHALL, tx, ty);
         camera.center(townhall);
         camera.round(map);
+
         player.increaseFood();
         player.increaseFood();
     }
@@ -182,38 +183,35 @@ public class World extends WorldGame
      */
     private void createAi(Race race, int tx, int ty)
     {
-        final Pathfindable goldmine = spawn(Race.NEUTRAL,
-                                            Unit.GOLDMINE.get(),
-                                            tx - 6,
-                                            ty - 8).getFeature(Pathfindable.class);
-        spawn(race, Unit.TOWNHALL.get(), tx, ty);
+        final Pathfindable goldmine = spawn(Race.NEUTRAL, Unit.GOLDMINE, tx - 6, ty - 8).getFeature(Pathfindable.class);
+        spawn(race, Unit.TOWNHALL, tx, ty);
 
-        final Extractor extractorWood = spawn(race, Unit.WORKER.get(), tx, ty - 2).getFeature(Extractor.class);
+        final Extractor extractorWood = spawn(race, Unit.WORKER, tx, ty - 2).getFeature(Extractor.class);
         extractorWood.setResource(Player.TYPE_WOOD, tx - 2, ty + 5, 1, 1);
         extractorWood.startExtraction();
 
-        final Extractor extractorGold = spawn(race, Unit.WORKER.get(), tx, ty - 2).getFeature(Extractor.class);
+        final Extractor extractorGold = spawn(race, Unit.WORKER, tx, ty - 2).getFeature(Extractor.class);
         extractorGold.setResource(Player.TYPE_GOLD, goldmine);
         extractorGold.startExtraction();
 
-        spawn(race, Unit.FARM.get(), tx - 4, ty - 1);
-        spawn(race, Unit.FARM.get(), tx - 6, ty - 1);
-        spawn(race, Unit.LUMBERMILL.get(), tx + 6, ty - 4);
-        final Producer barracks = spawn(race, Unit.BARRACKS.get(), tx + 6, ty + 1).getFeature(Producer.class);
+        spawn(race, Unit.FARM, tx - 4, ty - 1);
+        spawn(race, Unit.FARM, tx - 6, ty - 1);
+        spawn(race, Unit.LUMBERMILL, tx + 6, ty - 4);
+
+        final Producer barracks = spawn(race, Unit.BARRACKS, tx + 6, ty + 1).getFeature(Producer.class);
         barracks.addListener(new ProducerListenerVoid()
         {
             @Override
             public void notifyProduced(Featurable featurable)
             {
                 final Warehouse warehouse = Util.getWarehouse(services, player.getRace());
-                if (warehouse != null)
+                if (warehouse != null && featurable.getFeature(Pathfindable.class).setDestination(warehouse))
                 {
-                    featurable.getFeature(Pathfindable.class).setDestination(warehouse);
                     featurable.getFeature(Attacker.class).attack(warehouse.getFeature(Transformable.class));
                 }
             }
         });
-        tick.addAction(() -> aiProduceAndAttack(race, barracks), 300);
+        tick.addAction(() -> aiProduceAndAttack(race, barracks), DELAY_ATTACK);
         tick.start();
     }
 
@@ -225,26 +223,26 @@ public class World extends WorldGame
      */
     private void aiProduceAndAttack(Race race, Producer barracks)
     {
-        barracks.addToProductionQueue(factory.create(race.get("footman")));
-        tick.addAction(() -> aiProduceAndAttack(race, barracks), 300);
+        barracks.addToProductionQueue(factory.create(race.get(Unit.FOOTMAN)));
+        tick.addAction(() -> aiProduceAndAttack(race, barracks), DELAY_ATTACK);
     }
 
     /**
      * Spawn a {@link Featurable} at specified location. Must have {@link Transformable} feature.
      * 
      * @param race The featurable race.
-     * @param file The featurable file.
+     * @param unit The featurable unit.
      * @param tx The horizontal tile spawn location.
      * @param ty The vertical tile spawn location.
      * @return The spawned featurable.
      * @throws LionEngineException If invalid media or missing feature.
      */
-    private Transformable spawn(Race race, String file, int tx, int ty)
+    private Transformable spawn(Race race, Unit unit, int tx, int ty)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        final Featurable featurable = super.spawn(race.get(file), tx * tw, ty * th);
+        final Featurable featurable = super.spawn(race.get(unit), tx * tw, ty * th);
         featurable.getFeature(Pathfindable.class).setLocation(tx, ty);
 
         return featurable.getFeature(Transformable.class);
