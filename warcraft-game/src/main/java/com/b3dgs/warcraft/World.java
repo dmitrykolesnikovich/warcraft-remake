@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.WorldGame;
-import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
@@ -51,6 +50,7 @@ import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
+import com.b3dgs.warcraft.object.feature.AutoAttack;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
@@ -206,9 +206,10 @@ public class World extends WorldGame
             public void notifyProduced(Featurable featurable)
             {
                 final Warehouse warehouse = Util.getWarehouse(services, player.getRace());
-                if (warehouse != null && featurable.getFeature(Pathfindable.class).setDestination(warehouse))
+                if (warehouse != null)
                 {
-                    featurable.getFeature(Attacker.class).attack(warehouse.getFeature(Transformable.class));
+                    featurable.getFeature(AutoAttack.class).setForce(true);
+                    featurable.getFeature(Pathfindable.class).setDestination(warehouse);
                 }
             }
         });

@@ -53,6 +53,8 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     private final MapTilePath mapPath;
     private final Handler handler;
 
+    private boolean force;
+
     @FeatureGet private Fovable fovable;
     @FeatureGet private Attacker attacker;
     @FeatureGet private Pathfindable pathfindable;
@@ -92,6 +94,16 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     }
 
     /**
+     * Set force attack flag.
+     * 
+     * @param force <code>true</code> to force checking, <code>false</code> else.
+     */
+    public void setForce(boolean force)
+    {
+        this.force = force;
+    }
+
+    /**
      * Check if can auto attack.
      * 
      * @return <code>true</code> if can auto attack, <code>false</code> else.
@@ -101,7 +113,8 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
         return state.isState(StateIdle.class)
                && tick.elapsed(CHECK_DELAY)
                && stats.getHealthPercent() > 0
-               && (attacker.getTarget() == null
+               && (force
+                   || attacker.getTarget() == null
                    || attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0);
     }
 
@@ -152,6 +165,7 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     @Override
     public void recycle()
     {
+        force = false;
         tick.restart();
     }
 }
