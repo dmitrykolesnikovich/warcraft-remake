@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
@@ -57,7 +56,6 @@ public class WorldNavigator implements Updatable
     private final Selector selector;
     private final SelectorModel selectorModel;
     private final InputDevicePointer pointer;
-    private final InputDeviceDirectional directional;
 
     private boolean selectorEnabled;
     private boolean selectorBackup;
@@ -79,36 +77,10 @@ public class WorldNavigator implements Updatable
         fogOfWar = map.getFeature(FogOfWar.class);
         selector = services.get(Selector.class);
         pointer = services.get(InputDevicePointer.class);
-        directional = services.get(InputDeviceDirectional.class);
 
         selectorModel = selector.getFeature(SelectorModel.class);
         selectorEnabled = selectorModel.isEnabled();
         navigationDelay.start();
-    }
-
-    /**
-     * Update map navigation with directional device.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateNavigationDirectional(double extrp)
-    {
-        if (directional.getVerticalDirection() > 0)
-        {
-            camera.moveLocation(extrp, 0, map.getTileHeight());
-        }
-        else if (directional.getVerticalDirection() < 0)
-        {
-            camera.moveLocation(extrp, 0, -map.getTileHeight());
-        }
-        if (directional.getHorizontalDirection() < 0)
-        {
-            camera.moveLocation(extrp, -map.getTileWidth(), 0);
-        }
-        else if (directional.getHorizontalDirection() > 0)
-        {
-            camera.moveLocation(extrp, map.getTileWidth(), 0);
-        }
     }
 
     /**
@@ -195,7 +167,6 @@ public class WorldNavigator implements Updatable
 
         if (navigationDelay.elapsed(NAVIGATION_TICK))
         {
-            updateNavigationDirectional(extrp);
             updateNavigationPointer(extrp);
             navigationDelay.restart();
         }

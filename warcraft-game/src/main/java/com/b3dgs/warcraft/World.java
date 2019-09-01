@@ -46,7 +46,6 @@ import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
-import com.b3dgs.lionengine.io.InputDeviceDirectional;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
@@ -98,7 +97,6 @@ public class World extends WorldGame
     {
         super(services);
 
-        services.add(getInputDevice(InputDeviceDirectional.class));
         services.add(new ProduceProgress());
 
         camera.setView(VIEW_X, VIEW_Y, AREA.getWidth(), AREA.getHeight(), AREA.getHeight());
