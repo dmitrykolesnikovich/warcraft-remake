@@ -122,7 +122,7 @@ public final class Util
      */
     public static double getDistanceInTile(MapTile map, Transformable source, Transformable target)
     {
-        return Math.floor(UtilMath.getDistance(map.getInTileX(source),
+        return Math.round(UtilMath.getDistance(map.getInTileX(source),
                                                map.getInTileY(source),
                                                map.getInTileWidth(source),
                                                map.getInTileHeight(source),
