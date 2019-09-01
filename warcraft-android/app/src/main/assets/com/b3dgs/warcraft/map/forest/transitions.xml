@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:transitions xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:transition in="tree" out="grass" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="133" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_DOWN_RIGHT">
+        <lionengine:tile number="131" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="tree" type="CENTER">
+        <lionengine:tile number="141" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_LEFT">
+        <lionengine:tile number="135" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN_LEFT">
+        <lionengine:tile number="134" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="RIGHT">
+        <lionengine:tile number="128" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP">
+        <lionengine:tile number="125" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN_RIGHT">
+        <lionengine:tile number="131" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_UP_LEFT">
+        <lionengine:tile number="135" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_LEFT_DOWN_RIGHT">
+        <lionengine:tile number="137" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN">
+        <lionengine:tile number="127" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="LEFT">
+        <lionengine:tile number="144" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="136" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_RIGHT_DOWN_LEFT">
+        <lionengine:tile number="137" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_RIGHT">
+        <lionengine:tile number="136" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_RIGHT">
+        <lionengine:tile number="130" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="134" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_DOWN_LEFT">
+        <lionengine:tile number="132" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_LEFT">
+        <lionengine:tile number="129" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="grass" type="CENTER">
+        <lionengine:tile number="18" sheet="0"/>
+		<lionengine:tile number="124" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="RIGHT">
+        <lionengine:tile number="144" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="DOWN_LEFT">
+        <lionengine:tile number="132" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN_RIGHT">
+        <lionengine:tile number="133" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP">
+        <lionengine:tile number="127" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_UP_LEFT">
+        <lionengine:tile number="129" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="tree" out="grass" type="UP_LEFT_DOWN_RIGHT">
+        <lionengine:tile number="138" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="UP_RIGHT_DOWN_LEFT">
+        <lionengine:tile number="138" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="CORNER_UP_RIGHT">
+        <lionengine:tile number="130" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="LEFT">
+        <lionengine:tile number="128" sheet="0"/>
+    </lionengine:transition>
+    <lionengine:transition in="grass" out="tree" type="DOWN">
+        <lionengine:tile number="125" sheet="0"/>
+    </lionengine:transition>
+</lionengine:transitions>

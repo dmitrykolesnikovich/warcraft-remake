@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.Extract</lionengine:class>
+    <lionengine:surface image="extract.png"/>
+    <lionengine:action name="Extract" description="Harvest Lumber/Mine Gold" x="38" y="141" width="27" height="19"/>
+</lionengine:featurable>

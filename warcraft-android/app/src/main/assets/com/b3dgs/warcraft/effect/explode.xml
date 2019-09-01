@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.object.Effect</lionengine:class>
+    <lionengine:feature>com.b3dgs.warcraft.object.feature.Effect</lionengine:feature>
+    <lionengine:surface image="explode.png"/>
+	<lionengine:frames horizontal="6" vertical="3"/>
+    <lionengine:layerable layerRefresh="5" layerDisplay="5"/>
+    <lionengine:animation name="idle" start="1" end="20" speed="0.12" reversed="false" repeat="false"/>
+</lionengine:featurable>

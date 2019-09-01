@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.Stop</lionengine:class>
+    <lionengine:surface image="stop.png"/>
+    <lionengine:action name="Stop" description="Stop" x="38" y="118" width="27" height="19"/>
+</lionengine:featurable>

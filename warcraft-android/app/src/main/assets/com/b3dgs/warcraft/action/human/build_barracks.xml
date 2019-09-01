@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.action.BuildButton</lionengine:class>
+    <lionengine:surface image="build_barracks.png"/>
+    <lionengine:action name="Build Barracks" description="Build Barracks" x="4" y="141" width="27" height="19"/>
+    <media>entity/human/barracks.xml</media>
+</lionengine:featurable>
