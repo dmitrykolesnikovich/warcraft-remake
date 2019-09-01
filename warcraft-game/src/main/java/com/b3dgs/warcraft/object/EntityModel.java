@@ -324,7 +324,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     public boolean isMoveArrived()
     {
-        return moveArrived;
+        return moveArrived || !pathfindable.isMoving();
     }
 
     /**
