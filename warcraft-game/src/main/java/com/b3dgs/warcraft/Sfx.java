@@ -139,7 +139,6 @@ public enum Sfx
         for (final Sfx sfx : Sfx.values())
         {
             sfx.audio.stop();
-            sfx.audio.setVolume(Constant.VOLUME_DEFAULT);
         }
     }
 
@@ -221,6 +220,7 @@ public enum Sfx
      */
     public void play()
     {
+        audio.setVolume(Constant.VOLUME_DEFAULT);
         audio.play();
     }
 }
