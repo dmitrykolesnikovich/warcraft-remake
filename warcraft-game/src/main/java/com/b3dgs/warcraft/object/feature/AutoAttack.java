@@ -36,7 +36,6 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.Fovable;
 import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.Util;
-import com.b3dgs.warcraft.object.state.StateIdle;
 
 /**
  * Check around to attack automatically on sight when idle.
@@ -110,11 +109,10 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
      */
     private boolean canAutoAttack()
     {
-        return state.isState(StateIdle.class)
-               && tick.elapsed(CHECK_DELAY)
+        return tick.elapsed(CHECK_DELAY)
                && stats.getHealthPercent() > 0
-               && (force
-                   || attacker.getTarget() == null
+               && (force || !pathfindable.isMoving())
+               && (attacker.getTarget() == null
                    || attacker.getTarget().getFeature(EntityStats.class).getHealthPercent() == 0);
     }
 
