@@ -43,6 +43,7 @@ public class FoodProduction extends FeatureModel implements Routine
     private static final String FOOD_USAGE = "FOOD USAGE:";
     private static final String FOOD_GROWN = "GROWN ";
     private static final String FOOD_USED = "USED ";
+    private static final int FOOD_COUNT = 4;
 
     private final SpriteFont text;
     private final Player player;
@@ -74,7 +75,7 @@ public class FoodProduction extends FeatureModel implements Routine
             @Override
             public void notifyProductionEnded(Producer producer)
             {
-                player.increaseFood();
+                player.increaseFood(FOOD_COUNT);
             }
         });
     }
