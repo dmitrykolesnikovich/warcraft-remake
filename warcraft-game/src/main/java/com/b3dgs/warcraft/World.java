@@ -151,6 +151,7 @@ public class World extends WorldGame
         worldMap.updateFog();
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
+        music.setVolume(Constant.VOLUME_DEFAULT);
         music.play();
     }
 
