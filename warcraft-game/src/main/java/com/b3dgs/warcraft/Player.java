@@ -31,37 +31,6 @@ import com.b3dgs.warcraft.constant.Constant;
  */
 public final class Player implements Updatable
 {
-    /** Wood type. */
-    public static final String TYPE_WOOD = "wood";
-    /** Gold type. */
-    public static final String TYPE_GOLD = "gold";
-    /** Curve speed. */
-    private static final double CURVE_SPEED = 15.0;
-    /** Curve round. */
-    private static final double CURVE_ROUND = 10.0;
-
-    /**
-     * Check if type is wood.
-     * 
-     * @param type The type to check.
-     * @return <code>true</code> if wood, <code>false</code> else.
-     */
-    public static boolean isWood(String type)
-    {
-        return TYPE_WOOD.equals(type);
-    }
-
-    /**
-     * Check if type is gold.
-     * 
-     * @param type The type to check.
-     * @return <code>true</code> if gold, <code>false</code> else.
-     */
-    public static boolean isGold(String type)
-    {
-        return TYPE_GOLD.equals(type);
-    }
-
     /**
      * Curve resource value.
      * 
@@ -71,16 +40,16 @@ public final class Player implements Updatable
      */
     private static double curve(double current, int dest)
     {
-        return (int) Math.ceil(UtilMath.curveValue(current, dest, CURVE_SPEED) * CURVE_ROUND) / CURVE_ROUND;
+        final double round = Constant.HUD_CURVE_ROUND;
+        return (int) Math.ceil(UtilMath.curveValue(current, dest, Constant.HUD_CURVE_SPEED) * round) / round;
     }
 
-    private final Race race;
     private final Alterable wood = new Alterable(99999);
     private final Alterable gold = new Alterable(99999);
     private final Alterable available = new Alterable(99);
     private final Alterable consumed = new Alterable(99);
     private final Set<String> unlocked = new HashSet<>();
-
+    private final Race race;
     private final Updatable updateWood;
     private final Updatable updateGold;
 
@@ -157,12 +126,12 @@ public final class Player implements Updatable
      */
     public void increaseResource(String type, int amount)
     {
-        if (Player.TYPE_WOOD.equals(type))
+        if (Constant.RESOURCE_WOOD.equals(type))
         {
             wood.increase(amount);
             updaterWood = updateWood;
         }
-        else if (Player.TYPE_GOLD.equals(type))
+        else if (Constant.RESOURCE_GOLD.equals(type))
         {
             gold.increase(amount);
             updaterGold = updateGold;

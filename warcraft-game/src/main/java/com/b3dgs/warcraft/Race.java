@@ -35,24 +35,17 @@ public enum Race
     /** Neutral. */
     NEUTRAL;
 
-    /**
-     * Get the folder.
-     * 
-     * @return The folder name.
-     */
-    public String getFolder()
-    {
-        return name().toLowerCase(Locale.ENGLISH);
-    }
+    /** The race folder. */
+    private final String folder = name().toLowerCase(Locale.ENGLISH);
 
     /**
-     * Get an entity based on its race
+     * Get a unit based on its race
      * 
      * @param unit The unit reference.
-     * @return The entity media.
+     * @return The unit media.
      */
     public Media get(Unit unit)
     {
-        return Medias.create(Folder.ENTITIES, getFolder(), unit.get() + Factory.FILE_DATA_DOT_EXTENSION);
+        return Medias.create(Folder.ENTITIES, folder, unit.get() + Factory.FILE_DATA_DOT_EXTENSION);
     }
 }

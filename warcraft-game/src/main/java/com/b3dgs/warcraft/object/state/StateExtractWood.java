@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
-import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntitySfx;
@@ -65,7 +65,7 @@ final class StateExtractWood extends State
 
         final EntityStats stats = model.getFeature(EntityStats.class);
 
-        addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
+        addTransition(StateCarryWood.class, () -> Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
         addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
         addTransition(StateIdle.class, () -> !model.isMoveStarted() && !model.isGotoResource());
         addTransition(StateWalk.class,

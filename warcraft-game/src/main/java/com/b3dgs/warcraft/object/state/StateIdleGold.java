@@ -17,7 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -43,7 +43,8 @@ public final class StateIdleGold extends State
                       () -> stats.getHealthPercent() > 0 && !model.isMoveStarted() && model.getCarryResource() == null);
         addTransition(StateWalk.class,
                       () -> stats.getHealthPercent() > 0 && model.isMoveStarted() && model.getCarryResource() == null);
-        addTransition(StateCarryGold.class, () -> model.isMoveStarted() && Player.isGold(model.getCarryResource()));
+        addTransition(StateCarryGold.class,
+                      () -> model.isMoveStarted() && Constant.RESOURCE_GOLD.equals(model.getCarryResource()));
         addTransition(StateDieGold.class, () -> stats.getHealthPercent() == 0);
     }
 }

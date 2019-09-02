@@ -16,6 +16,8 @@
  */
 package com.b3dgs.warcraft;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.warcraft.constant.Extension;
@@ -39,11 +41,15 @@ public enum Level
     /**
      * Create the level.
      * 
-     * @param world The level world.
-     * @param level The level file name.
+     * @param world The level world (must not be <code>null</code>).
+     * @param level The level file name (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     Level(WorldType world, String level)
     {
+        Check.notNull(world);
+        Check.notNull(level);
+
         final String folder = world.getFolder();
         this.level = Medias.create(Folder.MAPS, folder, level + Extension.LEVEL);
         rip = Medias.create(Folder.MAPS, folder, level + Extension.IMAGE);

@@ -100,7 +100,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
         public void notifyStartExtraction(String type, Tiled resourceLocation)
         {
             extractResource = type;
-            if (Player.TYPE_WOOD.equals(type))
+            if (Constant.RESOURCE_WOOD.equals(type))
             {
                 pathfindable.pointTo(resourceLocation);
             }
@@ -116,7 +116,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
                 extractResource = null;
                 carryResource = type;
 
-                if (Player.TYPE_WOOD.equals(type))
+                if (Constant.RESOURCE_WOOD.equals(type))
                 {
                     cutWood();
                 }
@@ -378,7 +378,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
         final Tile next = Util.getClosestTree(map, mapPath, tile, transformable);
         if (next != null)
         {
-            extractor.setResource(Player.TYPE_WOOD, next);
+            extractor.setResource(Constant.RESOURCE_WOOD, next);
         }
         else
         {

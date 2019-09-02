@@ -65,8 +65,6 @@ public class World extends WorldGame
     private static final int VIEW_Y = 12;
     private static final int TEXT_X = 74;
     private static final int TEXT_Y = 209;
-    private static final String RESOURCE_WOOD = "LUMBER:";
-    private static final String RESOURCE_GOLD = "GOLD:";
     private static final int RESOURCES_WOOD_X = 180;
     private static final int RESOURCES_GOLD_X = 290;
     private static final int RESOURCES_Y = 2;
@@ -145,9 +143,6 @@ public class World extends WorldGame
         createAi(Race.HUMAN, 8, 56);
         createPlayer(Race.ORC, 46, 14);
 
-        handler.updateAdd();
-        worldMap.updateFog();
-
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.setVolume(Constant.VOLUME_DEFAULT);
         music.play();
@@ -186,11 +181,11 @@ public class World extends WorldGame
         spawn(race, Unit.TOWNHALL, tx, ty);
 
         final Extractor extractorWood = spawn(race, Unit.WORKER, tx, ty - 2).getFeature(Extractor.class);
-        extractorWood.setResource(Player.TYPE_WOOD, tx - 2, ty + 5, 1, 1);
+        extractorWood.setResource(Constant.RESOURCE_WOOD, tx - 2, ty + 5, 1, 1);
         extractorWood.startExtraction();
 
         final Extractor extractorGold = spawn(race, Unit.WORKER, tx, ty - 2).getFeature(Extractor.class);
-        extractorGold.setResource(Player.TYPE_GOLD, goldmine);
+        extractorGold.setResource(Constant.RESOURCE_GOLD, goldmine);
         extractorGold.startExtraction();
 
         spawn(race, Unit.FARM, tx - 4, ty - 1);
@@ -273,8 +268,8 @@ public class World extends WorldGame
         text.draw(g, RESOURCES_WOOD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getWood()));
         text.draw(g, RESOURCES_GOLD_X, RESOURCES_Y, Align.RIGHT, String.valueOf(player.getGold()));
 
-        text.draw(g, RESOURCES_WOOD_X - 35, RESOURCES_Y, Align.RIGHT, RESOURCE_WOOD);
-        text.draw(g, RESOURCES_GOLD_X - 35, RESOURCES_Y, Align.RIGHT, RESOURCE_GOLD);
+        text.draw(g, RESOURCES_WOOD_X - 35, RESOURCES_Y, Align.RIGHT, Constant.HUD_RESOURCE_WOOD);
+        text.draw(g, RESOURCES_GOLD_X - 35, RESOURCES_Y, Align.RIGHT, Constant.HUD_RESOURCE_GOLD);
         wood.render(g);
         gold.render(g);
 

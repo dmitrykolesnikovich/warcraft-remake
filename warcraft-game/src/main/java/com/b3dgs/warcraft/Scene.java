@@ -96,7 +96,7 @@ public class Scene extends SequenceGame
 
     private final Text textName = Graphics.createText(9);
     private final Text textEngine = Graphics.createText(9);
-    private final Level level;
+    private final Level level = Level.FOREST;
 
     /**
      * Create the scene.
@@ -106,8 +106,6 @@ public class Scene extends SequenceGame
     public Scene(Context context)
     {
         super(context, Constant.NATIVE, World::new);
-
-        level = Level.FOREST;
 
         setText(textEngine, ENGINE, 72, getHeight() - textEngine.getSize() - 11, Align.LEFT);
         setText(textName, NAME, getWidth() - 8, getHeight() - textName.getSize() - 11, Align.RIGHT);

@@ -24,7 +24,7 @@ import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
 
 /**
- * Progress bar handler for production progress.
+ * Progress bar for production progress.
  */
 public class ProduceProgress implements Renderable
 {

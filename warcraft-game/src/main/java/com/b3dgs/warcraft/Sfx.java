@@ -182,8 +182,6 @@ public enum Sfx
         }
     }
 
-    /** Associated race. */
-    private final Race race;
     /** Audio handler. */
     private final Audio audio;
 
@@ -197,22 +195,11 @@ public enum Sfx
     {
         Check.notNull(race);
 
-        this.race = race;
-        audio = AudioFactory.loadAudio(get());
-    }
-
-    /**
-     * Get the sound media.
-     * 
-     * @return The sound media.
-     */
-    public Media get()
-    {
         final String folder = race.name().toLowerCase(Locale.ENGLISH);
         final String file = name().toLowerCase(Locale.ENGLISH) + Extension.SFX;
-        return Medias.create(Folder.SOUNDS,
-                             folder,
-                             file.substring(file.indexOf(com.b3dgs.lionengine.Constant.UNDERSCORE) + 1));
+        final String name = file.substring(file.indexOf(com.b3dgs.lionengine.Constant.UNDERSCORE) + 1);
+        final Media media = Medias.create(Folder.SOUNDS, folder, name);
+        audio = AudioFactory.loadAudio(media);
     }
 
     /**

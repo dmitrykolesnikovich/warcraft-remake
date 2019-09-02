@@ -19,6 +19,8 @@ package com.b3dgs.warcraft;
 import java.io.IOException;
 import java.util.Locale;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 
@@ -44,16 +46,21 @@ public enum WorldType
         return WorldType.valueOf(file.readString());
     }
 
+    /** Associated folder. */
+    private final String folder = name().toLowerCase(Locale.ENGLISH);
     /** Title displayed. */
     private final String title;
 
     /**
      * Constructor.
      * 
-     * @param title The displayed title.
+     * @param title The displayed title (must not be <code>null</code>).
+     * @throws LionEngineException If invalid argument.
      */
     WorldType(String title)
     {
+        Check.notNull(title);
+
         this.title = title;
     }
 
@@ -75,7 +82,7 @@ public enum WorldType
      */
     public String getFolder()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return folder;
     }
 
     @Override

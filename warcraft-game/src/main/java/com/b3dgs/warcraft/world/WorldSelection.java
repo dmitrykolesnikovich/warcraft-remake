@@ -43,6 +43,22 @@ import com.b3dgs.warcraft.object.feature.EntityStats;
  */
 public class WorldSelection
 {
+    private static void switchExtractCarry(List<Selectable> selection, Actionable actionable)
+    {
+        for (final Selectable selectable : selection)
+        {
+            final boolean carry = selectable.getFeature(EntityModel.class).getCarryResource() != null;
+            if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+            {
+                actionable.setEnabled(carry);
+            }
+            else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
+            {
+                actionable.setEnabled(!carry);
+            }
+        }
+    }
+
     private final AtomicReference<Race> race = new AtomicReference<>();
     private final AtomicBoolean moving = new AtomicBoolean();
 
@@ -93,18 +109,7 @@ public class WorldSelection
                 }
                 else
                 {
-                    for (final Selectable selectable : selection)
-                    {
-                        final boolean carry = selectable.getFeature(EntityModel.class).getCarryResource() != null;
-                        if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
-                        {
-                            actionable.setEnabled(carry);
-                        }
-                        else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
-                        {
-                            actionable.setEnabled(!carry);
-                        }
-                    }
+                    switchExtractCarry(selection, actionable);
                 }
             }
 
@@ -128,13 +133,24 @@ public class WorldSelection
         moving.set(false);
     }
 
+    private void clearMenuIfNotOwned(List<Selectable> selected)
+    {
+        for (final Selectable current : selected)
+        {
+            if (!player.owns(current.getFeature(EntityStats.class).getRace()))
+            {
+                hud.clearMenus();
+                break;
+            }
+        }
+    }
+
     private BiPredicate<List<Selectable>, Selectable> createFilter()
     {
         return (selected, selectable) ->
         {
             final EntityStats stats = selectable.getFeature(EntityStats.class);
             final Race current = stats.getRace();
-            final boolean mover = stats.isMover();
 
             if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current) || !moving.get())
             {
@@ -144,18 +160,18 @@ public class WorldSelection
                     race.set(current);
                 }
             }
+
+            final boolean mover = stats.isMover();
             if (mover)
             {
                 moving.set(true);
             }
-            if (stats.getHealthPercent() == 0
-                || moving.get() && !mover
-                || !player.owns(current) && race.get() != null
-                || !selectable.getFeature(EntityModel.class).isVisible()
-                || !fogOfWar.isVisible(selectable.getFeature(Pathfindable.class)))
+
+            if (isInvalid(current, selectable, stats, mover))
             {
                 return false;
             }
+
             return race.compareAndSet(null, current) || current.equals(race.get()) && !Race.NEUTRAL.equals(current);
         };
     }
@@ -169,15 +185,12 @@ public class WorldSelection
         selected.clear();
     }
 
-    private void clearMenuIfNotOwned(List<Selectable> selected)
+    private boolean isInvalid(Race current, Selectable selectable, EntityStats stats, boolean mover)
     {
-        for (final Selectable current : selected)
-        {
-            if (!player.owns(current.getFeature(EntityStats.class).getRace()))
-            {
-                hud.clearMenus();
-                break;
-            }
-        }
+        return stats.getHealthPercent() == 0
+               || moving.get() && !mover
+               || !player.owns(current) && race.get() != null
+               || !selectable.getFeature(EntityModel.class).isVisible()
+               || !fogOfWar.isVisible(selectable.getFeature(Pathfindable.class));
     }
 }

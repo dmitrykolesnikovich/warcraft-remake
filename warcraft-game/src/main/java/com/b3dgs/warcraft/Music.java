@@ -40,8 +40,8 @@ public enum Music
     /** Orc campaign 3. */
     ORC_CAMPAIGN3(Race.ORC);
 
-    /** Associated race. */
-    private final Race race;
+    /** Associated media. */
+    private final Media media;
 
     /**
      * Create music.
@@ -53,7 +53,9 @@ public enum Music
     {
         Check.notNull(race);
 
-        this.race = race;
+        final String folder = race.name().toLowerCase(Locale.ENGLISH);
+        final String file = name().toLowerCase(Locale.ENGLISH) + Extension.MUSIC;
+        media = Medias.create(Folder.MUSICS, folder, file.substring(race.name().length() + 1));
     }
 
     /**
@@ -63,8 +65,6 @@ public enum Music
      */
     public Media get()
     {
-        final String folder = race.name().toLowerCase(Locale.ENGLISH);
-        final String file = name().toLowerCase(Locale.ENGLISH) + Extension.MUSIC;
-        return Medias.create(Folder.MUSICS, folder, file.substring(race.name().length() + 1));
+        return media;
     }
 }

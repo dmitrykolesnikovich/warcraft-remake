@@ -100,7 +100,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
                 final Tile tree = map.getTile(tx, ty);
                 if (Constant.CATEGORY_TREE.equals(mapPath.getCategory(tree)))
                 {
-                    extractor.setResource(Player.TYPE_WOOD, tree);
+                    extractor.setResource(Constant.RESOURCE_WOOD, tree);
                     extractor.startExtraction();
                 }
                 else

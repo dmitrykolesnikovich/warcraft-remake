@@ -17,7 +17,7 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.warcraft.Player;
+import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.State;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -41,10 +41,10 @@ public final class StateIdle extends State
         final EntityStats stats = model.getFeature(EntityStats.class);
         final boolean repairer = model.hasFeature(Repairer.class);
 
-        addTransition(StateExtractWood.class, () -> Player.isWood(model.getExtractResource()));
-        addTransition(StateExtractGold.class, () -> Player.isGold(model.getExtractResource()));
-        addTransition(StateCarryWood.class, () -> Player.isWood(model.getCarryResource()));
-        addTransition(StateCarryGold.class, () -> Player.isGold(model.getCarryResource()));
+        addTransition(StateExtractWood.class, () -> Constant.RESOURCE_WOOD.equals(model.getExtractResource()));
+        addTransition(StateExtractGold.class, () -> Constant.RESOURCE_GOLD.equals(model.getExtractResource()));
+        addTransition(StateCarryWood.class, () -> Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
+        addTransition(StateCarryGold.class, () -> Constant.RESOURCE_GOLD.equals(model.getCarryResource()));
         addTransition(StateWalk.class, model::isMoveStarted);
         addTransition(StateAttack.class, () -> model.isAttackStarted() && !repairer);
         addTransition(StateRepair.class, () -> model.isAttackStarted() && repairer);

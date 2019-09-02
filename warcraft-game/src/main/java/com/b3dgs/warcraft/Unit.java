@@ -45,6 +45,9 @@ public enum Unit
     /** Spearman. */
     SPEARMAN;
 
+    /** The associated file. */
+    private final String file = name().toLowerCase(Locale.ENGLISH);
+
     /**
      * Get the associated file without extension.
      * 
@@ -52,6 +55,6 @@ public enum Unit
      */
     public String get()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return file;
     }
 }
