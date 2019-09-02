@@ -77,27 +77,38 @@ public class WorldMinimap implements Resource, Renderable
         for (final Pathfindable entity : handler.get(Pathfindable.class))
         {
             final EntityStats stats = entity.getFeature(EntityStats.class);
-            if (stats.getHealthPercent() > 0 && entity.getFeature(EntityModel.class).isVisible())
+            if (stats.getHealthPercent() > 0
+                && entity.getFeature(EntityModel.class).isVisible()
+                && fogOfWar.isVisible(entity))
             {
-                if (fogOfWar.isVisible(entity))
-                {
-                    final Race race = stats.getRace();
-                    if (player.owns(race) && entity.hasFeature(Warehouse.class))
-                    {
-                        g.setColor(Constant.COLOR_WAREHOUSE);
-                    }
-                    else
-                    {
-                        g.setColor(player.getColor(race));
-                    }
-                    g.drawRect(getX(entity.getInTileX()),
-                               getY(entity.getInTileY(), entity.getInTileHeight()),
-                               entity.getInTileWidth(),
-                               entity.getInTileHeight(),
-                               true);
-                }
+                drawEntity(g, entity, stats);
             }
         }
+    }
+
+    /**
+     * Draw entity.
+     * 
+     * @param g The graphic output.
+     * @param entity The entity reference.
+     * @param stats The stats reference.
+     */
+    private void drawEntity(Graphic g, Pathfindable entity, EntityStats stats)
+    {
+        final Race race = stats.getRace();
+        if (player.owns(race) && entity.hasFeature(Warehouse.class))
+        {
+            g.setColor(Constant.COLOR_WAREHOUSE);
+        }
+        else
+        {
+            g.setColor(player.getColor(race));
+        }
+        g.drawRect(getX(entity.getInTileX()),
+                   getY(entity.getInTileY(), entity.getInTileHeight()),
+                   entity.getInTileWidth(),
+                   entity.getInTileHeight(),
+                   true);
     }
 
     /**
@@ -151,7 +162,12 @@ public class WorldMinimap implements Resource, Renderable
         minimap.prepare();
         minimap.setLocation(Constant.MINIMAP_X, Constant.MINIMAP_Y);
 
-        buffer = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), ColorRgba.BLACK);
+        buffer = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight());
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.BLACK);
+        g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+        g.dispose();
+
         fogOfWar.addListener((tx, ty) -> buffer.setRgb(tx, map.getInTileHeight() - ty - 1, 0));
     }
 
