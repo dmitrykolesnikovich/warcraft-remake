@@ -53,6 +53,7 @@ import com.b3dgs.lionengine.io.FileReading;
 import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
@@ -75,6 +76,8 @@ public class WorldMap implements Persistable
         public void notifyMoving(Pathfindable pathfindable)
         {
             fogOfWar.update(pathfindable.getFeature(Fovable.class));
+            // final Layerable layerable = pathfindable.getFeature(Layerable.class);
+            // layerable.setLayer(layerable.getLayerRefresh(), Integer.valueOf(pathfindable.getInTileY()));
         }
     };
 
@@ -99,14 +102,8 @@ public class WorldMap implements Persistable
         final MapTileViewer mapViewer = map.addFeatureAndGet(new MapTileViewerModel(services));
         mapViewer.addRenderer(fogOfWar);
 
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create(Folder.FOG, "hide.png"), 16, 16);
-        hide.load();
-        hide.prepare();
-
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create(Folder.FOG, "fog.png"), 16, 16);
-        fog.load();
-        fog.prepare();
-
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Gfx.FOG_HIDDEN.getSurface(), 16, 16);
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Gfx.FOG_FOGGED.getSurface(), 16, 16);
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, false);
 
@@ -138,6 +135,7 @@ public class WorldMap implements Persistable
         if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
         {
             featurable.getFeature(Pathfindable.class).addListener(listener);
+            fogOfWar.update(featurable.getFeature(Fovable.class));
         }
     }
 
@@ -151,20 +149,6 @@ public class WorldMap implements Persistable
         if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
         {
             featurable.getFeature(Pathfindable.class).removeListener(listener);
-        }
-    }
-
-    /**
-     * Force fog update.
-     */
-    public void updateFog()
-    {
-        for (final Fovable fovable : handler.get(Fovable.class))
-        {
-            if (player.owns(fovable.getFeature(EntityStats.class).getRace()))
-            {
-                fogOfWar.update(fovable);
-            }
         }
     }
 

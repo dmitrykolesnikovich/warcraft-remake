@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Graphics;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Race;
@@ -45,6 +47,7 @@ public class WorldMinimap implements Resource, Renderable
     private final Player player;
     private final Minimap minimap;
     private final FogOfWar fogOfWar;
+    private ImageBuffer buffer;
 
     /**
      * Create the world.
@@ -76,42 +79,22 @@ public class WorldMinimap implements Resource, Renderable
             final EntityStats stats = entity.getFeature(EntityStats.class);
             if (stats.getHealthPercent() > 0 && entity.getFeature(EntityModel.class).isVisible())
             {
-                final Race race = stats.getRace();
-                if (player.owns(race) && entity.hasFeature(Warehouse.class))
+                if (fogOfWar.isVisible(entity))
                 {
-                    g.setColor(Constant.COLOR_WAREHOUSE);
-                }
-                else
-                {
-                    g.setColor(player.getColor(race));
-                }
-                g.drawRect(getX(entity.getInTileX()),
-                           getY(entity.getInTileY(), entity.getInTileHeight()),
-                           entity.getInTileWidth(),
-                           entity.getInTileHeight(),
-                           true);
-            }
-        }
-    }
-
-    /**
-     * Draw fog of war.
-     * 
-     * @param g The graphic output.
-     */
-    private void drawFog(Graphic g)
-    {
-        final int v = map.getInTileHeight();
-        final int h = map.getInTileWidth();
-        g.setColor(ColorRgba.BLACK);
-
-        for (int tx = 0; tx < h; tx++)
-        {
-            for (int ty = 0; ty < v; ty++)
-            {
-                if (!fogOfWar.isVisited(tx, ty))
-                {
-                    g.drawRect(getX(tx), getY(ty, 1), 0, 0, false);
+                    final Race race = stats.getRace();
+                    if (player.owns(race) && entity.hasFeature(Warehouse.class))
+                    {
+                        g.setColor(Constant.COLOR_WAREHOUSE);
+                    }
+                    else
+                    {
+                        g.setColor(player.getColor(race));
+                    }
+                    g.drawRect(getX(entity.getInTileX()),
+                               getY(entity.getInTileY(), entity.getInTileHeight()),
+                               entity.getInTileWidth(),
+                               entity.getInTileHeight(),
+                               true);
                 }
             }
         }
@@ -155,8 +138,8 @@ public class WorldMinimap implements Resource, Renderable
     public void render(Graphic g)
     {
         minimap.render(g);
+        g.drawImage(buffer, Constant.MINIMAP_X, Constant.MINIMAP_Y);
         drawEntities(g);
-        drawFog(g);
         drawFov(g);
     }
 
@@ -167,6 +150,9 @@ public class WorldMinimap implements Resource, Renderable
         minimap.automaticColor();
         minimap.prepare();
         minimap.setLocation(Constant.MINIMAP_X, Constant.MINIMAP_Y);
+
+        buffer = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), ColorRgba.BLACK);
+        fogOfWar.addListener((tx, ty) -> buffer.setRgb(tx, map.getInTileHeight() - ty - 1, 0));
     }
 
     @Override
