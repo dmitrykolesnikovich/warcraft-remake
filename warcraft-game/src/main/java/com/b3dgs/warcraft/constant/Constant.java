@@ -109,10 +109,23 @@ public final class Constant
     /** Color health alert. */
     public static final ColorRgba COLOR_HEALTH_ALERT = new ColorRgba(255, 0, 0);
 
+    /** Wood resource label. */
+    public static final String HUD_RESOURCE_WOOD = "LUMBER:";
+    /** Gold resource label. */
+    public static final String HUD_RESOURCE_GOLD = "GOLD:";
+    /** Hud resource curve speed. */
+    public static final double HUD_CURVE_SPEED = 15.0;
+    /** Hud resource curve round. */
+    public static final double HUD_CURVE_ROUND = 10.0;
     /** Extract resource description prefix. */
     public static final String HUD_ACTION_EXTRACT = "Harvest";
     /** Carry resource description prefix. */
     public static final String HUD_ACTION_CARRY = "Return";
+
+    /** Wood type. */
+    public static final String RESOURCE_WOOD = "wood";
+    /** Gold type. */
+    public static final String RESOURCE_GOLD = "gold";
 
     /** Cursor id. */
     public static final int CURSOR_ID = 0;
