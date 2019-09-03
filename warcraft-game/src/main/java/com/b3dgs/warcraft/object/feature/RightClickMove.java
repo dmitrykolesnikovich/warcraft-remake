@@ -38,7 +38,6 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private Attacker attacker;
     @FeatureGet private EntitySfx sfx;
-    @FeatureGet private EntityStats stats;
 
     /**
      * Create action.
@@ -57,7 +56,7 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     @Override
     public void execute()
     {
-        if (player.owns(stats.getRace()))
+        if (player.owns(this))
         {
             attacker.stopAttack();
             pathfindable.setDestination(cursor);

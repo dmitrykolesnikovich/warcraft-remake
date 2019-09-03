@@ -47,14 +47,14 @@ public class ProduceButton extends ActionModel
     private static final int TEXT_GOLD_X = 325;
     private static final int TEXT_Y = 209;
     private static final int TEXT_OFFSET_X = 17;
-    private static final String ATT_MEDIA = "media";
+    private static final String NODE_MEDIA = "media";
 
     private final Image wood = Util.getImage(Gfx.HUD_WOOD, TEXT_WOOD_X, TEXT_Y - 2);
     private final Image gold = Util.getImage(Gfx.HUD_GOLD, TEXT_GOLD_X, TEXT_Y - 1);
     private final CostConfig config;
 
     /**
-     * Create build button action.
+     * Create action.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
@@ -63,7 +63,7 @@ public class ProduceButton extends ActionModel
     {
         super(services, setup);
 
-        final Media target = Medias.create(setup.getText(ATT_MEDIA));
+        final Media target = Medias.create(setup.getText(NODE_MEDIA));
         final Factory factory = services.get(Factory.class);
         final Player player = services.get(Player.class);
 

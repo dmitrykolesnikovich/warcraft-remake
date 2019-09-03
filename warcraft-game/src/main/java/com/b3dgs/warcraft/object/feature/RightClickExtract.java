@@ -50,7 +50,6 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private EntityModel model;
     @FeatureGet private EntitySfx sfx;
-    @FeatureGet private EntityStats stats;
 
     /**
      * Create action.
@@ -87,7 +86,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     @Override
     public void execute()
     {
-        if (player.owns(stats.getRace()))
+        if (player.owns(this))
         {
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);

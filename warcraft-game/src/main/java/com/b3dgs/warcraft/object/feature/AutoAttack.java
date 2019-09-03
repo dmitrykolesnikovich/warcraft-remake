@@ -124,32 +124,63 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     private Transformable findTarget()
     {
         int ray = 1;
-        final int tx = pathfindable.getInTileX() + 1;
-        final int ty = pathfindable.getInTileY() + 1;
         while (ray < fovable.getInTileFov())
         {
-            for (int x = -ray - 1; x < ray; x++)
+            final Transformable transformable = findTarget(ray);
+            if (transformable != null)
             {
-                for (int y = -ray - 1; y < ray; y++)
-                {
-                    if (x != tx && y != ty)
-                    {
-                        for (final Integer id : mapPath.getObjectsId(tx + x, ty + y))
-                        {
-                            final Featurable featurable = handler.get(id);
-                            final EntityStats statsTarget = featurable.getFeature(EntityStats.class);
-                            final Race race = statsTarget.getRace();
-                            if (!race.equals(Race.NEUTRAL)
-                                && !stats.getRace().equals(race)
-                                && statsTarget.getHealthPercent() > 0)
-                            {
-                                return featurable.getFeature(Transformable.class);
-                            }
-                        }
-                    }
-                }
+                return transformable;
             }
             ray++;
+        }
+        return null;
+    }
+
+    /**
+     * Find closest target with the specified ray search.
+     * 
+     * @param ray The ray search.
+     * @return The target found, <code>null</code> if none.
+     */
+    private Transformable findTarget(int ray)
+    {
+        for (int ox = -ray; ox <= ray; ox++)
+        {
+            for (int oy = -ray; oy <= ray; oy++)
+            {
+                final Transformable target = findTarget(ox, oy);
+                if (target != null)
+                {
+                    return target;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find closest target on location.
+     * 
+     * @param ox The horizontal location offset.
+     * @param oy The vertical location offset.
+     * @return The target found, <code>null</code> if none.
+     */
+    private Transformable findTarget(int ox, int oy)
+    {
+        final int tx = pathfindable.getInTileX();
+        final int ty = pathfindable.getInTileY();
+        if (ox != 0 && oy != 0)
+        {
+            for (final Integer id : mapPath.getObjectsId(tx + ox, ty + oy))
+            {
+                final Featurable featurable = handler.get(id);
+                final EntityStats statsTarget = featurable.getFeature(EntityStats.class);
+                final Race race = statsTarget.getRace();
+                if (!race.equals(Race.NEUTRAL) && !stats.getRace().equals(race) && statsTarget.getHealthPercent() > 0)
+                {
+                    return featurable.getFeature(Transformable.class);
+                }
+            }
         }
         return null;
     }

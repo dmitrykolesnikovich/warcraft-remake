@@ -56,7 +56,6 @@ public class EntitySfx extends FeatureModel
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private Pathfindable pathfindable;
-    @FeatureGet private EntityStats stats;
 
     /**
      * Create producing.
@@ -97,7 +96,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onProduced()
     {
-        if (isVisible() && player.owns(stats.getRace()))
+        if (isVisible() && player.owns(this))
         {
             Sfx.playRandom(produced);
         }
@@ -108,7 +107,7 @@ public class EntitySfx extends FeatureModel
      */
     public void onSelected()
     {
-        if (isVisible() && player.owns(stats.getRace()))
+        if (isVisible() && player.owns(this))
         {
             Sfx.playRandom(selected);
         }

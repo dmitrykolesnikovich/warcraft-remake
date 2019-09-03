@@ -54,7 +54,6 @@ import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.constant.Folder;
 import com.b3dgs.warcraft.constant.Gfx;
-import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Handle world map data.
@@ -132,7 +131,7 @@ public class WorldMap implements Persistable
      */
     private void handleAdded(Featurable featurable)
     {
-        if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
+        if (featurable.hasFeature(Fovable.class) && player.owns(featurable))
         {
             featurable.getFeature(Pathfindable.class).addListener(listener);
             fogOfWar.update(featurable.getFeature(Fovable.class));
@@ -146,7 +145,7 @@ public class WorldMap implements Persistable
      */
     private void handleRemoved(Featurable featurable)
     {
-        if (featurable.hasFeature(Fovable.class) && player.owns(featurable.getFeature(EntityStats.class).getRace()))
+        if (featurable.hasFeature(Fovable.class) && player.owns(featurable))
         {
             featurable.getFeature(Pathfindable.class).removeListener(listener);
         }

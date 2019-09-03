@@ -67,15 +67,12 @@ public final class Effect extends FeaturableModel
         animation = AnimationConfig.imports(setup).getAnimation(ANIM_IDLE);
         delay = setup.getIntegerDefault(-1, ATT_DELAY, NODE_EFFECT);
 
-        addFeature(new LayerableModel(services, setup));
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-
         final FramesConfig config = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
-        addFeature(new AnimatableModel(surface));
 
-        final Viewer viewer = services.get(Viewer.class);
+        addFeature(new AnimatableModel(surface));
+        addFeature(new LayerableModel(services, setup));
 
         final Identifiable identifiable = getFeature(Identifiable.class);
         addFeature(new RefreshableModel(extrp ->
@@ -87,6 +84,9 @@ public final class Effect extends FeaturableModel
                 identifiable.destroy();
             }
         }));
+
+        final Viewer viewer = services.get(Viewer.class);
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         addFeature(new DisplayableModel(g ->
         {
             surface.setLocation(viewer, transformable);

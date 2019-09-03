@@ -33,8 +33,8 @@ import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Race;
+import com.b3dgs.warcraft.Util;
 import com.b3dgs.warcraft.action.Locker;
-import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 
@@ -48,14 +48,7 @@ public class WorldSelection
         for (final Selectable selectable : selection)
         {
             final boolean carry = selectable.getFeature(EntityModel.class).getCarryResource() != null;
-            if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
-            {
-                actionable.setEnabled(carry);
-            }
-            else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
-            {
-                actionable.setEnabled(!carry);
-            }
+            Util.switchExtractCarryAction(actionable, carry);
         }
     }
 
@@ -137,7 +130,7 @@ public class WorldSelection
     {
         for (final Selectable current : selected)
         {
-            if (!player.owns(current.getFeature(EntityStats.class).getRace()))
+            if (!player.owns(current))
             {
                 hud.clearMenus();
                 break;
@@ -149,8 +142,8 @@ public class WorldSelection
     {
         return (selected, selectable) ->
         {
-            final EntityStats stats = selectable.getFeature(EntityStats.class);
-            final Race current = stats.getRace();
+            final EntityStats entity = selectable.getFeature(EntityStats.class);
+            final Race current = entity.getRace();
 
             if (Race.NEUTRAL.equals(race.get()) && !Race.NEUTRAL.equals(current) || !moving.get())
             {
@@ -161,13 +154,13 @@ public class WorldSelection
                 }
             }
 
-            final boolean mover = stats.isMover();
+            final boolean mover = entity.isMover();
             if (mover)
             {
                 moving.set(true);
             }
 
-            if (isInvalid(current, selectable, stats, mover))
+            if (isInvalid(entity, mover))
             {
                 return false;
             }
@@ -185,12 +178,12 @@ public class WorldSelection
         selected.clear();
     }
 
-    private boolean isInvalid(Race current, Selectable selectable, EntityStats stats, boolean mover)
+    private boolean isInvalid(EntityStats entity, boolean mover)
     {
-        return stats.getHealthPercent() == 0
+        return entity.getHealthPercent() == 0
                || moving.get() && !mover
-               || !player.owns(current) && race.get() != null
-               || !selectable.getFeature(EntityModel.class).isVisible()
-               || !fogOfWar.isVisible(selectable.getFeature(Pathfindable.class));
+               || !player.owns(entity) && race.get() != null
+               || !entity.getFeature(EntityModel.class).isVisible()
+               || !fogOfWar.isVisible(entity.getFeature(Pathfindable.class));
     }
 }

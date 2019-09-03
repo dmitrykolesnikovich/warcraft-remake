@@ -49,7 +49,6 @@ public class FoodProduction extends FeatureModel implements Routine
     private final Player player;
 
     @FeatureGet private Producible producible;
-    @FeatureGet private EntityStats stats;
 
     /**
      * Create food.
@@ -83,7 +82,7 @@ public class FoodProduction extends FeatureModel implements Routine
     @Override
     public void render(Graphic g)
     {
-        if (player.owns(stats.getRace()))
+        if (player.owns(this))
         {
             text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, FOOD_USAGE);
             text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.RIGHT, FOOD_GROWN);

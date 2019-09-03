@@ -55,7 +55,7 @@ public class Locker extends FeatureModel
     private final Set<String> lockers;
 
     /**
-     * Create build button action.
+     * Create feature
      * 
      * @param services The services reference.
      * @param setup The setup reference.

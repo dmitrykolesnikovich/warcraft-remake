@@ -20,9 +20,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Handler;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
+import com.b3dgs.lionengine.game.feature.producible.Producer;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.tile.Tile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.CoordTile;
@@ -32,6 +35,8 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
+import com.b3dgs.warcraft.object.EntityModel;
+import com.b3dgs.warcraft.object.feature.Buildable;
 import com.b3dgs.warcraft.object.feature.EntityStats;
 import com.b3dgs.warcraft.object.feature.Warehouse;
 
@@ -145,6 +150,27 @@ public final class Util
     }
 
     /**
+     * Teleport outside producer or production.
+     * 
+     * @param map The map tile reference.
+     * @param producer The producer reference.
+     * @param producible The producible reference.
+     */
+    public static void teleportOutside(MapTile map, Producer producer, Producible producible)
+    {
+        if (!producer.hasFeature(Buildable.class))
+        {
+            producer.getFeature(EntityModel.class).setVisible(true);
+            Util.teleportOutside(map, producer, producible.getFeature(Pathfindable.class));
+        }
+        if (!producible.hasFeature(Buildable.class))
+        {
+            producible.getFeature(EntityModel.class).setVisible(true);
+            Util.teleportOutside(map, producible, producer.getFeature(Pathfindable.class));
+        }
+    }
+
+    /**
      * Teleport mover outside source.
      * 
      * @param map The map tile reference.
@@ -156,6 +182,24 @@ public final class Util
         final Pathfindable pathfindable = mover.getFeature(Pathfindable.class);
         final CoordTile coord = map.getFeature(MapTilePath.class).getFreeTileAround(pathfindable, source);
         pathfindable.setLocation(coord);
+    }
+
+    /**
+     * Switch extract and carry action depending of state.
+     * 
+     * @param actionable The actionable reference.
+     * @param carry <code>true</code> if carry mode, <code>false</code> else.
+     */
+    public static void switchExtractCarryAction(Actionable actionable, boolean carry)
+    {
+        if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
+        {
+            actionable.setEnabled(carry);
+        }
+        else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
+        {
+            actionable.setEnabled(!carry);
+        }
     }
 
     /**

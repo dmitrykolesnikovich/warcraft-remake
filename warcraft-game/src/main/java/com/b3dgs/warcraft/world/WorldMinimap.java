@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.graphic.Graphics;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.warcraft.Player;
-import com.b3dgs.warcraft.Race;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -95,14 +94,13 @@ public class WorldMinimap implements Resource, Renderable
      */
     private void drawEntity(Graphic g, Pathfindable entity, EntityStats stats)
     {
-        final Race race = stats.getRace();
-        if (player.owns(race) && entity.hasFeature(Warehouse.class))
+        if (player.owns(entity) && entity.hasFeature(Warehouse.class))
         {
             g.setColor(Constant.COLOR_WAREHOUSE);
         }
         else
         {
-            g.setColor(player.getColor(race));
+            g.setColor(player.getColor(entity));
         }
         g.drawRect(getX(entity.getInTileX()),
                    getY(entity.getInTileY(), entity.getInTileHeight()),
@@ -162,7 +160,7 @@ public class WorldMinimap implements Resource, Renderable
         minimap.prepare();
         minimap.setLocation(Constant.MINIMAP_X, Constant.MINIMAP_Y);
 
-        buffer = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight());
+        buffer = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), ColorRgba.BLACK);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
         g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);

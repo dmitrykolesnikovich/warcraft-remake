@@ -68,6 +68,7 @@ public class BuildButton extends ActionModel
     private static final int COLORS_END = 224;
     private static final ColorRgba[] COLORS_VALID = new ColorRgba[COLORS_MAX];
     private static final ColorRgba[] COLORS_INVALID = new ColorRgba[COLORS_MAX];
+    private static final String NODE_MEDIA = "media";
 
     static
     {
@@ -109,7 +110,7 @@ public class BuildButton extends ActionModel
     {
         super(services, setup);
 
-        target = Medias.create(setup.getText("media").split("/"));
+        target = Medias.create(setup.getText(NODE_MEDIA).split(com.b3dgs.lionengine.Constant.SLASH));
         config = CostConfig.imports(new Configurer(target));
 
         hud.addListener(new HudListener()
@@ -230,17 +231,11 @@ public class BuildButton extends ActionModel
         {
             if (!valid)
             {
+                final int x = (int) area.getX();
+                final int y = (int) area.getY();
                 g.setColor(COLORS_INVALID[color]);
-                g.drawLine(viewer,
-                           (int) area.getX(),
-                           (int) area.getY() + 1,
-                           (int) area.getX() + area.getWidth() - 1,
-                           (int) area.getY() + area.getHeight());
-                g.drawLine(viewer,
-                           (int) area.getX(),
-                           (int) area.getY() + area.getHeight(),
-                           (int) area.getX() + area.getWidth() - 1,
-                           (int) area.getY() + 1);
+                g.drawLine(viewer, x, y + 1, x + area.getWidth() - 1, y + area.getHeight());
+                g.drawLine(viewer, x, y + area.getHeight(), x + area.getWidth() - 1, y + 1);
                 g.drawRect(viewer, Origin.BOTTOM_LEFT, area, false);
             }
             else

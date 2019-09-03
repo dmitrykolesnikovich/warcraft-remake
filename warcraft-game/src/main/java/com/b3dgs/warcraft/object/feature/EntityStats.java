@@ -221,7 +221,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         icon.render(g);
         text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, name);
 
-        if (producer.getProgress() > -1 && player.owns(race))
+        if (producer.getProgress() > -1 && player.getRace().equals(race))
         {
             progress.setProgress(producer.getProgressPercent());
             progress.render(g);

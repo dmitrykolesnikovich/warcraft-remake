@@ -133,7 +133,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
         public void notifyStartDropOff(String type, int totalQuantity)
         {
             setVisible(false);
-            if (player.owns(stats.getRace()))
+            if (player.owns(EntityModel.this))
             {
                 player.increaseResource(type, totalQuantity);
             }
@@ -391,19 +391,12 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     private void switchActionExtractCarry()
     {
-        if (player.owns(stats.getRace()))
+        if (player.owns(this))
         {
             for (final Actionable actionable : hud.getActive())
             {
                 final boolean carry = carryResource != null;
-                if (actionable.getDescription().startsWith(Constant.HUD_ACTION_CARRY))
-                {
-                    actionable.setEnabled(carry);
-                }
-                else if (actionable.getDescription().startsWith(Constant.HUD_ACTION_EXTRACT))
-                {
-                    actionable.setEnabled(!carry);
-                }
+                Util.switchExtractCarryAction(actionable, carry);
             }
         }
     }

@@ -53,9 +53,8 @@ public final class Projectile extends FeaturableModel
         super();
 
         addFeature(new LayerableModel(services, setup));
+
         final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
-        final Orientable orientable = addFeatureAndGet(new OrientableModel(services));
-        final Launchable launchable = addFeatureAndGet(new LaunchableModel());
         final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
         collidable.setOrigin(Origin.MIDDLE);
         collidable.setGroup(Integer.valueOf(Constant.LAYER_PROJECTILE));
@@ -65,14 +64,15 @@ public final class Projectile extends FeaturableModel
         final SpriteTiled sprite = Drawable.loadSpriteTiled(setup.getSurface(), config.getWidth(), config.getHeight());
         sprite.setOrigin(Origin.MIDDLE);
 
-        final Viewer viewer = services.get(Viewer.class);
-
+        final Orientable orientable = addFeatureAndGet(new OrientableModel(services));
+        final Launchable launchable = addFeatureAndGet(new LaunchableModel());
         addFeature(new RefreshableModel(extrp ->
         {
             launchable.update(extrp);
             sprite.setTile(orientable.getOrientation().ordinal());
         }));
 
+        final Viewer viewer = services.get(Viewer.class);
         addFeature(new DisplayableModel(g ->
         {
             sprite.setLocation(viewer, transformable);

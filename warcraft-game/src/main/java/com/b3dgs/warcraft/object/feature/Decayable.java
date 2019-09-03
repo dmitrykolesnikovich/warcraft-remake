@@ -91,17 +91,24 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
         };
         checkDead = extrp ->
         {
-            if (stats.getHealthPercent() == 0
-                && (stateHandler.isState(StateDead.class)
-                    || stateHandler.isState(StateDeadGold.class)
-                    || stateHandler.isState(StateDeadWood.class))
-                && animatable.is(AnimState.FINISHED)
-                && !tick.isStarted())
+            if (!tick.isStarted() && animatable.is(AnimState.FINISHED) && isDead())
             {
                 tick.start();
                 check = checkCorpse;
             }
         };
+    }
+
+    /**
+     * Check if dead.
+     * 
+     * @return <code>true</code> if dead, <code>false</code> else.
+     */
+    private boolean isDead()
+    {
+        return stateHandler.isState(StateDead.class)
+               || stateHandler.isState(StateDeadGold.class)
+               || stateHandler.isState(StateDeadWood.class);
     }
 
     @Override

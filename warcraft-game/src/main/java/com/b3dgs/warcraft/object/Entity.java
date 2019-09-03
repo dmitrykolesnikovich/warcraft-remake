@@ -131,17 +131,7 @@ public class Entity extends FeaturableModel
             {
                 producible.getFeature(EntitySfx.class).onProduced();
                 player.unlock(unlocks);
-
-                if (!producer.hasFeature(Buildable.class))
-                {
-                    producer.getFeature(EntityModel.class).setVisible(true);
-                    Util.teleportOutside(map, producer, producible.getFeature(Pathfindable.class));
-                }
-                if (!producible.hasFeature(Buildable.class))
-                {
-                    producible.getFeature(EntityModel.class).setVisible(true);
-                    Util.teleportOutside(map, producible, producer.getFeature(Pathfindable.class));
-                }
+                Util.teleportOutside(map, producer, producible);
             }
         };
     }

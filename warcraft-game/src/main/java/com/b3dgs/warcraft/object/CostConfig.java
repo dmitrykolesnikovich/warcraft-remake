@@ -23,9 +23,6 @@ import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the entity cost data.
- * <p>
- * This class is Thread-Safe.
- * </p>
  */
 public final class CostConfig
 {

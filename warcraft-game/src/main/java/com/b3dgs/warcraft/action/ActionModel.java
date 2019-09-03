@@ -142,7 +142,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     private void onClickButton()
     {
-        if (ActionModel.this.action())
+        if (action())
         {
             selector.setEnabled(false);
             state.set(assignable);
@@ -154,7 +154,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     private void onAssignMap()
     {
-        if (ActionModel.this.assign())
+        if (assign())
         {
             cursor.setSurfaceId(Constant.CURSOR_ID);
             cursor.setRenderingOffset(0, 0);
@@ -193,7 +193,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
                 text.setText(description);
             }
             state.get().update(extrp);
-            ActionModel.this.update(extrp);
+            update(extrp);
         }
     }
 
@@ -210,7 +210,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         {
             background.render(g);
             surface.render(g);
-            ActionModel.this.render(g);
+            render(g);
         }
     }
 

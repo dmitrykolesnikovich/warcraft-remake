@@ -23,8 +23,10 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UpdatableVoid;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Describes the player stats.
@@ -224,13 +226,14 @@ public final class Player implements Updatable
     /**
      * Get the race color.
      * 
-     * @param other The other race to compare.
+     * @param entity The other race to compare.
      * @return The race color.
      */
-    public ColorRgba getColor(Race other)
+    public ColorRgba getColor(FeatureProvider entity)
     {
         final ColorRgba color;
-        if (owns(other))
+        final Race other = entity.getFeature(EntityStats.class).getRace();
+        if (race.equals(other))
         {
             color = Constant.COLOR_ALLIES;
         }
@@ -248,12 +251,12 @@ public final class Player implements Updatable
     /**
      * Check if player owns.
      * 
-     * @param other The other reference.
+     * @param entity The entity reference.
      * @return <code>true</code> if owns, <code>false</code> else.
      */
-    public boolean owns(Race other)
+    public boolean owns(FeatureProvider entity)
     {
-        return race.equals(other);
+        return race.equals(entity.getFeature(EntityStats.class).getRace());
     }
 
     /**
