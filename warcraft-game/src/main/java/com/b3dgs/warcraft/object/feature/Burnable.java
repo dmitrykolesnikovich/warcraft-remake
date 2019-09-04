@@ -64,7 +64,7 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
      */
     public Burnable(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         viewer = services.get(Viewer.class);
 

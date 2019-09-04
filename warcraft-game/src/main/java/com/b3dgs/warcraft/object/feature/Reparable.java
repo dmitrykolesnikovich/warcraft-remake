@@ -35,6 +35,6 @@ public class Reparable extends FeatureModel
      */
     public Reparable(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 }

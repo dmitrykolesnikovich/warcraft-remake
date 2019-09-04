@@ -62,7 +62,7 @@ public class Locker extends FeatureModel
      */
     public Locker(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         lockers = loadLocks(setup);
     }

@@ -50,7 +50,7 @@ public class Explodable extends FeatureModel implements Routine
      */
     public Explodable(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         spawner = services.get(Spawner.class);
     }

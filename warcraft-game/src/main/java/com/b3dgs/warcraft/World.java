@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.audio.Audio;
@@ -104,11 +105,12 @@ public class World extends WorldGame
         text = services.add(Drawable.loadSpriteFont(Gfx.GAME_FONT.getSurface(), Medias.create("font.xml"), 6, 6));
         text.setLocation(TEXT_X, TEXT_Y);
 
-        final Hud hud = services.add(factory.create(Medias.create("hud.xml")));
+        final Media media = Medias.create("hud.xml");
+        final Hud hud = services.add(factory.create(media));
         handler.add(hud);
 
         final Selector selector = services.get(Selector.class);
-        selector.addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
+        selector.addFeatureAndGet(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(AREA);
         selector.setSelectionColor(Constant.COLOR_SELECTION);
         selector.setClickSelection(1);
@@ -142,6 +144,7 @@ public class World extends WorldGame
 
         createAi(Race.HUMAN, 8, 56);
         createPlayer(Race.ORC, 46, 14);
+        spawn(Race.ORC, Unit.SPEARMAN, 50, 20);
 
         music = AudioFactory.loadAudio(Music.ORC_CAMPAIGN2.get());
         music.setVolume(Constant.VOLUME_DEFAULT);

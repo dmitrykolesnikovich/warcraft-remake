@@ -70,7 +70,7 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
      */
     public Decayable(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         spawner = services.get(Spawner.class);
 

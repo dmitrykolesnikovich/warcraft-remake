@@ -61,7 +61,7 @@ public final class Effect extends FeaturableModel
      */
     public Effect(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         sfx = Sfx.load(setup, Sfx.ATT_DEAD);
         animation = AnimationConfig.imports(setup).getAnimation(ANIM_IDLE);
@@ -71,7 +71,7 @@ public final class Effect extends FeaturableModel
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
 
-        addFeature(new AnimatableModel(surface));
+        addFeature(new AnimatableModel(services, setup));
         addFeature(new LayerableModel(services, setup));
 
         final Identifiable identifiable = getFeature(Identifiable.class);
@@ -86,7 +86,7 @@ public final class Effect extends FeaturableModel
         }));
 
         final Viewer viewer = services.get(Viewer.class);
-        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(services, setup));
         addFeature(new DisplayableModel(g ->
         {
             surface.setLocation(viewer, transformable);

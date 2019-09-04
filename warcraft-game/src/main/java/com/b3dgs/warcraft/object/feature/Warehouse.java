@@ -40,7 +40,7 @@ public class Warehouse extends FeatureModel implements Tiled
      */
     public Warehouse(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
     }
 
     @Override

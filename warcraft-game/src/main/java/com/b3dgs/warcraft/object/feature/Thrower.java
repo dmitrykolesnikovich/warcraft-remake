@@ -57,7 +57,7 @@ public class Thrower extends FeatureModel implements Routine
      */
     public Thrower(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         viewer = services.get(Viewer.class);
     }

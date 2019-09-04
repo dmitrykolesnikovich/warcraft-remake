@@ -85,7 +85,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
      */
     public EntityStats(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         final String path = setup.getMedia().getParentPath();
         if (path.contains(Race.ORC.name().toLowerCase(Locale.ENGLISH)))

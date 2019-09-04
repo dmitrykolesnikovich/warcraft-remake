@@ -58,7 +58,7 @@ public class FoodProduction extends FeatureModel implements Routine
      */
     public FoodProduction(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         text = services.get(SpriteFont.class);
         player = services.get(Player.class);

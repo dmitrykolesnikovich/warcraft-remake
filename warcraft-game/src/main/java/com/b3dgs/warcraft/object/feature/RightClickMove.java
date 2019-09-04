@@ -47,7 +47,7 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
      */
     public RightClickMove(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         cursor = services.get(Cursor.class);
         player = services.get(Player.class);

@@ -59,7 +59,7 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
      */
     public RightClickExtract(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);

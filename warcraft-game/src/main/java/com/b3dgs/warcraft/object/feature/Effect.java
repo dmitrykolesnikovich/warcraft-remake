@@ -18,12 +18,15 @@ package com.b3dgs.warcraft.object.feature;
 
 import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.AnimatorStateListener;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 
 /**
  * Effect feature implementation.
@@ -31,6 +34,18 @@ import com.b3dgs.lionengine.game.feature.Identifiable;
 @FeatureInterface
 public final class Effect extends FeatureModel
 {
+    /**
+     * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public Effect(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     @FeatureGet private Identifiable identifiable;
     @FeatureGet private Animatable animatable;
 

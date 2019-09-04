@@ -46,7 +46,7 @@ public class FoodConsumer extends FeatureModel
      */
     public FoodConsumer(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         player = services.get(Player.class);
     }

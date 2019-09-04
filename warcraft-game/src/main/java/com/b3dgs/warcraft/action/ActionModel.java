@@ -83,7 +83,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
      */
     public ActionModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         this.services = services;
         map = services.get(MapTile.class);
@@ -93,7 +93,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         handler = services.get(Handler.class);
         text = services.get(SpriteFont.class);
 
-        addFeature(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
+        addFeatureAndGet(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
         addFeature(new Locker(services, setup));
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
@@ -102,7 +102,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
         state = new AtomicReference<>(actionable);
 
-        assignable = addFeatureAndGet(new AssignableModel(services));
+        assignable = addFeatureAndGet(new AssignableModel(services, setup));
         assignable.setAssign(this::onAssignMap);
         assignable.setClickAssign(1);
 

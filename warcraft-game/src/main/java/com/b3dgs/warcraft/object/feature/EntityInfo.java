@@ -59,7 +59,7 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
      */
     public EntityInfo(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         text = services.get(SpriteFont.class);
 

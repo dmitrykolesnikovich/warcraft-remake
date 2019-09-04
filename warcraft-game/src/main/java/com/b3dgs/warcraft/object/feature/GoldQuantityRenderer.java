@@ -53,7 +53,7 @@ public class GoldQuantityRenderer extends FeatureModel implements Routine
      */
     public GoldQuantityRenderer(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         text = services.get(SpriteFont.class);
     }

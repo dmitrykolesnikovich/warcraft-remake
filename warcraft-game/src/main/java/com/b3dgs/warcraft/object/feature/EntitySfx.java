@@ -66,7 +66,7 @@ public class EntitySfx extends FeatureModel
      */
     public EntitySfx(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         started = Sfx.load(setup, ATT_STARTED);
         produced = Sfx.load(setup, ATT_PRODUCED);

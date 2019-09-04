@@ -69,7 +69,7 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
      */
     public AutoAttack(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);

@@ -16,10 +16,13 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Services;
+import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
@@ -30,6 +33,18 @@ import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 @FeatureInterface
 public class Repairer extends FeatureModel
 {
+    /**
+     * Create feature.
+     * 
+     * @param services The services reference (must not be <code>null</code>).
+     * @param setup The setup reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
+     */
+    public Repairer(Services services, Setup setup)
+    {
+        super(services, setup);
+    }
+
     @FeatureGet private Attacker attacker;
     @FeatureGet private EntitySfx sfx;
 

@@ -68,7 +68,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
      */
     public Buildable(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         viewer = services.get(Viewer.class);
 

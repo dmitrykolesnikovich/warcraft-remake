@@ -193,7 +193,7 @@ public final class EntityModel extends FeatureModel implements Recyclable
      */
     public EntityModel(Services services, Setup setup)
     {
-        super();
+        super(services, setup);
 
         this.services = services;
 

@@ -168,11 +168,11 @@ public class Entity extends FeaturableModel
         super(services, setup);
 
         addFeature(new LayerableModel(services, setup));
-        addFeature(new MirrorableModel());
-        addFeature(new TransformableModel(setup));
-        addFeature(new SelectableModel());
-        addFeature(new AnimatableModel());
-        addFeature(new ActionerModel(setup));
+        addFeature(new MirrorableModel(services, setup));
+        addFeature(new TransformableModel(services, setup));
+        addFeature(new SelectableModel(services, setup));
+        addFeature(new AnimatableModel(services, setup));
+        addFeature(new ActionerModel(services, setup));
         addFeature(new FovableModel(services, setup));
 
         final MapTile map = services.get(MapTile.class);
@@ -180,7 +180,7 @@ public class Entity extends FeaturableModel
         final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(services, setup));
         pathfindable.setSpeed(0.8, 0.8);
 
-        final Attacker attacker = addFeatureAndGet(new AttackerModel(setup));
+        final Attacker attacker = addFeatureAndGet(new AttackerModel(services, setup));
         attacker.setAttackDistanceComputer((source, target) -> Util.getDistanceInTile(map, source, target));
         attacker.setAttackChecker(target -> target.getFeature(EntityStats.class).getHealthPercent() > 0);
 
@@ -215,7 +215,7 @@ public class Entity extends FeaturableModel
             });
         }
 
-        final Producer producer = addFeatureAndGet(new ProducerModel(services));
+        final Producer producer = addFeatureAndGet(new ProducerModel(services, setup));
         producer.setStepsSpeed(1.0);
         if (Constant.DEBUG)
         {
@@ -231,7 +231,7 @@ public class Entity extends FeaturableModel
         });
 
         final ProduceProgress progress = services.get(ProduceProgress.class);
-        final Producible producible = addFeatureAndGet(new ProducibleModel(setup));
+        final Producible producible = addFeatureAndGet(new ProducibleModel(services, setup));
         producible.addListener(createListener(services, setup, progress, producible, pathfindable));
 
         final EntityStats stats = addFeatureAndGet(new EntityStats(services, setup));
@@ -258,7 +258,7 @@ public class Entity extends FeaturableModel
             }
         });
 
-        final StateHandler stateHandler = addFeatureAndGet(new StateHandler(setup, Entity::getAnimationName));
+        final StateHandler stateHandler = addFeatureAndGet(new StateHandler(services, setup, Entity::getAnimationName));
         stateHandler.changeState(StateIdle.class);
 
         final Collidable collidable = addFeatureAndGet(new CollidableModel(services, setup));
@@ -274,10 +274,10 @@ public class Entity extends FeaturableModel
     @Override
     public void addAfter(Services services, Setup setup)
     {
-        addFeature(new Routines());
+        addFeature(new Routines(services, setup));
 
         final EntityModel model = getFeature(EntityModel.class);
-        addFeature(new EntityUpdater(services));
-        addFeature(new EntityRenderer(services, model));
+        addFeature(new EntityUpdater(services, setup));
+        addFeature(new EntityRenderer(services, setup, model));
     }
 }
