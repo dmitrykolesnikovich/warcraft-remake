@@ -43,7 +43,6 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
     private static final int COUNT_Y = 88;
     private static final String COUNT_TEXT = "ARMY: ";
 
-    private final SpriteFont text;
     private final Renderable infoSingle;
     private final Renderable infoArmy;
 
@@ -61,7 +60,7 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
     {
         super(services, setup);
 
-        text = services.get(SpriteFont.class);
+        final SpriteFont text = services.get(SpriteFont.class);
 
         infoSingle = g ->
         {

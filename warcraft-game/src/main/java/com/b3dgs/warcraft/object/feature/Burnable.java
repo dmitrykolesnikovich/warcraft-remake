@@ -47,7 +47,7 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
 
     private final SpriteAnimated burn;
 
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
     private final Renderable effect;
 
     private Renderable renderable;
@@ -65,8 +65,6 @@ public class Burnable extends FeatureModel implements Routine, Recyclable
     public Burnable(Services services, Setup setup)
     {
         super(services, setup);
-
-        viewer = services.get(Viewer.class);
 
         burn = Drawable.loadSpriteAnimated(Gfx.BUILDING_BURNING.getSurface(), 4, 2);
         burn.setOrigin(Origin.CENTER_BOTTOM);

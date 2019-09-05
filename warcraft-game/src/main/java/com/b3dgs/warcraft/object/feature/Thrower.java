@@ -41,7 +41,7 @@ import com.b3dgs.warcraft.Sfx;
 @FeatureInterface
 public class Thrower extends FeatureModel implements Routine
 {
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
 
     @FeatureGet private Attacker attacker;
     @FeatureGet private Launcher launcher;
@@ -58,8 +58,6 @@ public class Thrower extends FeatureModel implements Routine
     public Thrower(Services services, Setup setup)
     {
         super(services, setup);
-
-        viewer = services.get(Viewer.class);
     }
 
     @Override

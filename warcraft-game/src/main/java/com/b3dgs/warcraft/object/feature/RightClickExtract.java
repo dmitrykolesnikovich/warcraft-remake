@@ -40,11 +40,11 @@ import com.b3dgs.warcraft.object.EntityModel;
 @FeatureInterface
 public class RightClickExtract extends FeatureModel implements RightClickHandler
 {
-    private final Cursor cursor;
-    private final Handler handler;
-    private final MapTile map;
-    private final MapTilePath mapPath;
-    private final Player player;
+    private final Cursor cursor = services.get(Cursor.class);
+    private final Handler handler = services.get(Handler.class);
+    private final MapTile map = services.get(MapTile.class);
+    private final MapTilePath mapPath = map.getFeature(MapTilePath.class);
+    private final Player player = services.get(Player.class);
 
     @FeatureGet private Extractor extractor;
     @FeatureGet private Pathfindable pathfindable;
@@ -60,12 +60,6 @@ public class RightClickExtract extends FeatureModel implements RightClickHandler
     public RightClickExtract(Services services, Setup setup)
     {
         super(services, setup);
-
-        cursor = services.get(Cursor.class);
-        handler = services.get(Handler.class);
-        map = services.get(MapTile.class);
-        mapPath = map.getFeature(MapTilePath.class);
-        player = services.get(Player.class);
     }
 
     private void extractGoldmine(int tx, int ty)

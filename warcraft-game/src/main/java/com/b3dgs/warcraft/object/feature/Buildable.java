@@ -51,7 +51,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
 
     private final SpriteAnimated building;
 
-    private final Viewer viewer;
+    private final Viewer viewer = services.get(Viewer.class);
     private final Renderable effect;
 
     private Renderable renderable;
@@ -69,8 +69,6 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
     public Buildable(Services services, Setup setup)
     {
         super(services, setup);
-
-        viewer = services.get(Viewer.class);
 
         building = Drawable.loadSpriteAnimated(Gfx.BUILDING_CONSTRUCTION.getSurface(), 2, 1);
         building.setOrigin(Origin.CENTER_BOTTOM);

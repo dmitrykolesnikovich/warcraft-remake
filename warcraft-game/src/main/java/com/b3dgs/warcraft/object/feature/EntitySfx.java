@@ -50,9 +50,9 @@ public class EntitySfx extends FeatureModel
     private final List<Sfx> attacked;
     private final List<Sfx> dead;
 
-    private final Viewer viewer;
-    private final Player player;
-    private final FogOfWar fogOfWar;
+    private final Viewer viewer = services.get(Viewer.class);
+    private final Player player = services.get(Player.class);
+    private final FogOfWar fogOfWar = services.get(FogOfWar.class);
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private Pathfindable pathfindable;
@@ -74,10 +74,6 @@ public class EntitySfx extends FeatureModel
         ordered = Sfx.load(setup, ATT_ORDERED);
         attacked = Sfx.load(setup, ATT_ATTACKED);
         dead = Sfx.load(setup, Sfx.ATT_DEAD);
-
-        viewer = services.get(Viewer.class);
-        player = services.get(Player.class);
-        fogOfWar = services.get(FogOfWar.class);
     }
 
     /**

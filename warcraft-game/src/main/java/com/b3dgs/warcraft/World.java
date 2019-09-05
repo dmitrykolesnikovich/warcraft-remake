@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Tick;
 import com.b3dgs.lionengine.audio.Audio;
@@ -105,8 +104,7 @@ public class World extends WorldGame
         text = services.add(Drawable.loadSpriteFont(Gfx.GAME_FONT.getSurface(), Medias.create("font.xml"), 6, 6));
         text.setLocation(TEXT_X, TEXT_Y);
 
-        final Media media = Medias.create("hud.xml");
-        final Hud hud = services.add(factory.create(media));
+        final Hud hud = services.add(factory.create(Medias.create("hud.xml")));
         handler.add(hud);
 
         final Selector selector = services.get(Selector.class);

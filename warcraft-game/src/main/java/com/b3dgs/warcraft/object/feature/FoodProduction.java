@@ -45,8 +45,8 @@ public class FoodProduction extends FeatureModel implements Routine
     private static final String FOOD_USED = "USED ";
     private static final int FOOD_COUNT = 4;
 
-    private final SpriteFont text;
-    private final Player player;
+    private final SpriteFont text = services.get(SpriteFont.class);
+    private final Player player = services.get(Player.class);
 
     @FeatureGet private Producible producible;
 
@@ -59,9 +59,6 @@ public class FoodProduction extends FeatureModel implements Routine
     public FoodProduction(Services services, Setup setup)
     {
         super(services, setup);
-
-        text = services.get(SpriteFont.class);
-        player = services.get(Player.class);
     }
 
     @Override

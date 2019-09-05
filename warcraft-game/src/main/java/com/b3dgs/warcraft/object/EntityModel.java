@@ -158,13 +158,13 @@ public final class EntityModel extends FeatureModel implements Recyclable
     };
 
     private final SpriteAnimated surface;
-    private final Player player;
-    private final Hud hud;
-    private final Selector selector;
-    private final Services services;
-    private final MapTile map;
-    private final MapTilePath mapPath;
-    private final MapTileTransition mapTransition;
+
+    private final Player player = services.get(Player.class);
+    private final Hud hud = services.get(Hud.class);
+    private final Selector selector = services.get(Selector.class);
+    private final MapTile map = services.get(MapTile.class);
+    private final MapTilePath mapPath = map.getFeature(MapTilePath.class);
+    private final MapTileTransition mapTransition = map.getFeature(MapTileTransition.class);
 
     @FeatureGet private Transformable transformable;
     @FeatureGet private Collidable collidable;
@@ -195,19 +195,10 @@ public final class EntityModel extends FeatureModel implements Recyclable
     {
         super(services, setup);
 
-        this.services = services;
-
         final FramesConfig config = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.setFrameOffsets(config.getOffsetX(), config.getOffsetY());
-
-        hud = services.get(Hud.class);
-        selector = services.get(Selector.class);
-        map = services.get(MapTile.class);
-        mapPath = map.getFeature(MapTilePath.class);
-        mapTransition = map.getFeature(MapTileTransition.class);
-        player = services.get(Player.class);
     }
 
     @Override

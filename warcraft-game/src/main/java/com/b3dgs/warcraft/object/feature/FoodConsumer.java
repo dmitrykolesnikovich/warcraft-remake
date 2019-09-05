@@ -34,7 +34,7 @@ import com.b3dgs.warcraft.constant.Constant;
 @FeatureInterface
 public class FoodConsumer extends FeatureModel
 {
-    private final Player player;
+    private final Player player = services.get(Player.class);
 
     @FeatureGet private Producible producible;
 
@@ -47,8 +47,6 @@ public class FoodConsumer extends FeatureModel
     public FoodConsumer(Services services, Setup setup)
     {
         super(services, setup);
-
-        player = services.get(Player.class);
     }
 
     @Override

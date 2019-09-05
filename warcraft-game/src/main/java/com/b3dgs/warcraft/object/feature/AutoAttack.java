@@ -48,9 +48,8 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     private final Tick tick = new Tick();
     private final Updatable checker;
 
-    private final MapTile map;
-    private final MapTilePath mapPath;
-    private final Handler handler;
+    private final MapTilePath mapPath = services.get(MapTilePath.class);
+    private final Handler handler = services.get(Handler.class);
 
     private boolean force;
 
@@ -71,10 +70,7 @@ public class AutoAttack extends FeatureModel implements Routine, Recyclable
     {
         super(services, setup);
 
-        map = services.get(MapTile.class);
-        mapPath = services.get(MapTilePath.class);
-        handler = services.get(Handler.class);
-
+        final MapTile map = services.get(MapTile.class);
         checker = extrp ->
         {
             tick.update(extrp);

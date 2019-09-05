@@ -41,7 +41,7 @@ public class GoldQuantityRenderer extends FeatureModel implements Routine
     private static final int AMOUNT_TEXT_X = 10;
     private static final int AMOUNT_TEXT_Y = 128;
 
-    private final SpriteFont text;
+    private final SpriteFont text = services.get(SpriteFont.class);
 
     @FeatureGet private Extractable extractable;
 
@@ -54,8 +54,6 @@ public class GoldQuantityRenderer extends FeatureModel implements Routine
     public GoldQuantityRenderer(Services services, Setup setup)
     {
         super(services, setup);
-
-        text = services.get(SpriteFont.class);
     }
 
     @Override

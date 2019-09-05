@@ -49,7 +49,6 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
     private static final String ATT_DELAY = "delay";
 
     private final Tick tick = new Tick();
-    private final Spawner spawner;
     private final Updatable checkDead;
     private final Updatable checkCorpse;
 
@@ -72,7 +71,7 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
     {
         super(services, setup);
 
-        spawner = services.get(Spawner.class);
+        final Spawner spawner = services.get(Spawner.class);
 
         final int delay = setup.getIntegerDefault(0, ATT_DELAY, NODE_DECAY);
         final Media media = Medias.create(setup.getString(ATT_CORPSE, NODE_DECAY));

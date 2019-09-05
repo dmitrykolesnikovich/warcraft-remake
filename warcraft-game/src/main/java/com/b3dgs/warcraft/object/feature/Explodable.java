@@ -35,7 +35,7 @@ import com.b3dgs.warcraft.constant.Folder;
 @FeatureInterface
 public class Explodable extends FeatureModel implements Routine
 {
-    private final Spawner spawner;
+    private final Spawner spawner = services.get(Spawner.class);
 
     @FeatureGet private Identifiable identifiable;
     @FeatureGet private Transformable transformable;
@@ -51,8 +51,6 @@ public class Explodable extends FeatureModel implements Routine
     public Explodable(Services services, Setup setup)
     {
         super(services, setup);
-
-        spawner = services.get(Spawner.class);
     }
 
     @Override

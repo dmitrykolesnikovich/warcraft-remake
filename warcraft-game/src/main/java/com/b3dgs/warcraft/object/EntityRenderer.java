@@ -47,10 +47,11 @@ import com.b3dgs.warcraft.object.feature.EntityStats;
 @FeatureInterface
 public class EntityRenderer extends FeatureModel implements Displayable
 {
-    private final Viewer viewer;
     private final SpriteAnimated surface;
-    private final Player player;
-    private final FogOfWar fogOfWar;
+
+    private final Viewer viewer = services.get(Viewer.class);
+    private final Player player = services.get(Player.class);
+    private final FogOfWar fogOfWar = services.get(FogOfWar.class);
 
     @FeatureGet private EntityModel model;
     @FeatureGet private Transformable transformable;
@@ -75,9 +76,6 @@ public class EntityRenderer extends FeatureModel implements Displayable
     {
         super(services, setup);
 
-        viewer = services.get(Viewer.class);
-        player = services.get(Player.class);
-        fogOfWar = services.get(FogOfWar.class);
         surface = model.getSurface();
     }
 

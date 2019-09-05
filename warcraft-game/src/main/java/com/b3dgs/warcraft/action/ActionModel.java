@@ -58,20 +58,18 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     /** Current state reference. */
     protected final AtomicReference<Updatable> state;
 
-    /** Services reference. */
-    protected final Services services;
     /** Map reference. */
-    protected final MapTile map;
+    protected final MapTile map = services.get(MapTile.class);
     /** Map path reference. */
-    protected final MapTilePath mapPath;
+    protected final MapTilePath mapPath = services.get(MapTilePath.class);
     /** Cursor reference. */
-    protected final Cursor cursor;
+    protected final Cursor cursor = services.get(Cursor.class);
     /** Selector reference. */
-    protected final Selector selector;
+    protected final Selector selector = services.get(Selector.class);
     /** Handler reference. */
-    protected final Handler handler;
+    protected final Handler handler = services.get(Handler.class);
     /** Text reference. */
-    protected final SpriteFont text;
+    protected final SpriteFont text = services.get(SpriteFont.class);
 
     private final String description;
 
@@ -84,14 +82,6 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     public ActionModel(Services services, Setup setup)
     {
         super(services, setup);
-
-        this.services = services;
-        map = services.get(MapTile.class);
-        mapPath = services.get(MapTilePath.class);
-        cursor = services.get(Cursor.class);
-        selector = services.get(Selector.class);
-        handler = services.get(Handler.class);
-        text = services.get(SpriteFont.class);
 
         addFeatureAndGet(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_MENUS_RENDER));
         addFeature(new Locker(services, setup));

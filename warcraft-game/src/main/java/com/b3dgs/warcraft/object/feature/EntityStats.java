@@ -70,9 +70,9 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
     private final Integer layerRefresh;
     private final Integer layerDisplay;
 
-    private final SpriteFont text;
-    private final Player player;
-    private final ProduceProgress progress;
+    private final SpriteFont text = services.get(SpriteFont.class);
+    private final Player player = services.get(Player.class);
+    private final ProduceProgress progress = services.get(ProduceProgress.class);
 
     @FeatureGet private Layerable layerable;
     @FeatureGet private Producer producer;
@@ -112,10 +112,6 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         {
             health.setMax(10);
         }
-
-        text = services.get(SpriteFont.class);
-        player = services.get(Player.class);
-        progress = services.get(ProduceProgress.class);
 
         icon = Drawable.loadImage(setup.getIcon());
         icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);

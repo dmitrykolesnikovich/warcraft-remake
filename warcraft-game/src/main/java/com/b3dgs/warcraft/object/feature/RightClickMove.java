@@ -32,8 +32,8 @@ import com.b3dgs.warcraft.Player;
 @FeatureInterface
 public class RightClickMove extends FeatureModel implements RightClickHandler
 {
-    private final Cursor cursor;
-    private final Player player;
+    private final Cursor cursor = services.get(Cursor.class);
+    private final Player player = services.get(Player.class);
 
     @FeatureGet private Pathfindable pathfindable;
     @FeatureGet private Attacker attacker;
@@ -48,9 +48,6 @@ public class RightClickMove extends FeatureModel implements RightClickHandler
     public RightClickMove(Services services, Setup setup)
     {
         super(services, setup);
-
-        cursor = services.get(Cursor.class);
-        player = services.get(Player.class);
     }
 
     @Override
