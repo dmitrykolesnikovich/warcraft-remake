@@ -117,8 +117,8 @@ public class Entity extends FeaturableModel
             {
                 final Pathfindable pathfindableProducer = producer.getFeature(Pathfindable.class);
                 pathfindableProducer.stopMoves();
+                pathfindableProducer.clearPath();
                 pathfindable.setLocation(map.getInTileX(producible), map.getInTileY(producible));
-                pathfindable.clearPath();
                 producible.getFeature(EntitySfx.class).onStarted();
 
                 if (!producer.hasFeature(Buildable.class))
