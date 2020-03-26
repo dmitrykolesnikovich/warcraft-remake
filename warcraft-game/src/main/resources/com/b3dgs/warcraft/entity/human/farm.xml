@@ -1,21 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
     <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodProduction</lionengine:feature>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.Buildable</lionengine:feature>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.Reparable</lionengine:feature>
-    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
+    <lionengine:features>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.FoodProduction</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.Buildable</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.Reparable</lionengine:feature>
+    </lionengine:features>
     <lionengine:surface image="farm.png" icon="farm_icon.png"/>
     <lionengine:frames horizontal="2" vertical="1"/>
     <lionengine:size width="32" height="32"/>
-    <lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
-    <lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
-    <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
-    <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
-    <lionengine:producible steps="100"/>
+    <lionengine:animations>
+        <lionengine:animation name="producing" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
+        <lionengine:animation name="idle" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+        <lionengine:animation name="die" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+        <lionengine:animation name="dead" start="2" end="2" speed="0.1" reversed="false" repeat="false"/>
+    </lionengine:animations>
+    <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:fovable fov="3"/>
+    <lionengine:producible steps="100"/>
+    <name>farm</name>
     <sfx started="NEUTRAL_CONSTRUCT" produced="HUMAN_WORKDONE" selected="NEUTRAL_CLICK" dead="NEUTRAL_EXPLODE1;NEUTRAL_EXPLODE2"/>
     <stats health="100"/>
     <cost wood="300" gold="500"/>

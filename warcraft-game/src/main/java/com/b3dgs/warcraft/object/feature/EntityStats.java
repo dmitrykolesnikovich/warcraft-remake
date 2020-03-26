@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2019 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2020 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ import com.b3dgs.warcraft.object.StatsConfig;
 @FeatureInterface
 public class EntityStats extends FeatureModel implements Routine, Recyclable
 {
-    private static final String ATT_NAME = "name";
+    private static final String NODE_NAME = "name";
 
     private static final int ENTITY_INFO_MARGIN = 4;
     private static final int TEXT_X = 6;
@@ -116,7 +116,7 @@ public class EntityStats extends FeatureModel implements Routine, Recyclable
         icon = Drawable.loadImage(setup.getIcon());
         icon.setLocation(Constant.ENTITY_INFO_X + ENTITY_INFO_MARGIN, Constant.ENTITY_INFO_Y + ENTITY_INFO_MARGIN);
 
-        name = setup.getString(ATT_NAME).toUpperCase(Locale.ENGLISH);
+        name = setup.getText(NODE_NAME).toUpperCase(Locale.ENGLISH);
 
         barHealth.setColorForeground(Constant.COLOR_HEALTH_GOOD);
         barHealth.setLocation((int) (icon.getX() + BAR_HEALTH_X), (int) (icon.getY() + BAR_HEALTH_Y));
