@@ -16,50 +16,97 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import java.util.List;
+
 import com.b3dgs.lionengine.AnimState;
+import com.b3dgs.lionengine.Animation;
 import com.b3dgs.lionengine.AnimatorStateListener;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Tick;
+import com.b3dgs.lionengine.game.AnimationConfig;
 import com.b3dgs.lionengine.game.FeatureProvider;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Identifiable;
+import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
+import com.b3dgs.lionengine.game.feature.rasterable.Rasterable;
+import com.b3dgs.warcraft.Sfx;
 
 /**
- * Effect feature implementation.
+ * Effect implementation.
  */
 @FeatureInterface
-public final class Effect extends FeatureModel
+public final class Effect extends FeatureModel implements Routine
 {
+    private static final String NODE_EFFECT = "effect";
+    private static final String ATT_DELAY = "delay";
+    private static final String ANIM_IDLE = "idle";
+
+    private final Tick tick = new Tick();
+    private final List<Sfx> sfx;
+    private final Animation animation;
+    private final int delay;
+
+    @FeatureGet private Identifiable identifiable;
+    @FeatureGet private Animatable animatable;
+    @FeatureGet private Rasterable rasterable;
+
     /**
-     * Create feature.
+     * Constructor.
      * 
-     * @param services The services reference (must not be <code>null</code>).
-     * @param setup The setup reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid arguments.
+     * @param services The services reference.
+     * @param setup The setup reference.
      */
     public Effect(Services services, Setup setup)
     {
         super(services, setup);
+
+        sfx = Sfx.load(setup, Sfx.ATT_DEAD);
+        animation = AnimationConfig.imports(setup).getAnimation(ANIM_IDLE);
+        delay = setup.getIntegerDefault(-1, ATT_DELAY, NODE_EFFECT);
     }
 
-    @FeatureGet private Identifiable identifiable;
-    @FeatureGet private Animatable animatable;
+    /**
+     * Start effect.
+     * 
+     * @param width The source width.
+     * @param height The source height.
+     */
+    public void start(int width, int height)
+    {
+        rasterable.setFrameOffsets(-width / 2, height / 2);
+        animatable.play(animation);
+        Sfx.playRandom(sfx);
+        tick.start();
+    }
 
     @Override
     public void prepare(FeatureProvider provider)
     {
         super.prepare(provider);
 
-        animatable.addListener((AnimatorStateListener) state ->
+        if (delay < 0)
         {
-            if (AnimState.FINISHED == state)
+            animatable.addListener((AnimatorStateListener) state ->
             {
-                identifiable.destroy();
-            }
-        });
+                if (AnimState.FINISHED == state)
+                {
+                    identifiable.destroy();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        tick.update(extrp);
+        if (delay > -1 && tick.elapsed(delay))
+        {
+            identifiable.destroy();
+        }
     }
 }

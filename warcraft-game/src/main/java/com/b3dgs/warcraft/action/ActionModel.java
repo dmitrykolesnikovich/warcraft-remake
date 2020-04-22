@@ -61,7 +61,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
     /** Map reference. */
     protected final MapTile map = services.get(MapTile.class);
     /** Map path reference. */
-    protected final MapTilePath mapPath = services.get(MapTilePath.class);
+    protected final MapTilePath mapPath = map.getFeature(MapTilePath.class);
     /** Cursor reference. */
     protected final Cursor cursor = services.get(Cursor.class);
     /** Selector reference. */

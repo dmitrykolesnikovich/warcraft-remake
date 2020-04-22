@@ -81,9 +81,9 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
             tick.update(extrp);
             if (tick.elapsed(delay))
             {
-                ((com.b3dgs.warcraft.object.Effect) spawner.spawn(media,
-                                                                  transformable)).start(transformable.getWidth(),
-                                                                                        transformable.getHeight());
+                spawner.spawn(media, transformable)
+                       .getFeature(Effect.class)
+                       .start(transformable.getWidth(), transformable.getHeight());
                 pathfindable.clearPath();
                 identifiable.destroy();
             }

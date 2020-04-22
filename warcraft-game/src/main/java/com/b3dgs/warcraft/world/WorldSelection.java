@@ -142,6 +142,10 @@ public class WorldSelection
     {
         return (selected, selectable) ->
         {
+            if (!selectable.hasFeature(EntityStats.class))
+            {
+                return false;
+            }
             final EntityStats entity = selectable.getFeature(EntityStats.class);
             final Race current = entity.getRace();
 

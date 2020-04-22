@@ -73,14 +73,14 @@ public class WorldMinimap implements Resource, Renderable
      */
     private void drawEntities(Graphic g)
     {
-        for (final Pathfindable entity : handler.get(Pathfindable.class))
+        for (final EntityStats entity : handler.get(EntityStats.class))
         {
-            final EntityStats stats = entity.getFeature(EntityStats.class);
-            if (stats.getHealthPercent() > 0
+            final Pathfindable pathfindable = entity.getFeature(Pathfindable.class);
+            if (entity.getHealthPercent() > 0
                 && entity.getFeature(EntityModel.class).isVisible()
-                && fogOfWar.isVisible(entity))
+                && fogOfWar.isVisible(pathfindable))
             {
-                drawEntity(g, entity, stats);
+                drawEntity(g, pathfindable, entity);
             }
         }
     }

@@ -30,31 +30,19 @@
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
+            <version>${lionengine.version}</version>
         </dependency>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-game</artifactId>
+            <version>${lionengine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-helper</artifactId>
+            <version>${lionengine.version}</version>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.b3dgs.lionengine</groupId>
-                <artifactId>lionengine-core</artifactId>
-                <version>${lionengine.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.b3dgs.lionengine</groupId>
-                <artifactId>lionengine-game</artifactId>
-                <version>${lionengine.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.b3dgs.warcraft</groupId>
-                <artifactId>warcraft-game</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

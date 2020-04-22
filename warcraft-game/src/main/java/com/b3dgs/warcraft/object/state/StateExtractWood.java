@@ -17,7 +17,6 @@
 package com.b3dgs.warcraft.object.state;
 
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Animator;
 import com.b3dgs.lionengine.AnimatorFrameListener;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
@@ -32,7 +31,6 @@ import com.b3dgs.warcraft.object.feature.EntityStats;
  */
 final class StateExtractWood extends State
 {
-    private final Animator animator = model.getSurface();
     private final EntitySfx sfx = model.getFeature(EntitySfx.class);
     private final Extractor extractor = model.getFeature(Extractor.class);
     private final AnimatorFrameListener listener;
@@ -81,7 +79,7 @@ final class StateExtractWood extends State
     {
         super.enter();
 
-        animator.addListener(listener);
+        animatable.addListener(listener);
         cut = false;
         extractor.setExtractionSpeed(old / 12);
     }
@@ -91,7 +89,7 @@ final class StateExtractWood extends State
     {
         super.exit();
 
-        animator.removeListener(listener);
+        animatable.removeListener(listener);
         extractor.setExtractionSpeed(old);
     }
 }

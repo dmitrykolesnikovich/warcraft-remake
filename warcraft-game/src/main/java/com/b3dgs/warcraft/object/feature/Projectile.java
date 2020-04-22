@@ -16,39 +16,31 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
-import com.b3dgs.lionengine.Medias;
+import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
-import com.b3dgs.lionengine.game.feature.Identifiable;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
-import com.b3dgs.lionengine.game.feature.Spawner;
-import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
-import com.b3dgs.warcraft.constant.Folder;
+import com.b3dgs.lionengine.game.feature.tile.map.Orientable;
 
 /**
- * Represents something that can explode.
+ * Projectile implementation.
  */
 @FeatureInterface
-public class Explodable extends FeatureModel implements Routine
+public final class Projectile extends FeatureModel implements Routine
 {
-    private final Spawner spawner = services.get(Spawner.class);
-
-    @FeatureGet private Identifiable identifiable;
-    @FeatureGet private Transformable transformable;
-    @FeatureGet private Pathfindable pathfindable;
-    @FeatureGet private EntityStats stats;
+    @FeatureGet private Orientable orientable;
+    @FeatureGet private Animatable animatable;
 
     /**
-     * Create feature.
+     * Constructor.
      * 
      * @param services The services reference.
      * @param setup The setup reference.
      */
-    public Explodable(Services services, Setup setup)
+    public Projectile(Services services, Setup setup)
     {
         super(services, setup);
     }
@@ -56,16 +48,6 @@ public class Explodable extends FeatureModel implements Routine
     @Override
     public void update(double extrp)
     {
-        if (stats.getHealthPercent() == 0)
-        {
-            spawner.spawn(Medias.create(Folder.EFFECTS, "explode.xml"), transformable)
-                   .getFeature(Effect.class)
-                   .start(transformable.getWidth(), 0);
-            spawner.spawn(Medias.create(Folder.EFFECTS, "corpse_building.xml"), transformable)
-                   .getFeature(Effect.class)
-                   .start(transformable.getWidth(), 0);
-            pathfindable.clearPath();
-            identifiable.destroy();
-        }
+        animatable.setFrame(orientable.getOrientation().ordinal() + 1);
     }
 }

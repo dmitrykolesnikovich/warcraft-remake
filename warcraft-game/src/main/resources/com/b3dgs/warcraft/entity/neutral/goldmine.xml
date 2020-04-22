@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com/xsd/9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lionengine.b3dgs.com/xsd/9 http://lionengine.b3dgs.com/xsd/9/featurable.xsd">
-    <lionengine:class>com.b3dgs.warcraft.object.Entity</lionengine:class>
+    <lionengine:class>com.b3dgs.lionengine.helper.EntityHelper</lionengine:class>
     <lionengine:features>
-        <lionengine:feature>com.b3dgs.lionengine.game.feature.tile.map.extractable.ExtractableModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.EntityStats</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.EntityModel</lionengine:feature>
+        <lionengine:feature>com.b3dgs.warcraft.object.feature.EntitySfx</lionengine:feature>
         <lionengine:feature>com.b3dgs.warcraft.object.feature.GoldQuantityRenderer</lionengine:feature>
         <lionengine:feature>com.b3dgs.warcraft.object.feature.Burnable</lionengine:feature>
         <lionengine:feature>com.b3dgs.warcraft.object.feature.Explodable</lionengine:feature>
@@ -14,6 +16,7 @@
         <lionengine:animation name="idle" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
         <lionengine:animation name="die" start="1" end="1" speed="0.1" reversed="false" repeat="false"/>
     </lionengine:animations>
+    <lionengine:state>com.b3dgs.warcraft.object.state.StateIdle</lionengine:state>
     <lionengine:layerable layerRefresh="2" layerDisplay="2"/>
     <lionengine:extractable type="gold" quantity="25000"/>
     <name>goldmine</name>

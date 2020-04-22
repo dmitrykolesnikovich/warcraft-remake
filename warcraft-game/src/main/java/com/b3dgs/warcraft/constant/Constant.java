@@ -76,7 +76,7 @@ public final class Constant
     /** Sfx attribute separator. */
     public static final String SFX_SEPARATOR = ";";
     /** Default volume. */
-    public static final int VOLUME_DEFAULT = 0;
+    public static final int VOLUME_DEFAULT = 50;
     /** Sound bank id. */
     public static final Integer SOUND_BANK_ID = Integer.valueOf(43);
 

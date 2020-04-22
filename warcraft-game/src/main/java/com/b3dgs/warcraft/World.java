@@ -29,29 +29,26 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.LayerableModel;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Transformable;
-import com.b3dgs.lionengine.game.feature.WorldGame;
-import com.b3dgs.lionengine.game.feature.collidable.ComponentCollision;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Hud;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selector;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.producible.ProducerListenerVoid;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.extractable.Extractor;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.feature.tile.map.persister.MapTilePersister;
 import com.b3dgs.lionengine.geom.Area;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
+import com.b3dgs.lionengine.helper.WorldHelper;
 import com.b3dgs.lionengine.io.FileReading;
-import com.b3dgs.lionengine.io.FileWriting;
 import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.feature.AutoAttack;
 import com.b3dgs.warcraft.object.feature.Warehouse;
-import com.b3dgs.warcraft.world.WorldMap;
 import com.b3dgs.warcraft.world.WorldMinimap;
 import com.b3dgs.warcraft.world.WorldNavigator;
 import com.b3dgs.warcraft.world.WorldSelection;
@@ -59,7 +56,7 @@ import com.b3dgs.warcraft.world.WorldSelection;
 /**
  * World game representation.
  */
-public class World extends WorldGame
+public class World extends WorldHelper
 {
     private static final int VIEW_X = 72;
     private static final int VIEW_Y = 12;
@@ -72,8 +69,6 @@ public class World extends WorldGame
     private static final int DELAY_ATTACK = 6000;
 
     private final Player player = services.add(new Player(Race.ORC));
-    private final WorldMap worldMap = new WorldMap(services);
-    private final MapTile map = services.get(MapTile.class);
     private final WorldMinimap minimap = new WorldMinimap(services);
     private final Cursor cursor = services.create(Cursor.class);
     private final Image wood = Util.getImage(Gfx.HUD_WOOD, RESOURCES_WOOD_X + 10, RESOURCES_Y - 2);
@@ -99,8 +94,6 @@ public class World extends WorldGame
 
         camera.setView(VIEW_X, VIEW_Y, AREA.getWidth(), AREA.getHeight(), AREA.getHeight());
 
-        handler.addComponent(services.add(new ComponentCollision()));
-
         text = services.add(Drawable.loadSpriteFont(Gfx.GAME_FONT.getSurface(), Medias.create("font.xml"), 6, 6));
         text.setLocation(TEXT_X, TEXT_Y);
 
@@ -118,19 +111,11 @@ public class World extends WorldGame
     }
 
     @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        worldMap.save(file);
-    }
-
-    @Override
     protected void loading(FileReading file) throws IOException
     {
-        worldMap.load(file);
+        map.getFeature(MapTilePersister.class).load(file);
         minimap.load();
         selection.reset();
-
-        camera.setLimits(map);
 
         cursor.addImage(Constant.CURSOR_ID, Medias.create("cursor.png"));
         cursor.addImage(Constant.CURSOR_ID_ORDER, Medias.create("cursor_order.png"));

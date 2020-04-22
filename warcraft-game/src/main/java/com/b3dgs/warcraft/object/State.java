@@ -16,25 +16,14 @@
  */
 package com.b3dgs.warcraft.object;
 
-import com.b3dgs.lionengine.AnimState;
 import com.b3dgs.lionengine.Animation;
-import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.game.feature.Animatable;
-import com.b3dgs.lionengine.game.feature.Mirrorable;
-import com.b3dgs.lionengine.game.feature.state.StateAbstract;
+import com.b3dgs.lionengine.helper.StateHelper;
 
 /**
  * Base state with animation implementation.
  */
-public abstract class State extends StateAbstract
+public abstract class State extends StateHelper<EntityModel>
 {
-    /** Model reference. */
-    protected final EntityModel model;
-
-    private final Animation animation;
-    private final Mirrorable mirrorable;
-    private final Animatable animatable;
-
     /**
      * Create the state.
      * 
@@ -43,41 +32,7 @@ public abstract class State extends StateAbstract
      */
     protected State(EntityModel model, Animation animation)
     {
-        super();
-
-        this.model = model;
-        this.animation = animation;
-
-        animatable = model.getFeature(Animatable.class);
-        mirrorable = model.getFeature(Mirrorable.class);
-    }
-
-    /**
-     * Check if is anim state.
-     * 
-     * @param state The expected anim state.
-     * @return <code>true</code> if is state, <code>false</code> else.
-     */
-    protected final boolean is(AnimState state)
-    {
-        return animatable.is(state);
-    }
-
-    /**
-     * Check if is current mirror state.
-     * 
-     * @param mirror The expected mirror to be.
-     * @return <code>true</code> if is mirror, <code>false</code> else.
-     */
-    protected final boolean is(Mirror mirror)
-    {
-        return mirrorable.is(mirror);
-    }
-
-    @Override
-    public void enter()
-    {
-        animatable.play(animation);
+        super(model, animation);
     }
 
     @Override
@@ -86,14 +41,5 @@ public abstract class State extends StateAbstract
         super.exit();
 
         model.resetFlags();
-    }
-
-    /**
-     * {@inheritDoc} Does nothing by default.
-     */
-    @Override
-    public void update(double extrp)
-    {
-        // Nothing by default
     }
 }

@@ -71,7 +71,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
         super(services, setup);
 
         building = Drawable.loadSpriteAnimated(Gfx.BUILDING_CONSTRUCTION.getSurface(), 2, 1);
-        building.setOrigin(Origin.CENTER_BOTTOM);
+        building.setOrigin(Origin.MIDDLE);
 
         effect = g ->
         {
@@ -109,7 +109,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
     {
         super.prepare(provider);
 
-        building.setFrameOffsets(-transformable.getWidth() / 2, 0);
+        building.setFrameOffsets(-transformable.getWidth() / 2, -transformable.getHeight() / 2);
     }
 
     @Override

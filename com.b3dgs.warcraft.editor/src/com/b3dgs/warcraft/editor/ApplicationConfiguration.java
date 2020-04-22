@@ -39,9 +39,9 @@ import com.b3dgs.lionengine.editor.project.ProjectFactory;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppender;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileAppenderModel;
+import com.b3dgs.lionengine.game.feature.tile.map.MapTileGame;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTileGroup;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.circuit.MapTileCircuit;
@@ -113,7 +113,7 @@ public class ApplicationConfiguration
                     {
                         importProject(args[i]);
 
-                        final MapTile map = WorldModel.INSTANCE.getMap();
+                        final MapTileGame map = WorldModel.INSTANCE.getMap();
                         map.create(Medias.create("map", "forest", "forest.png"));
                         map.getFeature(MapTileGroup.class).loadGroups(Medias.create("map", "forest", "groups.xml"));
                         map.getFeature(MapTileTransition.class)
@@ -133,7 +133,7 @@ public class ApplicationConfiguration
                                   .add(new PrefMapRegion(0, new TileArea(4, 4, 60, 60), 1, 100));
 
                         final MapGenerator generator = new MapGeneratorImpl();
-                        final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel(WorldModel.INSTANCE.getServices()));
+                        final MapTileAppender appender = map.addFeatureAndGet(new MapTileAppenderModel());
                         appender.append(generator.generateMap(parameters,
                                                               Arrays.asList(Medias.create("map",
                                                                                           "forest",
