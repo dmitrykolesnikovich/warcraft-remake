@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Recyclable;
-import com.b3dgs.lionengine.game.feature.Routines;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.collidable.selector.Selectable;
@@ -66,7 +65,7 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
         {
             for (final Selectable selectable : selection)
             {
-                selectable.getFeature(Routines.class).render(g);
+                selectable.getFeature(EntityStats.class).render(g);
             }
         };
         infoArmy = g -> text.draw(g, COUNT_X, COUNT_Y, Align.LEFT, COUNT_TEXT + selectionCount);

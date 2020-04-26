@@ -27,12 +27,12 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.feature.Layerable;
 import com.b3dgs.lionengine.game.feature.LayerableConfig;
 import com.b3dgs.lionengine.game.feature.Recyclable;
-import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.producible.Producer;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.PathfindableConfig;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
@@ -48,7 +48,7 @@ import com.b3dgs.warcraft.object.StatsConfig;
  * Icon renderer feature.
  */
 @FeatureInterface
-public class EntityStats extends FeatureModel implements Routine, Recyclable
+public class EntityStats extends FeatureModel implements Renderable, Recyclable
 {
     private static final String NODE_NAME = "name";
 
