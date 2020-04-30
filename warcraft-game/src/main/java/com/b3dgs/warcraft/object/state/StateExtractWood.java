@@ -65,9 +65,9 @@ final class StateExtractWood extends State
 
         addTransition(StateCarryWood.class, () -> Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
         addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
-        addTransition(StateIdle.class, () -> !model.isMoveStarted() && !model.isGotoResource());
+        addTransition(StateIdle.class, () -> !pathfindable.isMoving() && !model.isGotoResource());
         addTransition(StateWalk.class,
-                      () -> model.isMoveStarted()
+                      () -> pathfindable.isMoving()
                             && model.getExtractResource() == null
                             && model.getCarryResource() == null);
 

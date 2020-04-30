@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.feature.Setup;
 import com.b3dgs.lionengine.game.feature.Transformable;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerConfig;
-import com.b3dgs.lionengine.game.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.feature.attackable.AttackerListenerVoid;
 import com.b3dgs.lionengine.game.feature.collidable.Collidable;
 import com.b3dgs.lionengine.game.feature.collidable.Collision;
@@ -156,28 +155,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
         return Collections.emptySet();
     }
 
-    private final AttackerListener attackerListener = new AttackerListenerVoid()
-    {
-        @Override
-        public void notifyAttackStarted(Transformable target)
-        {
-            attackStarted = true;
-        }
-
-        @Override
-        public void notifyAttackStopped()
-        {
-            attackStarted = false;
-        }
-    };
-    private final ProducibleListener producibleListener = new ProducibleListenerVoid()
-    {
-        @Override
-        public void notifyProductionEnded(Producer producer)
-        {
-            producibleEnded = true;
-        }
-    };
     private final ExtractorListener extractorListener = new ExtractorListenerVoid()
     {
         @Override
@@ -275,8 +252,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     @FeatureGet private StateHandler stateHandler;
     @FeatureGet private EntityStats stats;
 
-    private boolean attackStarted;
-    private boolean producibleEnded;
     private boolean gotoResource;
     private String extractResource;
     private String carryResource;
@@ -426,9 +401,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
 
         final ProduceProgress progress = services.get(ProduceProgress.class);
         producible.addListener(createListener(services, setup, progress, producible, pathfindable));
-
-        attacker.addListener(attackerListener);
-        producible.addListener(producibleListener);
         extractor.addListener(extractorListener);
     }
 
@@ -442,7 +414,7 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     @Override
     public void render(Graphic g)
     {
-        if (isVisible() && fogOfWar.isVisible(pathfindable))
+        if (visible && fogOfWar.isVisible(pathfindable))
         {
             updateFrameOffset();
 
@@ -502,46 +474,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     }
 
     /**
-     * Check if move started.
-     * 
-     * @return <code>true</code> if move started, <code>false</code> else.
-     */
-    public boolean isMoveStarted()
-    {
-        return pathfindable.isMoving();
-    }
-
-    /**
-     * Check if move arrived.
-     * 
-     * @return <code>true</code> if move arrived, <code>false</code> else.
-     */
-    public boolean isMoveArrived()
-    {
-        return !pathfindable.isMoving();
-    }
-
-    /**
-     * Check if attack started.
-     * 
-     * @return <code>true</code> if attack started, <code>false</code> else.
-     */
-    public boolean isAttackStarted()
-    {
-        return attackStarted;
-    }
-
-    /**
-     * Check if production ended.
-     * 
-     * @return <code>true</code> if production ended, <code>false</code> else.
-     */
-    public boolean isProduced()
-    {
-        return producibleEnded;
-    }
-
-    /**
      * Check if going to resource.
      * 
      * @return <code>true</code> if going to resource, <code>false</code> else.
@@ -576,8 +508,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
      */
     public void resetFlags()
     {
-        attackStarted = false;
-        producibleEnded = false;
         extractResource = null;
     }
 

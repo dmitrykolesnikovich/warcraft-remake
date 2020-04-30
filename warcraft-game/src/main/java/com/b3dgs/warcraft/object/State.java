@@ -17,6 +17,9 @@
 package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.game.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.feature.producible.Producible;
+import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.helper.StateHelper;
 
 /**
@@ -24,6 +27,13 @@ import com.b3dgs.lionengine.helper.StateHelper;
  */
 public abstract class State extends StateHelper<EntityModel>
 {
+    /** Attacker reference. */
+    protected final Attacker attacker = model.getFeature(Attacker.class);
+    /** Producer reference. */
+    protected final Producible producible = model.getFeature(Producible.class);
+    /** Pathfindable reference. */
+    protected final Pathfindable pathfindable = model.getFeature(Pathfindable.class);
+
     /**
      * Create the state.
      * 

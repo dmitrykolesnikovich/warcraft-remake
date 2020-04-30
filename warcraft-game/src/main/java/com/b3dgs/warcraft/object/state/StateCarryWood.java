@@ -38,8 +38,8 @@ final class StateCarryWood extends State
 
         final EntityStats stats = model.getFeature(EntityStats.class);
 
-        addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
-        addTransition(StateIdleWood.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
+        addTransition(StateIdle.class, () -> !pathfindable.isMoving() && model.getCarryResource() == null);
+        addTransition(StateIdleWood.class, () -> !pathfindable.isMoving() && model.getCarryResource() != null);
         addTransition(StateDieWood.class, () -> stats.getHealthPercent() == 0);
     }
 }

@@ -40,11 +40,15 @@ public final class StateIdleWood extends State
         final EntityStats stats = model.getFeature(EntityStats.class);
 
         addTransition(StateIdle.class,
-                      () -> stats.getHealthPercent() > 0 && !model.isMoveStarted() && model.getCarryResource() == null);
+                      () -> stats.getHealthPercent() > 0
+                            && !pathfindable.isMoving()
+                            && model.getCarryResource() == null);
         addTransition(StateWalk.class,
-                      () -> stats.getHealthPercent() > 0 && model.isMoveStarted() && model.getCarryResource() == null);
+                      () -> stats.getHealthPercent() > 0
+                            && pathfindable.isMoving()
+                            && model.getCarryResource() == null);
         addTransition(StateCarryWood.class,
-                      () -> model.isMoveStarted() && Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
+                      () -> pathfindable.isMoving() && Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
         addTransition(StateDieWood.class, () -> stats.getHealthPercent() == 0);
     }
 }

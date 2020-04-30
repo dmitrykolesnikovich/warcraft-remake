@@ -38,8 +38,8 @@ final class StateCarryGold extends State
 
         final EntityStats stats = model.getFeature(EntityStats.class);
 
-        addTransition(StateIdle.class, () -> model.isMoveArrived() && model.getCarryResource() == null);
-        addTransition(StateIdleGold.class, () -> model.isMoveArrived() && model.getCarryResource() != null);
+        addTransition(StateIdle.class, () -> !pathfindable.isMoving() && model.getCarryResource() == null);
+        addTransition(StateIdleGold.class, () -> !pathfindable.isMoving() && model.getCarryResource() != null);
         addTransition(StateDieGold.class, () -> stats.getHealthPercent() == 0);
     }
 

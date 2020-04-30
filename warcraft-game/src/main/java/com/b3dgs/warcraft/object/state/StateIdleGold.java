@@ -40,11 +40,15 @@ public final class StateIdleGold extends State
         final EntityStats stats = model.getFeature(EntityStats.class);
 
         addTransition(StateIdle.class,
-                      () -> stats.getHealthPercent() > 0 && !model.isMoveStarted() && model.getCarryResource() == null);
+                      () -> stats.getHealthPercent() > 0
+                            && !pathfindable.isMoving()
+                            && model.getCarryResource() == null);
         addTransition(StateWalk.class,
-                      () -> stats.getHealthPercent() > 0 && model.isMoveStarted() && model.getCarryResource() == null);
+                      () -> stats.getHealthPercent() > 0
+                            && pathfindable.isMoving()
+                            && model.getCarryResource() == null);
         addTransition(StateCarryGold.class,
-                      () -> model.isMoveStarted() && Constant.RESOURCE_GOLD.equals(model.getCarryResource()));
+                      () -> pathfindable.isMoving() && Constant.RESOURCE_GOLD.equals(model.getCarryResource()));
         addTransition(StateDieGold.class, () -> stats.getHealthPercent() == 0);
     }
 }

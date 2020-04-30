@@ -42,13 +42,13 @@ final class StateWalk extends State
         final boolean repairer = model.hasFeature(Repairer.class);
 
         addTransition(StateExtractWood.class,
-                      () -> model.isMoveArrived() && Constant.RESOURCE_WOOD.equals(model.getExtractResource()));
+                      () -> !pathfindable.isMoving() && Constant.RESOURCE_WOOD.equals(model.getExtractResource()));
         addTransition(StateExtractGold.class,
-                      () -> model.isMoveArrived() && Constant.RESOURCE_GOLD.equals(model.getExtractResource()));
+                      () -> !pathfindable.isMoving() && Constant.RESOURCE_GOLD.equals(model.getExtractResource()));
         addTransition(StateIdle.class,
-                      () -> model.isMoveArrived() && !model.isAttackStarted() && model.getExtractResource() == null);
-        addTransition(StateAttack.class, () -> model.isMoveArrived() && model.isAttackStarted() && !repairer);
-        addTransition(StateRepair.class, () -> model.isMoveArrived() && model.isAttackStarted() && repairer);
+                      () -> !pathfindable.isMoving() && !attacker.isAttacking() && model.getExtractResource() == null);
+        addTransition(StateAttack.class, () -> !pathfindable.isMoving() && attacker.isAttacking() && !repairer);
+        addTransition(StateRepair.class, () -> !pathfindable.isMoving() && attacker.isAttacking() && repairer);
         addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 }

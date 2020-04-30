@@ -45,9 +45,9 @@ public final class StateIdle extends State
         addTransition(StateExtractGold.class, () -> Constant.RESOURCE_GOLD.equals(model.getExtractResource()));
         addTransition(StateCarryWood.class, () -> Constant.RESOURCE_WOOD.equals(model.getCarryResource()));
         addTransition(StateCarryGold.class, () -> Constant.RESOURCE_GOLD.equals(model.getCarryResource()));
-        addTransition(StateWalk.class, model::isMoveStarted);
-        addTransition(StateAttack.class, () -> model.isAttackStarted() && !repairer);
-        addTransition(StateRepair.class, () -> model.isAttackStarted() && repairer);
+        addTransition(StateWalk.class, pathfindable::isMoving);
+        addTransition(StateAttack.class, () -> attacker.isAttacking() && !repairer);
+        addTransition(StateRepair.class, () -> attacker.isAttacking() && repairer);
         addTransition(StateDie.class, () -> stats.getHealthPercent() == 0);
     }
 }
