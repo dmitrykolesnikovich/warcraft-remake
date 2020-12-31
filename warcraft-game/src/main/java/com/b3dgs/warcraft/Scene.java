@@ -29,7 +29,7 @@ import com.b3dgs.warcraft.constant.Constant;
 /**
  * Game scene implementation.
  */
-public class Scene extends SequenceGame
+public class Scene extends SequenceGame<World>
 {
     private static final String NAME = Constant.PROGRAM_NAME
                                        + com.b3dgs.lionengine.Constant.SPACE
