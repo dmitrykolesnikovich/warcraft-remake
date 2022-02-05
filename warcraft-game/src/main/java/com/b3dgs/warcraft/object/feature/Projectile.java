@@ -16,10 +16,12 @@
  */
 package com.b3dgs.warcraft.object.feature;
 
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.feature.Animatable;
 import com.b3dgs.lionengine.game.feature.FeatureGet;
 import com.b3dgs.lionengine.game.feature.FeatureInterface;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.feature.Mirrorable;
 import com.b3dgs.lionengine.game.feature.Routine;
 import com.b3dgs.lionengine.game.feature.Services;
 import com.b3dgs.lionengine.game.feature.Setup;
@@ -33,6 +35,7 @@ public final class Projectile extends FeatureModel implements Routine
 {
     @FeatureGet private Orientable orientable;
     @FeatureGet private Animatable animatable;
+    @FeatureGet private Mirrorable mirrorable;
 
     /**
      * Constructor.
@@ -49,5 +52,6 @@ public final class Projectile extends FeatureModel implements Routine
     public void update(double extrp)
     {
         animatable.setFrame(orientable.getOrientation().ordinal() + 1);
+        mirrorable.mirror(Mirror.NONE);
     }
 }

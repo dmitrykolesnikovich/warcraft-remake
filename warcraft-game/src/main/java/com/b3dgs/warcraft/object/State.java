@@ -17,10 +17,13 @@
 package com.b3dgs.warcraft.object;
 
 import com.b3dgs.lionengine.Animation;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.feature.producible.Producible;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.helper.StateHelper;
+import com.b3dgs.warcraft.object.feature.EntityStats;
 
 /**
  * Base state with animation implementation.
@@ -34,6 +37,9 @@ public abstract class State extends StateHelper<EntityModel>
     /** Pathfindable reference. */
     protected final Pathfindable pathfindable = model.getFeature(Pathfindable.class);
 
+    private final EntityStats stats = model.getFeature(EntityStats.class);
+    private int frameOffsetOld;
+
     /**
      * Create the state.
      * 
@@ -43,6 +49,62 @@ public abstract class State extends StateHelper<EntityModel>
     protected State(EntityModel model, Animation animation)
     {
         super(model, animation);
+    }
+
+    /**
+     * Update mirror depending on orientation.
+     */
+    private void updateMirror()
+    {
+        final int orientation = pathfindable.getOrientation().ordinal();
+        if (orientation > Orientation.ORIENTATIONS_NUMBER_HALF)
+        {
+            mirrorable.mirror(Mirror.HORIZONTAL);
+        }
+        else
+        {
+            mirrorable.mirror(Mirror.NONE);
+        }
+    }
+
+    /**
+     * Update frame offset to match animation with orientation.
+     */
+    private void updateFrameOffset()
+    {
+        int frameOffset = pathfindable.getOrientation().ordinal();
+        if (frameOffset != frameOffsetOld)
+        {
+            frameOffsetOld = frameOffset;
+            if (stats.getHealthPercent() == 0)
+            {
+                frameOffset /= Orientation.ORIENTATIONS_NUMBER_HALF;
+            }
+            else if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
+            {
+                frameOffset = Orientation.ORIENTATIONS_NUMBER - frameOffset;
+            }
+            rasterable.setAnimOffset(frameOffset * animation.getFrames());
+        }
+    }
+
+    @Override
+    public void enter()
+    {
+        super.enter();
+
+        frameOffsetOld = -1;
+        updateFrameOffset();
+        updateMirror();
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        super.update(extrp);
+
+        updateFrameOffset();
+        updateMirror();
     }
 
     @Override

@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -54,12 +55,12 @@ public final class StatsConfig
      * @return The data.
      * @throws LionEngineException If unable to read node.
      */
-    public static StatsConfig imports(Xml root)
+    public static StatsConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_STATS);
-        final int health = node.readInteger(ATT_HEALTH);
+        final XmlReader node = root.getChild(NODE_STATS);
+        final int health = node.getInteger(ATT_HEALTH);
 
         return new StatsConfig(health);
     }

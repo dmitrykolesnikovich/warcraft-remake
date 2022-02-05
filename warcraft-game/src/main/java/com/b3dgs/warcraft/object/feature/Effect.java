@@ -66,7 +66,7 @@ public final class Effect extends FeatureModel implements Routine
 
         sfx = Sfx.load(setup, Sfx.ATT_DEAD);
         animation = AnimationConfig.imports(setup).getAnimation(ANIM_IDLE);
-        delay = setup.getIntegerDefault(-1, ATT_DELAY, NODE_EFFECT);
+        delay = setup.getInteger(-1, ATT_DELAY, NODE_EFFECT);
     }
 
     /**

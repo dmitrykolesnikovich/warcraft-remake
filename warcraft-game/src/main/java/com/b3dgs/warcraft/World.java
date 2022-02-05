@@ -42,10 +42,13 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.Image;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
+import com.b3dgs.lionengine.helper.DeviceControllerConfig;
 import com.b3dgs.lionengine.helper.WorldHelper;
+import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.lionengine.io.DevicePointer;
 import com.b3dgs.lionengine.io.FileReading;
-import com.b3dgs.lionengine.io.InputDevicePointer;
 import com.b3dgs.warcraft.constant.Constant;
+import com.b3dgs.warcraft.constant.Folder;
 import com.b3dgs.warcraft.constant.Gfx;
 import com.b3dgs.warcraft.object.feature.AutoAttack;
 import com.b3dgs.warcraft.object.feature.Warehouse;
@@ -76,7 +79,10 @@ public class World extends WorldHelper
     private final SpriteFont text;
     private final WorldNavigator navigator;
     private final WorldSelection selection;
-    private final InputDevicePointer pointer = services.add(getInputDevice(InputDevicePointer.class));
+    private final DeviceController device = services.add(DeviceControllerConfig.create(services,
+                                                                                       Medias.create("input.xml")));
+    private final DeviceController deviceCursor = DeviceControllerConfig.create(services,
+                                                                                Medias.create("input_cursor.xml"));
     private final Tick tick = new Tick();
 
     private Audio music;
@@ -104,7 +110,7 @@ public class World extends WorldHelper
         selector.addFeatureAndGet(new LayerableModel(Constant.LAYER_SELECTION, Constant.LAYER_SELECTION_RENDER));
         selector.setClickableArea(AREA);
         selector.setSelectionColor(Constant.COLOR_SELECTION);
-        selector.setClickSelection(1);
+        selector.setClickSelection(DeviceMapping.ACTION_LEFT.getIndex());
 
         navigator = new WorldNavigator(services);
         selection = new WorldSelection(services);
@@ -113,6 +119,7 @@ public class World extends WorldHelper
     @Override
     protected void loading(FileReading file) throws IOException
     {
+        map.loadSheets(Medias.create(Folder.MAPS, WorldType.FOREST.getFolder(), "sheets.xml"));
         map.getFeature(MapTilePersister.class).load(file);
         minimap.load();
         selection.reset();
@@ -122,7 +129,12 @@ public class World extends WorldHelper
         cursor.addImage(Constant.CURSOR_ID_OVER, Medias.create("cursor_over.png"));
         cursor.load();
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
-        cursor.setInputDevice(pointer);
+        cursor.setInputDevice(deviceCursor);
+        cursor.setSync((DevicePointer) getInputDevice(DeviceControllerConfig.imports(services,
+                                                                                     Medias.create("input_cursor.xml"))
+                                                                            .iterator()
+                                                                            .next()
+                                                                            .getDevice()));
         cursor.setViewer(camera);
 
         createAi(Race.HUMAN, 8, 56);
@@ -235,7 +247,8 @@ public class World extends WorldHelper
     {
         text.setText(com.b3dgs.lionengine.Constant.EMPTY_STRING);
 
-        pointer.update(extrp);
+        device.update(extrp);
+        deviceCursor.update(extrp);
         cursor.update(extrp);
         navigator.update(extrp);
         player.update(extrp);
@@ -259,9 +272,6 @@ public class World extends WorldHelper
         wood.render(g);
         gold.render(g);
 
-        if (!cursor.hasClicked(2))
-        {
-            cursor.render(g);
-        }
+        cursor.render(g);
     }
 }

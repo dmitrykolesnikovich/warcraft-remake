@@ -65,7 +65,8 @@ public class EntityInfo extends FeatureModel implements Renderable, SelectionLis
         {
             for (final Selectable selectable : selection)
             {
-                selectable.getFeature(EntityStats.class).render(g);
+                selectable.ifIs(EntityStats.class, e -> e.render(g));
+                selectable.ifIs(FoodProduction.class, f -> f.renderUsage(g));
             }
         };
         infoArmy = g -> text.draw(g, COUNT_X, COUNT_Y, Align.LEFT, COUNT_TEXT + selectionCount);

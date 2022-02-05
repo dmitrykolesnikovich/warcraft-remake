@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.graphic.drawable.Drawable;
 import com.b3dgs.lionengine.graphic.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.graphic.drawable.SpriteFont;
 import com.b3dgs.lionengine.graphic.drawable.SpriteTiled;
+import com.b3dgs.warcraft.DeviceMapping;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.constant.Gfx;
 
@@ -88,13 +89,13 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
 
         actionable = addFeatureAndGet(new ActionableModel(services, setup));
         actionable.setAction(this::onClickButton);
-        actionable.setClickAction(1);
+        actionable.setClickAction(DeviceMapping.ACTION_LEFT.getIndex());
 
         state = new AtomicReference<>(actionable);
 
         assignable = addFeatureAndGet(new AssignableModel(services, setup));
         assignable.setAssign(this::onAssignMap);
-        assignable.setClickAssign(1);
+        assignable.setClickAssign(DeviceMapping.ACTION_LEFT.getIndex());
 
         final SpriteAnimated background = Drawable.loadSpriteAnimated(Gfx.HUD_ACTION_BACKGROUND.getSurface(), 2, 1);
         final SpriteTiled surface = Drawable.loadSpriteTiled(setup.getSurface(), 27, 19);
@@ -165,7 +166,7 @@ public class ActionModel extends FeaturableModel implements Updatable, Renderabl
         if (actionable.isEnabled())
         {
             final int clickOffsetY;
-            if (cursor.getClick() == 1 && actionable.isOver())
+            if (cursor.isPushed(DeviceMapping.ACTION_LEFT) && actionable.isOver())
             {
                 clickOffsetY = 1;
             }

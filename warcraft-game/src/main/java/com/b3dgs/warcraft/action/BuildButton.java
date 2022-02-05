@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Medias;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.SizeConfig;
@@ -46,7 +46,8 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.drawable.Image;
-import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.warcraft.DeviceMapping;
 import com.b3dgs.warcraft.Player;
 import com.b3dgs.warcraft.Sfx;
 import com.b3dgs.warcraft.Util;
@@ -95,7 +96,7 @@ public class BuildButton extends ActionModel
     private final Factory factory = services.get(Factory.class);
     private final Viewer viewer = services.get(Viewer.class);
     private final Cursor cursor = services.get(Cursor.class);
-    private final InputDevicePointer pointer = services.get(InputDevicePointer.class);
+    private final DeviceController device = services.get(DeviceController.class);
     private final Hud hud = services.get(Hud.class);
     private final Player player = services.get(Player.class);
     private final FogOfWar fogOfWar = services.get(FogOfWar.class);
@@ -163,9 +164,9 @@ public class BuildButton extends ActionModel
             return false;
         }
 
-        final SizeConfig size = SizeConfig.imports(new Xml(target));
+        final SizeConfig size = SizeConfig.imports(new XmlReader(target));
         area = new Rectangle(0, 0, size.getWidth(), size.getHeight());
-        hud.setCancelShortcut(() -> pointer.hasClickedOnce(3));
+        hud.setCancelShortcut(() -> device.isFiredOnce(DeviceMapping.ACTION_RIGHT));
         cursor.setVisible(false);
 
         return true;

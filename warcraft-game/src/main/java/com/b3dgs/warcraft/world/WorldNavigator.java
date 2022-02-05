@@ -32,7 +32,8 @@ import com.b3dgs.lionengine.game.feature.collidable.selector.SelectorModel;
 import com.b3dgs.lionengine.game.feature.tile.map.MapTile;
 import com.b3dgs.lionengine.game.feature.tile.map.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.feature.tile.map.transition.fog.FogOfWar;
-import com.b3dgs.lionengine.io.InputDevicePointer;
+import com.b3dgs.lionengine.io.DeviceController;
+import com.b3dgs.warcraft.DeviceMapping;
 import com.b3dgs.warcraft.constant.Constant;
 import com.b3dgs.warcraft.object.EntityModel;
 import com.b3dgs.warcraft.object.feature.EntityStats;
@@ -49,13 +50,13 @@ public class WorldNavigator implements Updatable
 
     private final Camera camera;
     private final Cursor cursor;
+    private final DeviceController device;
     private final Handler handler;
     private final MapTile map;
     private final MapTilePath mapPath;
     private final FogOfWar fogOfWar;
     private final Selector selector;
     private final SelectorModel selectorModel;
-    private final InputDevicePointer pointer;
 
     private boolean selectorEnabled;
     private boolean selectorBackup;
@@ -71,12 +72,12 @@ public class WorldNavigator implements Updatable
 
         camera = services.get(Camera.class);
         cursor = services.get(Cursor.class);
+        device = services.get(DeviceController.class);
         handler = services.get(Handler.class);
         map = services.get(MapTile.class);
         mapPath = map.getFeature(MapTilePath.class);
         fogOfWar = map.getFeature(FogOfWar.class);
         selector = services.get(Selector.class);
-        pointer = services.get(InputDevicePointer.class);
 
         selectorModel = selector.getFeature(SelectorModel.class);
         selectorEnabled = selectorModel.isEnabled();
@@ -90,16 +91,16 @@ public class WorldNavigator implements Updatable
      */
     private void updateNavigationPointer(double extrp)
     {
-        if (pointer.getClick() > 1)
+        if (cursor.isPushed())
         {
             final int h = camera.getViewY() + camera.getHeight();
             final int marginY = map.getTileHeight() / 2;
 
-            if (UtilMath.isBetween(pointer.getY(), h - marginY, h))
+            if (UtilMath.isBetween(cursor.getScreenY(), h - marginY, h))
             {
                 camera.moveLocation(extrp, 0, -map.getTileHeight());
             }
-            else if (UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + marginY))
+            else if (UtilMath.isBetween(cursor.getScreenY(), camera.getViewY(), camera.getViewY() + marginY))
             {
                 camera.moveLocation(extrp, 0, map.getTileHeight());
             }
@@ -107,11 +108,11 @@ public class WorldNavigator implements Updatable
             final int w = camera.getViewX() + camera.getWidth();
             final int marginX = map.getTileWidth() / 2;
 
-            if (UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + marginX))
+            if (UtilMath.isBetween(cursor.getScreenX(), camera.getViewX(), camera.getViewX() + marginX))
             {
                 camera.moveLocation(extrp, -map.getTileWidth(), 0);
             }
-            else if (UtilMath.isBetween(pointer.getX(), w - marginX, w))
+            else if (UtilMath.isBetween(cursor.getScreenX(), w - marginX, w))
             {
                 camera.moveLocation(extrp, map.getTileWidth(), 0);
             }
@@ -126,12 +127,12 @@ public class WorldNavigator implements Updatable
     private void updateNavigationMinimap(double extrp)
     {
         if (!selectorModel.isSelecting()
-            && pointer.getClick() > 0
-            && UtilMath.isBetween(pointer.getX(), Constant.MINIMAP_X, Constant.MINIMAP_X + map.getInTileWidth())
-            && UtilMath.isBetween(pointer.getY(), Constant.MINIMAP_Y, Constant.MINIMAP_Y + map.getInTileHeight()))
+            && cursor.isPushed()
+            && UtilMath.isBetween(cursor.getScreenX(), Constant.MINIMAP_X, Constant.MINIMAP_X + map.getInTileWidth())
+            && UtilMath.isBetween(cursor.getScreenY(), Constant.MINIMAP_Y, Constant.MINIMAP_Y + map.getInTileHeight()))
         {
-            final int x = (pointer.getX() - Constant.MINIMAP_X) * map.getTileWidth();
-            final int y = (map.getInTileHeight() + Constant.MINIMAP_Y - pointer.getY()) * map.getTileHeight();
+            final double x = (cursor.getScreenX() - Constant.MINIMAP_X) * map.getTileWidth();
+            final double y = (map.getInTileHeight() + Constant.MINIMAP_Y - cursor.getScreenY()) * map.getTileHeight();
             camera.setLocation(UtilMath.getRounded(x - camera.getWidth() / 2.0, map.getTileWidth()),
                                UtilMath.getRounded(y - camera.getHeight() / 2.0, map.getTileHeight()));
 
@@ -156,8 +157,10 @@ public class WorldNavigator implements Updatable
      */
     private boolean isCursorOverMap()
     {
-        return UtilMath.isBetween(pointer.getX(), camera.getViewX(), camera.getViewX() + camera.getWidth() - 8)
-               && UtilMath.isBetween(pointer.getY(), camera.getViewY(), camera.getViewY() + camera.getHeight() - 16);
+        return UtilMath.isBetween(cursor.getScreenX(), camera.getViewX(), camera.getViewX() + camera.getWidth() - 8)
+               && UtilMath.isBetween(cursor.getScreenY(),
+                                     camera.getViewY(),
+                                     camera.getViewY() + camera.getHeight() - 16);
     }
 
     @Override
@@ -168,19 +171,23 @@ public class WorldNavigator implements Updatable
         if (navigationDelay.elapsed(NAVIGATION_TICK))
         {
             updateNavigationPointer(extrp);
+            camera.moveLocation(extrp,
+                                device.getHorizontalDirection() * map.getTileWidth(),
+                                device.getVerticalDirection() * map.getTileHeight());
             navigationDelay.restart();
         }
+
         updateNavigationMinimap(extrp);
         updateCursorOver();
 
-        if (isCursorOverMap() && cursor.hasClickedOnce(3))
+        if (isCursorOverMap() && cursor.isPushedOnce(DeviceMapping.ACTION_RIGHT))
         {
             final int marginX = map.getTileWidth() / 2;
             final int marginY = map.getTileHeight() / 2;
-            if (UtilMath.isBetween(pointer.getX(),
+            if (UtilMath.isBetween(cursor.getScreenX(),
                                    camera.getViewX() + marginX,
                                    camera.getViewX() + camera.getWidth() - marginX)
-                && UtilMath.isBetween(pointer.getY(),
+                && UtilMath.isBetween(cursor.getScreenY(),
                                       camera.getViewY() + marginX,
                                       camera.getViewY() + camera.getHeight() - marginY))
             {
@@ -199,10 +206,7 @@ public class WorldNavigator implements Updatable
             final int tx = map.getInTileX(cursor);
             final int ty = map.getInTileY(cursor);
 
-            if (cursor.getClick() == 0
-                && fogOfWar.isVisited(tx, ty)
-                && !fogOfWar.isFogged(tx, ty)
-                && isValidEntity(tx, ty))
+            if (!cursor.isPushed() && fogOfWar.isVisited(tx, ty) && !fogOfWar.isFogged(tx, ty) && isValidEntity(tx, ty))
             {
                 cursor.setRenderingOffset(-5, -5);
                 cursor.setSurfaceId(Constant.CURSOR_ID_OVER);

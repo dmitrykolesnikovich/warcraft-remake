@@ -52,7 +52,6 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
     private final SpriteAnimated building;
 
     private final Viewer viewer = services.get(Viewer.class);
-    private final Renderable effect;
 
     private Renderable renderable;
     private int phase;
@@ -72,12 +71,6 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
 
         building = Drawable.loadSpriteAnimated(Gfx.BUILDING_CONSTRUCTION.getSurface(), 2, 1);
         building.setOrigin(Origin.MIDDLE);
-
-        effect = g ->
-        {
-            building.setLocation(viewer, transformable);
-            building.render(g);
-        };
     }
 
     /**
@@ -96,7 +89,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
         }
         else
         {
-            renderable = effect;
+            renderable = building::render;
         }
         if (phase > 0 && viewer.isViewable(transformable, 0, 0))
         {
@@ -130,6 +123,7 @@ public class Buildable extends FeatureModel implements Routine, Recyclable, Prod
     public void notifyProductionStarted(Producer producer)
     {
         building.play(PHASE1);
+        building.setLocation(viewer, transformable);
         changePhase(0, false);
     }
 

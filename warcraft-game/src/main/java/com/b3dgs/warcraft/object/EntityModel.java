@@ -22,12 +22,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.FeatureProvider;
-import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.feature.Actionable;
 import com.b3dgs.lionengine.game.feature.Animatable;
@@ -271,22 +269,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     }
 
     /**
-     * Update mirror depending on orientation.
-     */
-    private void updateMirror()
-    {
-        final int orientation = pathfindable.getOrientation().ordinal();
-        if (orientation > Orientation.ORIENTATIONS_NUMBER_HALF)
-        {
-            mirrorable.mirror(Mirror.HORIZONTAL);
-        }
-        else
-        {
-            mirrorable.mirror(Mirror.NONE);
-        }
-    }
-
-    /**
      * Draw entity selection area.
      * 
      * @param g The graphic output.
@@ -295,23 +277,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     {
         g.setColor(player.getColor(this));
         g.drawRect(viewer, Origin.BOTTOM_LEFT, transformable, false);
-    }
-
-    /**
-     * Update frame offset to match animation with orientation.
-     */
-    private void updateFrameOffset()
-    {
-        int frameOffset = pathfindable.getOrientation().ordinal();
-        if (stats.getHealthPercent() == 0)
-        {
-            frameOffset /= Orientation.ORIENTATIONS_NUMBER_HALF;
-        }
-        else if (frameOffset > Orientation.ORIENTATIONS_NUMBER_HALF)
-        {
-            frameOffset = Orientation.ORIENTATIONS_NUMBER - frameOffset;
-        }
-        rasterable.setAnimOffset(frameOffset * animatable.getFrames());
     }
 
     @Override
@@ -407,7 +372,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     @Override
     public void update(double extrp)
     {
-        updateMirror();
         rasterable.setVisibility(visible && display && fogOfWar.isVisible(pathfindable));
     }
 
@@ -416,8 +380,6 @@ public final class EntityModel extends EntityModelHelper implements Routine, Rec
     {
         if (visible && fogOfWar.isVisible(pathfindable))
         {
-            updateFrameOffset();
-
             if (selectable.isSelected())
             {
                 drawSelection(g);

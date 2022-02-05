@@ -73,7 +73,7 @@ public class Decayable extends FeatureModel implements Routine, Recyclable
 
         final Spawner spawner = services.get(Spawner.class);
 
-        final int delay = setup.getIntegerDefault(0, ATT_DELAY, NODE_DECAY);
+        final int delay = setup.getInteger(0, ATT_DELAY, NODE_DECAY);
         final Media media = Medias.create(setup.getString(ATT_CORPSE, NODE_DECAY));
 
         checkCorpse = extrp ->

@@ -61,6 +61,23 @@ public class FoodProduction extends FeatureModel implements Routine
         super(services, setup);
     }
 
+    /**
+     * Render food usage.
+     * 
+     * @param g The graphic output.
+     */
+    public void renderUsage(Graphic g)
+    {
+        if (player.owns(this))
+        {
+            text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, FOOD_USAGE);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.RIGHT, FOOD_GROWN);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.RIGHT, FOOD_USED);
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.LEFT, String.valueOf(player.getAvailableFood()));
+            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.LEFT, String.valueOf(player.getConsumedFood()));
+        }
+    }
+
     @Override
     public void prepare(FeatureProvider provider)
     {
@@ -74,18 +91,5 @@ public class FoodProduction extends FeatureModel implements Routine
                 player.increaseFood(FOOD_COUNT);
             }
         });
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        if (player.owns(this))
-        {
-            text.draw(g, TEXT_X, TEXT_Y, Align.LEFT, FOOD_USAGE);
-            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.RIGHT, FOOD_GROWN);
-            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.RIGHT, FOOD_USED);
-            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 12, Align.LEFT, String.valueOf(player.getAvailableFood()));
-            text.draw(g, TEXT_X + TEXT_OFFSET_X, TEXT_Y + 22, Align.LEFT, String.valueOf(player.getConsumedFood()));
-        }
     }
 }

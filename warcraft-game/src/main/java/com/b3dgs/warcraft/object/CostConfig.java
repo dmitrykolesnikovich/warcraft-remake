@@ -19,6 +19,7 @@ package com.b3dgs.warcraft.object;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Xml;
+import com.b3dgs.lionengine.XmlReader;
 import com.b3dgs.lionengine.game.Configurer;
 
 /**
@@ -56,13 +57,13 @@ public final class CostConfig
      * @return The data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CostConfig imports(Xml root)
+    public static CostConfig imports(XmlReader root)
     {
         Check.notNull(root);
 
-        final Xml node = root.getChild(NODE_COST);
-        final int wood = node.readInteger(ATT_WOOD);
-        final int gold = node.readInteger(ATT_GOLD);
+        final XmlReader node = root.getChild(NODE_COST);
+        final int wood = node.getInteger(ATT_WOOD);
+        final int gold = node.getInteger(ATT_GOLD);
 
         return new CostConfig(wood, gold);
     }
