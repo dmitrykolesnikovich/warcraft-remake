@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.action.Carry</lionengine:class>
-    <lionengine:surface image="carry.png"/>
-    <lionengine:action name="Carry" description="Return goods to Town Hall" x="38" y="141" width="27" height="19"/>
-</lionengine:featurable>

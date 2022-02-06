@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable name="Farm" xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.game.feature.collidable.selector.Hud</lionengine:class>
-    <lionengine:feature>com.b3dgs.warcraft.object.feature.EntityInfo</lionengine:feature>
-    <lionengine:layerable layerRefresh="8" layerDisplay="8"/>
-    <lionengine:surface image="hud.png"/>
-</lionengine:featurable>

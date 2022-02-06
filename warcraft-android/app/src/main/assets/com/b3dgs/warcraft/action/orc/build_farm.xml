@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.action.BuildButton</lionengine:class>
-    <lionengine:surface image="build_farm.png"/>
-    <lionengine:action name="Build Farm" description="Build Farm" x="4" y="118" width="27" height="19"/>
-    <media>entity/orc/farm.xml</media>
-</lionengine:featurable>

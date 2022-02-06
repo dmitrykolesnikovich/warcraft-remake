@@ -9,13 +9,16 @@ android {
             storePassword property('keystore.storepassword')
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.b3dgs.warcraft"
         minSdkVersion 26
-        targetSdkVersion 28
+        targetSdkVersion 31
         signingConfig signingConfigs.app
+        // ndk {
+        // abiFilters 'armeabi-v7a'
+        // }
     }
     buildTypes {
         release {
@@ -28,8 +31,15 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets/', '../../warcraft-assets/src/main/resources/', '../../warcraft-raster/src/main/resources/']
+            jniLibs.srcDir 'jniLibs'
+        }
     }
 }
 
@@ -38,7 +48,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.b3dgs.lionengine:lionengine-core:9.0.2'
-    implementation 'com.b3dgs.lionengine:lionengine-core-android:9.0.2'
-    implementation 'com.b3dgs.warcraft:warcraft-game:0.0.6'
+    implementation 'com.b3dgs:b3dgs-parent:2.0.0-SNAPSHOT'
+    implementation 'com.b3dgs.lionengine:lionengine-core:10.0.0-SNAPSHOT'
+    implementation 'com.b3dgs.lionengine:lionengine-core-android:10.0.0-SNAPSHOT'
+    //noinspection GradleDependency
+    implementation 'net.java.dev.jna:jna:5.4.0@aar'
+    implementation 'com.b3dgs.lionengine:lionengine-audio-adlmidi:10.0.0-SNAPSHOT'
+    implementation 'com.b3dgs.warcraft:warcraft-game:0.0.7-SNAPSHOT'
 }

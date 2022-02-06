@@ -29,7 +29,7 @@ public final class Constant
     /** Application name. */
     public static final String PROGRAM_NAME = "Warcraft Remake";
     /** Application version. */
-    public static final Version PROGRAM_VERSION = Version.create(0, 0, 6);
+    public static final Version PROGRAM_VERSION = Version.create(0, 0, 7);
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(384, 216, 60);
 

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.action.Repair</lionengine:class>
-    <lionengine:surface image="repair.png"/>
-    <lionengine:action name="Repair" description="Repair" x="4" y="141" width="27" height="19"/>
-</lionengine:featurable>

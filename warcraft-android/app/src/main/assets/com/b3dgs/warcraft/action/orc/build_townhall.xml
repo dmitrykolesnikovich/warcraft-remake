@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:featurable xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.action.BuildButton</lionengine:class>
-    <lionengine:surface image="build_townhall.png"/>
-    <lionengine:action name="Build TownHall" description="Rebuild the TownHall" x="4" y="210" width="27" height="19"/>
-    <media>entity/orc/townhall.xml</media>
-</lionengine:featurable>
