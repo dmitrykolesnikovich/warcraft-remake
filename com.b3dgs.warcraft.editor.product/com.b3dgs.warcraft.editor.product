@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Warcraft Remake Editor" uid="com.b3dgs.warcraft.editor.product" id="com.b3dgs.warcraft.editor.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.0.5" useFeatures="false" includeLaunchers="true">
+<product name="Warcraft Remake Editor" uid="com.b3dgs.warcraft.editor.product" id="com.b3dgs.warcraft.editor.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.0.7.qualifier" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -9,6 +9,12 @@
    <launcherArgs>
       <programArgs>-clearPersistedState -import C:\Users\DjThunder\git\warcraft-remake\warcraft-game
       </programArgs>
+      <programArgsLin>
+         <argsX86_64>-vm ../../data/jvm_linux_x86_64/bin</argsX86_64>
+      </programArgsLin>
+      <programArgsWin>
+         <argsX86>-vm ../../data/jvm_win32_x86/bin</argsX86>
+      </programArgsWin>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
@@ -16,16 +22,25 @@
    <windowImages/>
 
    <launcher name="Warcraft Remake Editor">
+      <linux icon="/com.b3dgs.warcraft.editor/icons/icon.xpm"/>
+      <macosx icon="/com.b3dgs.warcraft.editor/icons/icon.icns"/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/com.b3dgs.warcraft.editor/icons/icon_16_32.bmp"
+            winSmallLow="/com.b3dgs.warcraft.editor/icons/icon_16_8.bmp"
+            winMediumHigh="/com.b3dgs.warcraft.editor/icons/icon_32_32.bmp"
+            winMediumLow="/com.b3dgs.warcraft.editor/icons/icon_32_8.bmp"
+            winLargeHigh="/com.b3dgs.warcraft.editor/icons/icon_48_32.bmp"
+            winLargeLow="/com.b3dgs.warcraft.editor/icons/icon_48_8.bmp"
+            winExtraLargeHigh="/com.b3dgs.warcraft.editor/icons/icon_256_32.bmp"/>
       </win>
    </launcher>
 
    <vm>
-      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
-      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
-      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
    </vm>
 
    <plugins>
@@ -38,15 +53,16 @@
       <plugin id="com.b3dgs.lionengine.editor.object"/>
       <plugin id="com.b3dgs.lionengine.editor.pathfinding"/>
       <plugin id="com.b3dgs.lionengine.game"/>
+      <plugin id="com.b3dgs.lionengine.helper"/>
       <plugin id="com.b3dgs.warcraft.editor"/>
       <plugin id="com.b3dgs.warcraft.game"/>
       <plugin id="com.ibm.icu"/>
+      <plugin id="com.sun.jna"/>
+      <plugin id="com.sun.jna.platform"/>
       <plugin id="javax.annotation"/>
       <plugin id="javax.inject"/>
       <plugin id="javax.servlet"/>
-      <plugin id="org.apache.batik.constants"/>
       <plugin id="org.apache.batik.css"/>
-      <plugin id="org.apache.batik.i18n"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.commons.io"/>
       <plugin id="org.apache.commons.jxpath"/>
@@ -54,7 +70,6 @@
       <plugin id="org.apache.felix.gogo.runtime"/>
       <plugin id="org.apache.felix.scr"/>
       <plugin id="org.apache.log4j"/>
-      <plugin id="org.apache.xmlgraphics"/>
       <plugin id="org.apiguardian"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.compare.core"/>
@@ -84,6 +99,7 @@
       <plugin id="org.eclipse.e4.ui.css.swt"/>
       <plugin id="org.eclipse.e4.ui.css.swt.theme"/>
       <plugin id="org.eclipse.e4.ui.di"/>
+      <plugin id="org.eclipse.e4.ui.dialogs"/>
       <plugin id="org.eclipse.e4.ui.model.workbench"/>
       <plugin id="org.eclipse.e4.ui.services"/>
       <plugin id="org.eclipse.e4.ui.widgets"/>
@@ -99,10 +115,12 @@
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.bidi"/>
       <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.ds"/>
       <plugin id="org.eclipse.equinox.event"/>
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.region" fragment="true"/>
       <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.simpleconfigurator"/>
       <plugin id="org.eclipse.equinox.supplement"/>
       <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
       <plugin id="org.eclipse.equinox.weaving.hook" fragment="true"/>
@@ -110,6 +128,7 @@
       <plugin id="org.eclipse.jdt.annotation"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.jface.text"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
@@ -117,6 +136,7 @@
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.team.core"/>
+      <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.trace"/>
       <plugin id="org.eclipse.ui.workbench"/>
@@ -128,5 +148,20 @@
       <plugin id="org.w3c.dom.smil"/>
       <plugin id="org.w3c.dom.svg"/>
    </plugins>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

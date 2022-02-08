@@ -5,7 +5,7 @@
         <groupId>com.b3dgs.warcraft.editor</groupId>
         <artifactId>warcraft-editor-parent</artifactId>
         <version>0.0.7-SNAPSHOT</version>
-        <relativePath>../warcraft-editor-parent</relativePath>
+        <relativePath>../warcraft-editor-parent/pom.xml</relativePath>
     </parent>
     <artifactId>com.b3dgs.warcraft.editor</artifactId>
     <packaging>eclipse-plugin</packaging>
